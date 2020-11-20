@@ -4,6 +4,7 @@
 #define __SPIFFE_ID_BY_POINTER__ 0
 
 #include <stdbool.h>
+#include "trustdomain.h"
 
 typedef bool err_t;
 typedef char* string_t;
@@ -18,15 +19,10 @@ typedef spiffeid_ID struct
 } spiffeid_ID;
 
 spiffeid_ID spiffeid_ID_New(const string_t trustDomain, 
-                            const string_arr_t segments, 
-                            err_t *err);
-
+                            const string_arr_t segments, err_t *err);
 string_t spiffeid_ID_Join(string_t trustDomain, 
-                        string_arr_t segments, 
-                        err_t *error);
-
+                            const string_arr_t segments, err_t *err);
 spiffeid_ID spiffeid_ID_FromString(const string_t str, err_t *err);
-
 spiffeid_ID spiffeid_ID_FromURI(const URI_t str, err_t *err);
 
 #if __SPIFFE_ID_BY_POINTER__
@@ -49,8 +45,8 @@ void spiffeid_ID_normalizeTrustDomain(string_t str);
 void spiffeid_ID_normalizePath(string_t str);
 
 /*
-these functions below panic (throw exception) on the original
-implementation. 
+these functions below can panic (throw exception) on the original
+Go implementation.
 
 spiffeid_ID spiffeid_ID_Must(string_t trustDomain, string_arr_t segments);
 
