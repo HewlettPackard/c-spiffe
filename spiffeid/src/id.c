@@ -10,7 +10,7 @@ static string_t join(const string_arr_t str_arr)
     string_t res_str = NULL;
     size_t tot_len = 0, arr_size = arrlenu(str_arr);
 
-    for(size_t i =i 0; i < arr_size; ++i)
+    for(size_t i = 0; i < arr_size; ++i)
     {   
         tot_len += arrlenu(str_arr[i]) - 1;
         // tot_len += strlen(str_arr[i]);
