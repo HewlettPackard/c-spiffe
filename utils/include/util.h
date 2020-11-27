@@ -13,15 +13,15 @@ typedef unsigned char byte;
 typedef struct URL_t
 {
     string_t scheme;
-	string_t host;
+    string_t host;
     // string_t host_ip;
     // int host_exists;
-	string_t path;
+    string_t path;
     string_t raw_query;
     string_t fragment;
     string_t user;
     // string_t protocol;
-	string_t port;
+    string_t port;
 } URL_t;
 
 typedef struct map_string_EVP_PKEY
