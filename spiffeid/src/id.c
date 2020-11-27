@@ -38,7 +38,7 @@ static string_t join(const string_arr_t str_arr)
 
 string_t spiffeid_normalizePath(string_t str)
 {
-    if(arrelenu(str) > 0 && str[0] != '/')
+    if(arrlenu(str) > 0 && str[0] != '/')
     {
         //inserts '/' at the beginning
         arrins(str, 0, '/');
