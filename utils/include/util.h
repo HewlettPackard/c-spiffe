@@ -2,7 +2,9 @@
 #define __INCLUDE_UTILS_UTIL_H__
 
 #include <stdbool.h>
+#include <string.h>
 #include <openssl/evp.h>
+#include "stb_ds.h"
 
 // typedef bool err_t;
 typedef char* string_t;
