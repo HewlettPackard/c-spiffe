@@ -2,8 +2,8 @@
 
 spiffeid_TrustDomain spiffeid_TrustDomainFromString(string_t str, err_t *err)
 {
-    const string_t spiffe_scheme = "spiffe://";
-    const string_t spiffe_scheme_len = strlen(spiffe_scheme);
+    const char spiffe_scheme[] = "spiffe://";
+    const size_t spiffe_scheme_len = sizeof spiffe_scheme - 1;
 
     if(!string_contains(str, "://"))
     {
@@ -12,7 +12,7 @@ spiffeid_TrustDomain spiffeid_TrustDomainFromString(string_t str, err_t *err)
         strncpy(str, spiffe_scheme, spiffe_scheme_len);
     }
 
-    bool err2;
+    err_t err2;
     spiffeid_ID id = spiffeid_FromString(str, &err2);
 
     if(err2)
@@ -32,12 +32,17 @@ const string_t spiffeid_TrustDomain_String(const spiffeid_TrustDomain td)
 
 spiffeid_ID spiffeid_TrustDomain_ID(const spiffeid_TrustDomain td)
 {
-    spiffeid_ID id = {NULL, NULL};
+    // spiffeid_ID id = {NULL, NULL};
 
-    id.td.name = string_push(id.td.name, td.name);
-    id.path = string_push(id.path, "");
+    // id.td.name = string_push(id.td.name, td.name);
+    // id.path = string_push(id.path, "");
 
-    return id;
+    return (spiffeid_ID){
+        .td = (spiffeid_TrustDomain){
+            string_push(NULL, td.name)
+        }, 
+        .path = string_push(NULL, "")
+    };
 }
 
 string_t spiffeid_TrustDomain_IDString(const spiffeid_TrustDomain td)
@@ -51,11 +56,16 @@ string_t spiffeid_TrustDomain_IDString(const spiffeid_TrustDomain td)
 
 spiffeid_ID spiffeid_TrustDomain_NewID(const spiffeid_TrustDomain td, const string_t path)
 {
-    spiffeid_ID id = {NULL, NULL};
-    id.td.name = string_push(id.td.name, td.name);
-    id.path = string_push(id.path, path);
+    // spiffeid_ID id = {NULL, NULL};
+    // id.td.name = string_push(id.td.name, td.name);
+    // id.path = string_push(id.path, path);
 
-    return id;
+    return (spiffeid_ID){
+        .td = (spiffeid_TrustDomain){
+            string_push(NULL, td.name)
+        }, 
+        .path = string_push(NULL, path)
+    };
 }
 
 bool spiffeid_TrustDomain_IsZero(const spiffeid_TrustDomain td)

@@ -5,6 +5,10 @@
 #include "../include/trustdomain.h"
 #include "../../utils/include/stb_ds.h"
 
+/*
+ * TODO: check return values in spiffeid_FromURI
+ */
+
 static string_t join(const string_arr_t str_arr)
 {
     string_t res_str = NULL;
@@ -42,10 +46,14 @@ static string_t join(const string_arr_t str_arr)
 
 string_t spiffeid_normalizePath(string_t str)
 {
-    if(arrlenu(str) > 0 && str[0] != '/')
+    //null check
+    if(str)
     {
-        //inserts '/' at the beginning
-        arrins(str, 0, '/');
+        if(arrlenu(str) > 0 && str[0] != '/')
+        {
+            //inserts '/' at the beginning
+            arrins(str, 0, '/');
+        }
     }
 
     return str;
@@ -69,10 +77,20 @@ string_t spiffeid_Join(string_t td_str,
     }
 }
 
-static URL_t URL_parse(const string_t str, err_t *err)
+static CURLU* URL_parse(const string_t str, err_t *err)
 {
-    URL_t uri;
-    return uri;
+    CURLU *uri = curl_url();
+    CURLUcode rc = curl_url_set(uri, CURLUPART_URL, str, 0);
+
+    if(!rc)
+    {
+        *err = NO_ERROR;
+        return uri;    
+    }
+
+    *err = ERROR1;
+    curl_url_cleanup(uri);
+    return NULL;
 }
 
 static void tolower_str(string_t str)
@@ -85,94 +103,110 @@ void spiffeid_normalizeTrustDomain(string_t str)
     tolower_str(str);
 }
 
-spiffeid_ID spiffeid_FromURI(const URL_t *uri, err_t *err)
+spiffeid_ID spiffeid_FromURI(const CURLU *uri, err_t *err)
 {
-    spiffeid_ID id = {NULL, NULL};
+    const spiffeid_ID null_id = {NULL, NULL};
+    char *host, *path, *scheme, *user, *fragment, *raw_query, *port;
+    
+    curl_url_get(uri, CURLUPART_HOST, &host, 0);
+    curl_url_get(uri, CURLUPART_PATH, &path, 0);
+    curl_url_get(uri, CURLUPART_SCHEME, &scheme, 0);
+    curl_url_get(uri, CURLUPART_USER, &user, 0);
+    curl_url_get(uri, CURLUPART_FRAGMENT, &fragment, 0);
+    curl_url_get(uri, CURLUPART_PORT, &port, 0);
+    curl_url_get(uri, CURLUPART_QUERY, &raw_query, 0);
+    curl_url_get(uri, CURLUPART_HOST, &host, 0);
 
     if(!uri)
     {
         *err = ERROR1;
-        return id;
+        return null_id;
     }
-    else if(empty_str(uri->host))    //empty trust domain
+    else if(empty_str(host))    //empty trust domain
     {
         *err = ERROR1;
-        return id;
+        return null_id;
     }
-    else if(empty_str(uri->path))    //empty path
+    else if(empty_str(path))    //empty path
     {
         *err = ERROR1;
-        return id;
+        return null_id;
     }
-    else if(empty_str(uri->scheme))  //empty scheme
+    else if(empty_str(scheme))  //empty scheme
     {
         *err = ERROR1;
-        return id;
+        return null_id;
     }
-    else if(strcmp(uri->scheme, "scheme")) //invalid scheme
+    else if(strcmp(scheme, "scheme")) //invalid scheme
     {
         *err = ERROR1;
-        return id;
+        return null_id;
     }
-    else if(!empty_str(uri->user)) //user info
+    else if(!empty_str(user)) //user info
     {
         *err = ERROR1;
-        return id;
+        return null_id;
     } 
-    else if(!empty_str(uri->port)) //port info
+    else if(!empty_str(port)) //port info
     {
         *err = ERROR1;
-        return id;
+        return null_id;
     }
     else if(false) //using colon
     {
 
     }
-    else if(!empty_str(uri->fragment))  //fragment info
+    else if(!empty_str(fragment))  //fragment info
     {
         *err = ERROR1;
-        return id;
+        return null_id;
     }    
-    else if(!empty_str(uri->raw_query)) //query info
+    else if(!empty_str(raw_query)) //query info
     {
         *err = ERROR1;
-        return id;
+        return null_id;
     }
 
-    // arrsetcap(id.td.name, arrlenu(uri->host));
-    // arrsetcap(id.td.name, strlen(uri->host) + 1);
-    // strcpy(id.td.name, uri->host);
-    id.td.name = string_push(id.td.name, uri->host);
-    spiffeid_normalizeTrustDomain(id.td.name);
+    // arrsetcap(id.td.name, arrlenu(host));
+    // arrsetcap(id.td.name, strlen(host) + 1);
+    // strcpy(id.td.name, host);
+    string_t name = string_push(NULL, host);
+    spiffeid_normalizeTrustDomain(name);
 
-    // arrsetcap(id.path, arrlenu(uri->path));
-    // arrsetcap(id.path, strlen(uri->path) + 1);
-    // strcpy(id.path, uri->path);
-    id.path = string_push(id.path, uri->path);
+    // arrsetcap(id.path, arrlenu(path));
+    // arrsetcap(id.path, strlen(path) + 1);
+    // strcpy(id.path, path);
+    string_t path = string_push(NULL, path);
 
-    return id;
+    return (spiffeid_ID){
+        (spiffeid_TrustDomain){name},
+        path
+    };
 }
 
 spiffeid_ID spiffeid_ID_New(const string_t td_str, 
                             const string_arr_t segments, err_t *err)
 {
-    spiffeid_ID id = {NULL, NULL};
+    // spiffeid_ID id = {NULL, NULL};
     err_t err2;
 
     spiffeid_TrustDomain td = spiffeid_TrustDomainFromString(td_str, &err2);
     
     if(!err2)
     {
-        id.td = td;
-        id.path = spiffeid_normalizePath(join(segments));
+        // id.td = td;
+        // id.path = spiffeid_normalizePath(join(segments));
         
         *err = NO_ERROR;
-        return id;
+        return (spiffeid_ID){
+            td,
+            spiffeid_normalizePath(join(segments))
+        };
     }
     else
     {
         *err = err2;
-        return id;
+        return (spiffeid_ID){NULL, NULL};
     }
 }
 
@@ -180,18 +214,16 @@ spiffeid_ID spiffeid_FromString(const string_t str, err_t *err)
 {
     spiffeid_ID id = {NULL, NULL};
     err_t err2;
-    URL_t uri = URL_parse(str, &err2);
+    CURLU *uri = URL_parse(str, &err2);
 
     if(!err2)
     {
-        id = spiffeid_FromURI(&uri, &err2);
-        util_URL_t_Free(&uri, false);
+        id = spiffeid_FromURI(uri, &err2);
         *err = err2;
         return id;
     }
     else
     {
-        util_URL_t_Free(&uri, false);
         *err = err2;
         return id;
     }
@@ -211,7 +243,7 @@ void spiffeid_ID_Free(spiffeid_ID *id, bool alloc)
 
 #if !__SPIFFE_ID_BY_POINTER__
 
-spiffeid_TrustDomain spiffeid_ID_TrustDomain(const spiffeid_ID id)
+const spiffeid_TrustDomain spiffeid_ID_TrustDomain(const spiffeid_ID id)
 {
     return id.td;
 }
@@ -226,74 +258,49 @@ const string_t spiffeid_ID_Path(const spiffeid_ID id)
     return id.path;
 }
 
-static string_t URL_to_string(const URL_t *url);
+static string_t URL_to_string(const CURLU *url)
+{
+    char *str = NULL;
+    CURLUcode rc = curl_url_get(url, CURLUPART_URL, &str, 0);
+    if(!rc) return str;
+    return NULL;
+}
 
 string_t spiffeid_ID_String(const spiffeid_ID id)
 {
-    URL_t uri = spiffeid_ID_URL(id);
-    string_t str = URL_to_string(&uri);
-    util_URL_t_Free(&uri, false);
+    CURLU *uri = spiffeid_ID_URL(id);
+    string_t str = URL_to_string(uri);
+    curl_url_cleanup(uri);
 
     return str;
 }
 
-URL_t spiffeid_ID_URL(const spiffeid_ID id)
+CURLU* spiffeid_ID_URL(const spiffeid_ID id)
 {
-    URL_t uri;
-    memset(&uri, NULL, sizeof(URL_t));
+    CURLU *uri = curl_url();
+    CURLUcode rc = curl_url_set(uri, CURLUPART_SCHEME, "spiffe", 0);
 
-    uri.scheme = string_push(uri.scheme, "spiffe");
-    uri.host = string_push(uri.host, id.td.name);
-    uri.path = string_push(uri.path, id.path);
+    if(!rc)
+    {
+        rc = curl_url_set(uri, CURLUPART_HOST, id.td.name, 0);
 
-    return uri;
+        if(!rc)
+        {
+            rc = curl_url_set(uri, CURLUPART_PATH, id.path, 0);
+        }
+    }
+
+    if(!rc) return uri;  
+    
+    curl_url_cleanup(uri);
+    return NULL;
 }
 
 bool spiffeid_ID_IsZero(const spiffeid_ID id)
 {
-#if !__TRUSTDOMAIN_BY_POINTER__
     return spiffeid_TrustDomain_IsZero(id.td);
-#endif
 }
 
 #else
-
-spiffeid_TrustDomain spiffeid_ID_TrustDomain(const spiffeid_ID *id)
-{
-    return id->td;
-}
-
-bool spiffeid_ID_MemberOf(const spiffeid_ID *id, const spiffeid_TrustDomain *td)
-{
-    return !strcmp(id->td.name, td->name);
-}
-
-const string_t spiffeid_ID_Path(const spiffeid_ID *id)
-{
-    return id->path;
-}
-
-static string_t URL_to_string(const URL_t *url);
-
-string_t spiffeid_ID_String(const spiffeid_ID *id)
-{
-    URL_t uri = spiffeid_ID_URL(id);
-    string_t str = URL_to_string(&uri);
-    util_URL_t_Free(&uri, false);
-
-    return str;
-}
-
-URL_t spiffeid_ID_URL(const spiffeid_ID *id)
-{
-    URL_t uri;
-    memset(&uri, NULL, sizeof(URL_t));
-
-    uri.scheme = string_push(uri.scheme, "spiffe");
-    uri.host = string_push(uri.host, id->td.name);
-    uri.path = string_push(uri.path, id->path);
-
-    return uri;
-}
 
 #endif
