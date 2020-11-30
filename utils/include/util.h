@@ -21,7 +21,8 @@ enum enum_err_t
 {
     NO_ERROR = 0,
     ERROR1,
-    ERROR2
+    ERROR2,
+    ERROR3
 };
 
 typedef enum enum_err_t err_t;

@@ -4,7 +4,6 @@
 /**
  * TODO: does jwutil_CopyJWTAuthorities need to copy the
  * contents of the pointer or just the pointer?
- * 
  */
 
 map_string_EVP_PKEY* jwutil_CopyJWTAuthorities(const map_string_EVP_PKEY *hash)
@@ -15,7 +14,13 @@ map_string_EVP_PKEY* jwutil_CopyJWTAuthorities(const map_string_EVP_PKEY *hash)
 
         for(size_t i = 0, size = shlenu(hash); i < size; ++i)
         {
-            shput(new_hash, hash[i].key, hash[i].value);
+            const char *str = hash[i].key;
+            EVP_PKEY *pkey = hash[i].value;
+            //ups the ref count, so it is memory safe
+            //no need to copy the contents, for now
+            EVP_PKEY_up_ref(pkey);
+            
+            shput(new_hash, str, pkey);
         }
 
         return new_hash;
