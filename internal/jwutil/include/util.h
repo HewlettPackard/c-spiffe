@@ -6,7 +6,7 @@
 
 map_string_EVP_PKEY* jwutil_CopyJWTAuthorities(const map_string_EVP_PKEY *hash);
 bool jwutil_JWTAuthoritiesEqual(
-        const map_string_EVP_PKEY *hash1, 
-        const map_string_EVP_PKEY *hash2);
+        map_string_EVP_PKEY *hash1, 
+        map_string_EVP_PKEY *hash2);
 
 #endif
