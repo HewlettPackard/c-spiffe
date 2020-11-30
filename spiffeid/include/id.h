@@ -5,10 +5,14 @@
 
 #include <stdbool.h>
 #include <curl/curl.h>
-#include "trustdomain.h"
 #include "../../utils/include/util.h"
 
-typedef spiffeid_ID struct
+typedef struct spiffeid_TrustDomain
+{
+    string_t name;
+} spiffeid_TrustDomain;
+
+typedef struct spiffeid_ID
 {
     spiffeid_TrustDomain td;
     //use stbds_arr or stb_sb for dynamic array allocation
@@ -20,21 +24,21 @@ spiffeid_ID spiffeid_ID_New(const string_t trustDomain,
 string_t spiffeid_Join(string_t trustDomain, 
                             const string_arr_t segments, err_t *err);
 spiffeid_ID spiffeid_FromString(const string_t str, err_t *err);
-spiffeid_ID spiffeid_FromURI(const CURLU *uri, err_t *err);
+spiffeid_ID spiffeid_FromURI(CURLU *uri, err_t *err);
 
 #if __SPIFFE_ID_BY_POINTER__
 spiffeid_TrustDomain spiffeid_ID_TrustDomain(const spiffeid_ID *id);
 bool spiffeid_ID_MemberOf(const spiffeid_ID *id, const spiffeid_ID_TrustDomain *td);
 const string_t spiffeid_ID_Path(const spiffeid_ID *id);
-const string_t spiffeid_ID_String(const spiffeid_ID *id);
-const CURLU spiffeid_ID_URL(const spiffeid_ID *id);
+string_t spiffeid_ID_String(const spiffeid_ID *id);
+CURLU* spiffeid_ID_URL(const spiffeid_ID *id);
 bool spiffeid_ID_IsZero(const spiffeid_ID *id);
 #else
 spiffeid_TrustDomain spiffeid_ID_TrustDomain(const spiffeid_ID id);
-bool spiffeid_ID_MemberOf(const spiffeid_ID id, const spiffeid_ID_TrustDomain td);
+bool spiffeid_ID_MemberOf(const spiffeid_ID id, const spiffeid_TrustDomain td);
 const string_t spiffeid_ID_Path(const spiffeid_ID id);
 string_t spiffeid_ID_String(const spiffeid_ID id);
-CURLU spiffeid_ID_URL(const spiffeid_ID id);
+CURLU* spiffeid_ID_URL(const spiffeid_ID id);
 bool spiffeid_ID_IsZero(const spiffeid_ID id);
 #endif
 

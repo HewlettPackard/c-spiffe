@@ -103,7 +103,7 @@ void spiffeid_normalizeTrustDomain(string_t str)
     tolower_str(str);
 }
 
-spiffeid_ID spiffeid_FromURI(const CURLU *uri, err_t *err)
+spiffeid_ID spiffeid_FromURI(CURLU *uri, err_t *err)
 {
     const spiffeid_ID null_id = {NULL, NULL};
     char *host, *path, *scheme, *user, *fragment, *raw_query, *port;
@@ -176,11 +176,11 @@ spiffeid_ID spiffeid_FromURI(const CURLU *uri, err_t *err)
     // arrsetcap(id.path, arrlenu(path));
     // arrsetcap(id.path, strlen(path) + 1);
     // strcpy(id.path, path);
-    string_t path = string_push(NULL, path);
+    string_t id_path = string_push(NULL, path);
 
     return (spiffeid_ID){
         (spiffeid_TrustDomain){name},
-        path
+        id_path
     };
 }
 
@@ -258,7 +258,7 @@ const string_t spiffeid_ID_Path(const spiffeid_ID id)
     return id.path;
 }
 
-static string_t URL_to_string(const CURLU *url)
+static string_t URL_to_string(CURLU *url)
 {
     char *str = NULL;
     CURLUcode rc = curl_url_get(url, CURLUPART_URL, &str, 0);

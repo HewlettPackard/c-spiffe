@@ -6,11 +6,6 @@
 #include "id.h"
 #include "../../utils/include/util.h"
 
-typedef struct spiffeid_TrustDomain
-{
-    string_t name;
-} spiffeid_TrustDomain;
-
 spiffeid_TrustDomain spiffeid_TrustDomainFromString(const string_t str, err_t *err);
 spiffeid_TrustDomain spiffeid_TrustDomainFromURI(const CURL *uri, err_t *err);
 
