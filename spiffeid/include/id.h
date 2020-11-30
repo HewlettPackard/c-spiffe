@@ -4,6 +4,7 @@
 #define __SPIFFE_ID_BY_POINTER__ 0
 
 #include <stdbool.h>
+#include <curl/curl.h>
 #include "trustdomain.h"
 #include "../../utils/include/util.h"
 
@@ -19,21 +20,21 @@ spiffeid_ID spiffeid_ID_New(const string_t trustDomain,
 string_t spiffeid_Join(string_t trustDomain, 
                             const string_arr_t segments, err_t *err);
 spiffeid_ID spiffeid_FromString(const string_t str, err_t *err);
-spiffeid_ID spiffeid_FromURI(const URL_t *uri, err_t *err);
+spiffeid_ID spiffeid_FromURI(const CURLU *uri, err_t *err);
 
 #if __SPIFFE_ID_BY_POINTER__
 spiffeid_TrustDomain spiffeid_ID_TrustDomain(const spiffeid_ID *id);
 bool spiffeid_ID_MemberOf(const spiffeid_ID *id, const spiffeid_ID_TrustDomain *td);
 const string_t spiffeid_ID_Path(const spiffeid_ID *id);
 const string_t spiffeid_ID_String(const spiffeid_ID *id);
-const URL_t spiffeid_ID_URL(const spiffeid_ID *id);
+const CURLU spiffeid_ID_URL(const spiffeid_ID *id);
 bool spiffeid_ID_IsZero(const spiffeid_ID *id);
 #else
 spiffeid_TrustDomain spiffeid_ID_TrustDomain(const spiffeid_ID id);
 bool spiffeid_ID_MemberOf(const spiffeid_ID id, const spiffeid_ID_TrustDomain td);
 const string_t spiffeid_ID_Path(const spiffeid_ID id);
 string_t spiffeid_ID_String(const spiffeid_ID id);
-URL_t spiffeid_ID_URL(const spiffeid_ID id);
+CURLU spiffeid_ID_URL(const spiffeid_ID id);
 bool spiffeid_ID_IsZero(const spiffeid_ID id);
 #endif
 
@@ -53,7 +54,7 @@ string_t spiffeid_ID_MustJoin(string_t trustDomain, string_arr_t segments);
 
 spiffeid_ID spiffeid_ID_RequireFromString(const string_t str);
 
-spiffeid_ID spiffeid_ID_RequireFromURI(const URL_t str);
+spiffeid_ID spiffeid_ID_RequireFromURI(const CURLU str);
 */
 
 #endif
