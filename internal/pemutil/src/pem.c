@@ -1,9 +1,7 @@
 #include "../include/pem.h"
 
-#define CERT_TYPE 0
-#define KEY_TYPE 1
-
 static const string_t types_str[] = {"CERTIFICATE", "PRIVATE KEY"};
+enum TYPE_IDX {CERT_TYPE, KEY_TYPE};
 
 static void* parseBlock(BIO *bio_mem, 
                 const string_t type, 
@@ -20,13 +18,13 @@ static void* parseBlock(BIO *bio_mem,
 
     //generic pointer to be returned
     void *parsed_pem = NULL;
-    //return variable for the pem name
-    char *pem_name = NULL;
+    //return variables for the pem name and header
+    char *pem_name = NULL, *pem_header = NULL;
     //length of the data read from bio_mem
     long int len_data = 0;
     //pointer to data
-    byte **data;
-    int suc = PEM_read_bio(bio_mem, &pem_name, NULL, data, &len_data);
+    byte **data = NULL;
+    int suc = PEM_read_bio(bio_mem, &pem_name, &pem_header, data, &len_data);
     
     *err = NO_ERROR;
     //sucessfully read
@@ -62,15 +60,20 @@ static void* parseBlock(BIO *bio_mem,
     //no PEM data found or nothing left to read
     else
         *err = ERROR3;
-
+    
+    OPENSSL_free(pem_name);
+    OPENSSL_free(pem_header);
+    // OPENSSL_free(data);
     BIO_free(bio_mem);
     return parsed_pem;
 }
 
-static void** parseBlocks(const byte *pem_byte, const string_t type, err_t *err)
+static void** parseBlocks(const byte *pem_byte, 
+                const string_t type, 
+                err_t *err)
 {
     //bio_mem MUST be initialized just one time (??)
-    /** TODO: verify whether BIO keeps track of the
+    /** TODO: check whether BIO keeps track of the
      * already read data.
     */
     BIO *bio_mem = BIO_new(BIO_s_mem());
@@ -82,11 +85,8 @@ static void** parseBlocks(const byte *pem_byte, const string_t type, err_t *err)
     while(true)
     {
         void *block = parseBlock(bio_mem, type, err);
-
-        //type not supported currently
-        if(*err == ERROR1) continue;
-
-        if(block && !err)
+        
+        if(block && !(*err))
         {
             arrput(parsed_blocks_arr, block);
         }
@@ -94,11 +94,14 @@ static void** parseBlocks(const byte *pem_byte, const string_t type, err_t *err)
         {
             break;
         }
-        else if(err)
+        else //non trivial error
         {
-            //handle error here
-            arrfree(parsed_blocks_arr);
-            return NULL;
+            //type not supported currently
+            if(*err != ERROR1)
+            {
+                arrfree(parsed_blocks_arr);
+                return NULL;
+            }
         }
     }
     *err = NO_ERROR;
@@ -106,28 +109,105 @@ static void** parseBlocks(const byte *pem_byte, const string_t type, err_t *err)
     return parsed_blocks_arr;
 }
 
-X509** pemutil_ParseCertificate(const byte *bytes, err_t *err)
+X509** pemutil_ParseCertificates(const byte *bytes, err_t *err)
 {
     //array of X509 certificates
     X509 **x509_arr = NULL;
-    //dummy
-    return NULL;
+
+    void **objs = parseBlocks(bytes, types_str[CERT_TYPE], err);
+    
+    //not NULL and no error
+    if(objs && !(*err))
+    {
+        //maybe check the vality of each object?
+        //don't think it is possible, though
+        for(size_t i = 0, size = arrlenu(objs); i < size; ++i)
+        {
+            arrput(x509_arr, (X509*) objs[i]);
+        }
+    }
+    else if(objs)
+    {
+        //free them all!
+        for(size_t i = 0, size = arrlenu(objs); i < size; ++i)
+        {
+            //free each X509 certificate
+            if(objs[i])
+                X509_free(objs[i]);
+        }
+    }
+    //free array of pointers
+    arrfree(objs);
+
+    return x509_arr;
 }
 
-EVP_PKEY* pemutil_ParsePrivateKey(const byte *bytes, err_t *err)
+PKCS8_PRIV_KEY_INFO* pemutil_ParsePrivateKey(const byte *bytes, err_t *err)
 {
-    //dummy
-    return NULL;
+    PKCS8_PRIV_KEY_INFO *pkey = NULL;
+
+    void **objs = parseBlocks(bytes, types_str[CERT_TYPE], err);
+
+    //not NULL and no error
+    if(objs && !(*err))
+    {
+        //maybe check the vality of each object?
+        //don't think it is possible, though
+        pkey = (PKCS8_PRIV_KEY_INFO*) objs[0];
+
+        //free the remaining objects
+        for(size_t i = 1, size = arrlenu(objs); i < size; ++i)
+        {
+            PKCS8_PRIV_KEY_INFO_free(objs[i]);
+        }
+    }
+    else if(objs)
+    {
+        //free them all!
+        for(size_t i = 0, size = arrlenu(objs); i < size; ++i)
+        {
+            //free each private key
+            if(objs[i])
+                PKCS8_PRIV_KEY_INFO_free(objs[i]);
+        }
+    }
+    //free array of pointers
+    arrfree(objs);
+
+    return pkey;
 }
 
-byte* pemutil_EncodePKCS8PrivateKey(const EVP_PKEY *pkey, err_t *err)
+/**
+ * TODO: check if it is better to copy pem_bytes
+ * data o a stb array
+ */
+byte* pemutil_EncodePKCS8PrivateKey(PKCS8_PRIV_KEY_INFO *pkey, int *bytes_len, err_t *err)
 {
-    //dummy
-    return NULL;
+    //array of raw bytes
+    byte *pem_bytes = NULL;
+    int len = i2d_PKCS8_PRIV_KEY_INFO(pkey, &pem_bytes);
+
+    if(len >= 0)
+        *bytes_len = len;
+    //error while reading
+    else
+        *err = ERROR2;
+
+    return pem_bytes;
 }
 
-byte* pemutil_EncodeCertificates(const X509 **certs)
+byte** pemutil_EncodeCertificates(X509 **certs)
 {
-    //dummy
-    return NULL;
+    byte **pem_bytes_arr = NULL;
+    byte *pem_bytes = NULL;
+
+    for(size_t i = 0, size = arrlen(certs); i < size; ++i)
+    {
+        i2d_X509(certs[i], &pem_bytes);
+        
+        if(pem_bytes)
+            arrput(pem_bytes_arr, pem_bytes);
+    }
+
+    return pem_bytes_arr;
 }
