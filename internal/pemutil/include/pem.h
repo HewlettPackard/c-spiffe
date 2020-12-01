@@ -13,10 +13,15 @@
 // int PEM_read_bio(BIO *bp, char **name, char **header,
                 //   unsigned char **data, long *len);
 
-X509** pemutil_ParseCertificate(const byte *bytes, err_t *err);
-EVP_PKEY* pemutil_ParsePrivateKey(const byte *bytes, err_t *err);
-byte* pemutil_EncodePKCS8PrivateKey(const EVP_PKEY *pkey, err_t *err);
-byte* pemutil_EncodeCertificates(const X509 **certs);
+X509** pemutil_ParseCertificates(const byte *bytes, err_t *err);
+PKCS8_PRIV_KEY_INFO* pemutil_ParsePrivateKey(
+                                const byte *bytes, 
+                                err_t *err);
+byte* pemutil_EncodePKCS8PrivateKey(
+                                PKCS8_PRIV_KEY_INFO *pkey, 
+                                int *bytes_len, 
+                                err_t *err);
+byte** pemutil_EncodeCertificates(X509 **certs);
 
 /*
 func parseBlocks(blocksBytes []byte, expectedType string) ([]interface{}, error)
