@@ -10,10 +10,7 @@
 typedef struct pemutil_Block
 {
     string_t type;
-    // struct {
-    //     string_t key;
-    //     string_t value;
-    // };
+    // map_string_string *headers;
     byte *bytes;
 } pemutil_Block;
 
