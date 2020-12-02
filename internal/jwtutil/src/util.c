@@ -6,7 +6,7 @@
  * contents of the pointer or just the pointer?
  */
 
-map_string_EVP_PKEY* jwutil_CopyJWTAuthorities(const map_string_EVP_PKEY *hash)
+map_string_EVP_PKEY* jwtutil_CopyJWTAuthorities(const map_string_EVP_PKEY *hash)
 {
     if(hash)
     {
@@ -28,7 +28,7 @@ map_string_EVP_PKEY* jwutil_CopyJWTAuthorities(const map_string_EVP_PKEY *hash)
     return NULL;
 }
 
-bool jwutil_JWTAuthoritiesEqual(
+bool jwtutil_JWTAuthoritiesEqual(
         map_string_EVP_PKEY *hash1, 
         map_string_EVP_PKEY *hash2)
 {
