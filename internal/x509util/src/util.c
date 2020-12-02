@@ -27,7 +27,7 @@ bool x509util_CertsEqual(const X509 **certs1, const X509 **certs2)
 
 /**
  * TODO: how is it different from pemutil_EncodeCertificates?
- * Answer: we have to use DER format, instead of PEM (??)
+ * Answer: it seems it just uses the raw value of the X509 certificate. (??)
  */
 byte** x509util_RawCertsFromCerts(const X509 **certs)
 {
