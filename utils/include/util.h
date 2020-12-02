@@ -17,6 +17,12 @@ typedef struct map_string_EVP_PKEY
     EVP_PKEY *value;
 } map_string_EVP_PKEY;
 
+typedef struct map_string_string
+{
+    string_t key;
+    string_t value;
+} map_string_string;
+
 enum enum_err_t
 {
     NO_ERROR = 0,
