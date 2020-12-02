@@ -7,6 +7,16 @@
 #include <openssl/x509v3.h>
 #include "../../../utils/include/util.h"
 
+typedef struct pemutil_Block
+{
+    string_t type;
+    // struct {
+    //     string_t key;
+    //     string_t value;
+    // };
+    byte *bytes;
+} pemutil_Block;
+
 // X509 *d2i_X509(X509 **px, const byte **in, long len);
 // PEM_read_bio_X509(BIO *bioptr, NULL, NULL, NULL);
 // PEM_read_bio_PKCS8_PRIV_KEY_INFO(BIO *bioptr, NULL, NULL, NULL);
