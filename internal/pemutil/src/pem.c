@@ -158,7 +158,8 @@ PKCS8_PRIV_KEY_INFO* pemutil_ParsePrivateKey(const byte *bytes, err_t *err)
         //free the remaining objects
         for(size_t i = 1, size = arrlenu(objs); i < size; ++i)
         {
-            PKCS8_PRIV_KEY_INFO_free(objs[i]);
+            if(objs[i])
+                PKCS8_PRIV_KEY_INFO_free(objs[i]);
         }
     }
     else if(objs)
@@ -179,7 +180,7 @@ PKCS8_PRIV_KEY_INFO* pemutil_ParsePrivateKey(const byte *bytes, err_t *err)
 
 /**
  * TODO: check if it is better to copy pem_bytes
- * data o a stb array
+ * data to a stb array
  */
 byte* pemutil_EncodePKCS8PrivateKey(PKCS8_PRIV_KEY_INFO *pkey, int *bytes_len, err_t *err)
 {
@@ -201,7 +202,7 @@ byte** pemutil_EncodeCertificates(X509 **certs)
     byte **pem_bytes_arr = NULL;
     byte *pem_bytes = NULL;
 
-    for(size_t i = 0, size = arrlen(certs); i < size; ++i)
+    for(size_t i = 0, size = arrlenu(certs); i < size; ++i)
     {
         i2d_X509(certs[i], &pem_bytes);
         
@@ -210,4 +211,4 @@ byte** pemutil_EncodeCertificates(X509 **certs)
     }
 
     return pem_bytes_arr;
-}
+} 
