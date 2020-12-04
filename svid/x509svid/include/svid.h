@@ -9,7 +9,7 @@
 #include "../../../internal/pemutil/include/pem.h"
 #include "../../../internal/x509util/include/util.h"
 
-typedef struct X509SVID
+typedef struct x509svid_SVID
 {
     //its own spiffe id
     spiffeid_ID id;
@@ -17,21 +17,36 @@ typedef struct X509SVID
     X509 **certs;
     //its own private key
     EVP_PKEY *privateKey;
-} SVID;
+} x509svid_SVID;
 
-SVID* x509svid_Load(const string_t certfile, const string_t keyfile, err_t *err);
-SVID* x509svid_Parse(const byte *certbytes, const byte *keybytes, err_t *err);
-SVID* x509svid_ParseRaw(const byte *certbytes, const byte *keybytes, err_t *err);
-SVID* x509svid_newSVID(const X509 **certs, const EVP_PKEY *pkey, err_t *err);
+x509svid_SVID* x509svid_Load(const string_t certfile, 
+                                const string_t keyfile, 
+                                err_t *err);
+x509svid_SVID* x509svid_Parse(const byte *certbytes, 
+                                const byte *keybytes, 
+                                err_t *err);
+x509svid_SVID* x509svid_ParseRaw(const byte *certbytes, 
+                                    const byte *keybytes, 
+                                    err_t *err);
+x509svid_SVID* x509svid_newSVID(const X509 **certs, 
+                                const EVP_PKEY *pkey, 
+                                err_t *err);
 
 spiffeid_ID x509svid_validateCertificates(const X509 **certs, err_t *err);
 spiffeid_ID x509svid_validateLeafCertificate(const X509 *cert, err_t *err);
 void x509svid_validateSigningCertificates(const X509 **certs, err_t *err);
 void x509svid_validateKeyUsage(const X509 *cert, err_t *err);
 
-void X509SVID_Marshal(const SVID *svid, byte **rawbytes1, byte **rawbytes2, err_t *err);
-void X509SVID_MarshalRaw(const SVID *svid, byte **rawbytes1, byte **rawbytes2, err_t *err);
-SVID* X509SVID_GetX509SVID(const SVID *svid, err_t *err);
+void x509svid_SVID_Marshal(const x509svid_SVID *svid, 
+                            byte **rawbytes1, 
+                            byte **rawbytes2, 
+                            err_t *err);
+void x509svid_SVID_MarshalRaw(const x509svid_SVID *svid, 
+                                byte **rawbytes1, 
+                                byte **rawbytes2, 
+                                err_t *err);
+x509svid_SVID* x509svid_SVID_GetX509SVID(const x509svid_SVID *svid, 
+                                            err_t *err);
 
 /*
 func validatePrivateKey(privateKey crypto.PrivateKey, leaf *x509.Certificate) (crypto.Signer, error) {
