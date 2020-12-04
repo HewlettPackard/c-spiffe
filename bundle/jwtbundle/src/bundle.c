@@ -78,49 +78,60 @@ jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td,
 {
 
     jwtbundle_Bundle *bundle = jwtbundle_New(td);    
-    cjose_err cj_err;
 
-    struct json_object *parsed_json = json_tokener_parse((const string_t) bundle_bytes);
+    struct json_object *parsed_json = json_tokener_parse(bundle_bytes);
     struct json_object *keys = NULL;
     json_object_object_get_ex(parsed_json, "keys", &keys);
-    size_t n_keys = json_object_array_length(keys);
+    const size_t n_keys = json_object_array_length(keys);
 
     for(size_t i = 0; i < n_keys; ++i)
     {
-        //get string related to current key
         ///TODO: check if this is correct
-        struct json_object *elem_obj = json_object_array_get_idx(keys, i);
+
+        //get i-th element of the JWKS
+        struct json_object *elem_obj = 
+            json_object_array_get_idx(keys, i);
+        //get string related to the item
         const char *key_str = 
             json_object_get_string(elem_obj);
+        cjose_err cj_err;
         //parse the raw bytes into a JWK object
-        const cjose_jwk_t *jwk = cjose_jwk_import(key_str, strlen(key_str), &cj_err);
+        const cjose_jwk_t *jwk = 
+            cjose_jwk_import(key_str, strlen(key_str), &cj_err);
         //get kid field
         const char *kid = 
             cjose_jwk_get_kid(jwk, &cj_err);
         //get key type
-        const cjose_jwk_kty_t kty = cjose_jwk_get_kty(jwk, &cj_err);
+        const cjose_jwk_kty_t kty = 
+            cjose_jwk_get_kty(jwk, &cj_err);
         //get key data
-        void *keydata = cjose_jwk_get_keydata(jwk, &cj_err);
+        void *keydata = 
+            cjose_jwk_get_keydata(jwk, &cj_err);
         //get key size
-        const long keysize = cjose_jwk_get_keysize(jwk, &cj_err);
-        EVP_PKEY *pkey = NULL;
+        const long keysize = 
+            cjose_jwk_get_keysize(jwk, &cj_err);
+        EVP_PKEY *pkey = EVP_PKEY_new();
         RSA *rsa_key = NULL;
         EC_KEY *ec_key = EC_KEY_new();
 
         switch(kty)
         {
         case CJOSE_JWK_KTY_RSA:
-            rsa_key = d2i_RSA_PUBKEY(NULL, (const byte**) &keydata, (long) keysize);
+            rsa_key = d2i_RSA_PUBKEY(NULL, (const byte**) &keydata, keysize);
             EVP_PKEY_assign_RSA(pkey, rsa_key);
             break;
         case CJOSE_JWK_KTY_EC:
-            EC_KEY_oct2key(ec_key, (const byte*) keydata, (long) keysize, NULL);
+            EC_KEY_oct2key(ec_key, (const byte*) keydata, keysize, NULL);
             EVP_PKEY_assign_EC_KEY(pkey, ec_key);
             break;
         default:
+            //type not supported currently
             break;
         }
         
+        RSA_free(rsa_key);
+        EC_KEY_free(ec_key);
+
         if(pkey)
         {
             //insert id and its public on the map
@@ -131,7 +142,7 @@ jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td,
     return bundle;
 }
                                             
-spiffeid_TrustDomain jwtbundle_Bundle_TrustDomain(jwtbundle_Bundle *b)
+const spiffeid_TrustDomain jwtbundle_Bundle_TrustDomain(const jwtbundle_Bundle *b)
 {
     return b->td;
 }
@@ -205,6 +216,7 @@ void jwtbundle_Bundle_SetJWTAuthorities(jwtbundle_Bundle *b,
                                         const map_string_EVP_PKEY *auths)
 {
     mtx_lock(&(b->mtx));
+    ///TODO: check if it is needed to free the EVP_PKEY objs
     shfree(b->auths);
     b->auths = jwtutil_CopyJWTAuthorities(auths);
     mtx_unlock(&(b->mtx));

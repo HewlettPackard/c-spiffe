@@ -29,7 +29,7 @@ jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td,
                                             const string_t bbytes, 
                                             err_t *err);
 
-spiffeid_TrustDomain jwtbundle_Bundle_TrustDomain(jwtbundle_Bundle *b);
+const spiffeid_TrustDomain jwtbundle_Bundle_TrustDomain(const jwtbundle_Bundle *b);
 map_string_EVP_PKEY* jwtbundle_Bundle_JWTAuthorities(jwtbundle_Bundle *b);
 EVP_PKEY* jwtbundle_Bundle_FindJWTAuthority(jwtbundle_Bundle *b,
                                             const string_t keyID, 
