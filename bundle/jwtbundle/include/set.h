@@ -19,18 +19,18 @@ typedef struct jwtbundle_Set
     mtx_t mtx;
 } jwtbundle_Set;
 
-jwtbundle_Set* jwtbundle_NewSet(jwtbundle_Bundle *b1, ...);
+jwtbundle_Set* jwtbundle_NewSet(const int n_args, ...);
 
-void jwtbundle_Set_Add(jwtbundle_Set *s, const jwtbundle_Bundle *bundle);
+void jwtbundle_Set_Add(jwtbundle_Set *s, jwtbundle_Bundle *bundle);
 void jwtbundle_Set_Remove(jwtbundle_Set *s, const spiffeid_TrustDomain *td);
-bool jwtbundle_Set_Has(const jwtbundle_Set *s, const spiffeid_TrustDomain *td);
-jwtbundle_Bundle* jwtbundle_Set_Get(const jwtbundle_Set *s, 
+bool jwtbundle_Set_Has(jwtbundle_Set *s, const spiffeid_TrustDomain *td);
+jwtbundle_Bundle* jwtbundle_Set_Get(jwtbundle_Set *s, 
                                     const spiffeid_TrustDomain *td, 
                                     bool *suc);
-jwtbundle_Bundle** jwtbundle_Set_Bundles(const jwtbundle_Set *s);
-uint32_t jwtbundle_Set_Len(const jwtbundle_Set *s);
+jwtbundle_Bundle** jwtbundle_Set_Bundles(jwtbundle_Set *s);
+uint32_t jwtbundle_Set_Len(jwtbundle_Set *s);
 jwtbundle_Bundle* jwtbundle_Set_GetJWTBundleForTrustDomain(
-                                    const jwtbundle_Set *s, 
+                                    jwtbundle_Set *s, 
                                     const spiffeid_TrustDomain *td, 
                                     err_t *err);
 

@@ -22,9 +22,9 @@ jwtbundle_Bundle* jwtbundle_FromJWTAuthorities(const spiffeid_TrustDomain td,
 jwtbundle_Bundle* jwtbundle_Load(const spiffeid_TrustDomain td, 
                                             const string_t path, 
                                             err_t *err);
-jwtbundle_Bundle* jwtbundle_Read(const spiffeid_TrustDomain td, 
-                                            void *reader,   //Fix 
-                                            err_t *err);
+// jwtbundle_Bundle* jwtbundle_Read(const spiffeid_TrustDomain td, 
+//                                             void *reader,   //Fix 
+//                                             err_t *err);
 jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td, 
                                             const string_t bbytes, 
                                             err_t *err);

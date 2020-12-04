@@ -1,3 +1,4 @@
 DOCS/
 test.c
 test.json
+*.o
