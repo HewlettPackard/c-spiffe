@@ -66,8 +66,8 @@ jwtbundle_Bundle* jwtbundle_Set_Get(jwtbundle_Set *s,
 
 static int cmp_bundle(const void *v1, const void *v2)
 {
-    const jwtbundle_Bundle **b1 = (jwtbundle_Bundle**) v1, 
-                            **b2 = (jwtbundle_Bundle**) v2;
+    const jwtbundle_Bundle **b1 = (const jwtbundle_Bundle**) v1, 
+                            **b2 = (const jwtbundle_Bundle**) v2;
     return strcmp((*b1)->td.name, (*b2)->td.name);
 }
 
