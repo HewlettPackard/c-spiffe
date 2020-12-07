@@ -2,7 +2,6 @@
 #define __INCLUDE_JWTBUNDLE_BUNDLE_H__
 
 #include <threads.h>
-#include "../../../internal/jwtutil/include/util.h"
 #include "../../../spiffeid/include/id.h"
 
 typedef struct jwtbundle_Bundle

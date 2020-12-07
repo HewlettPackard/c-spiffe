@@ -3,6 +3,7 @@
 #include <openssl/x509.h>
 #include <cjose/jwk.h>
 #include <json-c/json.h>
+#include "../../../internal/jwtutil/include/util.h"
 #include "../include/bundle.h"
 
 jwtbundle_Bundle* jwtbundle_New(const spiffeid_TrustDomain td)
