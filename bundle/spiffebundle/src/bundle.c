@@ -25,18 +25,7 @@ spiffebundle_Bundle* spiffebundle_Load(const spiffeid_TrustDomain td,
     FILE *fsb = fopen(path, "r");
     if(fsb)
     {
-        //go to the end of the file
-        fseek(fsb, 0, SEEK_END);
-        //get length in bytes
-        long int flen = ftell(fsb);
-        //return to the beginning
-        rewind(fsb);
-        
-        string_t buffer = NULL;
-        //set byte array capacity
-        arrsetcap(buffer, flen);
-        //read bytes into buffer
-        fread(buffer, flen, 1, fsb);
+        string_t buffer = FILE_to_string(fsb);
         fclose(fsb);
         //string end
         // arrput(buffer, (byte) 0);

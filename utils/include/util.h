@@ -56,4 +56,26 @@ bool empty_str(const string_t str)
 
 bool string_contains(const string_t src, const string_t str);
 
+string_t FILE_to_string(FILE *f)
+{
+    //go to the end of the file
+    fseek(f, 0, SEEK_END);
+    //get length in bytes
+    long int flen = ftell(f);
+    //return to the beginning
+    rewind(f);
+    string_t buffer = NULL;
+    //set byte array capacity
+    arrsetcap(buffer, flen);
+    //read bytes into buffer
+    fread(buffer, flen, 1, f);
+    
+    return buffer;
+}
+
+byte* FILE_to_bytes(FILE *f)
+{
+    return (byte*) FILE_to_string(f);
+}
+
 #endif

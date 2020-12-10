@@ -41,18 +41,7 @@ jwtbundle_Bundle* jwtbundle_Load(const spiffeid_TrustDomain td,
     FILE *fjwks = fopen(path, "r");
     if(fjwks)
     {
-        //go to the end of the file
-        fseek(fjwks, 0, SEEK_END);
-        //get length in bytes
-        long int flen = ftell(fjwks);
-        //return to the beginning
-        rewind(fjwks);
-        
-        string_t buffer = NULL;
-        //set byte array capacity
-        arrsetcap(buffer, flen);
-        //read bytes into buffer
-        fread(buffer, flen, 1, fjwks);
+        string_t buffer = FILE_to_string(fjwks);
         fclose(fjwks);
         //string end
         // arrput(buffer, (byte) 0);

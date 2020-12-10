@@ -37,19 +37,7 @@ x509bundle_Bundle* x509bundle_Load(const spiffeid_TrustDomain td,
     FILE *fx509 = fopen(path, "r");
     if(fx509)
     {
-        //go to the end of the file
-        fseek(fx509, 0, SEEK_END);
-        //get length in bytes
-        long int flen = ftell(fx509);
-        //return to the beginning
-        rewind(fx509);
-        
-        string_t buffer = NULL;
-        //set byte array capacity
-        arrsetcap(buffer, flen);
-        //read bytes into buffer
-        fread(buffer, flen, 1, fx509);
-        fclose(fx509);
+        string_t buffer = FILE_to_string(fx509);
         //string end
         // arrput(buffer, (byte) 0);
         bundleptr = x509bundle_Parse(td, buffer, err);
