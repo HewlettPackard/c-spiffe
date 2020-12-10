@@ -1,4 +1,6 @@
+.gitignore
 DOCS/
 test.c
 test.json
 *.o
+*.out
