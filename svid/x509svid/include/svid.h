@@ -16,7 +16,7 @@ typedef struct x509svid_SVID
     //stb array of X509 certificate pointers
     X509 **certs;
     //its own private key
-    EVP_PKEY *privateKey;
+    PKCS8_PRIV_KEY_INFO *privateKey;
 } x509svid_SVID;
 
 x509svid_SVID* x509svid_Load(const string_t certfile, 
@@ -29,7 +29,7 @@ x509svid_SVID* x509svid_ParseRaw(const byte *certbytes,
                                     const byte *keybytes, 
                                     err_t *err);
 x509svid_SVID* x509svid_newSVID(const X509 **certs, 
-                                const EVP_PKEY *pkey, 
+                                const PKCS8_PRIV_KEY_INFO *pkey, 
                                 err_t *err);
 
 spiffeid_ID x509svid_validateCertificates(const X509 **certs, err_t *err);
