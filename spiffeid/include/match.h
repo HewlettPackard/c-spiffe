@@ -4,28 +4,27 @@
 #include "id.h"
 #include "../../utils/include/util.h"
 
-#if __SPIFFE_ID_BY_POINTER__
-typedef err_t (*spiffeid_Matcher)(const spiffeid_ID*);
-#else
-typedef err_t (*spiffeid_Matcher)(const spiffeid_ID);
-#endif
+enum enum_match_err_t
+{
+    MATCH_OK,
+    MATCH_UNEXPECTED_ID,
+    MATCH_UNEXPECTED_TD
+};
 
-spiffeid_Matcher spiffeid_MatchAny();
+typedef enum enum_match_err_t match_err_t;
 
-#if __SPIFFE_ID_BY_POINTER__
-spiffeid_Matcher spiffeid_MatchID(const spiffeid_ID *id);
+typedef struct spiffeid_Matcher
+{
+    enum match_type {MATCH_ANY, MATCH_ONEOF, MATCH_MEMBEROF} type;
+    spiffeid_ID *ids;
+    spiffeid_TrustDomain td;
+} spiffeid_Matcher;
 
-#else
-spiffeid_Matcher spiffeid_MatchID(const spiffeid_ID id);
-//spiffeid_Matcher spiffeid_MatchOneOf(const spiffeid_ID id_arr, ...);
-#endif
+match_err_t spiffeid_ApplyMatcher(const spiffeid_Matcher *matcher, const spiffeid_ID id);
 
-spiffeid_Matcher spiffeid_MatchOneOf(const spiffeid_ID *id_arr);
-
-#if __TRUSTDOMAIN_BY_POINTER__
-spiffeid_Matcher spiffeid_MatchMemberOf(const spiffeid_TrustDomain *td,);
-#else
-spiffeid_Matcher spiffeid_MatchMemberOf(const spiffeid_TrustDomain td);
-#endif
+spiffeid_Matcher* spiffeid_MatchAny();
+spiffeid_Matcher* spiffeid_MatchID(const spiffeid_ID id);
+spiffeid_Matcher* spiffeid_MatchOneOf(int n_args, ...);
+spiffeid_Matcher* spiffeid_MatchMemberOf(const spiffeid_TrustDomain td);
 
 #endif
