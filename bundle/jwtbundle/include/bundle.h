@@ -1,5 +1,5 @@
-#ifndef __INCLUDE_JWTBUNDLE_BUNDLE_H__
-#define __INCLUDE_JWTBUNDLE_BUNDLE_H__
+#ifndef __INCLUDE_BUNDLE_JWTBUNDLE_BUNDLE_H__
+#define __INCLUDE_BUNDLE_JWTBUNDLE_BUNDLE_H__
 
 #include <threads.h>
 #include "../../../spiffeid/include/id.h"

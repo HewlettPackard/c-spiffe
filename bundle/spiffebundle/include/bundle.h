@@ -1,5 +1,5 @@
-#ifndef __INCLUDE_SPIFFEBUNDLE_BUNDLE_H__
-#define __INCLUDE_SPIFFEBUNDLE_BUNDLE_H__
+#ifndef __INCLUDE_BUNDLE_SPIFFEBUNDLE_BUNDLE_H__
+#define __INCLUDE_BUNDLE_SPIFFEBUNDLE_BUNDLE_H__
 
 #include <time.h>
 #include <threads.h>

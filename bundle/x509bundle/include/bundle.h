@@ -1,5 +1,5 @@
-#ifndef __INCLUDE_X509BUNDLE_BUNDLE_H__
-#define __INCLUDE_X509BUNDLE_BUNDLE_H__
+#ifndef __INCLUDE_BUNDLE_X509BUNDLE_BUNDLE_H__
+#define __INCLUDE_BUNDLE_X509BUNDLE_BUNDLE_H__
 
 #include <openssl/x509.h>
 #include <threads.h>

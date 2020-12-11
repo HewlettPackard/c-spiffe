@@ -1,5 +1,5 @@
-#ifndef __INCLUDE_SPIFFE_ID_H__ 
-#define __INCLUDE_SPIFFE_ID_H__
+#ifndef __INCLUDE_SPIFFEID_ID_H__ 
+#define __INCLUDE_SPIFFEID_ID_H__
 
 #define __SPIFFE_ID_BY_POINTER__ 0
 

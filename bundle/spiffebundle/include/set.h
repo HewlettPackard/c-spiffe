@@ -1,5 +1,5 @@
-#ifndef __INCLUDE_SPIFFEBUNDLE_SET_H__
-#define __INCLUDE_SPIFFEBUNDLE_SET_H__
+#ifndef __INCLUDE_BUNDLE_SPIFFEBUNDLE_SET_H__
+#define __INCLUDE_BUNDLE_SPIFFEBUNDLE_SET_H__
 
 #include "bundle.h"
 #include "../../../utils/include/util.h"

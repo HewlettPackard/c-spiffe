@@ -1,5 +1,5 @@
-#ifndef __INCLUDE_JWTBUNDLE_SET_H__
-#define __INCLUDE_JWTBUNDLE_SET_H__
+#ifndef __INCLUDE_BUNDLE_JWTBUNDLE_SET_H__
+#define __INCLUDE_BUNDLE_JWTBUNDLE_SET_H__
 
 //qsort algorithm
 #include <stdlib.h>

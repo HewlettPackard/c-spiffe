@@ -1,5 +1,5 @@
-#ifndef __INCLUDE_X509BUNDLE_SET_H__
-#define __INCLUDE_X509BUNDLE_SET_H__
+#ifndef __INCLUDE_BUNDLE_X509BUNDLE_SET_H__
+#define __INCLUDE_BUNDLE_X509BUNDLE_SET_H__
 
 #include <stdlib.h>
 #include "bundle.h"
