@@ -18,6 +18,6 @@ tlsconfig_Authorizer* tlsconfig_AuthourizeMemberOf(const spiffeid_TrustDomain td
 
 match_t tlsconfig_ApplyAuthorizer(tlsconfig_Authorizer *authorizer, 
                                     const spiffeid_ID id, 
-                                    const X509 ***);
+                                    const X509 ***certs);
 
 #endif
