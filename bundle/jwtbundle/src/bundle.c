@@ -2,7 +2,7 @@
 #include <openssl/ec.h>
 #include <openssl/x509.h>
 #include <cjose/jwk.h>
-#include <json-c/json.h>
+#include <jansson.h>
 #include "../../../internal/jwtutil/include/util.h"
 #include "../include/bundle.h"
 
@@ -63,27 +63,24 @@ jwtbundle_Bundle* jwtbundle_Load(const spiffeid_TrustDomain td,
 }*/
 
 jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td, 
-                                            const string_t bundle_bytes, 
-                                            err_t *err)
+                                    const string_t bundle_bytes, 
+                                    err_t *err)
 {
 
     jwtbundle_Bundle *bundle = jwtbundle_New(td);    
 
-    struct json_object *parsed_json = json_tokener_parse(bundle_bytes);
-    struct json_object *keys = NULL;
-    json_object_object_get_ex(parsed_json, "keys", &keys);
-    const size_t n_keys = json_object_array_length(keys);
+    json_error_t j_err;
+    json_t *root = json_loads(bundle_bytes, 0, &j_err);
+    json_t *keys = json_object_get(root, "keys");
+    const size_t n_keys = json_array_size(keys);
 
     for(size_t i = 0; i < n_keys; ++i)
     {
-        ///TODO: check if this is correct
-
         //get i-th element of the JWKS
-        struct json_object *elem_obj = 
-            json_object_array_get_idx(keys, i);
-        //get string related to the item
-        const char *key_str = 
-            json_object_get_string(elem_obj);
+
+        json_t *elem_obj = json_array_get(keys, i);
+        const char *key_str = json_dumps(elem_obj, 0);
+
         cjose_err cj_err;
         //parse the raw bytes into a JWK object
         const cjose_jwk_t *jwk = 
@@ -107,11 +104,11 @@ jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td,
         switch(kty)
         {
         case CJOSE_JWK_KTY_RSA:
-            rsa_key = d2i_RSA_PUBKEY(NULL, (const byte**) &keydata, keysize);
+            rsa_key = d2i_RSA_PUBKEY(NULL, (const byte**) &keydata, keysize >> 3);
             EVP_PKEY_assign_RSA(pkey, rsa_key);
             break;
         case CJOSE_JWK_KTY_EC:
-            EC_KEY_oct2key(ec_key, (const byte*) keydata, keysize, NULL);
+            EC_KEY_oct2key(ec_key, (const byte*) keydata, keysize >> 3, NULL);
             EVP_PKEY_assign_EC_KEY(pkey, ec_key);
             break;
         default:
