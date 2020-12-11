@@ -6,7 +6,6 @@ match_err_t spiffeid_ApplyMatcher(const spiffeid_Matcher *matcher, const spiffei
 
     if(matcher->type == MATCH_ANY)
     {
-    
         return MATCH_OK;
     }
     else if(matcher->type == MATCH_ONEOF)
@@ -85,4 +84,26 @@ spiffeid_Matcher* spiffeid_MatchMemberOf(const spiffeid_TrustDomain td)
     matcher->td.name = string_push(NULL, td.name);
 
     return matcher;
+}
+
+void spiffeid_Matcher_Free(spiffeid_Matcher *matcher)
+{
+    if(matcher)
+    {
+        if(matcher->ids)
+        {
+            for(size_t i = 0, size = arrlenu(matcher->ids); i < size; ++i)
+            {
+                spiffeid_ID_Free(matcher->ids + i, false);
+            }
+            arrfree(matcher->ids);
+        }
+
+        if(matcher->td.name)
+        {
+            arrfree(matcher->td.name);
+        }
+        
+        free(matcher);
+    }
 }

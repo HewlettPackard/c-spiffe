@@ -1,5 +1,5 @@
-#ifndef __INCLUDE_SPIFFE_MATCH_H__ 
-#define __INCLUDE_SPIFFE_MATCH_H__
+#ifndef __INCLUDE_SPIFFEID_MATCH_H__ 
+#define __INCLUDE_SPIFFEID_MATCH_H__
 
 #include "id.h"
 #include "../../utils/include/util.h"
@@ -26,5 +26,7 @@ spiffeid_Matcher* spiffeid_MatchAny();
 spiffeid_Matcher* spiffeid_MatchID(const spiffeid_ID id);
 spiffeid_Matcher* spiffeid_MatchOneOf(int n_args, ...);
 spiffeid_Matcher* spiffeid_MatchMemberOf(const spiffeid_TrustDomain td);
+
+void spiffeid_Matcher_Free(spiffeid_Matcher *matcher);
 
 #endif
