@@ -53,13 +53,22 @@ spiffeid_Matcher* spiffeid_MatchID(const spiffeid_ID id)
 
 spiffeid_Matcher* spiffeid_MatchOneOf(int n_args, ...)
 {
+    va_list args;
+    va_start(args, n_args);
+
+    spiffeid_Matcher *matcher = spiffeid_vMatchOneOf(n_args, args);
+
+    va_end(args);
+
+    return matcher;
+}
+
+spiffeid_Matcher *spiffeid_vMatchOneOf(int n_args, va_list args)
+{
     spiffeid_Matcher *matcher = malloc(sizeof *matcher);
     memset(matcher, 0, sizeof *matcher);
 
     matcher->type = MATCH_ONEOF;
-
-    va_list args;
-    va_start(args, n_args);
 
     for(int i = 0; i < n_args; ++i)
     {
