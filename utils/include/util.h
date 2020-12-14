@@ -46,6 +46,16 @@ string_t string_push(string_t dst, const string_t src)
     return dst;
 }
 
+string_t string_new(string_t str_src)
+{
+    const size_t str_size = strlen(str_src) + 1;
+    string_t str_new = NULL;
+    arrsetcap(str_new, str_size);
+    strcpy(str_new, str_src);
+
+    return str_new;
+}
+
 bool empty_str(const string_t str)
 {
     if(str) if(str[0]) return false;
