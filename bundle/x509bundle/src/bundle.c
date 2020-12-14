@@ -7,7 +7,7 @@ x509bundle_Bundle* x509bundle_New(const spiffeid_TrustDomain td)
     x509bundle_Bundle *bundleptr = malloc(sizeof *bundleptr);
     if(bundleptr)
     {
-        bundleptr->td.name = string_push(NULL, td.name);
+        bundleptr->td.name = string_new(td.name);
         bundleptr->auths = NULL;
         mtx_init(&(bundleptr->mtx), mtx_plain);
     }
@@ -21,7 +21,7 @@ x509bundle_Bundle* x509bundle_FromX509Authorities(const spiffeid_TrustDomain td,
     x509bundle_Bundle *bundleptr = malloc(sizeof *bundleptr);
     if(bundleptr)
     {
-        bundleptr->td.name = string_push(NULL, td.name);
+        bundleptr->td.name = string_new(td.name);
         bundleptr->auths = x509util_CopyX509Authorities(auths);
         mtx_init(&(bundleptr->mtx), mtx_plain);
     }

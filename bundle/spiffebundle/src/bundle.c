@@ -7,7 +7,7 @@ spiffebundle_Bundle* spiffebundle_New(const spiffeid_TrustDomain td)
     spiffebundle_Bundle *bundle = malloc(sizeof *bundle);
     if(bundle)
     {
-        bundle->td.name = string_push(NULL, td.name);
+        bundle->td.name = string_new(td.name);
         mtx_init(&(bundle->mtx), mtx_plain);
         bundle->jwtAuths = NULL;
         bundle->x509Auths = NULL;

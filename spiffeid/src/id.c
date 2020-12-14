@@ -170,13 +170,13 @@ spiffeid_ID spiffeid_FromURI(CURLU *uri, err_t *err)
     // arrsetcap(id.td.name, arrlenu(host));
     // arrsetcap(id.td.name, strlen(host) + 1);
     // strcpy(id.td.name, host);
-    string_t name = string_push(NULL, host);
+    string_t name = string_new(host);
     spiffeid_normalizeTrustDomain(name);
 
     // arrsetcap(id.path, arrlenu(path));
     // arrsetcap(id.path, strlen(path) + 1);
     // strcpy(id.path, path);
-    string_t id_path = string_push(NULL, path);
+    string_t id_path = string_new(path);
 
     return (spiffeid_ID){
         (spiffeid_TrustDomain){name},

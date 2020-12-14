@@ -44,8 +44,8 @@ spiffeid_Matcher* spiffeid_MatchID(const spiffeid_ID id)
 
     matcher->type = MATCH_ONEOF;
     spiffeid_ID new_id;
-    new_id.path = string_push(NULL, id.path);
-    new_id.td.name = string_push(NULL, id.td.name);
+    new_id.path = string_new(id.path);
+    new_id.td.name = string_new(id.td.name);
 
     arrput(matcher->ids, new_id);
     return matcher;
@@ -75,8 +75,8 @@ spiffeid_Matcher *spiffeid_vMatchOneOf(int n_args, va_list args)
         spiffeid_ID id = va_arg(args, spiffeid_ID);
 
         spiffeid_ID new_id;
-        new_id.path = string_push(NULL, id.path);
-        new_id.td.name = string_push(NULL, id.td.name);
+        new_id.path = string_new(id.path);
+        new_id.td.name = string_new(id.td.name);
 
         arrput(matcher->ids, new_id);
     }
@@ -90,7 +90,7 @@ spiffeid_Matcher* spiffeid_MatchMemberOf(const spiffeid_TrustDomain td)
     memset(matcher, 0, sizeof *matcher);
 
     matcher->type = MATCH_MEMBEROF;
-    matcher->td.name = string_push(NULL, td.name);
+    matcher->td.name = string_new(td.name);
 
     return matcher;
 }

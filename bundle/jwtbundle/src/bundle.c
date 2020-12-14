@@ -11,7 +11,7 @@ jwtbundle_Bundle* jwtbundle_New(const spiffeid_TrustDomain td)
     jwtbundle_Bundle *bundleptr = malloc(sizeof *bundleptr);
     if(bundleptr)
     {
-        bundleptr->td.name = string_push(NULL, td.name);
+        bundleptr->td.name = string_new(td.name);
         bundleptr->auths = NULL;
         mtx_init(&(bundleptr->mtx), mtx_plain);
     }
@@ -25,7 +25,7 @@ jwtbundle_Bundle* jwtbundle_FromJWTAuthorities(const spiffeid_TrustDomain td,
     jwtbundle_Bundle *bundleptr = malloc(sizeof *bundleptr);
     if(bundleptr)
     {
-        bundleptr->td.name = string_push(NULL, td.name);
+        bundleptr->td.name = string_new(td.name);
         bundleptr->auths = jwtutil_CopyJWTAuthorities(auths);
         mtx_init(&(bundleptr->mtx), mtx_plain);
     }
