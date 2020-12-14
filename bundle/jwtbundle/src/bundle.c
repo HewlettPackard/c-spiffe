@@ -85,7 +85,7 @@ jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td,
         //parse the raw bytes into a JWK object
         const cjose_jwk_t *jwk = 
             cjose_jwk_import(key_str, strlen(key_str), &cj_err);
-        //get kid field
+        //get key id field
         const char *kid = 
             cjose_jwk_get_kid(jwk, &cj_err);
         //get key type
@@ -94,7 +94,7 @@ jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td,
         //get key data
         void *keydata = 
             cjose_jwk_get_keydata(jwk, &cj_err);
-        //get key size
+        //get key size in bits
         const long keysize = 
             cjose_jwk_get_keysize(jwk, &cj_err);
         EVP_PKEY *pkey = EVP_PKEY_new();
@@ -113,6 +113,7 @@ jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td,
             break;
         default:
             //type not supported currently
+            ///TODO: handle unexpected key type
             break;
         }
         
@@ -121,7 +122,7 @@ jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td,
 
         if(pkey)
         {
-            //insert id and its public on the map
+            //insert id and its public key on the map
             shput(bundle->auths, kid, pkey);
         }
     }

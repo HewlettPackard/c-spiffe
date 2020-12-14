@@ -252,8 +252,8 @@ x509svid_SVID* x509svid_SVID_GetX509SVID(x509svid_SVID *svid,
 }
 
 EVP_PKEY* x509svid_validatePrivateKey(EVP_PKEY *pkey, 
-                                                    X509 *cert, 
-                                                    err_t *err)
+                                        X509 *cert, 
+                                        err_t *err)
 {
     //dummy
     return NULL;
