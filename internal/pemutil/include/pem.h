@@ -14,18 +14,12 @@ typedef struct pemutil_Block
     byte *bytes;
 } pemutil_Block;
 
-// X509 *d2i_X509(X509 **px, const byte **in, long len);
-// PEM_read_bio_X509(BIO *bioptr, NULL, NULL, NULL);
-// PEM_read_bio_PKCS8_PRIV_KEY_INFO(BIO *bioptr, NULL, NULL, NULL);
-// int PEM_read_bio(BIO *bp, char **name, char **header,
-                //   unsigned char **data, long *len);
-
 X509** pemutil_ParseCertificates(const byte *bytes, err_t *err);
-PKCS8_PRIV_KEY_INFO* pemutil_ParsePrivateKey(
+EVP_PKEY* pemutil_ParsePrivateKey(
                                 const byte *bytes, 
                                 err_t *err);
-byte* pemutil_EncodePKCS8PrivateKey(
-                                PKCS8_PRIV_KEY_INFO *pkey, 
+byte* pemutil_EncodePrivateKey(
+                                EVP_PKEY *pkey, 
                                 int *bytes_len, 
                                 err_t *err);
 byte** pemutil_EncodeCertificates(X509 **certs);

@@ -23,8 +23,8 @@ static void* parseBlock(BIO *bio_mem,
     //length of the data read from bio_mem
     long int len_data = 0;
     //pointer to data
-    byte **data = NULL;
-    int suc = PEM_read_bio(bio_mem, &pem_name, &pem_header, data, &len_data);
+    byte *data = NULL;
+    int suc = PEM_read_bio(bio_mem, &pem_name, &pem_header, &data, &len_data);
     
     *err = NO_ERROR;
     //sucessfully read
@@ -36,18 +36,17 @@ static void* parseBlock(BIO *bio_mem,
             {
                 //read X509 certificate
                 // X509 *cert = PEM_read_bio_X509(bio_mem, NULL, NULL, NULL);
-                X509 *cert = d2i_X509(NULL, (const byte**) data, len_data);
+                X509 *cert = d2i_X509(NULL, (const byte**) &data, len_data);
                 parsed_pem = cert;
-                
             }
             else if(!strcmp(pem_name, types_str[KEY_TYPE]))
             {
-                //read PKCS8 private key
-                // PKCS8_PRIV_KEY_INFO *pkey_info =
-                //     PEM_read_bio_PKCS8_PRIV_KEY_INFO(bio_mem, NULL, NULL, NULL);
-                PKCS8_PRIV_KEY_INFO *pkey_info = 
-                    d2i_PKCS8_PRIV_KEY_INFO(NULL, (const byte**) data, len_data);
-                parsed_pem = pkey_info;
+                //read EVP_PKEY private key
+                // EVP_PKEY *pkey =
+                //     d2i_PrivateKey(0, NULL, &data, len_data;
+                
+                EVP_PKEY *pkey = d2i_AutoPrivateKey(NULL, (const byte**) &data, len_data); 
+                parsed_pem = pkey;
             }
             //PEM type not supported
             else
@@ -142,9 +141,9 @@ X509** pemutil_ParseCertificates(const byte *bytes, err_t *err)
     return x509_arr;
 }
 
-PKCS8_PRIV_KEY_INFO* pemutil_ParsePrivateKey(const byte *bytes, err_t *err)
+EVP_PKEY* pemutil_ParsePrivateKey(const byte *bytes, err_t *err)
 {
-    PKCS8_PRIV_KEY_INFO *pkey = NULL;
+    EVP_PKEY *pkey = NULL;
 
     void **objs = parseBlocks(bytes, types_str[CERT_TYPE], err);
 
@@ -153,13 +152,13 @@ PKCS8_PRIV_KEY_INFO* pemutil_ParsePrivateKey(const byte *bytes, err_t *err)
     {
         //maybe check the vality of each object?
         //don't think it is possible, though
-        pkey = (PKCS8_PRIV_KEY_INFO*) objs[0];
+        pkey = (EVP_PKEY*) objs[0];
 
         //free the remaining objects
         for(size_t i = 1, size = arrlenu(objs); i < size; ++i)
         {
             if(objs[i])
-                PKCS8_PRIV_KEY_INFO_free(objs[i]);
+                EVP_PKEY_free(objs[i]);
         }
     }
     else if(objs)
@@ -169,7 +168,7 @@ PKCS8_PRIV_KEY_INFO* pemutil_ParsePrivateKey(const byte *bytes, err_t *err)
         {
             //free each private key
             if(objs[i])
-                PKCS8_PRIV_KEY_INFO_free(objs[i]);
+                EVP_PKEY_free(objs[i]);
         }
     }
     //free array of pointers
@@ -182,11 +181,11 @@ PKCS8_PRIV_KEY_INFO* pemutil_ParsePrivateKey(const byte *bytes, err_t *err)
  * TODO: check if it is better to copy pem_bytes
  * data to a stb array
  */
-byte* pemutil_EncodePKCS8PrivateKey(PKCS8_PRIV_KEY_INFO *pkey, int *bytes_len, err_t *err)
+byte* pemutil_EncodePrivateKey(EVP_PKEY *pkey, int *bytes_len, err_t *err)
 {
     //array of raw bytes
     byte *pem_bytes = NULL;
-    int len = i2d_PKCS8_PRIV_KEY_INFO(pkey, &pem_bytes);
+    int len = i2d_PrivateKey(pkey, &pem_bytes);
 
     if(len >= 0)
         *bytes_len = len;
