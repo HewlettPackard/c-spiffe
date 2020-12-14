@@ -15,11 +15,9 @@ typedef struct pemutil_Block
 } pemutil_Block;
 
 X509** pemutil_ParseCertificates(const byte *bytes, err_t *err);
-EVP_PKEY* pemutil_ParsePrivateKey(
-                                const byte *bytes, 
-                                err_t *err);
-byte* pemutil_EncodePrivateKey(
-                                EVP_PKEY *pkey, 
+EVP_PKEY* pemutil_ParsePrivateKey(const byte *bytes, 
+                                    err_t *err);
+byte* pemutil_EncodePrivateKey(EVP_PKEY *pkey, 
                                 int *bytes_len, 
                                 err_t *err);
 byte** pemutil_EncodeCertificates(X509 **certs);
