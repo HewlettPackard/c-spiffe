@@ -37,13 +37,13 @@ void util_string_t_Free(string_t str);
 void util_string_arr_t_Free(string_arr_t str_arr);
 
 //allocates, concatenates and returns the new dst pointer
-string_t string_push(string_t dst, const string_t src);
+string_t string_push(string_t dst, const char *src);
 
-string_t string_new(string_t str_src);
+string_t string_new(const char *str_src);
 
-bool empty_str(const string_t str);
+bool empty_str(const char* str);
 
-bool string_contains(const string_t src, const string_t str);
+bool string_contains(const char *src, const char *str);
 
 string_t FILE_to_string(FILE *f);
 

@@ -5,7 +5,7 @@
 #include <openssl/ecdsa.h>
 #include <openssl/rsa.h>
 #include <openssl/x509.h>
-#include "../../../spiffeid/include/id.h"
+#include "../../../spiffeid/src/id.h"
 #include "../../../internal/pemutil/include/pem.h"
 #include "../../../internal/x509util/include/util.h"
 

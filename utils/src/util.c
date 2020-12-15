@@ -13,7 +13,7 @@ void util_string_arr_t_Free(string_arr_t str_arr)
 {
     if(str_arr)
     {
-        for(size_t i, size = arrlenu(str_arr); i < size; ++i)
+        for(size_t i = 0, size = arrlenu(str_arr); i < size; ++i)
         {
             arrfree(str_arr[i]);
         }   
@@ -21,7 +21,7 @@ void util_string_arr_t_Free(string_arr_t str_arr)
     }
 }
 
-string_t string_push(string_t dst, const string_t src)
+string_t string_push(string_t dst, const char *src)
 {
     if(src)
     {
@@ -33,7 +33,7 @@ string_t string_push(string_t dst, const string_t src)
     return dst;
 }
 
-string_t string_new(string_t str_src)
+string_t string_new(const char *str_src)
 {
     if(str_src)
     {
@@ -48,7 +48,7 @@ string_t string_new(string_t str_src)
     return NULL;
 }
 
-bool empty_str(const string_t str)
+bool empty_str(const char *str)
 {
     if(str) if(str[0]) return false;
 
@@ -56,7 +56,7 @@ bool empty_str(const string_t str)
     // return str? (str[0]? false : true) : true;
 }
 
-bool string_contains(const string_t src, const string_t str)
+bool string_contains(const char *src, const char *str)
 {
     return false;
 }
@@ -73,7 +73,8 @@ string_t FILE_to_string(FILE *f)
     //set byte array capacity
     arrsetlen(buffer, flen);
     //read bytes into buffer
-    fread(buffer, flen, 1, f);
+    size_t len = fread(buffer, flen, 1, f);
+    arrsetlen(buffer, len);
     
     return buffer;
 }

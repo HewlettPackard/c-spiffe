@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include "../include/id.h"
-#include "../include/trustdomain.h"
+#include "id.h"
+#include "trustdomain.h"
 #include "../../utils/src/stb_ds.h"
 
 /*
