@@ -51,7 +51,7 @@ string_t string_new(string_t str_src)
     const size_t str_size = strlen(str_src) + 1;
     string_t str_new = NULL;
     arrsetcap(str_new, str_size);
-    strcpy(str_new, str_src);
+    memcpy(str_new, str_src, str_size);
 
     return str_new;
 }
