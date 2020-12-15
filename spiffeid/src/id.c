@@ -9,21 +9,30 @@
  * TODO: check return values in spiffeid_FromURI
  */
 
-static string_t join(const string_arr_t str_arr)
+string_t join(string_arr_t str_arr)
 {
     string_t res_str = NULL;
     const size_t arr_size = arrlenu(str_arr);
     size_t tot_len = 0;
     size_t *len_arr = NULL;
 
-    for(size_t i = 0; i < arr_size; ++i)
+    //insert the slashes on the end of the strings
+    //and store their respective lengths
+    for(size_t i = 0; i < arr_size - 1; ++i)
     {   
         // tot_len += arrlenu(str_arr[i]) - 1;
+        if(!empty_str(str_arr[i]))
+        {
+            arrins(str_arr[i], arrlenu(str_arr[i]) - 1, '/');
+        }
         const size_t len = strlen(str_arr[i]);
-        arrpush(len_arr, len);
+        arrput(len_arr, len);
         tot_len += len;
     }
-
+    //last string does not end with a trailing slash
+    const size_t len = strlen(arrlast(str_arr));
+    arrput(len_arr, len);
+    
     arrsetcap(res_str, tot_len + 1);
     string_t curr_str = res_str;
 
@@ -98,9 +107,10 @@ static void tolower_str(string_t str)
     for(; *str; ++str) *str = tolower(*str);
 }
 
-void spiffeid_normalizeTrustDomain(string_t str)
+string_t spiffeid_normalizeTrustDomain(string_t str)
 {
     tolower_str(str);
+    return str;
 }
 
 spiffeid_ID spiffeid_FromURI(CURLU *uri, err_t *err)
@@ -171,7 +181,7 @@ spiffeid_ID spiffeid_FromURI(CURLU *uri, err_t *err)
     // arrsetcap(id.td.name, strlen(host) + 1);
     // strcpy(id.td.name, host);
     string_t name = string_new(host);
-    spiffeid_normalizeTrustDomain(name);
+    name = spiffeid_normalizeTrustDomain(name);
 
     // arrsetcap(id.path, arrlenu(path));
     // arrsetcap(id.path, strlen(path) + 1);
