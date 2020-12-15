@@ -2,8 +2,6 @@
 
 match_err_t spiffeid_ApplyMatcher(const spiffeid_Matcher *matcher, const spiffeid_ID id)
 {
-    match_err_t err = MATCH_OK;
-
     if(matcher->type == MATCH_ANY)
     {
         return MATCH_OK;
