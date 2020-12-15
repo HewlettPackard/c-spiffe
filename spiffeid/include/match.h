@@ -30,7 +30,7 @@ typedef struct spiffeid_Matcher
 
 match_err_t spiffeid_ApplyMatcher(const spiffeid_Matcher *matcher, const spiffeid_ID id);
 
-spiffeid_Matcher* spiffeid_MatchAny();
+spiffeid_Matcher* spiffeid_MatchAny(void);
 spiffeid_Matcher* spiffeid_MatchID(const spiffeid_ID id);
 spiffeid_Matcher* spiffeid_MatchOneOf(int n_args, ...);
 spiffeid_Matcher *spiffeid_vMatchOneOf(int n_args, va_list args);
