@@ -23,8 +23,10 @@ string_t join(string_arr_t str_arr)
         // tot_len += arrlenu(str_arr[i]) - 1;
         if(!empty_str(str_arr[i]))
         {
-            arrins(str_arr[i], arrlenu(str_arr[i]) - 1, '/');
+            const size_t last_idx = arrlenu(str_arr[i]);
+            arrins(str_arr[i], last_idx - 1, '/');
         }
+        
         const size_t len = strlen(str_arr[i]);
         arrput(len_arr, len);
         tot_len += len;
