@@ -40,7 +40,7 @@ string_t string_new(const char *str_src)
         const size_t str_size = strlen(str_src) + 1;
         string_t str_new = NULL;
         arrsetlen(str_new, str_size);
-        memcpy(str_new, str_src, str_size);
+        strncpy(str_new, str_src, str_size);
 
         return str_new;
     }

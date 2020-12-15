@@ -450,7 +450,7 @@ struct timespec* spiffebundle_copyRefreshHint(const struct timespec *ts)
     if(ts)
     {
         struct timespec *new_ts = malloc(sizeof *new_ts);
-        memcpy(new_ts, ts, sizeof *new_ts);
+        strncpy(new_ts, ts, sizeof *new_ts);
 
         return new_ts;
     }
