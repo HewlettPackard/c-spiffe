@@ -12,16 +12,14 @@ spiffeid_TrustDomain spiffeid_TrustDomainFromString(string_t str, err_t *err)
         strncpy(str, spiffe_scheme, spiffe_scheme_len);
     }
 
-    err_t err2;
-    spiffeid_ID id = spiffeid_FromString(str, &err2);
+    spiffeid_ID id = spiffeid_FromString(str, err);
 
-    if(err2)
+    if(!(*err))
     {
-        *err = err2;
         arrfree(id.path);
-
-        return id.td;
     }
+
+    return id.td;
 }
 
 #if !__TRUSTDOMAIN_BY_POINTER__
