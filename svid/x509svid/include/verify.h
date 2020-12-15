@@ -3,7 +3,7 @@
 
 #include <openssl/x509.h>
 #include "../../../spiffeid/include/id.h"
-#include "../../../utils/include/util.h"
+#include "../../../utils/src/util.h"
 
 spiffeid_ID x509svid_IDFromCert(X509 *cert, err_t *err);
 
