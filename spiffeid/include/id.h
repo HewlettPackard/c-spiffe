@@ -19,6 +19,8 @@ typedef struct spiffeid_ID
     string_t path;
 } spiffeid_ID;
 
+string_t join(string_arr_t str_arr);
+
 spiffeid_ID spiffeid_ID_New(const string_t trustDomain, 
                             const string_arr_t segments, err_t *err);
 string_t spiffeid_Join(string_t trustDomain, 
@@ -42,7 +44,7 @@ CURLU* spiffeid_ID_URL(const spiffeid_ID id);
 bool spiffeid_ID_IsZero(const spiffeid_ID id);
 #endif
 
-void spiffeid_normalizeTrustDomain(string_t str);
+string_t spiffeid_normalizeTrustDomain(string_t str);
 string_t spiffeid_normalizePath(string_t str);
 
 // void spiffeid_ID_Free(spiffeid_ID **id);
