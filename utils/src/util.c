@@ -1,3 +1,4 @@
+#define STB_DS_IMPLEMENTATION
 #include "util.h"
 
 void util_string_t_Free(string_t str)
@@ -24,7 +25,7 @@ string_t string_push(string_t dst, const string_t src)
 {
     if(src)
     {
-        const size_t str_size = strlen(src) + 1;
+        const size_t str_size = strlen(src);
         arraddnptr(dst, str_size);
         strcat(dst, src);
     }
@@ -38,7 +39,7 @@ string_t string_new(string_t str_src)
     {
         const size_t str_size = strlen(str_src) + 1;
         string_t str_new = NULL;
-        arrsetcap(str_new, str_size);
+        arrsetlen(str_new, str_size);
         memcpy(str_new, str_src, str_size);
 
         return str_new;
@@ -70,7 +71,7 @@ string_t FILE_to_string(FILE *f)
     rewind(f);
     string_t buffer = NULL;
     //set byte array capacity
-    arrsetcap(buffer, flen);
+    arrsetlen(buffer, flen);
     //read bytes into buffer
     fread(buffer, flen, 1, f);
     
