@@ -4,14 +4,15 @@
 
 START_TEST(test_string_new)
 {
-    string_t str1 = string_new("abcd");
+    const char res_str[] = "abcd";
+    string_t str1 = string_new(res_str);
     string_t str2 = string_new(str1);
 
-    ck_assert_str_eq(str1, "abcd");
-    ck_assert_uint_ge(arrlenu(str1), 5);
+    ck_assert_str_eq(str1, res_str);
+    ck_assert_uint_eq(arrlenu(str1), sizeof res_str);
 
-    ck_assert_str_eq(str2, "abcd");
-    ck_assert_uint_ge(arrlenu(str2), 5);
+    ck_assert_str_eq(str2, res_str);
+    ck_assert_uint_eq(arrlenu(str2), sizeof res_str);
 }
 END_TEST
 
@@ -26,7 +27,7 @@ START_TEST(test_string_push)
     str1 = string_push(str1, str3);
 
     ck_assert_str_eq(str1, res_str);
-    ck_assert_uint_ge(arrlenu(str1), sizeof res_str);
+    ck_assert_uint_eq(arrlenu(str1), sizeof res_str);
 }
 END_TEST
 
