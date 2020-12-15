@@ -5,7 +5,7 @@
 #include <openssl/evp.h>
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
-#include "../../../utils/include/util.h"
+#include "../../../utils/src/util.h"
 
 typedef struct pemutil_Block
 {

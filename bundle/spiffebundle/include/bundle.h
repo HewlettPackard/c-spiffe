@@ -7,7 +7,7 @@
 #include "../../jwtbundle/include/bundle.h"
 #include "../../x509bundle/include/bundle.h"
 #include "../../../spiffeid/include/trustdomain.h"
-#include "../../../utils/include/util.h"
+#include "../../../utils/src/util.h"
 
 typedef struct spiffebundle_Bundle
 {

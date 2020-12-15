@@ -4,7 +4,7 @@
 #include <openssl/evp.h>
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
-#include "../../../utils/include/util.h"
+#include "../../../utils/src/util.h"
 
 /** TODO: what is a certificate pool??
 func NewCertPool(certs []*x509.Certificate) *x509.CertPool

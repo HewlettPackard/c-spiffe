@@ -2,7 +2,7 @@
 #define __INCLUDE_SPIFFEID_MATCH_H__
 
 #include "id.h"
-#include "../../utils/include/util.h"
+#include "../../utils/src/util.h"
 
 enum enum_match_err_t
 {

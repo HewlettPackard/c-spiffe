@@ -5,7 +5,7 @@
 
 #include <stdbool.h>
 #include <curl/curl.h>
-#include "../../utils/include/util.h"
+#include "../../utils/src/util.h"
 
 typedef struct spiffeid_TrustDomain
 {

@@ -1,4 +1,4 @@
-#include "../include/util.h"
+#include "util.h"
 
 void util_string_t_Free(string_t str)
 {

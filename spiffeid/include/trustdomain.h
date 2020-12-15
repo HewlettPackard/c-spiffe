@@ -4,7 +4,7 @@
 #define __TRUSTDOMAIN_BY_POINTER__ 0
 
 #include "id.h"
-#include "../../utils/include/util.h"
+#include "../../utils/src/util.h"
 
 spiffeid_TrustDomain spiffeid_TrustDomainFromString(const string_t str, err_t *err);
 spiffeid_TrustDomain spiffeid_TrustDomainFromURI(const CURL *uri, err_t *err);

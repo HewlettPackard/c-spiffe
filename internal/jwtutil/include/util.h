@@ -2,7 +2,7 @@
 #define __INCLUDE_INTERNAL_JWTUTIL_UTIL_H__
 
 #include <stdbool.h>
-#include "../../../utils/include/util.h"
+#include "../../../utils/src/util.h"
 
 map_string_EVP_PKEY* jwtutil_CopyJWTAuthorities(const map_string_EVP_PKEY *hash);
 bool jwtutil_JWTAuthoritiesEqual(

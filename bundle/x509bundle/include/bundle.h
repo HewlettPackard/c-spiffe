@@ -4,7 +4,7 @@
 #include <openssl/x509.h>
 #include <threads.h>
 #include "../../../spiffeid/include/trustdomain.h"
-#include "../../../utils/include/util.h"
+#include "../../../utils/src/util.h"
 
 typedef struct x509bundle_Bundle
 {

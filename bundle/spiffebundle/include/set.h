@@ -2,7 +2,7 @@
 #define __INCLUDE_BUNDLE_SPIFFEBUNDLE_SET_H__
 
 #include "bundle.h"
-#include "../../../utils/include/util.h"
+#include "../../../utils/src/util.h"
 
 typedef struct map_string_spiffebundle_Bundle
 {
