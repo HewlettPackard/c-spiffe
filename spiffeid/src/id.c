@@ -3,7 +3,7 @@
 #include <ctype.h>
 #include "../include/id.h"
 #include "../include/trustdomain.h"
-#include "../../utils/include/stb_ds.h"
+#include "../../utils/src/stb_ds.h"
 
 /*
  * TODO: check return values in spiffeid_FromURI
@@ -33,7 +33,7 @@ string_t join(string_arr_t str_arr)
     const size_t len = strlen(arrlast(str_arr));
     arrput(len_arr, len);
     
-    arrsetcap(res_str, tot_len + 1);
+    arrsetlen(res_str, tot_len + 1);
     string_t curr_str = res_str;
 
     for(size_t i = 0; i < arr_size; ++i)
@@ -177,15 +177,9 @@ spiffeid_ID spiffeid_FromURI(CURLU *uri, err_t *err)
         return null_id;
     }
 
-    // arrsetcap(id.td.name, arrlenu(host));
-    // arrsetcap(id.td.name, strlen(host) + 1);
-    // strcpy(id.td.name, host);
     string_t name = string_new(host);
     name = spiffeid_normalizeTrustDomain(name);
 
-    // arrsetcap(id.path, arrlenu(path));
-    // arrsetcap(id.path, strlen(path) + 1);
-    // strcpy(id.path, path);
     string_t id_path = string_new(path);
 
     return (spiffeid_ID){
