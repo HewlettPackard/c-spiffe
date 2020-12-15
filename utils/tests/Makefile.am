@@ -2,6 +2,6 @@
 
 TESTS = check_util
 check_PROGRAMS = check_util
-check_util_SOURCES = check_util.c $(top_builddir)/include/util.h
+check_util_SOURCES = check_util.c $(top_builddir)/src/util.h $(top_builddir)/src/stb_ds.h
 check_util_CFLAGS = @CHECK_CFLAGS@
-check_util_LDADD = $(top_builddir)/src/libutil.la @CHECK_LIBS@
+check_util_LDADD = $(top_builddir)/src/libutils.la @CHECK_LIBS@

@@ -9,7 +9,7 @@ AM_PROG_AR
 AC_CONFIG_SRCDIR([src/util.c])
 
 # place to put some extra build scripts installed
-AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_AUX_DIR([.])
 
 # fairly severe build strictness
 # change foreign to gnu or gnits to comply with gnu standards
