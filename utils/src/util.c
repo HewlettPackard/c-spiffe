@@ -48,6 +48,22 @@ string_t string_new(const char *str_src)
     return NULL;
 }
 
+string_t string_new_range(const char *begin, const char *end)
+{
+    if((begin && end) && (begin < end))
+    {
+        const size_t str_size = end - begin;
+        string_t str_new = NULL;
+        arrsetlen(str_new, str_size + 1);
+        strncpy(str_new, begin, str_size);
+        str_new[str_size] = '\0';
+
+        return str_new;
+    }
+
+    return NULL;
+}
+
 bool empty_str(const char *str)
 {
     if(str) if(str[0]) return false;
@@ -58,7 +74,7 @@ bool empty_str(const char *str)
 
 bool string_contains(const char *src, const char *str)
 {
-    return false;
+    return strstr(src, str) != NULL;
 }
 
 string_t FILE_to_string(FILE *f)

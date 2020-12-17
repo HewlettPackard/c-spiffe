@@ -41,6 +41,8 @@ string_t string_push(string_t dst, const char *src);
 
 string_t string_new(const char *str_src);
 
+string_t string_new_range(const char *begin, const char *end);
+
 bool empty_str(const char* str);
 
 bool string_contains(const char *src, const char *str);
