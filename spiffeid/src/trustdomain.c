@@ -7,9 +7,9 @@ spiffeid_TrustDomain spiffeid_TrustDomainFromString(string_t str, err_t *err)
 
     if(!string_contains(str, "://"))
     {
-        //inserts spiffe scheme on the string beginning
+        //inserts spiffe scheme at beginning of the string
         arrinsn(str, 0, spiffe_scheme_len);
-        strncpy(str, spiffe_scheme, spiffe_scheme_len);
+        memcpy(str, spiffe_scheme, spiffe_scheme_len);
     }
 
     spiffeid_ID id = spiffeid_FromString(str, err);

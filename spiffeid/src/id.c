@@ -34,6 +34,7 @@ string_t join(string_arr_t str_arr)
     //last string does not end with a trailing slash
     const size_t len = strlen(arrlast(str_arr));
     arrput(len_arr, len);
+    tot_len += len;
     
     arrsetlen(res_str, tot_len + 1);
     string_t curr_str = res_str;
@@ -60,10 +61,11 @@ string_t spiffeid_normalizePath(string_t str)
     //null check
     if(str)
     {
-        if(arrlenu(str) > 0 && str[0] != '/')
+        if(arrlenu(str) > 0)
         {
-            //inserts '/' at the beginning
-            arrins(str, 0, '/');
+            if(str[0] != '/')
+                //inserts '/' at the beginning
+                arrins(str, 0, '/');
         }
     }
 
@@ -71,7 +73,7 @@ string_t spiffeid_normalizePath(string_t str)
 }
 
 string_t spiffeid_Join(string_t td_str, 
-                            const string_arr_t segments, err_t *err)
+                        const string_arr_t segments, err_t *err)
 {
     err_t err2;
     const spiffeid_ID id = spiffeid_ID_New(td_str, segments, &err2);
@@ -88,81 +90,99 @@ string_t spiffeid_Join(string_t td_str,
     }
 }
 
-static CURLU* URL_parse(const string_t str, err_t *err)
+static UriUriA URL_parse(const string_t str, err_t *err)
 {
-    CURLU *uri = curl_url();
-    CURLUcode rc = curl_url_set(uri, CURLUPART_URL, str, 0);
-
-    if(!rc)
-    {
+    UriUriA uri;
+    const char *err_pos;
+    if(uriParseSingleUriA(&uri, (const char*) str, &err_pos) == URI_SUCCESS)
+    {   
         *err = NO_ERROR;
-        return uri;    
     }
-
-    *err = ERROR1;
-    curl_url_cleanup(uri);
-    return NULL;
+    else
+    {
+        *err = ERROR1;
+    }
+    
+    return uri;
 }
 
-static void tolower_str(string_t str)
+static string_t tolower_str(const string_t str)
 {
-    for(; *str; ++str) *str = tolower(*str);
+    string_t curr_str = str;
+    for(; *curr_str; ++curr_str) *curr_str = tolower(*curr_str);
+    return str;
 }
 
 string_t spiffeid_normalizeTrustDomain(string_t str)
 {
-    tolower_str(str);
+    str = tolower_str(str);
     return str;
 }
 
-spiffeid_ID spiffeid_FromURI(CURLU *uri, err_t *err)
+static string_t UriPathSegmentA_string(const UriPathSegmentA *head)//, const UriPathSegmentA *tail)
 {
-    const spiffeid_ID null_id = {NULL, NULL};
-    char *host, *path, *scheme, *user, *fragment, *raw_query, *port;
-    
-    curl_url_get(uri, CURLUPART_HOST, &host, 0);
-    curl_url_get(uri, CURLUPART_PATH, &path, 0);
-    curl_url_get(uri, CURLUPART_SCHEME, &scheme, 0);
-    curl_url_get(uri, CURLUPART_USER, &user, 0);
-    curl_url_get(uri, CURLUPART_FRAGMENT, &fragment, 0);
-    curl_url_get(uri, CURLUPART_PORT, &port, 0);
-    curl_url_get(uri, CURLUPART_QUERY, &raw_query, 0);
-    curl_url_get(uri, CURLUPART_HOST, &host, 0);
+    string_t str_path = string_new("");
+
+    if(head)
+    {
+        const UriPathSegmentA *it = head;
+        for(; it != NULL; it = it->next)
+        {
+            //string from range
+            string_t str_seg = string_new_range(it->text.first, it->text.afterLast);
+            //insert slash at the end
+            const size_t len = arrlen(str_seg);
+            arrins(str_seg, len - 1, '/');
+            //concatenates string
+            str_path = string_push(str_path, str_seg);
+            arrfree(str_seg);
+        }
+        //removes trailing slash
+        const size_t len = arrlenu(str_path);
+        arrdel(str_path, len - 2);
+    }
+
+    return str_path;
+}
+
+spiffeid_ID spiffeid_FromURI(UriUriA *uri, err_t *err)
+{
+    *err = NO_ERROR;
+    string_t host = (string_t) string_new_range(uri->hostText.first, uri->hostText.afterLast);
+    string_t path = UriPathSegmentA_string(uri->pathHead);
+    string_t scheme = (string_t) string_new_range(uri->scheme.first, uri->scheme.afterLast);
+    string_t user = (string_t) string_new_range(uri->userInfo.first, uri->userInfo.afterLast);
+    string_t fragment = (string_t) string_new_range(uri->fragment.first, uri->fragment.afterLast);
+    string_t raw_query = (string_t) string_new_range(uri->query.first, uri->query.afterLast);
+    string_t port = (string_t) string_new_range(uri->portText.first, uri->portText.afterLast);
 
     if(!uri)
     {
         *err = ERROR1;
-        return null_id;
     }
     else if(empty_str(host))    //empty trust domain
     {
         *err = ERROR1;
-        return null_id;
     }
-    else if(empty_str(path))    //empty path
+    /*else if(empty_str(path))    //empty path
     {
         *err = ERROR1;
-        return null_id;
-    }
+    }*/
     else if(empty_str(scheme))  //empty scheme
     {
         *err = ERROR1;
-        return null_id;
     }
-    else if(strcmp(scheme, "scheme")) //invalid scheme
+    else if(strcmp(scheme, "spiffe")) //invalid scheme
     {
         *err = ERROR1;
-        return null_id;
     }
     else if(!empty_str(user)) //user info
     {
         *err = ERROR1;
-        return null_id;
     } 
     else if(!empty_str(port)) //port info
     {
         *err = ERROR1;
-        return null_id;
     }
     else if(false) //using colon
     {
@@ -171,39 +191,44 @@ spiffeid_ID spiffeid_FromURI(CURLU *uri, err_t *err)
     else if(!empty_str(fragment))  //fragment info
     {
         *err = ERROR1;
-        return null_id;
+        // return null_id;
     }    
     else if(!empty_str(raw_query)) //query info
     {
         *err = ERROR1;
-        return null_id;
+        // return null_id;
     }
 
-    string_t name = string_new(host);
-    name = spiffeid_normalizeTrustDomain(name);
+    spiffeid_ID id = {{NULL}, NULL};
 
-    string_t id_path = string_new(path);
+    if(!(*err))
+    {
+        string_t name = string_new(host);
+        id.td.name = spiffeid_normalizeTrustDomain(name);
+        id.path = string_new(path);
+    }
 
-    return (spiffeid_ID){
-        (spiffeid_TrustDomain){name},
-        id_path
-    };
+    arrfree(host);
+    arrfree(path);
+    arrfree(scheme);
+    arrfree(user);
+    arrfree(fragment);
+    arrfree(raw_query);
+    arrfree(port);
+
+    return id;
 }
 
-spiffeid_ID spiffeid_ID_New(const string_t td_str, 
+spiffeid_ID spiffeid_ID_New(string_t td_str, 
                             const string_arr_t segments, err_t *err)
 {
     // spiffeid_ID id = {NULL, NULL};
-    err_t err2;
 
-    spiffeid_TrustDomain td = spiffeid_TrustDomainFromString(td_str, &err2);
-    
-    if(!err2)
+    spiffeid_TrustDomain td = spiffeid_TrustDomainFromString(td_str, err);
+    if(!(*err))
     {
         // id.td = td;
         // id.path = spiffeid_normalizePath(join(segments));
-        
-        *err = NO_ERROR;
         return (spiffeid_ID){
             td,
             spiffeid_normalizePath(join(segments))
@@ -211,29 +236,22 @@ spiffeid_ID spiffeid_ID_New(const string_t td_str,
     }
     else
     {
-        *err = err2;
-        return (spiffeid_ID){NULL, NULL};
+        return (spiffeid_ID){{NULL}, NULL};
     }
 }
 
 spiffeid_ID spiffeid_FromString(const string_t str, err_t *err)
 {
-    spiffeid_ID id = {NULL, NULL};
-    err_t err2;
-    CURLU *uri = URL_parse(str, &err2);
+    spiffeid_ID id = {{NULL}, NULL};
+    UriUriA uri = URL_parse(str, err);
 
-    if(!err2)
+    if(!(*err))
     {
-        id = spiffeid_FromURI(uri, &err2);
-        *err = err2;
-        return id;
-    }
-    else
-    {
-        *err = err2;
-        return id;
+        id = spiffeid_FromURI(&uri, err);
+        uriFreeUriMembersA(&uri);
     }
     
+    return id;
 }
 
 void spiffeid_ID_Free(spiffeid_ID *id, bool alloc)
@@ -264,42 +282,49 @@ const string_t spiffeid_ID_Path(const spiffeid_ID id)
     return id.path;
 }
 
-static string_t URL_to_string(CURLU *url)
+static string_t URI_to_string(UriUriA *uri)
 {
-    char *str = NULL;
-    CURLUcode rc = curl_url_get(url, CURLUPART_URL, &str, 0);
-    if(!rc) return str;
-    return NULL;
+    int len;
+    uriToStringCharsRequiredA(uri, &len);
+
+    string_t str_uri = NULL;
+    arrsetlen(str_uri, len + 1);
+
+    uriToStringA(str_uri, uri, len + 1, NULL);
+
+    return str_uri;
+}
+
+static UriUriA spiffeid_ID_URI(const spiffeid_ID id)
+{
+    UriUriA uri;
+    memset(&uri, 0, sizeof uri);
+    const char scheme[] = "spiffe";
+    const string_t host = id.td.name;
+    const string_t path = id.path;
+
+    uri.scheme.first = scheme;
+    uri.scheme.afterLast = scheme + sizeof scheme - 1;
+    uri.hostText.first = host;
+    uri.hostText.afterLast = host + arrlenu(host) - 1;
+
+    uri.pathHead = malloc(sizeof(UriPathSegmentA));
+    uri.pathHead->next = NULL;
+    uri.pathTail = uri.pathHead;
+    uri.pathHead->text.first = path;
+    uri.pathHead->text.afterLast = path + arrlenu(path) - 1;
+    //set scheme
+    //set host
+    //set path
+    return uri;
 }
 
 string_t spiffeid_ID_String(const spiffeid_ID id)
 {
-    CURLU *uri = spiffeid_ID_URL(id);
-    string_t str = URL_to_string(uri);
-    curl_url_cleanup(uri);
-
+    UriUriA uri = spiffeid_ID_URI(id);
+    string_t str = URI_to_string(&uri);
+    // curl_url_cleanup(uri);
     return str;
-}
-
-CURLU* spiffeid_ID_URL(const spiffeid_ID id)
-{
-    CURLU *uri = curl_url();
-    CURLUcode rc = curl_url_set(uri, CURLUPART_SCHEME, "spiffe", 0);
-
-    if(!rc)
-    {
-        rc = curl_url_set(uri, CURLUPART_HOST, id.td.name, 0);
-
-        if(!rc)
-        {
-            rc = curl_url_set(uri, CURLUPART_PATH, id.path, 0);
-        }
-    }
-
-    if(!rc) return uri;  
-    
-    curl_url_cleanup(uri);
-    return NULL;
 }
 
 bool spiffeid_ID_IsZero(const spiffeid_ID id)

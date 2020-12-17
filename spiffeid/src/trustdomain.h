@@ -7,7 +7,7 @@
 #include "../../utils/src/util.h"
 
 spiffeid_TrustDomain spiffeid_TrustDomainFromString(const string_t str, err_t *err);
-spiffeid_TrustDomain spiffeid_TrustDomainFromURI(const CURL *uri, err_t *err);
+// spiffeid_TrustDomain spiffeid_TrustDomainFromURI(const CURL *uri, err_t *err);
 
 #if __TRUSTDOMAIN_BY_POINTER__
 const string_t spiffeid_TrustDomain_String(const spiffeid_TrustDomain *td);
