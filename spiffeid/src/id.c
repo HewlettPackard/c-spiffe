@@ -201,7 +201,7 @@ spiffeid_ID spiffeid_FromURI(const UriUriA *uri, err_t *err)
     {
         string_t name = string_new(host);
         id.td.name = spiffeid_normalizeTrustDomain(name);
-        id.path = string_new(path);
+        id.path = spiffeid_normalizePath(string_new(path));
     }
 
     arrfree(host);
