@@ -295,12 +295,15 @@ static UriUriA spiffeid_ID_URI(const spiffeid_ID id)
 {
     UriUriA uri;
     memset(&uri, 0, sizeof uri);
-    const char scheme[] = "spiffe";
-    const string_t host = id.td.name;
-    const string_t path = id.path;
+    string_t scheme = string_new("spiffe");
+    string_t host = string_new(id.td.name);
+    string_t path = string_new(id.path);
+
+    if(path[0] == '/')
+        arrdel(path, 0);
 
     uri.scheme.first = scheme;
-    uri.scheme.afterLast = scheme + sizeof scheme - 1;
+    uri.scheme.afterLast = scheme + arrlenu(scheme) - 1;
     uri.hostText.first = host;
     uri.hostText.afterLast = host + arrlenu(host) - 1;
 
@@ -309,9 +312,7 @@ static UriUriA spiffeid_ID_URI(const spiffeid_ID id)
     uri.pathTail = uri.pathHead;
     uri.pathHead->text.first = path;
     uri.pathHead->text.afterLast = path + arrlenu(path) - 1;
-    //set scheme
-    //set host
-    //set path
+
     return uri;
 }
 
@@ -319,6 +320,9 @@ string_t spiffeid_ID_String(const spiffeid_ID id)
 {
     UriUriA uri = spiffeid_ID_URI(id);
     string_t str = URI_to_string(&uri);
+    arrfree(uri.scheme.first);
+    arrfree(uri.hostText.first);
+    arrfree(uri.pathHead->text.first);
     // curl_url_cleanup(uri);
     return str;
 }
