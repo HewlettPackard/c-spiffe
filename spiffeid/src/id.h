@@ -27,7 +27,7 @@ spiffeid_ID spiffeid_ID_New(string_t td_str,
 string_t spiffeid_Join(string_t td_str, 
                         const string_arr_t segments, err_t *err);
 spiffeid_ID spiffeid_FromString(const string_t str, err_t *err);
-spiffeid_ID spiffeid_FromURI(UriUriA *uri, err_t *err);
+spiffeid_ID spiffeid_FromURI(const UriUriA *uri, err_t *err);
 
 #if __SPIFFE_ID_BY_POINTER__
 spiffeid_TrustDomain spiffeid_ID_TrustDomain(const spiffeid_ID *id);

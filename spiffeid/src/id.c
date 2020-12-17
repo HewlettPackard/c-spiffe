@@ -145,7 +145,7 @@ static string_t UriPathSegmentA_string(const UriPathSegmentA *head)//, const Uri
     return str_path;
 }
 
-spiffeid_ID spiffeid_FromURI(UriUriA *uri, err_t *err)
+spiffeid_ID spiffeid_FromURI(const UriUriA *uri, err_t *err)
 {
     *err = NO_ERROR;
     string_t host = (string_t) string_new_range(uri->hostText.first, uri->hostText.afterLast);
@@ -164,10 +164,6 @@ spiffeid_ID spiffeid_FromURI(UriUriA *uri, err_t *err)
     {
         *err = ERROR1;
     }
-    /*else if(empty_str(path))    //empty path
-    {
-        *err = ERROR1;
-    }*/
     else if(empty_str(scheme))  //empty scheme
     {
         *err = ERROR1;
