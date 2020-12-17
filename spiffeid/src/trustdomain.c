@@ -22,6 +22,20 @@ spiffeid_TrustDomain spiffeid_TrustDomainFromString(string_t str, err_t *err)
     return id.td;
 }
 
+spiffeid_TrustDomain spiffeid_TrustDomainFromURI(const UriUriA *uri, err_t *err)
+{
+    spiffeid_ID id = spiffeid_FromURI(uri, err);
+    spiffeid_TrustDomain td = {NULL};
+
+    if(!(*err))
+    {
+        arrfree(id.path);
+        td = id.td;
+    }
+    
+    return td;
+}
+
 #if !__TRUSTDOMAIN_BY_POINTER__
 const string_t spiffeid_TrustDomain_String(const spiffeid_TrustDomain td)
 {
