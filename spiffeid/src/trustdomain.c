@@ -50,10 +50,8 @@ spiffeid_ID spiffeid_TrustDomain_ID(const spiffeid_TrustDomain td)
     // id.path = string_push(id.path, "");
 
     return (spiffeid_ID){
-        .td = (spiffeid_TrustDomain){
-            string_new(td.name)
-        }, 
-        .path = string_new("")
+        {string_new(td.name)},
+        string_new("")
     };
 }
 
@@ -73,10 +71,8 @@ spiffeid_ID spiffeid_TrustDomain_NewID(const spiffeid_TrustDomain td, const stri
     // id.path = string_push(id.path, path);
 
     return (spiffeid_ID){
-        .td = (spiffeid_TrustDomain){
-            string_new(td.name)
-        }, 
-        .path = string_new(path)
+        {string_new(td.name)}, 
+        string_new(path)
     };
 }
 
