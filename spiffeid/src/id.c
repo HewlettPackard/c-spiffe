@@ -75,17 +75,14 @@ string_t spiffeid_normalizePath(string_t str)
 string_t spiffeid_Join(string_t td_str, 
                         const string_arr_t segments, err_t *err)
 {
-    err_t err2;
-    const spiffeid_ID id = spiffeid_ID_New(td_str, segments, &err2);
+    const spiffeid_ID id = spiffeid_ID_New(td_str, segments, err);
 
-    if(!err2)
+    if(!(*err))
     {
-        *err = NO_ERROR;
         return spiffeid_ID_String(id);
     }
     else
     {
-        *err = err2;
         return NULL;
     }
 }
