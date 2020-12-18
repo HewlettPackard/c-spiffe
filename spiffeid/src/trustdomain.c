@@ -72,7 +72,7 @@ spiffeid_ID spiffeid_TrustDomain_NewID(const spiffeid_TrustDomain td, const stri
 
     return (spiffeid_ID){
         {string_new(td.name)}, 
-        string_new(path)
+        spiffeid_normalizePath(string_new(path))
     };
 }
 
