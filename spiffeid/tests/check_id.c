@@ -56,6 +56,7 @@ END_TEST
 
 START_TEST(test_spiffeid_FromString)
 {
+    const size_t ITERS = 4;
     const string_t strs[] = {
         string_new("spiffe://example.br/path1/p3"), 
         string_new("https://example.us/path2/path3"), 
@@ -84,6 +85,13 @@ START_TEST(test_spiffeid_FromString)
     ck_assert_str_eq(id3.td.name, "www.anything.com.uk");
     ck_assert_str_eq(id3.path, "/p1/PATH2/p333J");
     ck_assert_uint_eq(err3, 0);
+
+    spiffeid_ID_Free(&id0, false);
+    spiffeid_ID_Free(&id1, false);
+    spiffeid_ID_Free(&id2, false);
+    spiffeid_ID_Free(&id3, false);
+    for(size_t i = 0; i < ITERS; ++i)
+        util_string_t_Free(strs[i]);
 }
 END_TEST
 
@@ -124,11 +132,6 @@ START_TEST(test_spiffeid_ID_String)
         {{string_new("www.spiffe.com")}, string_new("path1/path2/path3")},
         {{string_new("spirex")}, string_new("/path1/path2/path3")}
     };
-    
-    string_t str_ids[ITERS];
-
-    for(int i = 0; i < ITERS; ++i)
-        str_ids[i] = spiffeid_ID_String(ids[i]);
 
     string_t str_res[] = {
         string_new("spiffe://example.com/path1"),
@@ -136,17 +139,17 @@ START_TEST(test_spiffeid_ID_String)
         string_new("spiffe://www.spiffe.com/path1/path2/path3"),
         string_new("spiffe://spirex/path1/path2/path3")
     };
-
-    for(int i = 0; i < ITERS; ++i)
+    
+    for(size_t i = 0; i < ITERS; ++i)
     {
-        // printf("str_ids[%d] = %s\n", i, str_ids[i]);
-        ck_assert_str_eq(str_ids[i], str_res[i]);
+        string_t str_id = spiffeid_ID_String(ids[i]);
+        ck_assert_str_eq(str_id, str_res[i]);
+        util_string_t_Free(str_id);
     }
 
-    for(int i = 0; i < ITERS; ++i)
+    for(size_t i = 0; i < ITERS; ++i)
     {
         spiffeid_ID_Free(&ids[i], false);
-        arrfree(str_ids[i]);
         arrfree(str_res[i]);
     }
 }
@@ -171,8 +174,8 @@ START_TEST(test_spiffeid_normalizeTrustDomain)
 
     for(size_t i = 0; i < ITERS; ++i)
     {
-        string_t str = spiffeid_normalizeTrustDomain(str_td[i]);
-        ck_assert_str_eq(str, str_res[i]);
+        str_td[i] = spiffeid_normalizeTrustDomain(str_td[i]);
+        ck_assert_str_eq(str_td[i], str_res[i]);
     }
 
     for(size_t i = 0; i < ITERS; ++i)
