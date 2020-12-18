@@ -1,6 +1,6 @@
-#include "../include/svid.h"
-#include "../include/verify.h"
-#include "../../../internal/pemutil/include/pem.h"
+#include "svid.h"
+#include "verify.h"
+#include "../../../internal/pemutil/src/pem.h"
 
 x509svid_SVID* x509svid_Load(const string_t certfile, 
                                 const string_t keyfile, 

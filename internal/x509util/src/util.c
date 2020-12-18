@@ -1,5 +1,5 @@
 #include <openssl/x509.h>
-#include "../include/util.h"
+#include "util.h"
 
 X509** x509util_CopyX509Authorities(const X509 **certs)
 {

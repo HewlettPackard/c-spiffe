@@ -1,4 +1,4 @@
-#include "../include/pem.h"
+#include "pem.h"
 
 static const string_t types_str[] = {"CERTIFICATE", "PRIVATE KEY"};
 enum TYPE_IDX {CERT_TYPE, KEY_TYPE};

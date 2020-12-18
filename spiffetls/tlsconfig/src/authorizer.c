@@ -1,4 +1,4 @@
-#include "../include/authorizer.h"
+#include "authorizer.h"
 
 match_t tlsconfig_ApplyAuthorizer(tlsconfig_Authorizer *authorizer, 
                                     const spiffeid_ID id, 

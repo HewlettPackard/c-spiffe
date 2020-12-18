@@ -1,6 +1,6 @@
-#include "../include/bundle.h"
-#include "../../../internal/x509util/include/util.h"
-#include "../../../internal/jwtutil/include/util.h"
+#include "bundle.h"
+#include "../../../internal/x509util/src/util.h"
+#include "../../../internal/jwtutil/src/util.h"
 
 spiffebundle_Bundle* spiffebundle_New(const spiffeid_TrustDomain td)
 {

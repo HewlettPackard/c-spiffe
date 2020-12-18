@@ -1,5 +1,5 @@
 #include <stdarg.h>
-#include "../include/set.h"
+#include "set.h"
 
 x509bundle_Set* x509bundle_NewSet(const int n_args, ...)
 {

@@ -1,7 +1,7 @@
 #include <openssl/rsa.h>
 #include <openssl/ec.h>
 #include <openssl/bn.h>
-#include "../include/keys.h"
+#include "keys.h"
 
 bool cryptoutil_PublicKeyEqual(EVP_PKEY *pkey1, EVP_PKEY *pkey2)
 {

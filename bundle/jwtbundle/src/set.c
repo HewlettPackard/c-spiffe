@@ -1,5 +1,5 @@
 #include <stdarg.h>
-#include "../include/set.h"
+#include "set.h"
 
 jwtbundle_Set* jwtbundle_NewSet(const int n_args, ...)
 {

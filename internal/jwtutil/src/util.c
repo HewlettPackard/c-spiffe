@@ -1,5 +1,5 @@
-#include "../include/util.h"
-#include "../../cryptoutil/include/keys.h"
+#include "util.h"
+#include "../../cryptoutil/src/keys.h"
 
 /**
  * TODO: does jwutil_CopyJWTAuthorities need to copy the

@@ -1,6 +1,6 @@
 #include <openssl/pem.h>
-#include "../../../internal/x509util/include/util.h"
-#include "../include/bundle.h"
+#include "../../../internal/x509util/src/util.h"
+#include "bundle.h"
 
 x509bundle_Bundle* x509bundle_New(const spiffeid_TrustDomain td)
 {
