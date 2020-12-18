@@ -137,7 +137,7 @@ Suite* util_suite(void)
     return s;
 }
 
-int main()
+int main(void)
 {
     Suite *s = util_suite();
     SRunner *sr = srunner_create(s);
