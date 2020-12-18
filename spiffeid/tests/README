@@ -3,5 +3,7 @@ gcc -c -Wall ../src/trustdomain.c -O2 -o trustdomain.o
 gcc -c -Wall ../src/match.c -O2 -o match.o
 gcc -c -Wall -Wno-unused-value ../../utils/src/util.c -O2 -o util.o
 gcc -c -Wall check_id.c -O2 -o check_id.o
+gcc -c -Wall check_trustdomain.c -O2 -o check_trustdomain.o
 gcc id.o trustdomain.o match.o util.o check_id.o -lcheck -lcheck_pic -lm -lrt -lpthread -lsubunit -lcurl -luriparser -o check_id
+gcc id.o trustdomain.o match.o util.o check_trustdomain.o -lcheck -lcheck_pic -lm -lrt -lpthread -lsubunit -lcurl -luriparser -o check_trustdomain
 rm *.o
