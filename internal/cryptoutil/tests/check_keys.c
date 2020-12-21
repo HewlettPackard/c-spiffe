@@ -64,6 +64,9 @@ START_TEST(test_cryptoutil_RSAPublicKeyEqual)
     ck_assert(!cryptoutil_RSAPublicKeyEqual(rsa_pubkey1, rsa_pubkey2));
     ck_assert(!cryptoutil_RSAPublicKeyEqual(rsa_pubkey1, rsa_pubkey3));
     ck_assert(!cryptoutil_RSAPublicKeyEqual(rsa_pubkey2, rsa_pubkey3));
+    ck_assert(!cryptoutil_RSAPublicKeyEqual(rsa_pubkey2, rsa_pubkey1));
+    ck_assert(!cryptoutil_RSAPublicKeyEqual(rsa_pubkey3, rsa_pubkey1));
+    ck_assert(!cryptoutil_RSAPublicKeyEqual(rsa_pubkey3, rsa_pubkey2));
 
     ck_assert(cryptoutil_RSAPublicKeyEqual(rsa_pubkey1, rsa_pubkey1));
     ck_assert(cryptoutil_RSAPublicKeyEqual(rsa_pubkey2, rsa_pubkey2));
@@ -126,6 +129,9 @@ START_TEST(test_cryptoutil_ECDSAPublicKeyEqual)
     ck_assert(!cryptoutil_ECDSAPublicKeyEqual(ec_pubkey1, ec_pubkey2));
     ck_assert(!cryptoutil_ECDSAPublicKeyEqual(ec_pubkey1, ec_pubkey3));
     ck_assert(!cryptoutil_ECDSAPublicKeyEqual(ec_pubkey2, ec_pubkey3));
+    ck_assert(!cryptoutil_ECDSAPublicKeyEqual(ec_pubkey2, ec_pubkey1));
+    ck_assert(!cryptoutil_ECDSAPublicKeyEqual(ec_pubkey3, ec_pubkey1));
+    ck_assert(!cryptoutil_ECDSAPublicKeyEqual(ec_pubkey3, ec_pubkey2));
 
     ck_assert(cryptoutil_ECDSAPublicKeyEqual(ec_pubkey1, ec_pubkey1));
     ck_assert(cryptoutil_ECDSAPublicKeyEqual(ec_pubkey2, ec_pubkey2));
@@ -238,22 +244,38 @@ START_TEST(test_cryptoutil_PublicKeyEqual)
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey1, rsa_pubkey2));
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey1, rsa_pubkey3));
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey2, rsa_pubkey3));
+    ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey2, rsa_pubkey1));
+    ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey3, rsa_pubkey1));
+    ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey3, rsa_pubkey2));
 
     ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey1, ec_pubkey2));
     ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey1, ec_pubkey3));
     ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey2, ec_pubkey3));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey2, ec_pubkey1));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey3, ec_pubkey1));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey3, ec_pubkey2));
 
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey1, ec_pubkey1));
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey1, ec_pubkey2));
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey1, ec_pubkey3));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey1, rsa_pubkey1));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey2, rsa_pubkey1));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey3, rsa_pubkey1));
 
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey2, ec_pubkey1));
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey2, ec_pubkey2));
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey2, ec_pubkey3));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey1, rsa_pubkey2));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey2, rsa_pubkey2));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey3, rsa_pubkey2));
+
 
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey3, ec_pubkey1));
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey3, ec_pubkey2));
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey3, ec_pubkey3));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey1, rsa_pubkey3));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey2, rsa_pubkey3));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey3, rsa_pubkey3));
 
     ck_assert(cryptoutil_PublicKeyEqual(rsa_pubkey1, rsa_pubkey1));
     ck_assert(cryptoutil_PublicKeyEqual(rsa_pubkey2, rsa_pubkey2));
