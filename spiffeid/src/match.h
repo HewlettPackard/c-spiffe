@@ -33,7 +33,7 @@ match_err_t spiffeid_ApplyMatcher(const spiffeid_Matcher *matcher, const spiffei
 spiffeid_Matcher* spiffeid_MatchAny(void);
 spiffeid_Matcher* spiffeid_MatchID(const spiffeid_ID id);
 spiffeid_Matcher* spiffeid_MatchOneOf(int n_args, ...);
-spiffeid_Matcher *spiffeid_vMatchOneOf(int n_args, va_list args);
+spiffeid_Matcher* spiffeid_vMatchOneOf(int n_args, va_list args);
 spiffeid_Matcher* spiffeid_MatchMemberOf(const spiffeid_TrustDomain td);
 
 void spiffeid_Matcher_Free(spiffeid_Matcher *matcher);
