@@ -11,7 +11,7 @@ match_err_t spiffeid_ApplyMatcher(const spiffeid_Matcher *matcher, const spiffei
         const spiffeid_ID *ids = matcher->ids;
         for(size_t i = 0, size = arrlenu(ids); i < size; ++i)
         {
-            if(!strcmp(id.path, ids[i].path) & !strcmp(id.td.name, ids[i].td.name))
+            if(!strcmp(id.path, ids[i].path) && !strcmp(id.td.name, ids[i].td.name))
                 return MATCH_OK;
         }
         return MATCH_UNEXPECTED_ID;
