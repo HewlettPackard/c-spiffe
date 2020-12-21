@@ -52,6 +52,9 @@ bool jwtutil_JWTAuthoritiesEqual(
             }
             else return false;
         }
+
+        return true;
     }
-    return false;
+    
+    return hash1 == hash2;
 }
