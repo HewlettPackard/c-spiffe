@@ -202,7 +202,7 @@ START_TEST(test_spiffeid_normalizePath)
 }
 END_TEST
 
-Suite* util_suite(void)
+Suite* id_suite(void)
 {
     Suite *s = suite_create("id");
     TCase *tc_core = tcase_create("core");
@@ -223,7 +223,7 @@ Suite* util_suite(void)
 
 int main(void)
 {
-    Suite *s = util_suite();
+    Suite *s = id_suite();
     SRunner *sr = srunner_create(s);
 
     srunner_run_all(sr, CK_NORMAL);
