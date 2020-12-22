@@ -51,12 +51,12 @@ START_TEST(test_jwtutil_JWTAuthoritiesEqual)
     };
 
     BIO *bio_mems[] = {
-        BIO_new_mem_buf((void*) pubkeys[0], strlen(pubkeys[0])),
-        BIO_new_mem_buf((void*) pubkeys[1], strlen(pubkeys[1])),
-        BIO_new_mem_buf((void*) pubkeys[2], strlen(pubkeys[2])),
-        BIO_new_mem_buf((void*) pubkeys[3], strlen(pubkeys[3])),
-        BIO_new_mem_buf((void*) pubkeys[4], strlen(pubkeys[4])),
-        BIO_new_mem_buf((void*) pubkeys[5], strlen(pubkeys[5]))
+        BIO_new_mem_buf((void*) pubkeys[0], -1),
+        BIO_new_mem_buf((void*) pubkeys[1], -1),
+        BIO_new_mem_buf((void*) pubkeys[2], -1),
+        BIO_new_mem_buf((void*) pubkeys[3], -1),
+        BIO_new_mem_buf((void*) pubkeys[4], -1),
+        BIO_new_mem_buf((void*) pubkeys[5], -1)
     };
 
     EVP_PKEY *evp_pubkeys[] = {
@@ -167,12 +167,12 @@ START_TEST(test_jwtutil_CopyJWTAuthorities)
     };
 
     BIO *bio_mems[] = {
-        BIO_new_mem_buf((void*) pubkeys[0], strlen(pubkeys[0])),
-        BIO_new_mem_buf((void*) pubkeys[1], strlen(pubkeys[1])),
-        BIO_new_mem_buf((void*) pubkeys[2], strlen(pubkeys[2])),
-        BIO_new_mem_buf((void*) pubkeys[3], strlen(pubkeys[3])),
-        BIO_new_mem_buf((void*) pubkeys[4], strlen(pubkeys[4])),
-        BIO_new_mem_buf((void*) pubkeys[5], strlen(pubkeys[5]))
+        BIO_new_mem_buf((void*) pubkeys[0], -1),
+        BIO_new_mem_buf((void*) pubkeys[1], -1),
+        BIO_new_mem_buf((void*) pubkeys[2], -1),
+        BIO_new_mem_buf((void*) pubkeys[3], -1),
+        BIO_new_mem_buf((void*) pubkeys[4], -1),
+        BIO_new_mem_buf((void*) pubkeys[5], -1)
     };
 
     EVP_PKEY *evp_pubkeys[] = {
