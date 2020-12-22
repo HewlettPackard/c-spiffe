@@ -14,6 +14,14 @@ typedef struct pemutil_Block
     byte *bytes;
 } pemutil_Block;
 
+void* parseBlock(BIO *bio_mem, 
+                    const char *type, 
+                    err_t *err);
+
+void** parseBlocks(const byte *pem_byte, 
+                    const char *type, 
+                    err_t *err);
+
 X509** pemutil_ParseCertificates(const byte *bytes, err_t *err);
 EVP_PKEY* pemutil_ParsePrivateKey(const byte *bytes, 
                                     err_t *err);
