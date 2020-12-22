@@ -89,7 +89,7 @@ void** parseBlocks(const byte *pem_byte,
             //insert new block
             arrput(parsed_blocks_arr, block);
         }
-        else if(!block && *err == ERROR3)
+        else if(*err == ERROR3)
         {
             //end of blocks, stop the loop
             *err = NO_ERROR;
