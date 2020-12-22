@@ -1,11 +1,11 @@
 #include "pem.h"
 
-static const string_t types_str[] = {"CERTIFICATE", "PRIVATE KEY"};
+static const char *types_str[] = {"CERTIFICATE", "PRIVATE KEY"};
 enum TYPE_IDX {CERT_TYPE, KEY_TYPE};
 
-static void* parseBlock(BIO *bio_mem, 
-                const string_t type, 
-                err_t *err)
+void* parseBlock(BIO *bio_mem, 
+                    const char *type, 
+                    err_t *err)
 {
     /*
     returns the pointer to parsed PEM as a
@@ -30,16 +30,16 @@ static void* parseBlock(BIO *bio_mem,
     //sucessfully read
     if(suc)
     {
-        if(!strcmp(pem_name, type))
+        if(strstr(pem_name, type))
         {
-            if(!strcmp(pem_name, types_str[CERT_TYPE]))
+            if(strstr(pem_name, types_str[CERT_TYPE]))
             {
                 //read X509 certificate
                 // X509 *cert = PEM_read_bio_X509(bio_mem, NULL, NULL, NULL);
                 X509 *cert = d2i_X509(NULL, (const byte**) &data, len_data);
                 parsed_pem = cert;
             }
-            else if(!strcmp(pem_name, types_str[KEY_TYPE]))
+            else if(strstr(pem_name, types_str[KEY_TYPE]))
             {
                 //read EVP_PKEY private key
                 // EVP_PKEY *pkey =
@@ -63,20 +63,19 @@ static void* parseBlock(BIO *bio_mem,
     OPENSSL_free(pem_name);
     OPENSSL_free(pem_header);
     // OPENSSL_free(data);
-    BIO_free(bio_mem);
     return parsed_pem;
 }
 
-static void** parseBlocks(const byte *pem_byte, 
-                const string_t type, 
-                err_t *err)
+void** parseBlocks(const byte *pem_byte, 
+                    const char *type, 
+                    err_t *err)
 {
     //bio_mem MUST be initialized just one time (??)
     /** TODO: check whether BIO keeps track of the
      * already read data.
     */
     BIO *bio_mem = BIO_new(BIO_s_mem());
-    BIO_puts(bio_mem, pem_byte);
+    BIO_puts(bio_mem, (const char*) pem_byte);
     
     //dynamic array of parsed blocks
     void **parsed_blocks_arr = NULL;
@@ -87,23 +86,40 @@ static void** parseBlocks(const byte *pem_byte,
         
         if(block && !(*err))
         {
+            //insert new block
             arrput(parsed_blocks_arr, block);
         }
-        else if(!block)
+        else if(!block && *err == ERROR3)
         {
+            //end of blocks, stop the loop
+            *err = NO_ERROR;
             break;
         }
         else //non trivial error
         {
-            //type not supported currently
-            if(*err != ERROR1)
+            //type not supported currently or
+            //diverging type
+            if(*err)
             {
+                for(size_t i = 0, size = arrlenu(parsed_blocks_arr); i < size; ++i)
+                {
+                    void *data = parsed_blocks_arr[i];
+                    if(!strcmp(type, "CERTIFICATE"))
+                    {
+                        X509_free((X509*) data);
+                    }
+                    else if(!strcmp(type, "PRIVATE KEY"))
+                    {
+                        EVP_PKEY_free((EVP_PKEY*) data);
+                    }
+                }
                 arrfree(parsed_blocks_arr);
-                return NULL;
+                parsed_blocks_arr = NULL;
+                break;
             }
         }
     }
-    *err = NO_ERROR;
+    BIO_free(bio_mem);
 
     return parsed_blocks_arr;
 }
@@ -186,6 +202,8 @@ byte* pemutil_EncodePrivateKey(EVP_PKEY *pkey, int *bytes_len, err_t *err)
     //array of raw bytes
     byte *pem_bytes = NULL;
     int len = i2d_PrivateKey(pkey, &pem_bytes);
+
+    *err = NO_ERROR;
 
     if(len >= 0)
         *bytes_len = len;
