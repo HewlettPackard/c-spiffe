@@ -128,7 +128,6 @@ X509** pemutil_ParseCertificates(const byte *bytes, err_t *err)
 {
     //array of X509 certificates
     X509 **x509_arr = NULL;
-
     void **objs = parseBlocks(bytes, types_str[CERT_TYPE], err);
     
     //not NULL and no error
@@ -136,10 +135,7 @@ X509** pemutil_ParseCertificates(const byte *bytes, err_t *err)
     {
         //maybe check the vality of each object?
         //don't think it is possible, though
-        for(size_t i = 0, size = arrlenu(objs); i < size; ++i)
-        {
-            arrput(x509_arr, (X509*) objs[i]);
-        }
+        x509_arr = (X509**) objs;
     }
     else if(objs)
     {
@@ -150,9 +146,9 @@ X509** pemutil_ParseCertificates(const byte *bytes, err_t *err)
             if(objs[i])
                 X509_free(objs[i]);
         }
+
+        arrfree(objs);
     }
-    //free array of pointers
-    arrfree(objs);
 
     return x509_arr;
 }
@@ -160,8 +156,7 @@ X509** pemutil_ParseCertificates(const byte *bytes, err_t *err)
 EVP_PKEY* pemutil_ParsePrivateKey(const byte *bytes, err_t *err)
 {
     EVP_PKEY *pkey = NULL;
-
-    void **objs = parseBlocks(bytes, types_str[CERT_TYPE], err);
+    void **objs = parseBlocks(bytes, types_str[KEY_TYPE], err);
 
     //not NULL and no error
     if(objs && !(*err))
