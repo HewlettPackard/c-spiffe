@@ -1,3 +1,4 @@
+#include <openssl/pem.h>
 #include <openssl/rsa.h>
 #include <openssl/ec.h>
 #include <openssl/x509.h>
@@ -5,6 +6,12 @@
 #include <jansson.h>
 #include "../../../internal/jwtutil/src/util.h"
 #include "bundle.h"
+
+typedef struct _ec_keydata_int
+{
+    cjose_jwk_ec_curve crv;
+    EC_KEY *key;
+} ec_keydata;
 
 jwtbundle_Bundle* jwtbundle_New(const spiffeid_TrustDomain td)
 {
@@ -73,7 +80,7 @@ jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td,
     json_t *root = json_loads(bundle_bytes, 0, &j_err);
     json_t *keys = json_object_get(root, "keys");
     const size_t n_keys = json_array_size(keys);
-
+    
     for(size_t i = 0; i < n_keys; ++i)
     {
         //get i-th element of the JWKS
@@ -95,30 +102,23 @@ jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td,
         void *keydata = 
             cjose_jwk_get_keydata(jwk, &cj_err);
         //get key size in bits
-        const long keysize = 
-            cjose_jwk_get_keysize(jwk, &cj_err);
+        // const long keysize = 
+        //     cjose_jwk_get_keysize(jwk, &cj_err);
         EVP_PKEY *pkey = EVP_PKEY_new();
-        RSA *rsa_key = NULL;
-        EC_KEY *ec_key = EC_KEY_new();
-
+        
         switch(kty)
         {
         case CJOSE_JWK_KTY_RSA:
-            rsa_key = d2i_RSA_PUBKEY(NULL, (const byte**) &keydata, keysize >> 3);
-            EVP_PKEY_assign_RSA(pkey, rsa_key);
+            EVP_PKEY_set1_RSA(pkey, (RSA*) keydata);
             break;
         case CJOSE_JWK_KTY_EC:
-            EC_KEY_oct2key(ec_key, (const byte*) keydata, keysize >> 3, NULL);
-            EVP_PKEY_assign_EC_KEY(pkey, ec_key);
+            EVP_PKEY_set1_EC_KEY(pkey, ((ec_keydata*) keydata)->key);
             break;
         default:
             //type not supported currently
             ///TODO: handle unexpected key type
             break;
         }
-        
-        RSA_free(rsa_key);
-        EC_KEY_free(ec_key);
 
         if(pkey)
         {
