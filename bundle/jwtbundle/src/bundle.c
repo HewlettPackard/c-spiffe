@@ -5,6 +5,7 @@
 #include <cjose/jwk.h>
 #include <jansson.h>
 #include "../../../internal/jwtutil/src/util.h"
+#include "../../../spiffeid/src/trustdomain.h"
 #include "bundle.h"
 
 typedef struct _ec_keydata_int
@@ -175,7 +176,7 @@ bool jwtbundle_Bundle_HasJWTAuthority(jwtbundle_Bundle *b,
 }
 
 err_t jwtbundle_Bundle_AddJWTAuthority(jwtbundle_Bundle *b,
-                                        const string_t keyID,
+                                        const char *keyID,
                                         EVP_PKEY *pkey)
 {
     //empty string error
@@ -265,4 +266,23 @@ jwtbundle_Bundle* jwtbundle_Bundle_GetJWTBundleForTrustDomain(
     mtx_unlock(&(b->mtx));
 
     return bundle;
+}
+
+void jwtbundle_Bundle_Free(jwtbundle_Bundle *b, bool alloc)
+{
+    if(b)
+    {
+        // mtx_destroy(&(b->mtx));
+        for(size_t i = 0, size = hmlen(b->auths); i < size; ++i)
+        {
+            EVP_PKEY_free(b->auths[i].value);
+        }
+        shfree(b->auths);
+        spiffeid_TrustDomain_Free(&(b->td), false);
+
+        if(alloc)
+        {
+            free(b);
+        }
+    }
 }

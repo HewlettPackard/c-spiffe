@@ -36,7 +36,7 @@ EVP_PKEY* jwtbundle_Bundle_FindJWTAuthority(jwtbundle_Bundle *b,
 bool jwtbundle_Bundle_HasJWTAuthority(jwtbundle_Bundle *b, 
                                         const string_t keyID);
 err_t jwtbundle_Bundle_AddJWTAuthority(jwtbundle_Bundle *b,
-                                        const string_t keyID,
+                                        const char *keyID,
                                         EVP_PKEY *pkey);
 void jwtbundle_Bundle_RemoveJWTAuthority(jwtbundle_Bundle *b, 
                                             const string_t keyID);
@@ -51,5 +51,6 @@ jwtbundle_Bundle* jwtbundle_Bundle_GetJWTBundleForTrustDomain(
                                             jwtbundle_Bundle *b,
                                             const spiffeid_TrustDomain td,
                                             err_t *err);
+void jwtbundle_Bundle_Free(jwtbundle_Bundle *b, bool alloc);
 
 #endif
