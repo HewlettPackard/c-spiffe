@@ -157,7 +157,7 @@ byte* x509bundle_Bundle_Marshal(x509bundle_Bundle *b, err_t *err)
 bool x509bundle_Bundle_Equal(const x509bundle_Bundle *b1, 
                                 const x509bundle_Bundle *b2)
 {
-    if(b1 || b2)
+    if(b1 && b2)
     {
         //equal trust domains and equal X509 authorities
         return !strcmp(b1->td.name, b2->td.name) &&
