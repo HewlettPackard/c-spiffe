@@ -148,16 +148,16 @@ map_string_EVP_PKEY* jwtbundle_Bundle_JWTAuthorities(jwtbundle_Bundle *b)
 }
 
 EVP_PKEY* jwtbundle_Bundle_FindJWTAuthority(jwtbundle_Bundle *b,
-                                            const string_t keyID, 
+                                            const char *keyID, 
                                             bool *suc)
 {
     mtx_lock(&(b->mtx));
     EVP_PKEY *pkey = NULL;
     *suc = false;
-    map_string_EVP_PKEY *key_val = shgetp_null(b->auths, keyID);
-    if(key_val)
+    const int idx = shgeti(b->auths, keyID);
+    if(idx >= 0)
     {
-        pkey = key_val->value;
+        pkey = b->auths[idx].value;
         *suc = true;
     }
     mtx_unlock(&(b->mtx));
@@ -166,7 +166,7 @@ EVP_PKEY* jwtbundle_Bundle_FindJWTAuthority(jwtbundle_Bundle *b,
 }
 
 bool jwtbundle_Bundle_HasJWTAuthority(jwtbundle_Bundle *b, 
-                                        const string_t keyID)
+                                        const char *keyID)
 {
     mtx_lock(&(b->mtx));
     bool present = false;
@@ -196,7 +196,7 @@ err_t jwtbundle_Bundle_AddJWTAuthority(jwtbundle_Bundle *b,
 }
 
 void jwtbundle_Bundle_RemoveJWTAuthority(jwtbundle_Bundle *b, 
-                                            const string_t keyID)
+                                            const char *keyID)
 {
     mtx_lock(&(b->mtx));
     shdel(b->auths, keyID);

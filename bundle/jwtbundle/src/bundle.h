@@ -31,15 +31,15 @@ jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td,
 const spiffeid_TrustDomain jwtbundle_Bundle_TrustDomain(const jwtbundle_Bundle *b);
 map_string_EVP_PKEY* jwtbundle_Bundle_JWTAuthorities(jwtbundle_Bundle *b);
 EVP_PKEY* jwtbundle_Bundle_FindJWTAuthority(jwtbundle_Bundle *b,
-                                            const string_t keyID, 
+                                            const char *keyID, 
                                             bool *suc);
 bool jwtbundle_Bundle_HasJWTAuthority(jwtbundle_Bundle *b, 
-                                        const string_t keyID);
+                                        const char *keyID);
 err_t jwtbundle_Bundle_AddJWTAuthority(jwtbundle_Bundle *b,
                                         const char *keyID,
                                         EVP_PKEY *pkey);
 void jwtbundle_Bundle_RemoveJWTAuthority(jwtbundle_Bundle *b, 
-                                            const string_t keyID);
+                                            const char *keyID);
 void jwtbundle_Bundle_SetJWTAuthorities(jwtbundle_Bundle *b,
                                         const map_string_EVP_PKEY *auths);
 bool jwtbundle_Bundle_Empty(jwtbundle_Bundle *b);
