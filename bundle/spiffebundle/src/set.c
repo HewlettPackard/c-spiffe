@@ -52,11 +52,11 @@ spiffebundle_Bundle* spiffebundle_Set_Get(spiffebundle_Set *s,
     mtx_lock(&(s->mtx));
     *suc = false;
     spiffebundle_Bundle *bundle = NULL;
-    map_string_spiffebundle_Bundle *key_val = shgetp_null(s->bundles, td->name);
-    if(key_val)
+    int idx = shgeti(s->bundles, td->name);
+    if(idx >= 0)
     {
+        bundle = s->bundles[idx].value;
         *suc = true;
-        bundle = key_val->value;
     }
     mtx_unlock(&(s->mtx));
     
@@ -105,10 +105,10 @@ spiffebundle_Bundle* spiffebundle_Set_GetBundleForTrustDomain(
     spiffebundle_Bundle *bundle = NULL;
     //trust domain not available
     *err = ERROR1;
-    map_string_spiffebundle_Bundle *key_val = shgetp_null(s->bundles, td->name);
-    if(key_val)
+    int idx = shgeti(s->bundles, td->name);
+    if(idx >= 0)
     {
-        bundle = key_val->value;
+        bundle = s->bundles[idx].value;
         *err = NO_ERROR;
     }
     mtx_unlock(&(s->mtx));
@@ -125,10 +125,10 @@ x509bundle_Bundle* spiffebundle_Set_GetX509BundleForTrustDomain(
     x509bundle_Bundle *bundle = NULL;
     //trust domain not available
     *err = ERROR1;
-    map_string_spiffebundle_Bundle *key_val = shgetp_null(s->bundles, td->name);
-    if(key_val)
+    int idx = shgeti(s->bundles, td->name);
+    if(idx >= 0)
     {
-        bundle = spiffebundle_Bundle_X509Bundle(key_val->value);
+        bundle = spiffebundle_Bundle_X509Bundle(s->bundles[idx].value);
         *err = NO_ERROR;
     }
     mtx_unlock(&(s->mtx));
@@ -145,10 +145,10 @@ jwtbundle_Bundle* spiffebundle_Set_GetJWTBundleForTrustDomain(
     jwtbundle_Bundle *bundle = NULL;
     //trust domain not available
     *err = ERROR1;
-    map_string_spiffebundle_Bundle *key_val = shgetp_null(s->bundles, td->name);
-    if(key_val)
+    int idx = shgeti(s->bundles, td->name);
+    if(idx >= 0)
     {
-        bundle = spiffebundle_Bundle_JWTBundle(key_val->value);
+        bundle = spiffebundle_Bundle_JWTBundle(s->bundles[idx].value);
         *err = NO_ERROR;
     }
     mtx_unlock(&(s->mtx));

@@ -180,10 +180,10 @@ EVP_PKEY* spiffebundle_Bundle_FindJWTAuthority(spiffebundle_Bundle *b,
     mtx_lock(&(b->mtx));
     EVP_PKEY *pkey = NULL;
     *suc = false;
-    map_string_EVP_PKEY *key_val = shgetp_null(b->jwtAuths, keyID);
-    if(key_val)
+    int idx = shgeti(b->jwtAuths, keyID);
+    if(idx >= 0)
     {
-        pkey = key_val->value;
+        pkey = b->jwtAuths[idx].value;
         *suc = true;
     }
     mtx_unlock(&(b->mtx));

@@ -53,11 +53,11 @@ x509bundle_Bundle* x509bundle_Set_Get(x509bundle_Set *s,
     mtx_lock(&(s->mtx));
     *suc = false;
     x509bundle_Bundle *bundle = NULL;
-    map_string_x509bundle_Bundle *key_val = shgetp_null(s->bundles, td->name);
-    if(key_val)
+    int idx = shgeti(s->bundles, td->name);
+    if(idx >= 0)
     {
+        bundle = s->bundles[idx].value;
         *suc = true;
-        bundle = key_val->value;
     }
     mtx_unlock(&(s->mtx));
     
@@ -106,10 +106,10 @@ x509bundle_Bundle* x509bundle_Set_GetJWTBundleForTrustDomain(
     x509bundle_Bundle *bundle = NULL;
     //trust domain not available
     *err = ERROR1;
-    map_string_x509bundle_Bundle *key_val = shgetp_null(s->bundles, td->name);
-    if(key_val)
+    int idx = shgeti(s->bundles, td->name);
+    if(idx >= 0)
     {
-        bundle = key_val->value;
+        bundle = s->bundles[idx].value;
         *err = NO_ERROR;
     }
     mtx_unlock(&(s->mtx));
