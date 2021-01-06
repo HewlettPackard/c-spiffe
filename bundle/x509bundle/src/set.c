@@ -38,9 +38,7 @@ void x509bundle_Set_Remove(x509bundle_Set *s, const spiffeid_TrustDomain *td)
 bool x509bundle_Set_Has(x509bundle_Set *s, const spiffeid_TrustDomain *td)
 {
     mtx_lock(&(s->mtx));
-    bool present = false;
-    int idx = shgeti(s->bundles, td->name);
-    if(idx >= 0) present = true;
+    const bool present = shgeti(s->bundles, td->name)? true : false;
     mtx_unlock(&(s->mtx));
     
     return present;

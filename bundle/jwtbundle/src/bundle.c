@@ -169,9 +169,7 @@ bool jwtbundle_Bundle_HasJWTAuthority(jwtbundle_Bundle *b,
                                         const char *keyID)
 {
     mtx_lock(&(b->mtx));
-    bool present = false;
-    int idx = shgeti(b->auths, keyID);
-    if(idx >= 0) present = true;
+    const bool present = shgeti(b->auths, keyID) >= 0? true : false;
     mtx_unlock(&(b->mtx));
 
     return present;

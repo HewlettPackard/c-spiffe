@@ -195,9 +195,7 @@ bool spiffebundle_Bundle_HasJWTAuthority(spiffebundle_Bundle *b,
                                             const string_t keyID)
 {
     mtx_lock(&(b->mtx));
-    bool present = false;
-    int idx = shgeti(b->jwtAuths, keyID);
-    if(idx >= 0) present = true;
+    const bool present = shgeti(b->jwtAuths, keyID)? true : false;
     mtx_unlock(&(b->mtx));
 
     return present;

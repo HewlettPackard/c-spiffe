@@ -38,9 +38,7 @@ void jwtbundle_Set_Remove(jwtbundle_Set *s, const spiffeid_TrustDomain *td)
 bool jwtbundle_Set_Has(jwtbundle_Set *s, const spiffeid_TrustDomain *td)
 {
     mtx_lock(&(s->mtx));
-    bool present = false;
-    int idx = shgeti(s->bundles, td->name);
-    if(idx >= 0) present = true;
+    const bool present = shgeti(s->bundles, td->name) >= 0? true : false;
     mtx_unlock(&(s->mtx));
     
     return present;
