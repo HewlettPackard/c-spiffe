@@ -42,8 +42,8 @@ jwtbundle_Bundle* jwtbundle_FromJWTAuthorities(const spiffeid_TrustDomain td,
 }
 
 jwtbundle_Bundle* jwtbundle_Load(const spiffeid_TrustDomain td, 
-                                            const string_t path, 
-                                            err_t *err)
+                                    const char *path, 
+                                    err_t *err)
 {
     jwtbundle_Bundle *bundleptr = NULL;
     FILE *fjwks = fopen(path, "r");
@@ -81,6 +81,8 @@ jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td,
     json_t *root = json_loads(bundle_bytes, 0, &j_err);
     json_t *keys = json_object_get(root, "keys");
     const size_t n_keys = json_array_size(keys);
+
+    *err = NO_ERROR;
     
     for(size_t i = 0; i < n_keys; ++i)
     {
@@ -238,7 +240,7 @@ jwtbundle_Bundle* jwtbundle_Bundle_Clone(jwtbundle_Bundle *b)
 bool jwtbundle_Bundle_Equal(const jwtbundle_Bundle *b1, 
                             const jwtbundle_Bundle *b2)
 {
-    if(b1 || b2)
+    if(b1 && b2)
     {
         //equal trust domains and equal JWT authorities
         return !strcmp(b1->td.name, b2->td.name) &&
