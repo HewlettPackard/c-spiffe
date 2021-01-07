@@ -159,6 +159,10 @@ void spiffebundle_Bundle_SetX509Authorities(spiffebundle_Bundle *b, const X509 *
 {
     mtx_lock(&(b->mtx));
     ///TODO: check if it is needed to free the X509 objs
+    for(size_t i = 0, size = arrlen(b->x509Auths); i < size; ++i)
+    {
+        X509_free(b->x509Auths[i]);
+    }
     arrfree(b->x509Auths);
     b->x509Auths = x509util_CopyX509Authorities(auths);
     mtx_unlock(&(b->mtx));
@@ -232,6 +236,10 @@ void spiffebundle_Bundle_SetJWTAuthorities(spiffebundle_Bundle *b,
 {
     mtx_lock(&(b->mtx));
     ///TODO: check if it is needed to free the EVP_PKEY objs
+    for(size_t i = 0, size = shlen(b->jwtAuths); i < size; ++i)
+    {
+        EVP_PKEY_free(b->jwtAuths[i].value);
+    }
     shfree(b->jwtAuths);
     b->jwtAuths = jwtutil_CopyJWTAuthorities(auths);
     mtx_unlock(&(b->mtx));
