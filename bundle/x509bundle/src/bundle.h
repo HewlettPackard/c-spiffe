@@ -19,7 +19,7 @@ typedef struct x509bundle_Bundle
 
 x509bundle_Bundle* x509bundle_New(const spiffeid_TrustDomain td);
 x509bundle_Bundle* x509bundle_FromX509Authorities(const spiffeid_TrustDomain td, 
-                                                    const X509 **auths);
+                                                    X509 **auths);
 x509bundle_Bundle* x509bundle_Load(const spiffeid_TrustDomain td, 
                                     const string_t path,
                                     err_t *err);
@@ -33,9 +33,9 @@ x509bundle_Bundle* x509bundle_Parse(const spiffeid_TrustDomain td,
 const spiffeid_TrustDomain x509bundle_Bundle_TrustDomain(const x509bundle_Bundle *b);
 X509** x509bundle_Bundle_X509Authorities(x509bundle_Bundle *b);
 void x509bundle_Bundle_AddX509Authority(x509bundle_Bundle *b, X509 *auth);
-void x509bundle_Bundle_Remove509Authority(x509bundle_Bundle *b, const X509 *auth);
-bool x509bundle_Bundle_HasX509Authority(x509bundle_Bundle *b, const X509 *auth);
-void x509bundle_Bundle_SetX509Authorities(x509bundle_Bundle *b, const X509 **auths);
+void x509bundle_Bundle_RemoveX509Authority(x509bundle_Bundle *b, X509 *auth);
+bool x509bundle_Bundle_HasX509Authority(x509bundle_Bundle *b, X509 *auth);
+void x509bundle_Bundle_SetX509Authorities(x509bundle_Bundle *b, X509 **auths);
 bool x509bundle_Bundle_Empty(x509bundle_Bundle *b);
 byte* x509bundle_Bundle_Marshal(x509bundle_Bundle *b, err_t *err);
 bool x509bundle_Bundle_Equal(const x509bundle_Bundle *b1, 
@@ -45,4 +45,6 @@ x509bundle_Bundle* x509bundle_Bundle_GetX509BundleForTrustDomain(
                                             x509bundle_Bundle *b,
                                             const spiffeid_TrustDomain td,
                                             err_t *err);
+void x509bundle_Bundle_Free(x509bundle_Bundle *b, bool alloc);
+
 #endif
