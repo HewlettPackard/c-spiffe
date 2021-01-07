@@ -185,6 +185,7 @@ err_t jwtbundle_Bundle_AddJWTAuthority(jwtbundle_Bundle *b,
     if(!empty_str(keyID))
     {
         mtx_lock(&(b->mtx));
+        EVP_PKEY_up_ref(pkey);
         shput(b->auths, keyID, pkey);
         err = NO_ERROR;
         mtx_unlock(&(b->mtx));
@@ -197,7 +198,13 @@ void jwtbundle_Bundle_RemoveJWTAuthority(jwtbundle_Bundle *b,
                                             const char *keyID)
 {
     mtx_lock(&(b->mtx));
-    shdel(b->auths, keyID);
+    int idx = shgeti(b->auths, keyID);
+    const bool present = idx >= 0? true : false;
+    if(present)
+    {   
+        EVP_PKEY_free(b->auths[idx].value);
+        shdel(b->auths, keyID);
+    }
     mtx_unlock(&(b->mtx));
 }
 
@@ -206,6 +213,10 @@ void jwtbundle_Bundle_SetJWTAuthorities(jwtbundle_Bundle *b,
 {
     mtx_lock(&(b->mtx));
     ///TODO: check if it is needed to free the EVP_PKEY objs
+    for(size_t i = 0, size = shlen(b->auths); i < size; ++i)
+    {
+        EVP_PKEY_free(b->auths[i].value);
+    }
     shfree(b->auths);
     b->auths = jwtutil_CopyJWTAuthorities(auths);
     mtx_unlock(&(b->mtx));
