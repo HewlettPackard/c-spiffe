@@ -1,3 +1,4 @@
+#include <openssl/bn.h>
 #include "svid.h"
 #include "verify.h"
 #include "../../../internal/pemutil/src/pem.h"
@@ -251,10 +252,141 @@ x509svid_SVID* x509svid_SVID_GetX509SVID(x509svid_SVID *svid,
     return svid;
 }
 
-EVP_PKEY* x509svid_validatePrivateKey(EVP_PKEY *pkey, 
+EVP_PKEY* x509svid_validatePrivateKey(EVP_PKEY *priv_key, 
                                         X509 *cert, 
                                         err_t *err)
 {
-    //dummy
+    if(priv_key)
+    {
+        EVP_PKEY *pub_key = X509_get_pubkey(cert);
+        bool matched = x509svid_keyMatches(priv_key, pub_key, err);
+        
+        if(!(*err))
+        {
+            if(matched)
+            {
+                //signer
+                ///TODO: is it right?
+                return priv_key;
+            }
+            //leaf certificate and private key do not match
+            *err = ERROR3;
+            return NULL;
+        }
+        //either non supported private key or diverging types
+        return NULL;
+    }
+
+    //null private key
+    *err = ERROR1;
     return NULL;
+}
+
+bool x509svid_keyMatches(EVP_PKEY *priv_key, 
+                            EVP_PKEY *pub_key, 
+                            err_t *err)
+{
+    const int priv_type = EVP_PKEY_base_id(priv_key);
+    const int pub_type = EVP_PKEY_base_id(pub_key);
+
+    *err = NO_ERROR;
+
+    if(priv_type == pub_type)
+    {
+        if(priv_type == EVP_PKEY_RSA)
+        {
+            bool res = false;
+            RSA *rsa_priv_key = EVP_PKEY_get1_RSA(priv_key), 
+                *rsa_pub_key = EVP_PKEY_get1_RSA(pub_key);
+            
+            BIGNUM *p = NULL, *q = NULL;
+            BIGNUM *d = NULL, *e = NULL;
+            BIGNUM *n = NULL;
+
+            RSA_get0_factors(rsa_priv_key, &p, &q);
+            RSA_get0_key(rsa_priv_key, NULL, NULL, &d);
+
+            RSA_get0_key(rsa_pub_key, &n, &e, NULL);
+            
+            BN_CTX *ctx = BN_CTX_new();
+            BIGNUM *pq = BN_new();
+            //pq = p*q
+            BN_mul(pq, p, q, ctx);
+
+            //n must be equal to p*q
+            if(!BN_cmp(n, pq))
+            {
+                //one = 1
+                BIGNUM *one = NULL;
+                BN_dec2bn(&one, "1");
+
+                //p_1 = p-1, q_1 = q-1
+                BIGNUM *p_1 = BN_dup(p), *q_1 = BN_dup(q);
+                BN_sub(p_1, p_1, one);
+                BN_sub(q_1, q_1, one);
+
+                //phi_n = (p-1)*(q-1)
+                BIGNUM *phi_n = BN_new();
+                BN_mul(phi_n, p_1, q_1, ctx);
+                
+                //mod = (d*e) % phi_n
+                BIGNUM *mod = BN_new();
+                BN_mod_mul(mod, d, e, phi_n, ctx);
+
+                //(d*e) % phi_n must be 1
+                if(BN_is_one(mod))
+                    res = true;
+
+                BN_free(one);
+                BN_free(p_1);
+                BN_free(q_1);
+                BN_free(phi_n);
+                BN_free(mod);
+            }
+
+            BN_free(pq);            
+            BN_CTX_free(ctx);
+            return res;
+        }
+
+        if(priv_type == EVP_PKEY_EC)
+        {
+            bool res = false;
+            EC_KEY *ec_priv_key = EVP_PKEY_get1_EC_KEY(priv_key), 
+                    *ec_pub_key = EVP_PKEY_get1_EC_KEY(pub_key);   
+            
+            const BIGNUM *n = EC_KEY_get0_private_key(ec_priv_key);
+            const EC_GROUP *priv_group = EC_KEY_get0_group(ec_priv_key);
+
+            const EC_POINT *ec_pub_point = EC_KEY_get0_public_key(ec_pub_key);
+            const EC_GROUP *pub_group = EC_KEY_get0_group(ec_pub_key);
+
+            BN_CTX *ctx = BN_CTX_new();
+
+            //groups must be equal
+            if(!EC_GROUP_cmp(priv_group, pub_group, ctx))
+            {
+                //r = G * n, G being the generator point
+                EC_POINT *r = EC_POINT_new(priv_group);                
+                EC_POINT_mul(priv_group, r, n, NULL, NULL, ctx);
+
+                //r must be equal to ec_pub_point
+                if(!EC_POINT_cmp(priv_group, ec_pub_point, r, ctx))
+                    res = true;
+
+                EC_POINT_free(r);
+            }
+
+            BN_CTX_free(ctx);
+
+            return res;
+        }
+
+        //type not supported
+        *err = ERROR2;
+    }
+    
+    //diverging types
+    *err = ERROR1;
+    return false;
 }
