@@ -141,7 +141,7 @@ void x509bundle_Bundle_SetX509Authorities(x509bundle_Bundle *b, X509 **auths)
 {
     mtx_lock(&(b->mtx));
     ///TODO: check if it is needed to free the X509 objs
-    for(size_t i = 0, size = arrlen(b->auths); i < size; ++i)
+    for(size_t i = 0, size = arrlenu(b->auths); i < size; ++i)
     {
         X509_free(b->auths[i]);
     }
@@ -215,7 +215,7 @@ void x509bundle_Bundle_Free(x509bundle_Bundle *b, bool alloc)
     if(b)
     {
         // mtx_destroy(&(b->mtx));
-        for(size_t i = 0, size = arrlen(b->auths); i < size; ++i)
+        for(size_t i = 0, size = arrlenu(b->auths); i < size; ++i)
         {
             X509_free(b->auths[i]);
         }
