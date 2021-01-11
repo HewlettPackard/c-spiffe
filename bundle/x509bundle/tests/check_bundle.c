@@ -32,8 +32,8 @@ START_TEST(test_x509bundle_Parse)
     arrfree(buffer);
 
     ck_assert_uint_eq(err, NO_ERROR);
-    ck_assert_uint_eq(arrlen(bundle_ptr->auths), 4);
-    for(size_t i = 0, size = arrlen(bundle_ptr->auths); i < size; ++i)
+    ck_assert_uint_eq(arrlenu(bundle_ptr->auths), 4);
+    for(size_t i = 0, size = arrlenu(bundle_ptr->auths); i < size; ++i)
     {
         const X509 *cert = bundle_ptr->auths[i];
         ck_assert(cert != NULL);
@@ -52,8 +52,8 @@ START_TEST(test_x509bundle_Load)
     x509bundle_Bundle *bundle_ptr = x509bundle_Load(td, "certs.pem", &err);
 
     ck_assert_uint_eq(err, NO_ERROR);
-    ck_assert_uint_eq(arrlen(bundle_ptr->auths), 4);
-    for(size_t i = 0, size = arrlen(bundle_ptr->auths); i < size; ++i)
+    ck_assert_uint_eq(arrlenu(bundle_ptr->auths), 4);
+    for(size_t i = 0, size = arrlenu(bundle_ptr->auths); i < size; ++i)
     {
         const X509 *cert = bundle_ptr->auths[i];
         ck_assert(cert != NULL);
@@ -177,7 +177,7 @@ START_TEST(test_x509bundle_Bundle_X509Authorities)
 
     ck_assert(x509util_CertsEqual(x509_auths, bundle_ptr->auths));
 
-    for(size_t i = 0, size = arrlen(x509_auths); i < size; ++i)
+    for(size_t i = 0, size = arrlenu(x509_auths); i < size; ++i)
     {
         X509_free(x509_auths[i]);
     }
