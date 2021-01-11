@@ -1,0 +1,4 @@
+gcc -c -Wall ../src/pem.c -O2 -o pem.o
+gcc -c -Wall check_pem.c -O2 -o check_pem.o
+gcc pem.o check_pem.o -lcheck -lcheck_pic -lm -lrt -lpthread -lsubunit -lcrypto -o check_pem
+rm *.o
