@@ -70,10 +70,9 @@ void** parseBlocks(const byte *pem_byte,
                     const char *type, 
                     err_t *err)
 {
-    //bio_mem MUST be initialized just one time (??)
-    /** TODO: check whether BIO keeps track of the
-     * already read data.
-    */
+    //bio_mem MUST be initialized just one time 
+
+
     BIO *bio_mem = BIO_new(BIO_s_mem());
     BIO_puts(bio_mem, (const char*) pem_byte);
     
