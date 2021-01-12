@@ -1,11 +1,6 @@
 #include "util.h"
 #include "../../cryptoutil/src/keys.h"
 
-/**
- * TODO: does jwutil_CopyJWTAuthorities need to copy the
- * contents of the pointer or just the pointer?
- */
-
 map_string_EVP_PKEY* jwtutil_CopyJWTAuthorities(const map_string_EVP_PKEY *hash)
 {
     if(hash)
