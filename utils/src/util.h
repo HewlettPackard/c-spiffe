@@ -29,7 +29,9 @@ enum enum_err_t
     ERROR1,
     ERROR2,
     ERROR3,
-    ERROR4
+    ERROR4,
+    ERROR5,
+    ERROR6
 };
 
 typedef enum enum_err_t err_t;
