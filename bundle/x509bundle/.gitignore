@@ -1,0 +1,9 @@
+tests/bundle.o
+tests/certs.pem
+tests/check_bundle
+tests/check_bundle.o
+tests/id.o
+tests/keys.o
+tests/trustdomain.o
+tests/util1.o
+tests/util2.o

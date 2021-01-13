@@ -126,7 +126,7 @@ static string_t UriPathSegmentA_string(const UriPathSegmentA *head)//, const Uri
             //string from range
             string_t str_seg = string_new_range(it->text.first, it->text.afterLast);
             //insert slash at the end
-            const size_t len = arrlen(str_seg);
+            const size_t len = arrlenu(str_seg);
             arrins(str_seg, len - 1, '/');
             //concatenates string
             str_path = string_push(str_path, str_seg);
