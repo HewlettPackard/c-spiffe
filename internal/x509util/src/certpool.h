@@ -21,6 +21,8 @@ typedef struct x509util_CertPool
 x509util_CertPool* x509util_CertPool_New(void);
 void x509util_CertPool_AddCert(x509util_CertPool *certpool, X509 *cert);
 bool x509util_CertPool_contains(x509util_CertPool *certpool, const X509 *cert);
+int* x509util_CertPool_findPotentialParents(x509util_CertPool *certpool, 
+                                            const X509 *cert);
 void x509util_CertPool_Free(x509util_CertPool *certpool);
 
 #endif

@@ -127,7 +127,43 @@ bool x509util_CertPool_contains(x509util_CertPool *certpool, const X509 *cert)
     return false;
 }
 
-void x509util_CertPoll_Free(x509util_CertPool *certpool)
+int* x509util_CertPool_findPotentialParents(x509util_CertPool *certpool, 
+                                            const X509 *cert)
+{
+    if(certpool)
+    {
+        int *candidates = NULL;
+        const ASN1_OCTET_STRING *auth_keyid = X509_get0_authority_key_id(cert);
+
+        if(auth_keyid)
+        {
+            string_t auth_keyid_str = ASN1_STRING_to_string(auth_keyid);
+
+            int idx = shgeti(certpool->subj_keyid_idcs, auth_keyid_str);
+            if(idx >= 0)
+                candidates = certpool->subj_keyid_idcs[idx].value;
+
+            arrfree(auth_keyid_str);
+        }
+
+        if(arrlenu(candidates) == 0)
+        {
+            string_t auth_name_str = X509_get_issuer_name(X509_NAME_to_string(cert));
+            
+            int idx = shgeti(certpool->name_idcs, auth_name_str);
+            if(idx >= 0)
+                candidates = certpool->name_idcs[idx].value;
+
+            arrfree(auth_name_str);
+        }
+    
+        return candidates;
+    }
+
+    return NULL;
+}
+
+void x509util_CertPool_Free(x509util_CertPool *certpool)
 {
     if(certpool)
     {
