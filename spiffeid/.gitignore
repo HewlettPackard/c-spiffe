@@ -1,0 +1,11 @@
+tests/check_id
+tests/check_id.o
+tests/check_match
+tests/check_match.o
+tests/check_trustdomain
+tests/check_trustdomain.o
+tests/id.o
+tests/match.o
+tests/trustdomain.o
+tests/util.o
+
