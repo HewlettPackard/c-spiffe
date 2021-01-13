@@ -1,0 +1,8 @@
+# Visual Studio Code
+/.vscode/
+
+# in-tree build products
+build/
+*.pb.cc
+*.pb.h
+*.out
