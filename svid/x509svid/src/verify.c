@@ -1,37 +1,52 @@
+#include "../../../internal/x509util/src/util.h"
 #include "verify.h"
 
-//verify chain
-static X509*** verifyX509(X509 *cert, X509 **roots, X509 **inters, err_t *err)
+static int findKeyId(const char *keyid, const char **keys)
 {
-    X509_STORE *certs_store = X509_STORE_new();
-    for(size_t i = 0, size = arrlenu(roots); i < size; ++i)
+    int idx = -1;
+
+    for(int i = 0, size = arrlen(keys); i < size; ++i)
     {
-        X509_STORE_add_cert(certs_store, roots[i]);
+        //if keyid == keys[i], update and break
+        if(!strcmp(keyid, keys[i]))
+        {
+            idx = i;
+            break;
+        }
     }
 
-    STACK_OF(X509) *certs_stack = sk_X509_new(NULL);
-    for(size_t i = 0, size = arrlenu(inters); i < size; ++i)
+    return idx;
+}
+
+//verify chain
+static X509*** verifyX509(X509 *cert, 
+                    x509util_CertPool *roots, 
+                    x509util_CertPool *inters, 
+                    err_t *err)
+{
+    *err = NO_ERROR;
+    if(cert && roots)
     {
-        sk_X509_push(certs_stack, inters[i]);
-    }
+        X509 ***chains = NULL;
 
-    X509_STORE_CTX *certs_ctx = X509_STORE_CTX_new();
-    X509_STORE_CTX_init(certs_ctx, certs_store, cert, certs_stack);
+        if(x509util_CertPool_contains(roots, cert))
+        {
+            //if certificate is root, we already have a chain
+            X509 **chain = NULL;
+            arrput(chain, cert);
 
-    int ret = X509_verify_cert(certs_ctx);
-
-    if(ret > 0)
-    {
-        ///TODO: create valid chain
+            arrput(chains, chain);
+        }
+        else
+        {
+            //we have to build the chains
+        }
     }
     else
-    {
-        ///TODO: handle error
-    }
+        //null certificate(s)
+        *err = ERROR1;
 
-    X509_STORE_free(certs_store);
-    sk_X509_free(certs_stack);
-    X509_STORE_CTX_free(certs_ctx);
+    return NULL;
 }
 
 X509*** x509svid_ParseAndVerify(byte **raw_certs, 
@@ -74,11 +89,19 @@ X509*** x509svid_Verify(X509 **certs,
                 if(!(*err))
                 {
                     arrdel(certs, 0);
+
+                    x509util_CertPool *x509auths = x509util_NewCertPool(
+                        x509bundle_Bundle_X509Authorities(bundle));
+                    x509util_CertPool *certspool = x509util_NewCertPool(certs);
+
                     X509 ***chains = verifyX509(leaf, 
-                                x509bundle_Bundle_X509Authorities(bundle),
-                                certs,
+                                x509auths,
+                                certspool,
                                 err);
                     arrins(certs, 0, leaf);
+
+                    x509util_CertPool_Free(x509auths);
+                    x509util_CertPool_Free(certspool);
 
                     if(!(*err))
                     {
@@ -125,28 +148,34 @@ X509*** x509svid_Verify(X509 **certs,
 
 spiffeid_ID x509svid_IDFromCert(X509 *cert, err_t *err)
 {
-    int nid = NID_subject_alt_name;
-    STACK_OF(GENERAL_NAME) *san_names = 
-        (GENERAL_NAME*) X509_get_ext_d2i(cert, nid, NULL, NULL);
-    int san_name_num = sk_GENERAL_NAME_num(san_names);
-
-    if(san_name_num == 1)
+    if(cert)
     {
-        const GENERAL_NAME *name = sk_GENERAL_NAME_value(san_names, 0);
-        string_t uri_name = string_new((char*) name->d.uniformResourceIdentifier->data);
+        int nid = NID_subject_alt_name;
+        STACK_OF(GENERAL_NAME) *san_names = 
+            (GENERAL_NAME*) X509_get_ext_d2i(cert, nid, NULL, NULL);
+        int san_name_num = sk_GENERAL_NAME_num(san_names);
 
-        return spiffeid_FromString(uri_name, err);
-    }
-    else if(san_name_num == 0)
-    {
-        //certificate contains no URI SAN
-        *err = ERROR1;
+        if(san_name_num == 1)
+        {
+            const GENERAL_NAME *name = sk_GENERAL_NAME_value(san_names, 0);
+            string_t uri_name = string_new((char*) name->d.uniformResourceIdentifier->data);
+
+            return spiffeid_FromString(uri_name, err);
+        }
+        else if(san_name_num == 0)
+        {
+            //certificate contains no URI SAN
+            *err = ERROR1;
+        }
+        else
+        {
+            //certificate contains more than one URI SAN
+            *err = ERROR2;
+        }
     }
     else
-    {
-        //certificate contains more than one URI SAN
-        *err = ERROR2;
-    }
+        //null certificate
+        *err = ERROR3;
 
     return (spiffeid_ID){{NULL}, NULL};
 }
