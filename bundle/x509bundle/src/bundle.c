@@ -140,7 +140,6 @@ bool x509bundle_Bundle_HasX509Authority(x509bundle_Bundle *b, X509 *auth)
 void x509bundle_Bundle_SetX509Authorities(x509bundle_Bundle *b, X509 **auths)
 {
     mtx_lock(&(b->mtx));
-    ///TODO: check if it is needed to free the X509 objs
     for(size_t i = 0, size = arrlenu(b->auths); i < size; ++i)
     {
         X509_free(b->auths[i]);
