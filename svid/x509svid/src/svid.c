@@ -43,7 +43,6 @@ x509svid_SVID* x509svid_Parse(const byte *certbytes,
     //could not parse certificates
     if(*err)
     {
-        ///TODO: check if it is needed to free each X509 obj in certs
         if(certs)
         {
             for(size_t i = 0, size = arrlenu(certs); i < size; ++i)
