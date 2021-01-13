@@ -5,10 +5,6 @@
 #include "trustdomain.h"
 #include "../../utils/src/stb_ds.h"
 
-/*
- * TODO: check return values in spiffeid_FromURI
- */
-
 string_t join(string_arr_t str_arr)
 {
     string_t res_str = NULL;

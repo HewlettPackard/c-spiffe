@@ -7,10 +7,6 @@
 #include "certpool.h"
 #include "../../../utils/src/util.h"
 
-/** TODO: what is a certificate pool??
-func NewCertPool(certs []*x509.Certificate) *x509.CertPool
-*/
-
 X509** x509util_CopyX509Authorities(X509 **certs);
 bool x509util_CertsEqual(X509 **certs1, X509 **certs2);
 byte** x509util_RawCertsFromCerts(const X509 **certs);
