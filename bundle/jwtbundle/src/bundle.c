@@ -213,7 +213,7 @@ void jwtbundle_Bundle_SetJWTAuthorities(jwtbundle_Bundle *b,
 {
     mtx_lock(&(b->mtx));
     ///TODO: check if it is needed to free the EVP_PKEY objs
-    for(size_t i = 0, size = shlen(b->auths); i < size; ++i)
+    for(size_t i = 0, size = shlenu(b->auths); i < size; ++i)
     {
         EVP_PKEY_free(b->auths[i].value);
     }
@@ -284,7 +284,7 @@ void jwtbundle_Bundle_Free(jwtbundle_Bundle *b, bool alloc)
     if(b)
     {
         // mtx_destroy(&(b->mtx));
-        for(size_t i = 0, size = hmlen(b->auths); i < size; ++i)
+        for(size_t i = 0, size = shlenu(b->auths); i < size; ++i)
         {
             EVP_PKEY_free(b->auths[i].value);
         }
