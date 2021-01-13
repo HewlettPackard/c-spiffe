@@ -55,6 +55,8 @@ EVP_PKEY* x509svid_validatePrivateKey(EVP_PKEY *priv_key,
 bool x509svid_keyMatches(EVP_PKEY *priv_key, 
                             EVP_PKEY *pub_key, 
                             err_t *err);
+
+void x509svid_SVID_Free(x509svid_SVID *svid, bool alloc);
 /*
 func keyMatches(privateKey crypto.PrivateKey, publicKey crypto.PublicKey) (bool, error) {
 */

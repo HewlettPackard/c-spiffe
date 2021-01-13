@@ -390,3 +390,24 @@ bool x509svid_keyMatches(EVP_PKEY *priv_key,
     *err = ERROR1;
     return false;
 }
+
+void x509svid_SVID_Free(x509svid_SVID *svid, bool alloc)
+{
+    if(svid)
+    {
+        spiffeid_ID_Free(&(svid->id), false);
+        
+        for(size_t i = 0, size = arrlenu(svid->certs); i < size; ++i)
+        {
+            X509_free(svid->certs[i]);
+        }
+        arrfree(svid->certs);
+
+        EVP_PKEY_free(svid->privateKey);
+
+        if(alloc)
+        {
+            free(svid);
+        }
+    }
+}
