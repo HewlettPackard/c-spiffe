@@ -25,7 +25,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         cmake \
         libssl-dev \
         liburiparser1 liburiparser-dev \
-        protobuf-compiler
+        protobuf-compiler \
+        libprotobuf-dev
 RUN apt-get clean
 
 # gRPC
