@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include "workload.pb.h"
 #include "workload.grpc.pb.h"
-#include "../../svid/x509svid/src/svid.h"
+#include "x509svid/src/svid.h"
 
 using grpc::Channel;
 using grpc::ClientContext;
@@ -22,12 +22,12 @@ using grpc::Status;
 
 x509svid_SVID* fetch_SVID_CPP(){
     std::shared_ptr<Channel> chan = grpc::CreateChannel("unix:///tmp/agent.sock",grpc::InsecureChannelCredentials());
-    auto stub = SpiffeWorkloadAPI::NewStub(chan);
+    auto stub = workload::SpiffeWorkloadAPI::NewStub(chan);
     ClientContext ctx;
     ctx.AddMetadata("workload.spiffe.io","true");
 
-    X509SVIDRequest req = X509SVIDRequest();
-    X509SVIDResponse response;
+    workload::X509SVIDRequest req = workload::X509SVIDRequest();
+    workload::X509SVIDResponse response;
     
     auto c_reader = stub->FetchX509SVID(&ctx,req);
     
@@ -42,7 +42,7 @@ x509svid_SVID* fetch_SVID_CPP(){
             printf("KEY:\n%s\n",id.x509_svid_key());
             err_t err;
             
-            x509svid = x509svid_Parse((byte*) id.x509_svid().data(),(byte*) id.x509_svid_key().data(),&err);
+            x509svid = x509svid_Parse((byte*) id.x509_svid().data(), (byte*) id.x509_svid_key().data(), &err);
             
         }
         return x509svid;
