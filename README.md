@@ -21,7 +21,7 @@ gRPC C++ examples built with CMake.
 |   │   ├── file2.cc
 |   │   ├── file3.cc
 |   │   └── CMakeLists.txt
-│   ├── test
+│   ├── tests
 |   │   ├── test1
 |   │   ├── test2
 |   │   ├── test3
@@ -34,7 +34,7 @@ gRPC C++ examples built with CMake.
 │   │   │   ├── file2.cc
 │   │   │   ├── file3.cc
 |   │   │   └── CMakeLists.txt 
-│   │   ├── test
+│   │   ├── tests
 |   │   │   ├── test1
 |   │   │   ├── test2
 |   │   │   ├── test3
@@ -46,7 +46,7 @@ gRPC C++ examples built with CMake.
 │   │   │   ├── file2.cc
 │   │   │   ├── file3.cc
 |   │   │   └── CMakeLists.txt 
-│   │   ├── test
+│   │   ├── tests
 |   │   │   ├── test1
 |   │   │   ├── test2
 |   │   │   ├── test3
@@ -58,7 +58,7 @@ gRPC C++ examples built with CMake.
 │   │   │   ├── file2.cc
 │   │   │   ├── file3.cc
 |   │   │   └── CMakeLists.txt 
-│   │   ├── test
+│   │   ├── tests
 |   │   │   ├── test1
 |   │   │   ├── test2
 |   │   │   ├── test3
