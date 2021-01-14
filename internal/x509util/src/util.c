@@ -1,7 +1,7 @@
 #include <openssl/x509.h>
 #include "util.h"
 
-X509** x509util_CopyX509Authorities(const X509 **certs)
+X509** x509util_CopyX509Authorities(X509 **certs)
 {
     if(certs)
     {
@@ -11,7 +11,8 @@ X509** x509util_CopyX509Authorities(const X509 **certs)
             X509 *cert = certs[i];
             //ups the ref count, so it is memory safe
             //no need to copy the contents, for now
-            X509_up_ref(cert);
+            if(cert)
+                X509_up_ref(cert);
             arrput(new_certs, cert);
         }
 
@@ -20,7 +21,7 @@ X509** x509util_CopyX509Authorities(const X509 **certs)
     return NULL;
 }
 
-bool x509util_CertsEqual(const X509 **certs1, const X509 **certs2)
+bool x509util_CertsEqual(X509 **certs1, X509 **certs2)
 {
     if(certs1 && certs2)
     {
@@ -34,23 +35,11 @@ bool x509util_CertsEqual(const X509 **certs1, const X509 **certs2)
 
             return true;
         }
+        else
+            return false;
     }
     
-    return false;
+    return certs1 == certs2;
 }
 
-/**
- * TODO: how is it different from pemutil_EncodeCertificates?
- * Answer: it seems it just uses the raw value of the X509 certificate. (??)
- */
-byte** x509util_RawCertsFromCerts(const X509 **certs)
-{
-    //dummy
-    return NULL;
-}
 
-byte* x509util_ConcatRawCertsFromCerts(const X509 **certs)
-{
-    //dummy
-    return NULL;
-}

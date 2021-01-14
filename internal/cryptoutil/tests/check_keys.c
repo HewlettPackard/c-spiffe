@@ -13,7 +13,6 @@ START_TEST(test_cryptoutil_RSAPublicKeyEqual)
     "QSYlFuShWrHPtiLmUdPoP6CV2mML1tk+l7DIIqXrQhLUKDACeM5roMx0kLhUWB8P\n"
     "+0uj1CNlNN4JRZlC7xFfqiMbFRU9Z4N6YwIDAQAB\n"
     "-----END RSA PUBLIC KEY-----";
-    const int pubkey_len1 = strlen(pubkey_bytes1);
 
     const char pubkey_bytes2[] = 
     "-----BEGIN RSA PUBLIC KEY-----\n"
@@ -24,7 +23,6 @@ START_TEST(test_cryptoutil_RSAPublicKeyEqual)
     "eBy7fQsPmxcn4c74Lz4CvhOr7VdQpeBzNeG2CtkefKWyTk7Vu4FZnAgNd/202XAr\n"
     "c6GmEQqD2M2zXH/nVZg5oLznECDVQ1x/pwIDAQAB\n"
     "-----END RSA PUBLIC KEY-----";
-    const int pubkey_len2 = strlen(pubkey_bytes2);
     
     const char pubkey_bytes3[] =
     "-----BEGIN PUBLIC KEY-----\n"
@@ -36,21 +34,20 @@ START_TEST(test_cryptoutil_RSAPublicKeyEqual)
     "PPgWq78db+gU3QsePeo2Ki5sonkcyQQQlCkL35Asbv8khvk90gist4kijPnVBCuv\n"
     "cwIDAQAB\n"
     "-----END PUBLIC KEY-----";
-    const int pubkey_len3 = strlen(pubkey_bytes3);
     
     BIO *bio_mem;
     
-    bio_mem = BIO_new_mem_buf((void*) pubkey_bytes1, pubkey_len1);
+    bio_mem = BIO_new_mem_buf((void*) pubkey_bytes1, -1);
     RSA *rsa_pubkey1 = PEM_read_bio_RSAPublicKey(bio_mem, NULL, NULL, NULL);
 
     BIO_free(bio_mem);
 
-    bio_mem = BIO_new_mem_buf((void*) pubkey_bytes2, pubkey_len2);
+    bio_mem = BIO_new_mem_buf((void*) pubkey_bytes2, -1);
     RSA *rsa_pubkey2 = PEM_read_bio_RSAPublicKey(bio_mem, NULL, NULL, NULL);
 
     BIO_free(bio_mem);
 
-    bio_mem = BIO_new_mem_buf((void*) pubkey_bytes3, pubkey_len3);
+    bio_mem = BIO_new_mem_buf((void*) pubkey_bytes3, -1);
     EVP_PKEY *evp_pubkey = PEM_read_bio_PUBKEY(bio_mem, NULL, NULL, NULL);
     RSA *rsa_pubkey3 = EVP_PKEY_get1_RSA(evp_pubkey);
 
@@ -64,6 +61,9 @@ START_TEST(test_cryptoutil_RSAPublicKeyEqual)
     ck_assert(!cryptoutil_RSAPublicKeyEqual(rsa_pubkey1, rsa_pubkey2));
     ck_assert(!cryptoutil_RSAPublicKeyEqual(rsa_pubkey1, rsa_pubkey3));
     ck_assert(!cryptoutil_RSAPublicKeyEqual(rsa_pubkey2, rsa_pubkey3));
+    ck_assert(!cryptoutil_RSAPublicKeyEqual(rsa_pubkey2, rsa_pubkey1));
+    ck_assert(!cryptoutil_RSAPublicKeyEqual(rsa_pubkey3, rsa_pubkey1));
+    ck_assert(!cryptoutil_RSAPublicKeyEqual(rsa_pubkey3, rsa_pubkey2));
 
     ck_assert(cryptoutil_RSAPublicKeyEqual(rsa_pubkey1, rsa_pubkey1));
     ck_assert(cryptoutil_RSAPublicKeyEqual(rsa_pubkey2, rsa_pubkey2));
@@ -85,14 +85,12 @@ START_TEST(test_cryptoutil_ECDSAPublicKeyEqual)
     "F+6m5SKAEL1wS5pqya91N7oudF3yFW8oZRE4RQRdSLl3fV2aVXKwGDXciwhUhw8k\n"
     "x5OS4iZpMAY+LI4WVGU=\n"
     "-----END PUBLIC KEY-----";
-    const int pubkey_len1 = strlen(pubkey_bytes1);
 
     const char pubkey_bytes2[] = 
     "-----BEGIN PUBLIC KEY-----\n"
     "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEOr6rMmRRNKuZuwws/hWwFTM6ECEE\n"
     "aJGGARCJUO4UfoURl8b4JThGt8VDFKeR2i+ZxE+xh/wTBaJ/zvtSqZiNnQ==\n"
     "-----END PUBLIC KEY-----";
-    const int pubkey_len2 = strlen(pubkey_bytes2);
     
     const char pubkey_bytes3[] = 
     "-----BEGIN PUBLIC KEY-----\n"
@@ -100,21 +98,20 @@ START_TEST(test_cryptoutil_ECDSAPublicKeyEqual)
     "SP3ERlrT539LE/x2auTwUVTCkaFS6R5IBl2QIvEml+UXgBU0sDK3PqZsqHcQzvBz\n"
     "Z/lX7NehqphbVCQBr3nkhDwyq0tkrmyD\n"
     "-----END PUBLIC KEY-----";
-    const int pubkey_len3 = strlen(pubkey_bytes3);
     
     BIO *bio_mem;
     
-    bio_mem = BIO_new_mem_buf((void*) pubkey_bytes1, pubkey_len1);
+    bio_mem = BIO_new_mem_buf((void*) pubkey_bytes1, -1);
     EC_KEY *ec_pubkey1 = PEM_read_bio_EC_PUBKEY(bio_mem, NULL, NULL, NULL);
 
     BIO_free(bio_mem);
 
-    bio_mem = BIO_new_mem_buf((void*) pubkey_bytes2, pubkey_len2);
+    bio_mem = BIO_new_mem_buf((void*) pubkey_bytes2, -1);
     EC_KEY *ec_pubkey2 = PEM_read_bio_EC_PUBKEY(bio_mem, NULL, NULL, NULL);
 
     BIO_free(bio_mem);
 
-    bio_mem = BIO_new_mem_buf((void*) pubkey_bytes3, pubkey_len3);
+    bio_mem = BIO_new_mem_buf((void*) pubkey_bytes3, -1);
     EC_KEY *ec_pubkey3 = PEM_read_bio_EC_PUBKEY(bio_mem, NULL, NULL, NULL);
 
     BIO_free(bio_mem);
@@ -126,6 +123,9 @@ START_TEST(test_cryptoutil_ECDSAPublicKeyEqual)
     ck_assert(!cryptoutil_ECDSAPublicKeyEqual(ec_pubkey1, ec_pubkey2));
     ck_assert(!cryptoutil_ECDSAPublicKeyEqual(ec_pubkey1, ec_pubkey3));
     ck_assert(!cryptoutil_ECDSAPublicKeyEqual(ec_pubkey2, ec_pubkey3));
+    ck_assert(!cryptoutil_ECDSAPublicKeyEqual(ec_pubkey2, ec_pubkey1));
+    ck_assert(!cryptoutil_ECDSAPublicKeyEqual(ec_pubkey3, ec_pubkey1));
+    ck_assert(!cryptoutil_ECDSAPublicKeyEqual(ec_pubkey3, ec_pubkey2));
 
     ck_assert(cryptoutil_ECDSAPublicKeyEqual(ec_pubkey1, ec_pubkey1));
     ck_assert(cryptoutil_ECDSAPublicKeyEqual(ec_pubkey2, ec_pubkey2));
@@ -146,7 +146,6 @@ START_TEST(test_cryptoutil_PublicKeyEqual)
     "NJrrhpp/rNMO9nyLYPGs9MfdBiWUPmHW5mY1oD0ye4my0tEsHOlgHC8AhA8OtiHr\n"
     "6IY0agXmH/y5YmSWbwIDAQAB\n"
     "-----END PUBLIC KEY-----";
-    const int rsa_pubkey_len1 = strlen(rsa_pubkey_bytes1);
 
     const char rsa_pubkey_bytes2[] = 
     "-----BEGIN PUBLIC KEY-----\n"
@@ -158,7 +157,6 @@ START_TEST(test_cryptoutil_PublicKeyEqual)
     "lmCpGSynXNcpZ/06+vofGi/2MlpQZNhHAo8eayMp6FcvNucIpUndo1X8dKMv3Y26\n"
     "ZQIDAQAB\n"
     "-----END PUBLIC KEY-----";
-    const int rsa_pubkey_len2 = strlen(rsa_pubkey_bytes2);
     
     const char rsa_pubkey_bytes3[] =
     "-----BEGIN PUBLIC KEY-----\n"
@@ -170,7 +168,6 @@ START_TEST(test_cryptoutil_PublicKeyEqual)
     "PPgWq78db+gU3QsePeo2Ki5sonkcyQQQlCkL35Asbv8khvk90gist4kijPnVBCuv\n"
     "cwIDAQAB\n"
     "-----END PUBLIC KEY-----";
-    const int rsa_pubkey_len3 = strlen(rsa_pubkey_bytes3);
 
     const char ecdsa_pubkey_bytes1[] = 
     "-----BEGIN PUBLIC KEY-----\n"
@@ -179,14 +176,12 @@ START_TEST(test_cryptoutil_PublicKeyEqual)
     "F+6m5SKAEL1wS5pqya91N7oudF3yFW8oZRE4RQRdSLl3fV2aVXKwGDXciwhUhw8k\n"
     "x5OS4iZpMAY+LI4WVGU=\n"
     "-----END PUBLIC KEY-----";
-    const int ecdsa_pubkey_len1 = strlen(ecdsa_pubkey_bytes1);
 
     const char ecdsa_pubkey_bytes2[] = 
     "-----BEGIN PUBLIC KEY-----\n"
     "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEOr6rMmRRNKuZuwws/hWwFTM6ECEE\n"
     "aJGGARCJUO4UfoURl8b4JThGt8VDFKeR2i+ZxE+xh/wTBaJ/zvtSqZiNnQ==\n"
     "-----END PUBLIC KEY-----";
-    const int ecdsa_pubkey_len2 = strlen(ecdsa_pubkey_bytes2);
     
     const char ecdsa_pubkey_bytes3[] = 
     "-----BEGIN PUBLIC KEY-----\n"
@@ -194,36 +189,35 @@ START_TEST(test_cryptoutil_PublicKeyEqual)
     "SP3ERlrT539LE/x2auTwUVTCkaFS6R5IBl2QIvEml+UXgBU0sDK3PqZsqHcQzvBz\n"
     "Z/lX7NehqphbVCQBr3nkhDwyq0tkrmyD\n"
     "-----END PUBLIC KEY-----";
-    const int ecdsa_pubkey_len3 = strlen(ecdsa_pubkey_bytes3);
 
     BIO *bio_mem;
     
-    bio_mem = BIO_new_mem_buf((void*) rsa_pubkey_bytes1, rsa_pubkey_len1);
+    bio_mem = BIO_new_mem_buf((void*) rsa_pubkey_bytes1, -1);
     EVP_PKEY *rsa_pubkey1 = PEM_read_bio_PUBKEY(bio_mem, NULL, NULL, NULL);
 
     BIO_free(bio_mem);
 
-    bio_mem = BIO_new_mem_buf((void*) rsa_pubkey_bytes2, rsa_pubkey_len2);
+    bio_mem = BIO_new_mem_buf((void*) rsa_pubkey_bytes2, -1);
     EVP_PKEY *rsa_pubkey2 = PEM_read_bio_PUBKEY(bio_mem, NULL, NULL, NULL);
 
     BIO_free(bio_mem);
 
-    bio_mem = BIO_new_mem_buf((void*) rsa_pubkey_bytes3, rsa_pubkey_len3);
+    bio_mem = BIO_new_mem_buf((void*) rsa_pubkey_bytes3, -1);
     EVP_PKEY *rsa_pubkey3 = PEM_read_bio_PUBKEY(bio_mem, NULL, NULL, NULL);
 
     BIO_free(bio_mem);
 
-    bio_mem = BIO_new_mem_buf((void*) ecdsa_pubkey_bytes1, ecdsa_pubkey_len1);
+    bio_mem = BIO_new_mem_buf((void*) ecdsa_pubkey_bytes1, -1);
     EVP_PKEY *ec_pubkey1 = PEM_read_bio_PUBKEY(bio_mem, NULL, NULL, NULL);
 
     BIO_free(bio_mem);
 
-    bio_mem = BIO_new_mem_buf((void*) ecdsa_pubkey_bytes2, ecdsa_pubkey_len2);
+    bio_mem = BIO_new_mem_buf((void*) ecdsa_pubkey_bytes2, -1);
     EVP_PKEY *ec_pubkey2 = PEM_read_bio_PUBKEY(bio_mem, NULL, NULL, NULL);
 
     BIO_free(bio_mem);
 
-    bio_mem = BIO_new_mem_buf((void*) ecdsa_pubkey_bytes3, ecdsa_pubkey_len3);
+    bio_mem = BIO_new_mem_buf((void*) ecdsa_pubkey_bytes3, -1);
     EVP_PKEY *ec_pubkey3 = PEM_read_bio_PUBKEY(bio_mem, NULL, NULL, NULL);
 
     BIO_free(bio_mem);
@@ -238,22 +232,38 @@ START_TEST(test_cryptoutil_PublicKeyEqual)
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey1, rsa_pubkey2));
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey1, rsa_pubkey3));
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey2, rsa_pubkey3));
+    ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey2, rsa_pubkey1));
+    ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey3, rsa_pubkey1));
+    ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey3, rsa_pubkey2));
 
     ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey1, ec_pubkey2));
     ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey1, ec_pubkey3));
     ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey2, ec_pubkey3));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey2, ec_pubkey1));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey3, ec_pubkey1));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey3, ec_pubkey2));
 
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey1, ec_pubkey1));
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey1, ec_pubkey2));
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey1, ec_pubkey3));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey1, rsa_pubkey1));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey2, rsa_pubkey1));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey3, rsa_pubkey1));
 
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey2, ec_pubkey1));
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey2, ec_pubkey2));
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey2, ec_pubkey3));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey1, rsa_pubkey2));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey2, rsa_pubkey2));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey3, rsa_pubkey2));
+
 
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey3, ec_pubkey1));
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey3, ec_pubkey2));
     ck_assert(!cryptoutil_PublicKeyEqual(rsa_pubkey3, ec_pubkey3));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey1, rsa_pubkey3));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey2, rsa_pubkey3));
+    ck_assert(!cryptoutil_PublicKeyEqual(ec_pubkey3, rsa_pubkey3));
 
     ck_assert(cryptoutil_PublicKeyEqual(rsa_pubkey1, rsa_pubkey1));
     ck_assert(cryptoutil_PublicKeyEqual(rsa_pubkey2, rsa_pubkey2));
