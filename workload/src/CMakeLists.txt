@@ -11,8 +11,6 @@ set (proto_name workload)
 get_filename_component(proto "../../protos/${proto_name}.proto" ABSOLUTE)
 get_filename_component(proto_dir "${proto}" DIRECTORY)
 
-message(STATUS "Using 123 ${proto}")
-
 # Generate source files
 set(proto_srcs "${CMAKE_CURRENT_BINARY_DIR}/${proto_name}.pb.cc")
 set(proto_hdrs "${CMAKE_CURRENT_BINARY_DIR}/${proto_name}.pb.h")
@@ -32,7 +30,11 @@ add_custom_command(
 # Include generated *.pb.h files
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_executable(client "client.cc" "requestor.cpp"
+include_directories(
+    ${PROJECT_ROOT_DIR}/svid/
+)
+
+add_executable(client "client.cc" "requestor.cpp" "../../svid/x509svid/src/svid.c"
   ${proto_srcs}
   ${grpc_srcs})
 target_link_libraries(client
@@ -40,6 +42,4 @@ target_link_libraries(client
   ${_GRPC_GRPCPP}
   ${_GRPC_GRPC}
   ${_PROTOBUF_LIBPROTOBUF}
-  ${PROTOBUF_LIBRARY}
-  gRPC::grpc++
   pthread )
