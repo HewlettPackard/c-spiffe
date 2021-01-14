@@ -26,7 +26,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libssl-dev \
         liburiparser1 liburiparser-dev \
         protobuf-compiler \
-        libprotobuf-dev
+        libprotobuf-dev \
+        check
 RUN apt-get clean
 
 # gRPC
