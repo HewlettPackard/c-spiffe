@@ -80,13 +80,13 @@ gRPC C++ examples built with CMake.
 ##  Build Docker Image
 
 ```
-docker build -f docker/grpc.Dockerfile --build-arg GPRC_VERSION=1.34.0 --build-arg NUM_JOBS=8 --tag grpc-cmake:1.34.0 .
+docker build -f docker/grpc.Dockerfile --build-arg GPRC_VERSION=1.34.0 --build-arg NUM_JOBS=8 --tag c-spiffe:1.34.0 .
 ```
 
 ## Run Docker Container
 
 ```
-docker run -it --rm --network host -v $(pwd):/mnt grpc-cmake:1.34.0
+docker run -it --rm --network host -v $(pwd):/mnt c-spiffe:1.34.0
 ```
 
 ## Building
