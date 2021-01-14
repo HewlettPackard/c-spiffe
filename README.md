@@ -6,21 +6,6 @@ C extension for Spiffe platform.
 
 gRPC C++ examples built with CMake.
 
-
-## Dependencies
-
-* gRPC 1.34
-* CMake 3.13.0+
-
-
-## Building
-Build the c-spiffe project:
-
-```bash
-cmake -B build
-cmake --build build --config Release --parallel
-```
-
 ## Files
 
 ```
@@ -85,4 +70,29 @@ cmake --build build --config Release --parallel
 ├── protos
 │   ├── workload.proto
 └── README.md
+```
+
+## Dependencies
+
+* gRPC 1.34
+* CMake 3.13.0+
+
+##  Build Docker Image
+
+```
+docker build -f docker/grpc.Dockerfile --build-arg GPRC_VERSION=1.34.0 --build-arg NUM_JOBS=8 --tag grpc-cmake:1.34.0 .
+```
+
+## Run Docker Container
+
+```
+docker run -it --rm --network host -v $(pwd):/mnt grpc-cmake:1.34.0
+```
+
+## Building
+Build the c-spiffe project:
+
+```bash
+cmake -B build
+cmake --build build --config Release --parallel
 ```

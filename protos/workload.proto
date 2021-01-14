@@ -2,6 +2,9 @@ syntax = "proto3";
 
 import "google/protobuf/struct.proto";
 
+// Namespace
+package workload;
+
 message X509SVIDRequest {  }
 
 // The X509SVIDResponse message carries a set of X.509 SVIDs and their
