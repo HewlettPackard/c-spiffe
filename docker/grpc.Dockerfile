@@ -29,7 +29,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libprotobuf-dev \
         check \
         lcov \
-        gcovr
+        gcovr \
+	libjansson-dev \
+        libcjose-dev
 RUN apt-get clean
 
 # gRPC
