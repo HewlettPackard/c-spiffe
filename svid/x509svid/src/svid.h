@@ -48,9 +48,15 @@ void x509svid_SVID_MarshalRaw(const x509svid_SVID *svid,
 x509svid_SVID* x509svid_SVID_GetX509SVID(x509svid_SVID *svid, 
                                             err_t *err);
 
-EVP_PKEY* x509svid_validatePrivateKey(EVP_PKEY *pkey, 
+EVP_PKEY* x509svid_validatePrivateKey(EVP_PKEY *priv_key, 
                                         X509 *cert, 
                                         err_t *err);
+
+bool x509svid_keyMatches(EVP_PKEY *priv_key, 
+                            EVP_PKEY *pub_key, 
+                            err_t *err);
+
+void x509svid_SVID_Free(x509svid_SVID *svid, bool alloc);
 /*
 func keyMatches(privateKey crypto.PrivateKey, publicKey crypto.PublicKey) (bool, error) {
 */
