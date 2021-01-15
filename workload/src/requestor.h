@@ -14,7 +14,7 @@ typedef struct Requestor {
     //TODO: keep tabs on threads?
     //pthread_t** threads;
 
-    const* char address;
+    const char* address;
 } Requestor;
 
 typedef struct Request{
