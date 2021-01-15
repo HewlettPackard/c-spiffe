@@ -42,4 +42,14 @@ bool x509util_CertsEqual(X509 **certs1, X509 **certs2)
     return certs1 == certs2;
 }
 
+x509util_CertPool* x509util_NewCertPool(X509 **certs)
+{
+    x509util_CertPool *certpool = x509util_CertPool_New();
 
+    for(size_t i = 0, size = arrlenu(certs); i < size; ++i)
+    {
+        x509util_CertPool_AddCert(certpool, certs[i]);
+    }
+
+    return certpool;
+}
