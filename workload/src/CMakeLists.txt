@@ -34,15 +34,15 @@ include_directories(
     ${PROJECT_ROOT_DIR}/svid/
 )
 
-add_executable(client "client.cc" "requestor.cpp" "../../svid/x509svid/src/svid.c"
-  ${proto_srcs}
-  ${grpc_srcs})
-target_link_libraries(client
-  ${_REFLECTION}
-  ${_GRPC_GRPCPP}
-  ${_GRPC_GRPC}
-  ${_PROTOBUF_LIBPROTOBUF}
-  pthread )
+# add_executable(client "client.cc" "requestor.cpp" "../../svid/x509svid/src/verify.c" "../../svid/x509svid/src/svid.c"
+#   ${proto_srcs}
+#   ${grpc_srcs})
+# target_link_libraries(client
+#   ${_REFLECTION}
+#   ${_GRPC_GRPCPP}
+#   ${_GRPC_GRPC}
+#   ${_PROTOBUF_LIBPROTOBUF}
+#   pthread )
   
   add_executable(grpc_conn_test "grpc_conn_test.cc"
   ${proto_srcs}
