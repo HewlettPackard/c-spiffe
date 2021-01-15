@@ -1,5 +1,0 @@
-gcc -c -Wall ../src/util.c -O2 -o util.o
-gcc -c -Wall check_util.c -O2 -o check_util.o
-gcc util.o check_util.o -lcheck -lcheck_pic -lm -lrt -lpthread -lsubunit -o check_util
-rm *.o
-rm check_util
