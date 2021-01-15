@@ -1,5 +1,6 @@
 # Visual Studio Code
 /.vscode/
+.vscode/
 
 # in-tree build products
 build/
@@ -7,7 +8,7 @@ build/
 *.pb.h
 *.out
 
-internal/cryptoutil/tests/check_keys
+nternal/cryptoutil/tests/check_keys
 internal/cryptoutil/tests/check_keys.o
 internal/cryptoutil/tests/keys.o
 internal/jwtutil/tests/check_util
