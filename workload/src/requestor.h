@@ -7,14 +7,14 @@
 #define EXTERN_C
 #define EXTERN_C_END
 #endif
-#include "../../svid/x509svid/src/svid.h"
+#include "x509svid/src/svid.h"
 #include <pthread.h>
 EXTERN_C
 typedef struct Requestor {
     //TODO: keep tabs on threads?
     //pthread_t** threads;
 
-    const char* address;
+    char* address;
 } Requestor;
 
 typedef struct Request{
