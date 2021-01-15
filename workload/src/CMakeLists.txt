@@ -43,3 +43,13 @@ target_link_libraries(client
   ${_GRPC_GRPC}
   ${_PROTOBUF_LIBPROTOBUF}
   pthread )
+  
+  add_executable(grpc_conn_test "grpc_conn_test.cc"
+  ${proto_srcs}
+  ${grpc_srcs})
+target_link_libraries(client
+  ${_REFLECTION}
+  ${_GRPC_GRPCPP}
+  ${_GRPC_GRPC}
+  ${_PROTOBUF_LIBPROTOBUF}
+  pthread )
