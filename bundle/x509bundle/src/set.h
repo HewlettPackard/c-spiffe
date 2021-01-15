@@ -18,7 +18,7 @@ typedef struct x509bundle_Set
     mtx_t mtx;
 } x509bundle_Set;
 
-x509bundle_Set* jwtbundle_NewSet(const int n_args, ...);
+x509bundle_Set* x509bundle_NewSet(const int n_args, ...);
 
 void x509bundle_Set_Add(x509bundle_Set *s, x509bundle_Bundle *bundle);
 void x509bundle_Set_Remove(x509bundle_Set *s, const spiffeid_TrustDomain *td);
@@ -28,9 +28,10 @@ x509bundle_Bundle* x509bundle_Set_Get(x509bundle_Set *s,
                                     bool *suc);
 x509bundle_Bundle** x509bundle_Set_Bundles(x509bundle_Set *s);
 uint32_t x509bundle_Set_Len(x509bundle_Set *s);
-x509bundle_Bundle* x509bundle_Set_GetJWTBundleForTrustDomain(
+x509bundle_Bundle* x509bundle_Set_GetX509BundleForTrustDomain(
                                     x509bundle_Set *s, 
                                     const spiffeid_TrustDomain *td, 
                                     err_t *err);
+void x509bundle_Set_Free(x509bundle_Set *s);
 
 #endif

@@ -95,7 +95,7 @@ uint32_t x509bundle_Set_Len(x509bundle_Set *s)
     return len;
 }
 
-x509bundle_Bundle* x509bundle_Set_GetJWTBundleForTrustDomain(
+x509bundle_Bundle* x509bundle_Set_GetX509BundleForTrustDomain(
                                     x509bundle_Set *s, 
                                     const spiffeid_TrustDomain *td, 
                                     err_t *err)
@@ -113,4 +113,17 @@ x509bundle_Bundle* x509bundle_Set_GetJWTBundleForTrustDomain(
     mtx_unlock(&(s->mtx));
     
     return bundle;
+}
+
+void x509bundle_Set_Free(x509bundle_Set *s)
+{
+    if(s)
+    {
+        for(size_t i = 0, size = shlenu(s->bundles); i < size; ++i)
+        {
+            x509bundle_Bundle_Free(s->bundles[i].value, true);
+        }
+
+        free(s);
+    }
 }
