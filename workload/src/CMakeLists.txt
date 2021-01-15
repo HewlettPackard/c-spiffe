@@ -47,7 +47,7 @@ target_link_libraries(client
   add_executable(grpc_conn_test "grpc_conn_test.cc"
   ${proto_srcs}
   ${grpc_srcs})
-target_link_libraries(client
+target_link_libraries(grpc_conn_test
   ${_REFLECTION}
   ${_GRPC_GRPCPP}
   ${_GRPC_GRPC}
