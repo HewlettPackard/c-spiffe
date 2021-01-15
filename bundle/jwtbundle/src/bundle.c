@@ -212,7 +212,6 @@ void jwtbundle_Bundle_SetJWTAuthorities(jwtbundle_Bundle *b,
                                         const map_string_EVP_PKEY *auths)
 {
     mtx_lock(&(b->mtx));
-    ///TODO: check if it is needed to free the EVP_PKEY objs
     for(size_t i = 0, size = shlenu(b->auths); i < size; ++i)
     {
         EVP_PKEY_free(b->auths[i].value);
