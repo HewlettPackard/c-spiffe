@@ -41,6 +41,7 @@ set(CLIENT_SOURCES
   ${PROJECT_ROOT_DIR}/svid/x509svid/src/svid.c
   ${PROJECT_ROOT_DIR}/internal/pemutil/src/pem.c
   ${PROJECT_ROOT_DIR}/internal/x509util/src/util.c
+  ${PROJECT_ROOT_DIR}/internal/x509util/src/certpool.c
   ${PROJECT_ROOT_DIR}/spiffeid/src/id.c
 )
 
