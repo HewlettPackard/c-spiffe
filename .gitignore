@@ -1,4 +1,5 @@
 .vscode/
+build/
 internal/cryptoutil/tests/check_keys
 internal/cryptoutil/tests/check_keys.o
 internal/cryptoutil/tests/keys.o
