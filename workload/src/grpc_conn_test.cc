@@ -13,13 +13,13 @@ int main(int argc, char const *argv[])
     
     std::shared_ptr<Channel> chan = grpc::CreateChannel("unix:///tmp/agent.sock",grpc::InsecureChannelCredentials());
     
-    std::unique_ptr<workload::SpiffeWorkloadAPI::Stub> stub = workload::SpiffeWorkloadAPI::NewStub(chan);
+    std::unique_ptr<SpiffeWorkloadAPI::Stub> stub = SpiffeWorkloadAPI::NewStub(chan);
     ClientContext ctx;
     ctx.AddMetadata("workload.spiffe.io","true");
-    workload::X509SVIDRequest req;
-    workload::X509SVIDResponse response;
+    X509SVIDRequest req;
+    X509SVIDResponse response;
     
-    std::unique_ptr<grpc::ClientReader<workload::X509SVIDResponse>> c_reader = stub->FetchX509SVID(&ctx,req);
+    std::unique_ptr<grpc::ClientReader<X509SVIDResponse>> c_reader = stub->FetchX509SVID(&ctx,req);
     int a = c_reader->Read(&response);
     do{
         auto ids = response.svids();

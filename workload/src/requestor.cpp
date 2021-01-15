@@ -45,15 +45,15 @@ x509svid_SVID* FetchDefaultX509SVID(Requestor* requestor){
 
     //gRPC channel and workload API stub
     std::shared_ptr<Channel> chan = grpc::CreateChannel(requestor->address,grpc::InsecureChannelCredentials());
-    std::unique_ptr<workload::SpiffeWorkloadAPI::Stub> stub = workload::SpiffeWorkloadAPI::NewStub(chan);
+    std::unique_ptr<SpiffeWorkloadAPI::Stub> stub = SpiffeWorkloadAPI::NewStub(chan);
 
     ClientContext ctx;
     ctx.AddMetadata("workload.spiffe.io","true"); //mandatory
 
-    workload::X509SVIDRequest req = workload::X509SVIDRequest(); //empty request
-    workload::X509SVIDResponse response;
+    X509SVIDRequest req = X509SVIDRequest(); //empty request
+    X509SVIDResponse response;
     
-    std::unique_ptr<grpc::ClientReader<workload::X509SVIDResponse>> c_reader = stub->FetchX509SVID(&ctx,req); //get response reader
+    std::unique_ptr<grpc::ClientReader<X509SVIDResponse>> c_reader = stub->FetchX509SVID(&ctx,req); //get response reader
     
     while (c_reader->Read(&response)){ //while there are messages
         x509svid_SVID* x509svid = NULL;
@@ -79,15 +79,15 @@ int FetchAllX509SVID(Requestor* requestor,x509svid_SVID*** svids_pointer){
 
     //gRPC channel and workload API stub
     std::shared_ptr<Channel> chan = grpc::CreateChannel(requestor->address,grpc::InsecureChannelCredentials());
-    std::unique_ptr<workload::SpiffeWorkloadAPI::Stub> stub = workload::SpiffeWorkloadAPI::NewStub(chan);
+    std::unique_ptr<SpiffeWorkloadAPI::Stub> stub = SpiffeWorkloadAPI::NewStub(chan);
 
     ClientContext ctx;
     ctx.AddMetadata("workload.spiffe.io","true"); //mandatory
 
-    workload::X509SVIDRequest req = workload::X509SVIDRequest(); //empty request
-    workload::X509SVIDResponse response;
+    X509SVIDRequest req = X509SVIDRequest(); //empty request
+    X509SVIDResponse response;
     
-    std::unique_ptr<grpc::ClientReader<workload::X509SVIDResponse>> c_reader = stub->FetchX509SVID(&ctx,req); //get response reader
+    std::unique_ptr<grpc::ClientReader<X509SVIDResponse>> c_reader = stub->FetchX509SVID(&ctx,req); //get response reader
     
     *svids_pointer = NULL;
     while (c_reader->Read(&response)){ //while there are messages
