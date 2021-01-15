@@ -69,14 +69,6 @@ x509svid_SVID* x509svid_Parse(const byte *certbytes,
     return x509svid_newSVID(certs, pkey, err);
 }
 
-x509svid_SVID* x509svid_ParseRaw(const byte *certbytes, 
-                                    const byte *keybytes, 
-                                    err_t *err)
-{
-    //dummy
-    return NULL;
-}
-
 x509svid_SVID* x509svid_newSVID(X509 **certs, 
                                 EVP_PKEY *pkey, 
                                 err_t *err)
@@ -226,24 +218,6 @@ void x509svid_validateKeyUsage(X509 *cert, err_t *err)
     }
 }
 
-void x509svid_SVID_Marshal(const x509svid_SVID *svid, 
-                            byte **rawbytes1, 
-                            byte **rawbytes2, 
-                            err_t *err)
-{
-    //dummy
-    return;
-}
-
-void x509svid_SVID_MarshalRaw(const x509svid_SVID *svid, 
-                                byte **rawbytes1, 
-                                byte **rawbytes2, 
-                                err_t *err)
-{
-    //dummy
-    return;
-}
-
 x509svid_SVID* x509svid_SVID_GetX509SVID(x509svid_SVID *svid, 
                                             err_t *err)
 {
@@ -298,9 +272,9 @@ bool x509svid_keyMatches(EVP_PKEY *priv_key,
             RSA *rsa_priv_key = EVP_PKEY_get1_RSA(priv_key), 
                 *rsa_pub_key = EVP_PKEY_get1_RSA(pub_key);
             
-            BIGNUM *p = NULL, *q = NULL;
-            BIGNUM *d = NULL, *e = NULL;
-            BIGNUM *n = NULL;
+            const BIGNUM *p = NULL, *q = NULL;
+            const BIGNUM *d = NULL, *e = NULL;
+            const BIGNUM *n = NULL;
 
             RSA_get0_factors(rsa_priv_key, &p, &q);
             RSA_get0_key(rsa_priv_key, NULL, NULL, &d);
