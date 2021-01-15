@@ -5,7 +5,7 @@
 x509util_CertPool* x509util_CertPool_New(void)
 {
     x509util_CertPool *certpool = malloc(sizeof *certpool);
-    memset(certpool, NULL, sizeof *certpool);
+    memset(certpool, 0, sizeof *certpool);
 
     return certpool;
 }
@@ -52,17 +52,14 @@ void x509util_CertPool_AddCert(x509util_CertPool *certpool, X509 *cert)
             arrput(certpool->certs, cert);
 
             const ASN1_OCTET_STRING *subj_keyid = X509_get0_subject_key_id(cert);
-            X509_NAME *name = X509_get_subject_name(cert);
-            
-            string_t name_str = X509_NAME_to_string(name);
 
             //if extension is supported
             if(subj_keyid)
             {
                 string_t subj_keyid_str = ASN1_STRING_to_string(subj_keyid);
 
-                int idx;
-                if((idx = shgeti(certpool->subj_keyid_idcs, subj_keyid_str)) >= 0)
+                const int idx = shgeti(certpool->subj_keyid_idcs, subj_keyid_str);
+                if(idx >= 0)
                 {
                     //if key id exists, append
                     arrput(certpool->subj_keyid_idcs[idx].value, n);
@@ -75,14 +72,16 @@ void x509util_CertPool_AddCert(x509util_CertPool *certpool, X509 *cert)
                     shput(certpool->subj_keyid_idcs, subj_keyid_str, arr);
                 }
 
-                util_string_t_Free(subj_keyid_str);
+                arrfree(subj_keyid_str);
             }
 
-            int idx;
-            if((idx = shgeti(certpool->name_idcs, name_str)) >= 0)
+            string_t name_str = X509_NAME_to_string(X509_get_subject_name(cert));
+            const int idx = shgeti(certpool->name_idcs, name_str);
+            if(idx >= 0)
             {
                 //if name exists, append
                 arrput(certpool->name_idcs[idx].value, n);
+                arrfree(name_str);
             }
             else
             {
@@ -91,44 +90,46 @@ void x509util_CertPool_AddCert(x509util_CertPool *certpool, X509 *cert)
                 arrput(arr, n);
                 shput(certpool->name_idcs, name_str, arr);
             }
-            
-            util_string_t_Free(name_str);
         }
     }
 }
 
-bool x509util_CertPool_contains(x509util_CertPool *certpool, const X509 *cert)
+bool x509util_CertPool_contains(x509util_CertPool *certpool, X509 *cert)
 {
     if(certpool)
     {
-        string_t name_str = ASN1_STRING_to_string(X509_get0_subject_key_id(cert));
+        string_t name_str = X509_NAME_to_string(X509_get_subject_name(cert));
 
-        const int idx = shgeti(certpool->name_idcs, name_str);
-        if(idx >= 0)
+        if(name_str)
         {
-            //get certificates with same name
-            const int *candidates = certpool->name_idcs[idx].value;
-
-            for(size_t i = 0, size = arrlenu(candidates); i < size; ++i)
+            const int idx = shgeti(certpool->name_idcs, name_str);
+            
+            if(idx >= 0)
             {
-                const int c = candidates[i];
-                if(!X509_cmp(cert, certpool->certs[c]))
+                //get certificates with same name
+                const int *candidates = certpool->name_idcs[idx].value;
+
+                for(size_t i = 0, size = arrlenu(candidates); i < size; ++i)
                 {
-                    //if one of them is equal, return true
-                    arrfree(name_str);
-                    return true;
+                    const int c = candidates[i];
+                    if(!X509_cmp(cert, certpool->certs[c]))
+                    {
+                        //if one of them is equal, return true
+                        arrfree(name_str);
+                        return true;
+                    }
                 }
             }
-        }
 
-        arrfree(name_str);
+            arrfree(name_str);
+        }
     }
 
     return false;
 }
 
 int* x509util_CertPool_findPotentialParents(x509util_CertPool *certpool, 
-                                            const X509 *cert)
+                                            X509 *cert)
 {
     if(certpool)
     {
@@ -148,7 +149,7 @@ int* x509util_CertPool_findPotentialParents(x509util_CertPool *certpool,
 
         if(arrlenu(candidates) == 0)
         {
-            string_t auth_name_str = X509_get_issuer_name(X509_NAME_to_string(cert));
+            string_t auth_name_str = X509_NAME_to_string(X509_get_issuer_name(cert));
             
             int idx = shgeti(certpool->name_idcs, auth_name_str);
             if(idx >= 0)
