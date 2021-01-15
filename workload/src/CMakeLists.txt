@@ -36,28 +36,28 @@ include_directories(
     ${PROJECT_ROOT_DIR}/spiffeid/
 )
 
-set(CLIENT_SOURCES
-  ${PROJECT_ROOT_DIR}/svid/x509svid/src/verify.c
-  ${PROJECT_ROOT_DIR}/svid/x509svid/src/svid.c
-  ${PROJECT_ROOT_DIR}/internal/pemutil/src/pem.c
-  ${PROJECT_ROOT_DIR}/internal/x509util/src/util.c
-  ${PROJECT_ROOT_DIR}/internal/x509util/src/certpool.c
-  ${PROJECT_ROOT_DIR}/spiffeid/src/id.c
-)
+# set(CLIENT_SOURCES
+#   ${PROJECT_ROOT_DIR}/svid/x509svid/src/verify.c
+#   ${PROJECT_ROOT_DIR}/svid/x509svid/src/svid.c
+#   ${PROJECT_ROOT_DIR}/internal/pemutil/src/pem.c
+#   ${PROJECT_ROOT_DIR}/internal/x509util/src/util.c
+#   ${PROJECT_ROOT_DIR}/internal/x509util/src/certpool.c
+#   ${PROJECT_ROOT_DIR}/spiffeid/src/id.c
+# )
 
-add_executable(client "client.cc" "requestor.cpp"
-  ${proto_srcs}
-  ${grpc_srcs})
+# add_executable(client "client.cc" "requestor.cpp"
+#   ${proto_srcs}
+#   ${grpc_srcs})
 
-add_library(client_libs SHARED ${CLIENT_SOURCES})
+# add_library(client_libs SHARED ${CLIENT_SOURCES})
 
-target_link_libraries(client
-  ${_REFLECTION}
-  ${_GRPC_GRPCPP}
-  ${_GRPC_GRPC}
-  ${_PROTOBUF_LIBPROTOBUF}
-  pthread 
-  client_libs)
+# target_link_libraries(client
+#   ${_REFLECTION}
+#   ${_GRPC_GRPCPP}
+#   ${_GRPC_GRPC}
+#   ${_PROTOBUF_LIBPROTOBUF}
+#   pthread 
+#   client_libs)
 
   
   add_executable(grpc_conn_test "grpc_conn_test.cc"
