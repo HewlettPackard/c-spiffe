@@ -36,8 +36,6 @@ int main(int argc, char const *argv[])
         for (auto &&id : ids)
         {
             printf("SPIFFE ID:\n%s\n",id.spiffe_id());
-            printf("SVID:\n%s\n",id.x509_svid());
-            printf("KEY:\n%s\n",id.x509_svid_key());
         }
     }
     
