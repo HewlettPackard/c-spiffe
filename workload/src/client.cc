@@ -14,7 +14,9 @@
 #include <cstdlib>
 int main(int argc, char const *argv[])
 {
-    x509svid_SVID* svid = fetch_SVID();
+    Requestor* requestor = RequestorInit("unix:///tmp/agent.sock");
+    x509svid_SVID* svid = FetchDefaultX509SVID(requestor);
     printf("id:%s\n%s\n%s\n%s\n",svid->id.path,svid->id.td,svid->certs,svid->privateKey);
+    RequestorFree(requestor);
     return 0;
 }
