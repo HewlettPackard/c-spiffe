@@ -5,9 +5,24 @@ test.json
 *.o
 # Visual Studio Code
 /.vscode/
+.vscode/
 
 # in-tree build products
 build/
 *.pb.cc
 *.pb.h
 *.out
+
+nternal/cryptoutil/tests/check_keys
+internal/cryptoutil/tests/check_keys.o
+internal/cryptoutil/tests/keys.o
+internal/jwtutil/tests/check_util
+internal/jwtutil/tests/check_util.o
+internal/jwtutil/tests/keys.o
+internal/jwtutil/tests/util.o
+internal/pemutil/tests/check_pem
+internal/pemutil/tests/check_pem.o
+internal/pemutil/tests/pem.o
+internal/x509util/tests/check_util
+internal/x509util/tests/check_util.o
+internal/x509util/tests/util.o
