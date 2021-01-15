@@ -1,5 +1,4 @@
 tests/bundle.o
-tests/certs.pem
 tests/check_bundle
 tests/check_bundle.o
 tests/id.o
