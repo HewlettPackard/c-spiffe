@@ -1,12 +1,3 @@
-/*
- * Filename: c-spiffe/requestor/requestor.cpp
- * Path: c-spiffe/requestor
- * Created Date: Monday, December 21nd 2020, 10:32:38 am
- * Author: Rodrigo Lopes (rlc2@cesar.org.br)
- * 
- * Copyright (c) 2020 CESAR
- */
-
 #include <grpcpp/grpcpp.h>
 #include <stdio.h>
 #include "workload.pb.h"
@@ -19,24 +10,31 @@ using grpc::Status;
 
 int main(int argc, char const *argv[])
 {
+    
     std::shared_ptr<Channel> chan = grpc::CreateChannel("unix:///tmp/agent.sock",grpc::InsecureChannelCredentials());
     
     std::unique_ptr<SpiffeWorkloadAPI::Stub> stub = SpiffeWorkloadAPI::NewStub(chan);
     ClientContext ctx;
-    
-    X509SVIDRequest req = X509SVIDRequest();
+    ctx.AddMetadata("workload.spiffe.io","true");
+    X509SVIDRequest req;
     X509SVIDResponse response;
     
-    auto c_reader = stub->FetchX509SVID(&ctx,req);
-    
-    int a;
-
-    while( ! (a = c_reader->Read(&response))){
+    std::unique_ptr<grpc::ClientReader<X509SVIDResponse>> c_reader = stub->FetchX509SVID(&ctx,req);
+    int a = c_reader->Read(&response);
+    do{
         auto ids = response.svids();
         for (auto &&id : ids)
-        {
-            printf("SPIFFE ID:\n%s\n",id.spiffe_id());
+        {  
+            printf("SPIFFE ID:\n%s\n",id.spiffe_id().c_str());
         }
+        a = c_reader->Read(&response);
+    }while( a );
+    grpc::Status status = c_reader->Finish();
+    if (status.ok()) {
+        std::cout << "Fetched SVIDs "
+                << std::endl;
+    } else {
+        std::cout << "fetch failed. " << status.error_code() << " ha " << status.error_message()  << " aaa " << status.error_details() << std::endl;
     }
     
     return 0;
