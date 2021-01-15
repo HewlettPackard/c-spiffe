@@ -4,6 +4,11 @@
 
 # in-tree build products
 build/
+*/build/
+Makefile
+CMakeFiles/
+cmake_install.cmake
+CMakeCache.txt
 *.pb.cc
 *.pb.h
 *.out
