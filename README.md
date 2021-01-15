@@ -89,6 +89,12 @@ docker build -f docker/grpc.Dockerfile --build-arg GPRC_VERSION=1.34.0 --build-a
 docker run -it --rm --network host -v $(pwd):/mnt grpc-build:1.34.0
 ```
 
+# For Windows 
+
+```
+docker run -it --rm --network host -v //c/Repositorios/c-spiffe:/mnt grpc-build:1.34.0
+```
+
 ## Building
 Build the c-spiffe project:
 
