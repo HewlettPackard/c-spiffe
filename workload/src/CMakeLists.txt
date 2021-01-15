@@ -1,8 +1,8 @@
 # Minimum CMake required
 cmake_minimum_required(VERSION 3.13)
 
-project(Workload VERSION 0.0.1 LANGUAGES CXX)
-set(CMAKE_CXX_STANDARD 14)
+project(Workload VERSION 0.0.1 LANGUAGES C CXX)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
 set (proto_name workload)
@@ -32,17 +32,32 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 include_directories(
     ${PROJECT_ROOT_DIR}/svid/
+    ${PROJECT_ROOT_DIR}/internal/
+    ${PROJECT_ROOT_DIR}/spiffeid/
 )
 
-# add_executable(client "client.cc" "requestor.cpp" "../../svid/x509svid/src/verify.c" "../../svid/x509svid/src/svid.c"
-#   ${proto_srcs}
-#   ${grpc_srcs})
-# target_link_libraries(client
-#   ${_REFLECTION}
-#   ${_GRPC_GRPCPP}
-#   ${_GRPC_GRPC}
-#   ${_PROTOBUF_LIBPROTOBUF}
-#   pthread )
+set(CLIENT_SOURCES
+  ${PROJECT_ROOT_DIR}/svid/x509svid/src/verify.c
+  ${PROJECT_ROOT_DIR}/svid/x509svid/src/svid.c
+  ${PROJECT_ROOT_DIR}/internal/pemutil/src/pem.c
+  ${PROJECT_ROOT_DIR}/internal/x509util/src/util.c
+  ${PROJECT_ROOT_DIR}/spiffeid/src/id.c
+)
+
+add_executable(client "client.cc" "requestor.cpp"
+  ${proto_srcs}
+  ${grpc_srcs})
+
+add_library(client_libs SHARED ${CLIENT_SOURCES})
+
+target_link_libraries(client
+  ${_REFLECTION}
+  ${_GRPC_GRPCPP}
+  ${_GRPC_GRPC}
+  ${_PROTOBUF_LIBPROTOBUF}
+  pthread 
+  client_libs)
+
   
   add_executable(grpc_conn_test "grpc_conn_test.cc"
   ${proto_srcs}
