@@ -1,22 +1,6 @@
+#include <openssl/pem.h>
 #include "../../../internal/x509util/src/util.h"
 #include "verify.h"
-
-static int findKeyId(const char *keyid, const char **keys)
-{
-    int idx = -1;
-
-    for(int i = 0, size = arrlen(keys); i < size; ++i)
-    {
-        //if keyid == keys[i], update and break
-        if(!strcmp(keyid, keys[i]))
-        {
-            idx = i;
-            break;
-        }
-    }
-
-    return idx;
-}
 
 //maps a certificate on certificate chains
 typedef struct map_X509_chains
@@ -71,7 +55,7 @@ static X509*** buildChains(X509*,
                         x509util_CertPool*,
                         err_t*);
 
-static X509 ***considerCandidate(int type,
+static X509*** considerCandidate(int type,
                 X509 *candidate,
                 map_X509_chains *cache,
                 X509 **currchain,
@@ -86,9 +70,7 @@ static X509 ***considerCandidate(int type,
     for(size_t i = 0, size = arrlenu(currchain); i < size; ++i)
     {
         if(!X509_cmp(candidate, currchain[i]))
-        {
             return chains;
-        }
     }
 
     if(!sigchecks)
@@ -103,9 +85,7 @@ static X509 ***considerCandidate(int type,
 
     err_t err2 = isValid(candidate, type, currchain);
     if(err2)
-    {
         return chains;
-    }
         
     if(type == ROOT)
     {
@@ -117,7 +97,7 @@ static X509 ***considerCandidate(int type,
         X509 ***childchains = NULL;
         if(idx >= 0)
         {
-            X509 ***childchains = buildChains(
+            childchains = buildChains(
                 candidate, 
                 cache, 
                 appendToFreshChain(currchain, candidate),
@@ -165,7 +145,7 @@ static X509*** buildChains(X509 *cert,
         const int inter_idx = inters_idcs[i];
         chains = considerCandidate(
                     INTERMEDIATE,
-                    roots->certs[inter_idx],
+                    inters->certs[inter_idx],
                     cache,
                     currchain,
                     sigchecks,
@@ -222,8 +202,32 @@ X509*** x509svid_ParseAndVerify(byte **raw_certs,
                     spiffeid_ID *id, 
                     err_t *err)
 {
-    //dummy
-    return NULL;
+    X509 **certs = NULL;
+    
+    for(size_t i = 0, size = arrlenu(raw_certs); i < size; ++i)
+    {
+        BIO *bio_mem = BIO_new(BIO_s_mem());
+        BIO_write(bio_mem, raw_certs[i], arrlen(raw_certs[i]));
+
+        X509 *cert = PEM_read_bio_X509(bio_mem, NULL, NULL, NULL);
+        if(cert)
+        {
+            arrput(certs, cert);
+        }
+        else
+        {
+            //unable to parse certificate
+            *err = ERROR1;
+            //free them all
+            for(size_t j = 0, size2 = arrlenu(certs); j < size2; ++j)
+            {
+                X509_free(certs[j]);
+            }
+            return NULL;
+        }
+    }
+
+    return x509svid_Verify(certs, b, id, err);
 }
 
 X509*** x509svid_Verify(X509 **certs, 
