@@ -1,7 +1,6 @@
 #include <openssl/bn.h>
 #include "svid.h"
 #include "verify.h"
-#include "../../../internal/pemutil/src/pem.h"
 
 x509svid_SVID* x509svid_Load(const string_t certfile, 
                                 const string_t keyfile, 
@@ -141,7 +140,7 @@ spiffeid_ID x509svid_validateCertificates(X509 **certs, err_t *err)
         *err = ERROR1;
     }
 
-    return (spiffeid_ID){NULL, NULL};
+    return (spiffeid_ID){{NULL}, NULL};
 }
 
 spiffeid_ID x509svid_validateLeafCertificate(X509 *cert, err_t *err)
@@ -170,7 +169,7 @@ spiffeid_ID x509svid_validateLeafCertificate(X509 *cert, err_t *err)
         *err = ERROR1;
     }
 
-    return (spiffeid_ID){NULL, NULL};
+    return (spiffeid_ID){{NULL}, NULL};
 }
 
 void x509svid_validateSigningCertificates(X509 **certs, err_t *err)
@@ -240,6 +239,7 @@ EVP_PKEY* x509svid_validatePrivateKey(EVP_PKEY *priv_key,
             {
                 //signer
                 ///TODO: is it right?
+                EVP_PKEY_up_ref(priv_key);
                 return priv_key;
             }
             //leaf certificate and private key do not match
@@ -247,6 +247,7 @@ EVP_PKEY* x509svid_validatePrivateKey(EVP_PKEY *priv_key,
             return NULL;
         }
         //either non supported private key or diverging types
+        *err = ERROR2;
         return NULL;
     }
 

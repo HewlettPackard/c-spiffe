@@ -25,37 +25,21 @@ x509svid_SVID* x509svid_Load(const string_t certfile,
 x509svid_SVID* x509svid_Parse(const byte *certbytes, 
                                 const byte *keybytes, 
                                 err_t *err);
-x509svid_SVID* x509svid_ParseRaw(const byte *certbytes, 
-                                    const byte *keybytes, 
-                                    err_t *err);
 x509svid_SVID* x509svid_newSVID(X509 **certs, 
                                 EVP_PKEY *pkey, 
                                 err_t *err);
-
 spiffeid_ID x509svid_validateCertificates(X509 **certs, err_t *err);
 spiffeid_ID x509svid_validateLeafCertificate(X509 *cert, err_t *err);
 void x509svid_validateSigningCertificates(X509 **certs, err_t *err);
 void x509svid_validateKeyUsage(X509 *cert, err_t *err);
-
-void x509svid_SVID_Marshal(const x509svid_SVID *svid, 
-                            byte **rawbytes1, 
-                            byte **rawbytes2, 
-                            err_t *err);
-void x509svid_SVID_MarshalRaw(const x509svid_SVID *svid, 
-                                byte **rawbytes1, 
-                                byte **rawbytes2, 
-                                err_t *err);
 x509svid_SVID* x509svid_SVID_GetX509SVID(x509svid_SVID *svid, 
                                             err_t *err);
-
 EVP_PKEY* x509svid_validatePrivateKey(EVP_PKEY *priv_key, 
                                         X509 *cert, 
                                         err_t *err);
-
 bool x509svid_keyMatches(EVP_PKEY *priv_key, 
                             EVP_PKEY *pub_key, 
                             err_t *err);
-
 void x509svid_SVID_Free(x509svid_SVID *svid, bool alloc);
 /*
 func keyMatches(privateKey crypto.PrivateKey, publicKey crypto.PublicKey) (bool, error) {
