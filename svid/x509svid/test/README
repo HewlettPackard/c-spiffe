@@ -1,0 +1,14 @@
+gcc -c -Wall -Wno-unused-value -Wno-unused-result ../../../utils/src/util.c -O2 -o util1.o
+gcc -c -Wall ../../../spiffeid/src/id.c -O2 -o id.o
+gcc -c -Wall ../../../spiffeid/src/trustdomain.c -O2 -o trustdomain.o
+gcc -c -Wall ../../../internal/pemutil/src/pem.c -O2 -o pem.o
+gcc -c -Wall ../../../internal/x509util/src/util.c -O2 -o util2.o
+gcc -c -Wall ../../../internal/x509util/src/certpool.c -O2 -o certpool.o
+gcc -c -Wall ../../../bundle/x509bundle/src/bundle.c -O2 -o bundle.o
+gcc -c -Wall ../src/svid.c -O2 -o svid.o
+gcc -c -Wall ../src/verify.c -O2 -o verify.o
+gcc -c -Wall check_svid.c -O2 -o check_svid.o
+gcc -c -Wall check_verify.c -O2 -o check_verify.o
+gcc util1.o id.o trustdomain.o pem.o util2.o certpool.o bundle.o svid.o verify.o check_svid.o -lcheck -lcheck_pic -lm -lrt -lpthread -lsubunit -luriparser -ljansson -lcjose -lcrypto -o check_svid
+gcc util1.o id.o trustdomain.o pem.o util2.o certpool.o bundle.o svid.o verify.o check_verify.o -lcheck -lcheck_pic -lm -lrt -lpthread -lsubunit -luriparser -ljansson -lcjose -lcrypto -o check_verify
+rm *.o
