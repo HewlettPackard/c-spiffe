@@ -12,11 +12,15 @@
 #include "requestor.h"
 #include <cstdio>
 #include <cstdlib>
+#include <iostream>
+
 int main(int argc, char const *argv[])
 {
     Requestor* requestor = RequestorInit("unix:///tmp/agent.sock");
     x509svid_SVID* svid = FetchDefaultX509SVID(requestor);
-    printf("id:%s\n%s\n%s\n%s\n",svid->id.path,svid->id.td,svid->certs,svid->privateKey);
+    if(svid){
+        std::cout << "id:" << svid << std::endl << svid->id.path << std::endl << svid->id.td.name << std::endl << svid->certs << std::endl << svid->privateKey;
+    }
     RequestorFree(requestor);
     return 0;
 }
