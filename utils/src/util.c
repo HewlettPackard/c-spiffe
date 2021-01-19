@@ -89,8 +89,7 @@ string_t FILE_to_string(FILE *f)
     //set byte array capacity
     arrsetlen(buffer, flen);
     //read bytes into buffer
-    size_t len = fread(buffer, flen, 1, f);
-    arrsetlen(buffer, len);
+    fread(buffer, flen, 1, f);
     
     return buffer;
 }
