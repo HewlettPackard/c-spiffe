@@ -26,6 +26,7 @@ add_custom_command(
     "${proto}"
     DEPENDS "${proto}"
 )
+find_package(OpenSSL REQUIRED)
 
 # Include generated *.pb.h files
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
@@ -36,28 +37,43 @@ include_directories(
     ${PROJECT_ROOT_DIR}/spiffeid/
 )
 
-# set(CLIENT_SOURCES
-#   ${PROJECT_ROOT_DIR}/svid/x509svid/src/verify.c
-#   ${PROJECT_ROOT_DIR}/svid/x509svid/src/svid.c
-#   ${PROJECT_ROOT_DIR}/internal/pemutil/src/pem.c
-#   ${PROJECT_ROOT_DIR}/internal/x509util/src/util.c
-#   ${PROJECT_ROOT_DIR}/internal/x509util/src/certpool.c
-#   ${PROJECT_ROOT_DIR}/spiffeid/src/id.c
-# )
+set(CLIENT_SOURCES
+  ${PROJECT_ROOT_DIR}/bundle/jwtbundle/src/bundle.c
+  ${PROJECT_ROOT_DIR}/bundle/jwtbundle/src/set.c
+  ${PROJECT_ROOT_DIR}/bundle/spiffebundle/src/bundle.c
+  ${PROJECT_ROOT_DIR}/bundle/spiffebundle/src/set.c
+  ${PROJECT_ROOT_DIR}/bundle/x509bundle/src/bundle.c
+  ${PROJECT_ROOT_DIR}/bundle/x509bundle/src/set.c
+  ${PROJECT_ROOT_DIR}/internal/cryptoutil/src/keys.c
+  ${PROJECT_ROOT_DIR}/internal/jwtutil/src/util.c
+  ${PROJECT_ROOT_DIR}/internal/pemutil/src/pem.c
+  ${PROJECT_ROOT_DIR}/internal/x509util/src/certpool.c
+  ${PROJECT_ROOT_DIR}/internal/x509util/src/util.c
+  ${PROJECT_ROOT_DIR}/spiffeid/src/id.c
+  ${PROJECT_ROOT_DIR}/spiffeid/src/match.c
+  ${PROJECT_ROOT_DIR}/spiffeid/src/trustdomain.c
+  ${PROJECT_ROOT_DIR}/spiffetls/tlsconfig/src/authorizer.c
+  ${PROJECT_ROOT_DIR}/svid/x509svid/src/svid.c
+  ${PROJECT_ROOT_DIR}/svid/x509svid/src/verify.c
+  ${PROJECT_ROOT_DIR}/utils/src/util.c
+  # ${PROJECT_ROOT_DIR}/workload/src/client.cc
+  # ${PROJECT_ROOT_DIR}/workload/src/requestor.cpp
+)
 
-# add_executable(client "client.cc" "requestor.cpp"
-#   ${proto_srcs}
-#   ${grpc_srcs})
+add_executable(client "client.cc" "requestor.cc"
+# ${CLIENT_SOURCES}
+  ${proto_srcs}
+  ${grpc_srcs})
 
-# add_library(client_libs SHARED ${CLIENT_SOURCES})
+add_library(client_libs ${CLIENT_SOURCES})
 
-# target_link_libraries(client
-#   ${_REFLECTION}
-#   ${_GRPC_GRPCPP}
-#   ${_GRPC_GRPC}
-#   ${_PROTOBUF_LIBPROTOBUF}
-#   pthread 
-#   client_libs)
+target_link_libraries(client
+  ${_REFLECTION}
+  ${_GRPC_GRPCPP}
+  ${_GRPC_GRPC}
+  ${_PROTOBUF_LIBPROTOBUF}
+  pthread 
+  client_libs ssl cjose jansson subunit m rt pthread uriparser crypto)
 
   
   add_executable(grpc_conn_test "grpc_conn_test.cc"
