@@ -6,6 +6,11 @@
 #include "id.h"
 #include "../../utils/src/util.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 spiffeid_TrustDomain spiffeid_TrustDomainFromString(const string_t str, err_t *err);
 spiffeid_TrustDomain spiffeid_TrustDomainFromURI(const UriUriA *uri, err_t *err);
 
@@ -36,5 +41,9 @@ spiffeid_TrustDomain spiffeid_RequireTrustDomainFromString(const string_t str);
 
 spiffeid_TrustDomain spiffeid_RequireTrustDomainFromURI(const URI_t uri);
 */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

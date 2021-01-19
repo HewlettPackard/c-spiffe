@@ -9,6 +9,10 @@
 #include "../../../internal/pemutil/src/pem.h"
 #include "../../../internal/x509util/src/util.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct x509svid_SVID
 {
     //its own spiffe id
@@ -44,5 +48,8 @@ void x509svid_SVID_Free(x509svid_SVID *svid, bool alloc);
 /*
 func keyMatches(privateKey crypto.PrivateKey, publicKey crypto.PublicKey) (bool, error) {
 */
+#ifdef __cplusplus
+}
+#endif
 
 #endif

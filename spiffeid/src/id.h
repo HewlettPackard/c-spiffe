@@ -8,6 +8,10 @@
 // #include <curl/curl.h>
 #include "../../utils/src/util.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct spiffeid_TrustDomain
 {
     string_t name;
@@ -63,5 +67,9 @@ spiffeid_ID spiffeid_ID_RequireFromString(const string_t str);
 
 spiffeid_ID spiffeid_ID_RequireFromURI(const CURLU str);
 */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
