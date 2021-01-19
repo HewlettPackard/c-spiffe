@@ -32,5 +32,10 @@ else()
   set(_GRPC_CPP_PLUGIN_EXECUTABLE $<TARGET_FILE:gRPC::grpc_cpp_plugin>)
 endif()
 
+# Set sub_modules list
+set(modules bundle internal spiffeid svid workload)
+
 # Add projects
-add_subdirectory(workload)
+foreach(module ${modules})
+  add_subdirectory(${module})
+endforeach()
