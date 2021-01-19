@@ -4,6 +4,10 @@
 #include <threads.h>
 #include "../../../spiffeid/src/id.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct jwtbundle_Bundle
 {
     //bundle trust domain
@@ -52,5 +56,9 @@ jwtbundle_Bundle* jwtbundle_Bundle_GetJWTBundleForTrustDomain(
                                             const spiffeid_TrustDomain td,
                                             err_t *err);
 void jwtbundle_Bundle_Free(jwtbundle_Bundle *b, bool alloc);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

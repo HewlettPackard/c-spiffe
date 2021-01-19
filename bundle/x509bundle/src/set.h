@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include "bundle.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct map_string_x509bundle_Bundle
 {
     string_t key;
@@ -33,5 +37,9 @@ x509bundle_Bundle* x509bundle_Set_GetX509BundleForTrustDomain(
                                     const spiffeid_TrustDomain *td, 
                                     err_t *err);
 void x509bundle_Set_Free(x509bundle_Set *s);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -4,6 +4,9 @@
 #include "bundle.h"
 #include "../../../utils/src/util.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 typedef struct map_string_spiffebundle_Bundle
 {
     string_t key;
@@ -37,5 +40,9 @@ jwtbundle_Bundle* spiffebundle_Set_GetJWTBundleForTrustDomain(
                                     spiffebundle_Set *s, 
                                     const spiffeid_TrustDomain *td,
                                     err_t *err);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
