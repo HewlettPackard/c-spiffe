@@ -41,7 +41,7 @@ void RequestorFree(Requestor* requestor);
 
 //wrapper methods from gRPC service definition (see proto/workload.proto)
 x509svid_SVID* FetchDefaultX509SVID(Requestor* requestor); //not in definition
-int FetchAllX509SVID(Requestor* requestor, x509svid_SVID** svids); //not in definition
+int FetchAllX509SVID(Requestor* requestor, x509svid_SVID*** svids); //not in definition
 // x509svid_SVID_Source* FetchX509SVIDSource(Requestor* requestor);
 
 #ifdef __cplusplus
