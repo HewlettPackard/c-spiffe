@@ -11,7 +11,6 @@ typedef struct jwtbundle_Bundle
     //map of jwt authorities
     map_string_EVP_PKEY *auths;
     //lock
-    ///TODO: implement a RW mutex instead 
     mtx_t mtx;
 } jwtbundle_Bundle;
 
@@ -21,9 +20,6 @@ jwtbundle_Bundle* jwtbundle_FromJWTAuthorities(const spiffeid_TrustDomain td,
 jwtbundle_Bundle* jwtbundle_Load(const spiffeid_TrustDomain td, 
                                     const char *path, 
                                     err_t *err);
-// jwtbundle_Bundle* jwtbundle_Read(const spiffeid_TrustDomain td, 
-//                                             void *reader,   //Fix 
-//                                             err_t *err);
 jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td, 
                                     const string_t bbytes, 
                                     err_t *err);
@@ -43,7 +39,6 @@ void jwtbundle_Bundle_RemoveJWTAuthority(jwtbundle_Bundle *b,
 void jwtbundle_Bundle_SetJWTAuthorities(jwtbundle_Bundle *b,
                                         const map_string_EVP_PKEY *auths);
 bool jwtbundle_Bundle_Empty(jwtbundle_Bundle *b);
-byte* jwtbundle_Bundle_Marshal(jwtbundle_Bundle *b, err_t *err);
 jwtbundle_Bundle* jwtbundle_Bundle_Clone(jwtbundle_Bundle *b);
 bool jwtbundle_Bundle_Equal(const jwtbundle_Bundle *b1, 
                             const jwtbundle_Bundle *b2);

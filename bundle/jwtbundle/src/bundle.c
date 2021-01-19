@@ -62,14 +62,6 @@ jwtbundle_Bundle* jwtbundle_Load(const spiffeid_TrustDomain td,
     return bundleptr;
 }
 
-/*jwtbundle_Bundle* jwtbundle_Read(const spiffeid_TrustDomain td, 
-                                            void *reader,   //Fix 
-                                            err_t *err)
-{
-    //dummy
-    return NULL;
-}*/
-
 jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td, 
                                     const string_t bundle_bytes, 
                                     err_t *err)
