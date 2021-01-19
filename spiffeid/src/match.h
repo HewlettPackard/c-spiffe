@@ -4,6 +4,10 @@
 #include "id.h"
 #include "../../utils/src/util.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum enum_match_err_t
 {
     MATCH_OK,
@@ -37,5 +41,9 @@ spiffeid_Matcher* spiffeid_vMatchOneOf(int n_args, va_list args);
 spiffeid_Matcher* spiffeid_MatchMemberOf(const spiffeid_TrustDomain td);
 
 void spiffeid_Matcher_Free(spiffeid_Matcher *matcher);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
