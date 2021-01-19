@@ -5,6 +5,10 @@
 #include "../../../utils/src/util.h"
 #include "../../../utils/src/stb_ds.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct map_string_int_arr
 {
     string_t key;
@@ -24,5 +28,9 @@ bool x509util_CertPool_contains(x509util_CertPool *certpool, X509 *cert);
 int* x509util_CertPool_findPotentialParents(x509util_CertPool *certpool, 
                                             X509 *cert);
 void x509util_CertPool_Free(x509util_CertPool *certpool);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

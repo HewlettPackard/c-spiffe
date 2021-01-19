@@ -5,6 +5,10 @@
 #include <stdlib.h>
 #include "bundle.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct map_string_jwtbundle_Bundle
 {
     string_t key;
@@ -33,5 +37,9 @@ jwtbundle_Bundle* jwtbundle_Set_GetJWTBundleForTrustDomain(
                                     jwtbundle_Set *s, 
                                     const spiffeid_TrustDomain *td, 
                                     err_t *err);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

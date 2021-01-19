@@ -6,6 +6,9 @@
 #include "../../../spiffeid/src/trustdomain.h"
 #include "../../../utils/src/util.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 typedef struct x509bundle_Bundle
 {
     //bundle trust domain
@@ -41,5 +44,9 @@ x509bundle_Bundle* x509bundle_Bundle_GetX509BundleForTrustDomain(
                                             const spiffeid_TrustDomain td,
                                             err_t *err);
 void x509bundle_Bundle_Free(x509bundle_Bundle *b, bool alloc);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
