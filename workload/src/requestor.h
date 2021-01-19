@@ -1,15 +1,14 @@
 #ifndef _REQUESTOR_H_
 #define _REQUESTOR_H_
-  #ifdef __cplusplus
-#define EXTERN_C extern "C" {
-#define EXTERN_C_END }
-#else
-#define EXTERN_C
-#define EXTERN_C_END
-#endif
-#include "x509svid/src/svid.h"
+
+
+#include "../../svid/x509svid/src/svid.h"
 #include <pthread.h>
-EXTERN_C
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct Requestor {
     //TODO: keep tabs on threads?
     //pthread_t** threads;
@@ -44,5 +43,9 @@ void RequestorFree(Requestor* requestor);
 x509svid_SVID* FetchDefaultX509SVID(Requestor* requestor); //not in definition
 int FetchAllX509SVID(Requestor* requestor, x509svid_SVID** svids); //not in definition
 // x509svid_SVID_Source* FetchX509SVIDSource(Requestor* requestor);
-EXTERN_C_END
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* _REQUESTOR_H_ */
