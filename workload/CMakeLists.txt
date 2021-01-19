@@ -1,6 +1,6 @@
 # Minimum CMake required
 cmake_minimum_required(VERSION 3.13)
-project(Workload VERSION 0.0.1 LANGUAGES CXX)
+project(Workload VERSION 0.0.1 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
 set (proto_name workload)
@@ -28,7 +28,7 @@ include_directories(${PROJECT_ROOT_DIR}/svid/)
 
 set(REQUESTOR
     ${PROJECT_ROOT_DIR}/workload/src/requestor.cc
-    ${PROJECT_ROOT_DIR}/workload/src/client.cc
+    ${PROJECT_ROOT_DIR}/workload/src/client.c
 )
 find_package(OpenSSL REQUIRED)
 add_executable(client "${REQUESTOR}"
