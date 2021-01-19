@@ -1,7 +1,7 @@
 gcc -c -Wall ../src/id.c -O2 -o id.o
 gcc -c -Wall ../src/trustdomain.c -O2 -o trustdomain.o
 gcc -c -Wall ../src/match.c -O2 -o match.o
-gcc -c -Wall -Wno-unused-value -Wno-unused-result ../../utils/src/util.c -O2 -o util.o
+gcc -c -Wall -Wno-unused-value  ../../utils/src/util.c -O2 -o util.o
 gcc -c -Wall check_id.c -O2 -o check_id.o
 gcc -c -Wall check_trustdomain.c -O2 -o check_trustdomain.o
 gcc -c -Wall check_match.c -O2 -o check_match.o

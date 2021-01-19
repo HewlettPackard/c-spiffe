@@ -1,4 +1,4 @@
-gcc -c -Wall -Wno-unused-value -Wno-unused-result ../../../utils/src/util.c -O2 -o util1.o
+gcc -c -Wall -Wno-unused-value  ../../../utils/src/util.c -O2 -o util1.o
 gcc -c -Wall ../../../spiffeid/src/id.c -O2 -o id.o
 gcc -c -Wall ../../../spiffeid/src/trustdomain.c -O2 -o trustdomain.o
 gcc -c -Wall ../../../internal/pemutil/src/pem.c -O2 -o pem.o
