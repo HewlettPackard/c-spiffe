@@ -13,7 +13,6 @@ typedef struct x509bundle_Bundle
     //array of x509 certificate pointers
     X509 **auths;
     //lock
-    ///TODO: implement a RW mutex instead 
     mtx_t mtx;
 } x509bundle_Bundle;
 
