@@ -1,6 +1,54 @@
 #include <openssl/x509.h>
 #include "util.h"
 
+X509** x509util_ParseCertificates(const byte *bytes, const size_t len, err_t *err)
+{
+    *err = ERROR1;
+    BIO *bio_mem = BIO_new(BIO_s_mem());
+    
+    if(BIO_write(bio_mem, bytes, len) > 0)
+    {
+        X509 **certs = NULL;    
+        while(true)
+        {
+            X509 *cert = d2i_X509_bio(bio_mem, NULL);
+            if(cert)
+            {
+                arrput(certs, cert);
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        if(arrlenu(certs) > 0)
+            *err = NO_ERROR;
+
+        return certs;
+    }
+
+    return NULL;
+}
+
+EVP_PKEY* x509util_ParsePrivateKey(const byte *bytes, const size_t len, err_t *err)
+{
+    *err = ERROR1;
+    BIO *bio_mem = BIO_new(BIO_s_mem());
+    
+    if(BIO_write(bio_mem, bytes, len) > 0)
+    {
+        EVP_PKEY *pkey = d2i_PrivateKey_bio(bio_mem, NULL);
+
+        if(pkey)
+            *err = NO_ERROR;
+
+        return pkey;
+    }
+
+    return NULL;
+}
+
 X509** x509util_CopyX509Authorities(X509 **certs)
 {
     if(certs)

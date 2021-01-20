@@ -9,8 +9,8 @@
 
 X509** x509util_CopyX509Authorities(X509 **certs);
 bool x509util_CertsEqual(X509 **certs1, X509 **certs2);
-byte** x509util_RawCertsFromCerts(const X509 **certs);
-byte* x509util_ConcatRawCertsFromCerts(const X509 **certs);
+X509** x509util_ParseCertificates(const byte *bytes, const size_t len, err_t *err);
+EVP_PKEY* x509util_ParsePrivateKey(const byte *bytes, const size_t len, err_t *err);
 x509util_CertPool* x509util_NewCertPool(X509 **certs);
 
 #endif
