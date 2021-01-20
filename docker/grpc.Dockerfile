@@ -27,7 +27,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         liburiparser1 liburiparser-dev \
         protobuf-compiler \
         libprotobuf-dev \
-        check
+        check \
+        lcov \
+        gcovr
 RUN apt-get clean
 
 # gRPC
