@@ -5,8 +5,8 @@ project(SVID VERSION 0.0.1 LANGUAGES C)
 
 
 set(LIB_SVID 
-${PROJECT_ROOT_DIR}/svid/x509svid/src/svid.c
-${PROJECT_ROOT_DIR}/svid/x509svid/src/verify.c
-${PROJECT_ROOT_DIR}/utils/src/util.c)
+${PROJECT_SOURCE_DIR}/x509svid/src/svid.c
+${PROJECT_SOURCE_DIR}/x509svid/src/verify.c
+${PROJECT_SOURCE_DIR}/../utils/src/util.c)
 
 add_library(libsvid SHARED ${LIB_SVID})
