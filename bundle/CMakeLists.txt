@@ -1,7 +1,9 @@
 # Minimum CMake required
 cmake_minimum_required(VERSION 3.13)
 
-project(BUNDLE VERSION 0.0.1 LANGUAGES C)
+set(TARGET_NAME "libbundle")
+
+project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C)
 
 
 set(LIB_BUNDLE 
@@ -13,4 +15,4 @@ ${PROJECT_SOURCE_DIR}/x509bundle/src/bundle.c
 ${PROJECT_SOURCE_DIR}/x509bundle/src/set.c
 )
 
-add_library(libbundle SHARED ${LIB_BUNDLE})
+add_library(${TARGET_NAME} SHARED ${LIB_BUNDLE})

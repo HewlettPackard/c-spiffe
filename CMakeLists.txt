@@ -1,11 +1,13 @@
 # Minimum CMake required
 cmake_minimum_required(VERSION 3.13)
 
-project(C-SPIFFE VERSION 0.0.1 LANGUAGES CXX)
+set(TARGET_NAME "c-spiffe")
+project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES CXX)
+
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
-
 set(protobuf_MODULE_COMPATIBLE TRUE)
+
 find_package(Protobuf CONFIG REQUIRED)
 message(STATUS "Using protobuf ${Protobuf_VERSION}")
 
@@ -30,7 +32,7 @@ else()
   set(_GRPC_CPP_PLUGIN_EXECUTABLE $<TARGET_FILE:gRPC::grpc_cpp_plugin>)
 endif()
 
-# Set sub_modules list
+# Set modules list
 set(modules bundle internal spiffeid svid workload)
 
 # Add projects

@@ -1,12 +1,17 @@
 # Minimum CMake required
 cmake_minimum_required(VERSION 3.13)
-project(Workload VERSION 0.0.1 LANGUAGES C CXX)
+
+set(TARGET_NAME "workload")
+project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C CXX)
+
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
-set (proto_name workload)
+set (proto_name ${TARGET_NAME})
+
 # Get proto files
 get_filename_component(proto "../protos/${proto_name}.proto" ABSOLUTE)
 get_filename_component(proto_dir "${proto}" DIRECTORY)
+
 # Generate source files
 set(proto_srcs "${CMAKE_CURRENT_BINARY_DIR}/${proto_name}.pb.cc")
 set(proto_hdrs "${CMAKE_CURRENT_BINARY_DIR}/${proto_name}.pb.h")
@@ -22,6 +27,7 @@ add_custom_command(
     "${proto}"
     DEPENDS "${proto}"
 )
+
 # Include generated *.pb.h files
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
@@ -29,10 +35,13 @@ set(REQUESTOR
     ${PROJECT_SOURCE_DIR}/src/requestor.cc
     ${PROJECT_SOURCE_DIR}/src/client.c
 )
+
 find_package(OpenSSL REQUIRED)
+
 add_executable(client "${REQUESTOR}"
   ${proto_srcs}
   ${grpc_srcs})
+  
 target_link_libraries(client
   OpenSSL::SSL
   libsvid
