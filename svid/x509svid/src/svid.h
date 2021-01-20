@@ -25,6 +25,11 @@ x509svid_SVID* x509svid_Load(const string_t certfile,
 x509svid_SVID* x509svid_Parse(const byte *certbytes, 
                                 const byte *keybytes, 
                                 err_t *err);
+x509svid_SVID* x509svid_ParseRaw(const byte *certbytes, 
+                                const size_t certlen,
+                                const byte *keybytes,
+                                const size_t keylen,
+                                err_t *err);
 x509svid_SVID* x509svid_newSVID(X509 **certs, 
                                 EVP_PKEY *pkey, 
                                 err_t *err);
