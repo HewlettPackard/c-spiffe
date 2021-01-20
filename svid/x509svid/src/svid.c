@@ -68,6 +68,36 @@ x509svid_SVID* x509svid_Parse(const byte *certbytes,
     return x509svid_newSVID(certs, pkey, err);
 }
 
+x509svid_SVID* x509svid_ParseRaw(const byte *certbytes, 
+                                const size_t certlen,
+                                const byte *keybytes,
+                                const size_t keylen,
+                                err_t *err)
+{
+    X509 **certs = x509util_ParseCertificates(certbytes, certlen, err);
+
+    if(!(*err))
+    {
+        EVP_PKEY *pkey = x509util_ParsePrivateKey(keybytes, keylen, err);
+
+        if(!(*err))
+        {
+            return x509svid_newSVID(certs, pkey, err);
+        }
+        else
+        {
+            //freem them all
+            for(size_t i = 0, size = arrlenu(certs); i < size; ++i)
+            {
+                X509_free(certs[i]);
+            }
+            arrfree(certs);
+        }
+    }
+
+    return NULL;
+}
+
 x509svid_SVID* x509svid_newSVID(X509 **certs, 
                                 EVP_PKEY *pkey, 
                                 err_t *err)
