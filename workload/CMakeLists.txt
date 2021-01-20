@@ -24,11 +24,10 @@ add_custom_command(
 )
 # Include generated *.pb.h files
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
-include_directories(${PROJECT_ROOT_DIR}/svid/)
 
 set(REQUESTOR
-    ${PROJECT_ROOT_DIR}/workload/src/requestor.cc
-    ${PROJECT_ROOT_DIR}/workload/src/client.c
+    ${PROJECT_SOURCE_DIR}/src/requestor.cc
+    ${PROJECT_SOURCE_DIR}/src/client.c
 )
 find_package(OpenSSL REQUIRED)
 add_executable(client "${REQUESTOR}"

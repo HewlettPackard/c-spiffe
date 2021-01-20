@@ -5,11 +5,11 @@ project(INTERNAL VERSION 0.0.1 LANGUAGES C)
 
 
 set(LIB_INTERNAL 
-${PROJECT_ROOT_DIR}/internal/cryptoutil/src/keys.c
-${PROJECT_ROOT_DIR}/internal/jwtutil/src/util.c
-${PROJECT_ROOT_DIR}/internal/pemutil/src/pem.c
-${PROJECT_ROOT_DIR}/internal/x509util/src/certpool.c
-${PROJECT_ROOT_DIR}/internal/x509util/src/util.c
+${PROJECT_SOURCE_DIR}/cryptoutil/src/keys.c
+${PROJECT_SOURCE_DIR}/jwtutil/src/util.c
+${PROJECT_SOURCE_DIR}/pemutil/src/pem.c
+${PROJECT_SOURCE_DIR}/x509util/src/certpool.c
+${PROJECT_SOURCE_DIR}/x509util/src/util.c
 )
 
 add_library(libinternal SHARED ${LIB_INTERNAL})
