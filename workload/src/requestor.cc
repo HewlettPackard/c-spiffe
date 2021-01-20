@@ -62,7 +62,7 @@ x509svid_SVID* FetchDefaultX509SVID(Requestor* requestor){
         {  
             err_t err;
             //assemble SVID from response.
-            x509svid = x509svid_Parse((byte*) id.x509_svid().data(),(byte*) id.x509_svid_key().data(),&err);
+            x509svid = x509svid_ParseRaw((byte*)id.x509_svid().data(),id.x509_svid().length(),(byte*) id.x509_svid_key().data(), id.x509_svid_key().length(),&err);
             if(err){
                 return NULL;
             }else{
