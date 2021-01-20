@@ -18,7 +18,7 @@ CMakeCache.txt
 *.pb.h
 *.out
 
-nternal/cryptoutil/tests/check_keys
+internal/cryptoutil/tests/check_keys
 internal/cryptoutil/tests/check_keys.o
 internal/cryptoutil/tests/keys.o
 internal/jwtutil/tests/check_util
