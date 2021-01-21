@@ -3,9 +3,11 @@ cmake_minimum_required(VERSION 3.13)
 
 set(TARGET_NAME "workload")
 project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C CXX)
-
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
+
+find_package(OpenSSL REQUIRED)
+
 set (proto_name ${TARGET_NAME})
 
 # Get proto files
@@ -31,30 +33,45 @@ add_custom_command(
 # Include generated *.pb.h files
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-set(REQUESTOR
-    ${PROJECT_SOURCE_DIR}/src/requestor.cc
-    ${PROJECT_SOURCE_DIR}/src/client.c
+
+set(EXT_LIBS OpenSSL::SSL
+libsvid
+libspiffeid
+libinternal
+uriparser
+libbundle
+jansson
+cjose
+subunit
+rt
+m
+pthread
+crypto)
+
+set(LIB_REQUESTOR
+  src/requestor.cc
+  ${proto_srcs}
+  ${grpc_srcs}
 )
 
-add_executable(client "${REQUESTOR}"
-  ${proto_srcs}
-  ${grpc_srcs})
-  
-target_link_libraries(client
-  OpenSSL::SSL
-  libsvid
-  libspiffeid
-  libinternal
-  uriparser
-  libbundle
-  jansson
-  cjose
-  subunit
-  rt
-  m
-  crypto
-  ${_REFLECTION}
-  ${_GRPC_GRPCPP}
-  ${_GRPC_GRPC}
-  ${_PROTOBUF_LIBPROTOBUF}
-  pthread)
+add_library(librequestor SHARED ${LIB_REQUESTOR})
+
+target_link_libraries(librequestor
+${EXT_LIBS}
+${_REFLECTION}
+${_GRPC_GRPCPP}
+${_GRPC_GRPC}
+${_PROTOBUF_LIBPROTOBUF}
+)
+
+set(CPP_CLIENT
+    src/cpp_client_example.cc
+)
+add_executable(cpp_client "${CPP_CLIENT}")
+target_link_libraries(cpp_client librequestor)
+
+set(C_CLIENT
+    src/c_client_example.c
+)
+add_executable(c_client "${C_CLIENT}")
+target_link_libraries(c_client librequestor)
