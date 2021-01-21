@@ -33,13 +33,16 @@ add_custom_command(
 # Include generated *.pb.h files
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-
-set(EXT_LIBS OpenSSL::SSL
+set(OWN_LIBS 
 libsvid
 libspiffeid
 libinternal
-uriparser
 libbundle
+)
+
+set(EXT_LIBS
+OpenSSL::SSL
+uriparser
 jansson
 cjose
 subunit
@@ -57,6 +60,7 @@ set(LIB_REQUESTOR
 add_library(librequestor SHARED ${LIB_REQUESTOR})
 
 target_link_libraries(librequestor
+${OWN_LIBS}
 ${EXT_LIBS}
 ${_REFLECTION}
 ${_GRPC_GRPCPP}
