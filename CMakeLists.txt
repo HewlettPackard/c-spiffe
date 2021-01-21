@@ -70,6 +70,8 @@ if (ENABLE_TESTS)
     include(CheckTypeSize)
 
     enable_testing()
+
+    ### Todo: improve this
     add_subdirectory(${PROJECT_SOURCE_DIR}/svid/x509svid/tests)
 
     # Add build target to generate Coverage Test Report to all compiled object files
