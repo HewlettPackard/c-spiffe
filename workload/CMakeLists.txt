@@ -36,8 +36,6 @@ set(REQUESTOR
     ${PROJECT_SOURCE_DIR}/src/client.c
 )
 
-find_package(OpenSSL REQUIRED)
-
 add_executable(client "${REQUESTOR}"
   ${proto_srcs}
   ${grpc_srcs})
