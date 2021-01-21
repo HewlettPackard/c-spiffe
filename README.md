@@ -92,7 +92,24 @@ docker run -it --rm --network host -v $(pwd):/mnt grpc-build:1.34.0
 ## Building
 Build the c-spiffe project:
 
-```bash
-cmake -B build
-cmake --build build --config Release --parallel
 ```
+cd /mnt
+mkdir build && cd build
+cmake ..
+make
+make test
+```
+After running `make test`, you will find the test files into `Testing` folder.
+
+### Code Coverage Support
+
+This implements Code Coverage Reports using either using either `gcov` or `lcov`.
+If you want to check them, you should run the following command after `make test`:
+
+```
+make gcov
+make lcov
+```
+
+The coverage reports will be into `Coverage` folder. In the case of `lcov`, you
+can see into the browser, opening the `index.html` file on the folder above.
