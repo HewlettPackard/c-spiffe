@@ -17,6 +17,6 @@ int main(int argc, char const *argv[])
         free(svid);
     }
     RequestorFree(requestor);
-
+    x509svid_SVID_Free(svid,true);
     return 0;
 }
