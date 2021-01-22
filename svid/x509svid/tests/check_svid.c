@@ -5,8 +5,8 @@ START_TEST(test_x509svid_Load)
 {
     const int ITERS = 2;
     err_t err;
-    x509svid_SVID *svid = x509svid_Load("good-leaf-and-intermediate.pem",
-                                        "key-pkcs8-ecdsa.pem", &err);
+    x509svid_SVID *svid = x509svid_Load("./resources/good-leaf-and-intermediate.pem",
+                                        "./resources/key-pkcs8-ecdsa.pem", &err);
 
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert(svid != NULL);
@@ -23,12 +23,12 @@ END_TEST
 
 START_TEST(test_x509svid_Parse)
 {
-    FILE *f = fopen("good-leaf-and-intermediate.pem", "r");
+    FILE *f = fopen("./resources/good-leaf-and-intermediate.pem", "r");
     const int ITERS = 2;
     byte *raw_certs = FILE_to_bytes(f);
     fclose(f);
 
-    f = fopen("key-pkcs8-ecdsa.pem", "r");
+    f = fopen("./resources/key-pkcs8-ecdsa.pem", "r");
     byte *raw_key = FILE_to_bytes(f);
     fclose(f);
 
@@ -54,7 +54,7 @@ START_TEST(test_x509svid_ParseRaw)
 {
     const int ITERS = 4;
 
-    FILE *f = fopen("good-leaf-and-intermediate.pem", "r");
+    FILE *f = fopen("./resources/good-leaf-and-intermediate.pem", "r");
     string_t buffer = FILE_to_string(f);
     fclose(f);
 
@@ -76,7 +76,7 @@ START_TEST(test_x509svid_ParseRaw)
         }
     }
 
-    f = fopen("key-pkcs8-ecdsa.pem", "r");
+    f = fopen("./resources/key-pkcs8-ecdsa.pem", "r");
     buffer = FILE_to_string(f);
     fclose(f);
 
@@ -126,7 +126,7 @@ END_TEST
 
 START_TEST(test_x509svid_newSVID)
 {
-    FILE *f = fopen("good-leaf-and-intermediate.pem", "r");
+    FILE *f = fopen("./resources/good-leaf-and-intermediate.pem", "r");
     const int ITERS = 2;
     string_t buffer = FILE_to_string(f);
     fclose(f);
@@ -145,7 +145,7 @@ START_TEST(test_x509svid_newSVID)
             break;
     } while(true);
 
-    f = fopen("key-pkcs8-ecdsa.pem", "r");
+    f = fopen("./resources/key-pkcs8-ecdsa.pem", "r");
     buffer = FILE_to_string(f);
     fclose(f);
 
@@ -180,7 +180,7 @@ END_TEST
 
 START_TEST(test_x509svid_validateCertificates)
 {
-    FILE *f = fopen("good-leaf-and-intermediate.pem", "r");
+    FILE *f = fopen("./resources/good-leaf-and-intermediate.pem", "r");
     const int ITERS = 2;
     string_t buffer = FILE_to_string(f);
     fclose(f);
@@ -222,7 +222,7 @@ END_TEST
 
 START_TEST(test_x509svid_validateLeafCertificate)
 {
-    FILE *f = fopen("good-leaf-only.pem", "r");
+    FILE *f = fopen("./resources/good-leaf-only.pem", "r");
     string_t buffer = FILE_to_string(f);
     fclose(f);
 
@@ -251,7 +251,7 @@ END_TEST
 
 START_TEST(test_x509svid_validateSigningCertificates)
 {
-    FILE *f = fopen("good-leaf-and-intermediate.pem", "r");
+    FILE *f = fopen("./resources/good-leaf-and-intermediate.pem", "r");
     const int ITERS = 2;
     string_t buffer = FILE_to_string(f);
     fclose(f);
@@ -293,7 +293,7 @@ END_TEST
 
 START_TEST(test_x509svid_validateKeyUsage)
 {
-    FILE *f = fopen("good-leaf-only.pem", "r");
+    FILE *f = fopen("./resources/good-leaf-only.pem", "r");
     string_t buffer = FILE_to_string(f);
     fclose(f);
 
@@ -317,7 +317,7 @@ END_TEST
 
 START_TEST(test_x509svid_validatePrivateKey)
 {
-    FILE *f = fopen("good-cert-and-key.pem", "r");
+    FILE *f = fopen("./resources/good-cert-and-key.pem", "r");
     string_t buffer = FILE_to_string(f);
     fclose(f);
 
@@ -346,7 +346,7 @@ END_TEST
 
 START_TEST(test_x509svid_keyMatches)
 {
-    FILE *f = fopen("good-cert-and-key.pem", "r");
+    FILE *f = fopen("./resources/good-cert-and-key.pem", "r");
     string_t buffer = FILE_to_string(f);
     fclose(f);
 

@@ -1,8 +1,9 @@
 # Minimum CMake required
 cmake_minimum_required(VERSION 3.13)
 
+file(COPY ../tests/resources/ DESTINATION ${PROJECT_BINARY_DIR}/svid/x509svid/tests/resources/)
+
 add_executable(check_svid check_svid.c)
-add_executable(check_verify check_verify.c)
 
 target_link_libraries(check_svid libsvid ${CHECK_LIBRARIES}
   OpenSSL::SSL
@@ -20,7 +21,11 @@ target_link_libraries(check_svid libsvid ${CHECK_LIBRARIES}
   crypto
   pthread)
 
-  target_link_libraries(check_verify libsvid ${CHECK_LIBRARIES}
+add_test(check_svid check_svid)
+
+add_executable(check_verify check_verify.c)
+
+target_link_libraries(check_verify libsvid ${CHECK_LIBRARIES}
   OpenSSL::SSL
   libspiffeid
   libinternal
@@ -36,6 +41,4 @@ target_link_libraries(check_svid libsvid ${CHECK_LIBRARIES}
   crypto
   pthread)
 
-add_test(NAME check_svid COMMAND ${CMAKE_COMMAND})
-add_test(NAME check_verify COMMAND ${CMAKE_COMMAND})
-set_tests_properties(check_svid PROPERTIES TIMEOUT 30)
+add_test(check_verify check_verify)

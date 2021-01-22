@@ -16,7 +16,7 @@ END_TEST
         
 START_TEST(test_x509svid_IDFromCert)
 {
-    FILE *f = fopen("good-leaf-only.pem", "r");
+    FILE *f = fopen("./resources/good-leaf-only.pem", "r");
     string_t buffer = FILE_to_string(f);
     fclose(f);
 
