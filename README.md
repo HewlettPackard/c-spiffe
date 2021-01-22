@@ -99,11 +99,6 @@ docker run -it --rm --network host -v //c/Repositorios/c-spiffe:/mnt grpc-build:
 
 ## Building
 Build the c-spiffe project:
-
-```bash
-cd /mnt/ (*volume set path)
-cmake -B build
-cmake --build build --config Release --parallel
 ```
 cd /mnt
 mkdir build && cd build
