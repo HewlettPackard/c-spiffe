@@ -22,19 +22,22 @@ check_formatting:
 
 
 build:
-  image: gcc
+  image: grpc/cxx
   stage: build
   before_script:
     - apt update --yes
     - apt-get install --yes build-essential cmake software-properties-common autoconf automake libtool pkg-config ca-certificates wget git curl vim gdb valgrind libssl-dev liburiparser1 liburiparser-dev protobuf-compiler libprotobuf-dev check lcov gcovr libjansson-dev libcjose-dev
     - cd /tmp
-    - git clone --recurse-submodules -b v1.34.0 https://github.com/grpc/grpc
-    - cd grpc
-    - mkdir -p cmake/build
-    - cd cmake/build
-    - cmake -DgRPC_INSTALL=ON -DCMAKE_INSTALL_PREFIX=/usr/local
-    - make
-    - make install
+    - git clone -b v1.34.0 https://github.com/grpc/grpc /var/local/git/grpc && \
+		- cd /var/local/git/grpc && \
+    - git submodule update --init && \
+    - echo "--- installing protobuf ---" && \
+    - cd third_party/protobuf && \
+    ./autogen.sh && ./configure --enable-shared && \
+    - make -j8 && make -j8 check && make install && make clean && ldconfig && \
+    - echo "--- installing grpc ---" && \
+    - cd /var/local/git/grpc && \
+    - make -j8 && make install && make clean && ldconfig
     - cd $CI_PROJECT_DIR
   script:
     - mkdir build && cd build
