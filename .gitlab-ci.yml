@@ -32,7 +32,7 @@ build:
     - cd grpc
     - mkdir -p cmake/build
     - cd cmake/build
-    - cmake -DgRPC_INSTALL=ON DgRPC_BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=/usr/local
+    - cmake -DgRPC_INSTALL=ON -DCMAKE_INSTALL_PREFIX=/usr/local
     - make
     - make install
     - cd $CI_PROJECT_DIR
