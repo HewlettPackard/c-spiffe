@@ -39,7 +39,12 @@ endif()
 
 # Find gRPC installation
 # Looks for gRPCConfig.cmake file installed by gRPC's cmake installation.
-find_package(GRPC REQUIRED grpc)
+
+find_package(PkgConfig REQUIRED)
+pkg_search_module(GRPC REQUIRED grpc)
+pkg_search_module(GRPCPP REQUIRED grpc++>=1.34.0)
+
+#find_package(GRPC REQUIRED)
 message(STATUS "Using gRPC ${gRPC_VERSION}")
 
 set(_GRPC_GRPCPP gRPC::grpc++)
