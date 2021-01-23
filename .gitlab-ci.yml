@@ -22,7 +22,7 @@ check_formatting:
 
 
 build:
-  image: cpp
+  image: gcc
   stage: build
   before_script:
     - apt update --yes
