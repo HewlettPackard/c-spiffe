@@ -22,7 +22,7 @@ check_formatting:
 
 
 build:
-  image: ubuntu:20.04
+  image: cpp
   stage: build
   before_script:
     - apt update --yes
