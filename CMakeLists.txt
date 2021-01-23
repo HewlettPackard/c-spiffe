@@ -22,9 +22,6 @@ macro(ck_check_include_file header var)
   endif(${var})
 endmacro(ck_check_include_file)
 
-
-
-
 # Show all warning messages
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
 
@@ -42,7 +39,7 @@ endif()
 
 # Find gRPC installation
 # Looks for gRPCConfig.cmake file installed by gRPC's cmake installation.
-find_package(gRPC REQUIRED)
+find_package(GRPC REQUIRED grpc)
 message(STATUS "Using gRPC ${gRPC_VERSION}")
 
 set(_GRPC_GRPCPP gRPC::grpc++)
