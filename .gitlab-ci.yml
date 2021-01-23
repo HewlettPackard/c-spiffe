@@ -28,7 +28,7 @@ build:
     - apt update --yes
     - apt-get install --yes build-essential cmake software-properties-common autoconf automake libtool pkg-config ca-certificates wget git curl vim gdb valgrind libssl-dev liburiparser1 liburiparser-dev protobuf-compiler libprotobuf-dev check lcov gcovr libjansson-dev libcjose-dev
     - cd /tmp
-    - git clone --recurse-submodules -b v${GPRC_VERSION} https://github.com/grpc/grpc
+    - git clone --recurse-submodules -b v1.34.0 https://github.com/grpc/grpc
     - cd grpc
     - mkdir -p cmake/build
     - cd cmake/build
