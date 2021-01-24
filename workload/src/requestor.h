@@ -9,10 +9,13 @@
 extern "C" {
 #endif
 
+
+typedef void* stub_ptr;
+
 typedef struct Requestor {
     //TODO: keep tabs on threads?
     //pthread_t** threads;
-
+    stub_ptr stub;
     char* address;
 } Requestor;
 
@@ -34,6 +37,7 @@ typedef struct StreamResponse
 
 //constructor / destructor for Requestor
 Requestor* RequestorInit(char* address);
+Requestor* RequestorInitWithStub(char* address,stub_ptr stub);
 void RequestorFree(Requestor* requestor);
 
 // StreamResponse RequestorRequestStream(Requestor* requestor, Request request, (void*)(*callback)(void*));

@@ -21,11 +21,25 @@ using grpc::ClientReader;
 using grpc::Status;
 
 //New requestor
+//for testing, RequestorInitWithStub should used directly
 Requestor* RequestorInit(char* address){
+    return RequestorInitWithStub(address,NULL);
+}
+
+Requestor* RequestorInitWithStub(char* address, stub_ptr stub){
     if( !address ) return NULL;
     Requestor* req = (Requestor*) malloc(1 * sizeof(Requestor));
     req->address = (char*) malloc((strlen(address)+1) * sizeof(char));
     strcpy(req->address,address);
+    
+    if (!stub){
+        std::shared_ptr<Channel> chan = grpc::CreateChannel(req->address,grpc::InsecureChannelCredentials());
+        auto new_stub = SpiffeWorkloadAPI::NewStub(chan);
+        req->stub = new_stub.release();
+    }else{
+        req->stub = stub;
+    } //TODO should we free the stub later?
+    
     return req;
 }
 
@@ -35,6 +49,11 @@ void RequestorFree(Requestor* requestor){
             free(requestor->address);
             requestor->address = NULL;
         }
+        // TODO Should we free the stub?
+        // if(requestor->stub)
+        // {
+        //     free(requestor->stub;
+        // }
         free(requestor);
     }
 }
@@ -43,17 +62,13 @@ void RequestorFree(Requestor* requestor){
 // Fetch first entitled SVID.
 x509svid_SVID* FetchDefaultX509SVID(Requestor* requestor){
 
-    //gRPC channel and workload API stub
-    std::shared_ptr<Channel> chan = grpc::CreateChannel(requestor->address,grpc::InsecureChannelCredentials());
-    std::unique_ptr<SpiffeWorkloadAPI::Stub> stub = SpiffeWorkloadAPI::NewStub(chan);
-
     ClientContext ctx;
     ctx.AddMetadata("workload.spiffe.io","true"); //mandatory
 
     X509SVIDRequest req = X509SVIDRequest(); //empty request
     X509SVIDResponse response;
     
-    std::unique_ptr<grpc::ClientReader<X509SVIDResponse>> c_reader = stub->FetchX509SVID(&ctx,req); //get response reader
+    std::unique_ptr<grpc::ClientReader<X509SVIDResponse>> c_reader = ((SpiffeWorkloadAPI::Stub*)requestor->stub)->FetchX509SVID(&ctx,req); //get response reader
     
     while (c_reader->Read(&response)){ //while there are messages
         x509svid_SVID* x509svid = NULL;
@@ -77,17 +92,13 @@ x509svid_SVID* FetchDefaultX509SVID(Requestor* requestor){
 // Fetch ALL entitled SVIDs. Array will need to be freed.
 int FetchAllX509SVID(Requestor* requestor,x509svid_SVID*** svids_pointer){
 
-    //gRPC channel and workload API stub
-    std::shared_ptr<Channel> chan = grpc::CreateChannel(requestor->address,grpc::InsecureChannelCredentials());
-    std::unique_ptr<SpiffeWorkloadAPI::Stub> stub = SpiffeWorkloadAPI::NewStub(chan);
-
     ClientContext ctx;
     ctx.AddMetadata("workload.spiffe.io","true"); //mandatory
 
     X509SVIDRequest req = X509SVIDRequest(); //empty request
     X509SVIDResponse response;
     
-    std::unique_ptr<grpc::ClientReader<X509SVIDResponse>> c_reader = stub->FetchX509SVID(&ctx,req); //get response reader
+    std::unique_ptr<grpc::ClientReader<X509SVIDResponse>> c_reader = ((SpiffeWorkloadAPI::Stub*)requestor->stub)->FetchX509SVID(&ctx,req); //get response reader
     
     *svids_pointer = NULL;
     while (c_reader->Read(&response)){ //while there are messages
