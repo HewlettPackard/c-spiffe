@@ -12,6 +12,7 @@ ${PROJECT_SOURCE_DIR}/jwtutil/src/util.c
 ${PROJECT_SOURCE_DIR}/pemutil/src/pem.c
 ${PROJECT_SOURCE_DIR}/x509util/src/certpool.c
 ${PROJECT_SOURCE_DIR}/x509util/src/util.c
+${PROJECT_SOURCE_DIR}/../utils/src/util.c
 )
 
 add_library(${TARGET_NAME} SHARED ${LIB_INTERNAL})
