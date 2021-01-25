@@ -25,11 +25,8 @@ build:
   image: willallves/grpc-build:1.34.0
   stage: build
   before_script:
-    - apt update --yes
-    - apt-get install --yes cmake
     - cd $CI_PROJECT_DIR
   script:
-    - mkdir build
-    - cd build
+    - mkdir build && cd build
     - cmake .. && make
-    - ./myexample  
+    - make test  
