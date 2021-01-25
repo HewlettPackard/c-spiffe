@@ -22,10 +22,13 @@ macro(ck_check_include_file header var)
   endif(${var})
 endmacro(ck_check_include_file)
 
+
+
+
 # Show all warning messages
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
 
-find_package(Protobuf REQUIRED)
+find_package(Protobuf CONFIG REQUIRED)
 message(STATUS "Using protobuf ${Protobuf_VERSION}")
 
 set(_PROTOBUF_LIBPROTOBUF protobuf::libprotobuf)
@@ -39,12 +42,7 @@ endif()
 
 # Find gRPC installation
 # Looks for gRPCConfig.cmake file installed by gRPC's cmake installation.
-
-find_package(PkgConfig REQUIRED)
-pkg_search_module(GRPC REQUIRED grpc)
-pkg_search_module(GRPCPP REQUIRED grpc++>=1.34.0)
-
-#find_package(GRPC REQUIRED)
+find_package(gRPC CONFIG REQUIRED)
 message(STATUS "Using gRPC ${gRPC_VERSION}")
 
 set(_GRPC_GRPCPP gRPC::grpc++)
