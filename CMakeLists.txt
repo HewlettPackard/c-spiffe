@@ -114,6 +114,7 @@ if (ENABLE_TESTS)
 
     ### Todo: improve this
     add_subdirectory(${PROJECT_SOURCE_DIR}/svid/x509svid/tests)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/spiffeid/tests)
 
     # Add build target to generate Coverage Test Report to all compiled object files
     find_program(GCOV gcov)
