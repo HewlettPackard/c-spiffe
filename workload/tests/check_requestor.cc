@@ -18,7 +18,7 @@
 #include <cstring>
 #include <gmock/gmock.h>
 using grpc::testing::MockClientReader;
-MockSpiffeWorkloadAPIStub
+
 using ::testing::_;
 using ::testing::AtLeast;
 using ::testing::DoAll;
