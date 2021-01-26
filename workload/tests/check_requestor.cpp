@@ -70,12 +70,12 @@ START_TEST(test_requestor_free)
 END_TEST
 
 ACTION(set_single_SVID_response) {
-    aarg0->set_spiffe_id("spiffe://example.org/workload_test");
+    arg0->set_spiffe_id("spiffe://example.org/workload_test");
     arg0->set_x509_svid("X509BIN");
     arg0->set_x509_svid_key("X509KEYBIN");
 }
 ACTION(set_multi_SVID_response) {
-    aarg0->set_spiffe_id("spiffe://example.org/workload_test");
+    arg0->set_spiffe_id("spiffe://example.org/workload_test");
     arg0->set_x509_svid("MULTIX509BIN");
     arg0->set_x509_svid_key("X509KEYBIN");
 }
@@ -87,11 +87,11 @@ START_TEST(test_fetch_default_x509)
     auto cr = new MockClientReader<X509SVIDResponse>();
     MockSpiffeWorkloadAPIStub *mock_stub = new MockSpiffeWorkloadAPIStub();
     EXPECT_CALL(*cr, Read(_))
-      .WillOnce(DoAll(WithArg<0>(set_single_SVID_response),Return(true)))
-      .WillOnce(Return(false));
+      .WillRepeatedly(DoAll(WithArg<0>(set_single_SVID_response),Return(true)));
+    //   .WillOnce(Return(false));
 
     Requestor* reqtor = RequestorInitWithStub(address,(stub_ptr) mock_stub);
-    EXPECT_CALL(reqtor->stub, FetchX509SVID)
+    EXPECT_CALL(((SpiffeWorkloadAPI::Stub*)reqtor->stub), FetchX509SVID)
       .WillOnce(Return(cr));
 
     x509svid_SVID* _svid = FetchDefaultX509SVID(reqtor);
