@@ -7,8 +7,9 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
 find_package(OpenSSL REQUIRED)
-
+find_package(GTest REQUIRED)
 set (proto_name ${TARGET_NAME})
+
 
 # Get proto files
 get_filename_component(proto "../protos/${proto_name}.proto" ABSOLUTE)
@@ -19,10 +20,11 @@ set(proto_srcs "${CMAKE_CURRENT_BINARY_DIR}/${proto_name}.pb.cc")
 set(proto_hdrs "${CMAKE_CURRENT_BINARY_DIR}/${proto_name}.pb.h")
 set(grpc_srcs "${CMAKE_CURRENT_BINARY_DIR}/${proto_name}.grpc.pb.cc")
 set(grpc_hdrs "${CMAKE_CURRENT_BINARY_DIR}/${proto_name}.grpc.pb.h")
+set(grpc_mock "${CMAKE_CURRENT_BINARY_DIR}/${proto_name}_mock.grpc.pb.h")
 add_custom_command(
     OUTPUT "${proto_srcs}" "${proto_hdrs}" "${grpc_srcs}" "${grpc_hdrs}"
     COMMAND ${_PROTOBUF_PROTOC}
-    ARGS --grpc_out "${CMAKE_CURRENT_BINARY_DIR}"
+    ARGS --grpc_out "generate_mock_code=true:${CMAKE_CURRENT_BINARY_DIR}"
     --cpp_out "${CMAKE_CURRENT_BINARY_DIR}"
     -I "${proto_dir}"
     --plugin=protoc-gen-grpc="${_GRPC_CPP_PLUGIN_EXECUTABLE}"
@@ -49,6 +51,7 @@ subunit
 rt
 m
 pthread
+ssl
 crypto)
 
 set(LIB_REQUESTOR
@@ -79,3 +82,7 @@ set(C_CLIENT
 )
 add_executable(c_client "${C_CLIENT}")
 target_link_libraries(c_client librequestor)
+
+add_executable(check_requestor "tests/check_requestor.cpp" ${proto_srcs} ${grpc_srcs} ${grpc_mock})
+target_link_libraries(c_client librequestor gmock gmock_main)
+add_test(requestor-test check_requestor)
