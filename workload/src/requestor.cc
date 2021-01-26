@@ -34,7 +34,7 @@ Requestor* RequestorInitWithStub(char* address, stub_ptr stub){
     
     if (!stub){
         std::shared_ptr<Channel> chan = grpc::CreateChannel(req->address,grpc::InsecureChannelCredentials());
-        auto new_stub = SpiffeWorkloadAPI::NewStub(chan);
+        std::unique_ptr<SpiffeWorkloadAPI::StubInterface> new_stub = SpiffeWorkloadAPI::NewStubInterface(chan);
         req->stub = new_stub.release();
     }else{
         req->stub = stub;
@@ -68,7 +68,7 @@ x509svid_SVID* FetchDefaultX509SVID(Requestor* requestor){
     X509SVIDRequest req = X509SVIDRequest(); //empty request
     X509SVIDResponse response;
     
-    std::unique_ptr<grpc::ClientReader<X509SVIDResponse>> c_reader = ((SpiffeWorkloadAPI::Stub*)requestor->stub)->FetchX509SVID(&ctx,req); //get response reader
+    std::unique_ptr<grpc::ClientReaderInterface<X509SVIDResponse>> c_reader = ((SpiffeWorkloadAPI::Stub*)requestor->stub)->FetchX509SVID(&ctx,req); //get response reader
     
     while (c_reader->Read(&response)){ //while there are messages
         x509svid_SVID* x509svid = NULL;
