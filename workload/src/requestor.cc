@@ -34,7 +34,7 @@ Requestor* RequestorInitWithStub(char* address, stub_ptr stub){
     
     if (!stub){
         std::shared_ptr<Channel> chan = grpc::CreateChannel(req->address,grpc::InsecureChannelCredentials());
-        std::unique_ptr<SpiffeWorkloadAPI::StubInterface> new_stub = SpiffeWorkloadAPI::NewStubInterface(chan);
+        std::unique_ptr<SpiffeWorkloadAPI::StubInterface> new_stub = SpiffeWorkloadAPI::NewStub(chan);
         req->stub = new_stub.release();
     }else{
         req->stub = stub;
