@@ -7,6 +7,8 @@
  * Copyright (c) 2020 CESAR
  */
 
+#include <iostream> //keep at top
+
 #include "../src/requestor.h"
 #include <check.h>
 #include <grpc/grpc.h>
@@ -69,14 +71,24 @@ START_TEST(test_requestor_free)
 END_TEST
 
 ACTION(set_single_SVID_response) {
-    arg0->set_spiffe_id("spiffe://example.org/workload_test");
-    arg0->set_x509_svid("X509BIN");
-    arg0->set_x509_svid_key("X509KEYBIN");
+    auto new_svid = ((X509SVIDResponse*)arg0)->mutable_svids()->Add();
+    new_svid->set_spiffe_id("spiffe://example.org/workload_test");
+    new_svid->set_x509_svid("X509BIN");
+    new_svid->set_x509_svid_key("X509KEYBIN");
 }
 ACTION(set_multi_SVID_response) {
-    arg0->set_spiffe_id("spiffe://example.org/workload_test");
-    arg0->set_x509_svid("MULTIX509BIN");
-    arg0->set_x509_svid_key("X509KEYBIN");
+    auto new_svid = ((X509SVIDResponse*)arg0)->mutable_svids()->Add();
+    new_svid->set_spiffe_id("spiffe://example.org/workload_test");
+    new_svid->set_x509_svid("X509BIN");
+    new_svid->set_x509_svid_key("X509KEYBIN");
+    new_svid = ((X509SVIDResponse*)arg0)->mutable_svids()->Add();
+    new_svid->set_spiffe_id("spiffe://example.org/workload_test2");
+    new_svid->set_x509_svid("X509BIN");
+    new_svid->set_x509_svid_key("X509KEYBIN");
+    new_svid = ((X509SVIDResponse*)arg0)->mutable_svids()->Add();
+    new_svid->set_spiffe_id("spiffe://example.org/workload_test3");
+    new_svid->set_x509_svid("X509BIN");
+    new_svid->set_x509_svid_key("X509KEYBIN");
 }
 
 
@@ -86,7 +98,7 @@ START_TEST(test_fetch_default_x509)
     auto cr = new MockClientReader<X509SVIDResponse>();
     MockSpiffeWorkloadAPIStub *mock_stub = new MockSpiffeWorkloadAPIStub();
     EXPECT_CALL(*cr, Read(_))
-      .WillRepeatedly(DoAll(WithArg<0>(set_single_SVID_response),Return(true)));
+      .WillRepeatedly(DoAll(WithArg<0>(set_single_SVID_response()),Return(true)));
     //   .WillOnce(Return(false));
     const char* addr = "unix:///tmp/agent.sock";
     Requestor* reqtor = RequestorInitWithStub(addr,(stub_ptr) mock_stub);
@@ -109,7 +121,7 @@ START_TEST(test_fetch_all_x509)
     auto cr = new MockClientReader<X509SVIDResponse>();
     MockSpiffeWorkloadAPIStub *mock_stub = new MockSpiffeWorkloadAPIStub();
     EXPECT_CALL(*cr, Read(_))
-      .WillOnce(DoAll(WithArg<0>(set_single_SVID_response),Return(true)))
+      .WillOnce(DoAll(WithArg<0>(set_multi_SVID_response()),Return(true)))
       .WillOnce(Return(false));
     const char* addr = "unix:///tmp/agent.sock";
     Requestor* reqtor = RequestorInitWithStub(addr,new MockSpiffeWorkloadAPIStub());
