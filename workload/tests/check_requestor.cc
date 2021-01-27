@@ -8,6 +8,7 @@
  */
 
 #include "../src/requestor.h"
+#include <check.h>
 #include <grpc/grpc.h>
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/test/mock_stream.h>
@@ -27,19 +28,17 @@ using ::testing::SaveArg;
 using ::testing::SetArgPointee;
 using ::testing::WithArg;
 
-using grpc::testing::X509SVIDRequest;
-using grpc::testing::X509SVIDResponse;
 
 START_TEST(test_requestor_init)
 {
     //normal constructor test
     const char* addr = "unix:///tmp/agent.sock";
-    SpiffeWorkloadAPI::StubInterface stub = SpiffeWorkloadAPI::MockStub
+    MockSpiffeWorkloadAPIStub* stub = new MockSpiffeWorkloadAPIStub();
     Requestor* reqtor = RequestorInitWithStub(addr,stub);
     
-    ck_assert_ptr_nonnull(reqtor);
-    ck_assert_ptr_nonnull(reqtor->address);
-    ck_assert_ptr_ne(reqtor->address,addr);
+    ck_assert_ptr_ne(reqtor,NULL);
+    ck_assert_ptr_ne(reqtor->address,NULL);
+    ck_assert_ptr_ne(reqtor->address,addr);//has to be a copy, not the same string
     ck_assert_int_eq(strlen(reqtor->address),strlen(addr));
     ck_assert_str_eq(reqtor->address, addr);
 
@@ -49,7 +48,7 @@ START_TEST(test_requestor_init)
     
     reqtor = RequestorInit(NULL);
 
-    ck_assert_ptr_null(reqtor);
+    ck_assert_ptr_eq(reqtor,NULL);
     
     //no need to free failed requestor
 
@@ -61,8 +60,8 @@ START_TEST(test_requestor_free)
     const char* addr = "unix:///tmp/agent.sock";
     Requestor* reqtor = RequestorInit(addr);
     
-    ck_assert_ptr_nonnull(reqtor);
-    ck_assert_ptr_nonnull(reqtor->address);
+    ck_assert_ptr_ne(reqtor,NULL);
+    ck_assert_ptr_ne(reqtor->address,NULL);
     RequestorFree(reqtor);
     //TODO add malloc and free counter
 
@@ -89,14 +88,14 @@ START_TEST(test_fetch_default_x509)
     EXPECT_CALL(*cr, Read(_))
       .WillRepeatedly(DoAll(WithArg<0>(set_single_SVID_response),Return(true)));
     //   .WillOnce(Return(false));
-
-    Requestor* reqtor = RequestorInitWithStub(address,(stub_ptr) mock_stub);
-    EXPECT_CALL(((SpiffeWorkloadAPI::Stub*)reqtor->stub), FetchX509SVID)
+    const char* addr = "unix:///tmp/agent.sock";
+    Requestor* reqtor = RequestorInitWithStub(addr,(stub_ptr) mock_stub);
+    EXPECT_CALL(*(SpiffeWorkloadAPI::Stub*)reqtor->stub, FetchX509SVID)
       .WillOnce(Return(cr));
 
     x509svid_SVID* _svid = FetchDefaultX509SVID(reqtor);
 
-    ck_assert_ptr_nonnull(_svid);
+    ck_assert_ptr_ne(_svid,NULL);
 
     
     RequestorFree(reqtor);
@@ -113,12 +112,12 @@ START_TEST(test_fetch_all_x509)
       .WillOnce(Return(false));
 
     Requestor* reqtor = RequestorInit(address);
-    EXPECT_CALL(reqtor->stub, FetchX509SVID)
+    EXPECT_CALL((SpiffeWorkloadAPI::StubInterface*) Spiffereqtor->stub, FetchX509SVID)
       .WillOnce(Return(cr));
 
     x509svid_SVID* _svid = FetchDefaultX509SVID(reqtor);
 
-    ck_assert_ptr_nonnull(_svid);
+    ck_assert_ptr_ne(_svid,NULL);
 
     
     RequestorFree(reqtor);
@@ -141,12 +140,11 @@ Suite* requestor_suite(void)
 
     return s;
 }
-
-int main(void)
+int main(int argc, char const **argv)
 {
     Suite *s = requestor_suite();
     SRunner *sr = srunner_create(s);
-    InitGoogleMock(&__argc, __argv);
+    testing::InitGoogleMock(argc, (char**)argv);
     srunner_run_all(sr, CK_NORMAL);
     const int number_failed = srunner_ntests_failed(sr);
     
