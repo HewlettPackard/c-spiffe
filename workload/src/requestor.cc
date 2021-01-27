@@ -22,11 +22,11 @@ using grpc::Status;
 
 //New requestor
 //for testing, RequestorInitWithStub should used directly
-Requestor* RequestorInit(char* address){
+Requestor* RequestorInit(const char* address){
     return RequestorInitWithStub(address,NULL);
 }
 
-Requestor* RequestorInitWithStub(char* address, stub_ptr stub){
+Requestor* RequestorInitWithStub(const char* address, stub_ptr stub){
     if( !address ) return NULL;
     Requestor* req = (Requestor*) malloc(1 * sizeof(Requestor));
     req->address = (char*) malloc((strlen(address)+1) * sizeof(char));
