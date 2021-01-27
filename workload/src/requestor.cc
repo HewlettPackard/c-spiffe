@@ -68,7 +68,7 @@ x509svid_SVID* FetchDefaultX509SVID(Requestor* requestor){
     X509SVIDRequest req = X509SVIDRequest(); //empty request
     X509SVIDResponse response;
     
-    std::unique_ptr<grpc::ClientReaderInterface<X509SVIDResponse>> c_reader = ((SpiffeWorkloadAPI::Stub*)requestor->stub)->FetchX509SVID(&ctx,req); //get response reader
+    std::unique_ptr<grpc::ClientReaderInterface<X509SVIDResponse>> c_reader = ((SpiffeWorkloadAPI::StubInterface*)requestor->stub)->FetchX509SVID(&ctx,req); //get response reader
     
     while (c_reader->Read(&response)){ //while there are messages
         x509svid_SVID* x509svid = NULL;
@@ -98,7 +98,7 @@ int FetchAllX509SVID(Requestor* requestor,x509svid_SVID*** svids_pointer){
     X509SVIDRequest req = X509SVIDRequest(); //empty request
     X509SVIDResponse response;
     
-    std::unique_ptr<grpc::ClientReader<X509SVIDResponse>> c_reader = ((SpiffeWorkloadAPI::Stub*)requestor->stub)->FetchX509SVID(&ctx,req); //get response reader
+    std::unique_ptr<grpc::ClientReaderInterface<X509SVIDResponse>> c_reader = ((SpiffeWorkloadAPI::StubInterface*)requestor->stub)->FetchX509SVID(&ctx,req); //get response reader
     
     *svids_pointer = NULL;
     while (c_reader->Read(&response)){ //while there are messages
