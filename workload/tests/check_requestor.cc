@@ -11,13 +11,13 @@
 #include <check.h>
 #include <grpc/grpc.h>
 #include <grpcpp/grpcpp.h>
+#include <gmock/gmock.h>
 #include <grpcpp/test/mock_stream.h>
 #include "workload.pb.h"
 #include "workload.grpc.pb.h"
 #include "workload_mock.grpc.pb.h"
 #include "../../svid/x509svid/src/svid.h"
 #include <cstring>
-#include <gmock/gmock.h>
 using grpc::testing::MockClientReader;
 
 using ::testing::_;
@@ -90,7 +90,7 @@ START_TEST(test_fetch_default_x509)
     //   .WillOnce(Return(false));
     const char* addr = "unix:///tmp/agent.sock";
     Requestor* reqtor = RequestorInitWithStub(addr,(stub_ptr) mock_stub);
-    EXPECT_CALL(*(SpiffeWorkloadAPI::Stub*)reqtor->stub, FetchX509SVID)
+    EXPECT_CALL(*mock_stub, FetchX509SVIDRaw)
       .WillOnce(Return(cr));
 
     x509svid_SVID* _svid = FetchDefaultX509SVID(reqtor);
@@ -107,12 +107,13 @@ START_TEST(test_fetch_all_x509)
 {
         //mocks the ClientReader class so we can craft the responses
     auto cr = new MockClientReader<X509SVIDResponse>();
+    MockSpiffeWorkloadAPIStub *mock_stub = new MockSpiffeWorkloadAPIStub();
     EXPECT_CALL(*cr, Read(_))
       .WillOnce(DoAll(WithArg<0>(set_single_SVID_response),Return(true)))
       .WillOnce(Return(false));
-
-    Requestor* reqtor = RequestorInit(address);
-    EXPECT_CALL((SpiffeWorkloadAPI::StubInterface*) Spiffereqtor->stub, FetchX509SVID)
+    const char* addr = "unix:///tmp/agent.sock";
+    Requestor* reqtor = RequestorInitWithStub(addr,new MockSpiffeWorkloadAPIStub());
+    EXPECT_CALL(*mock_stub, FetchX509SVIDRaw)
       .WillOnce(Return(cr));
 
     x509svid_SVID* _svid = FetchDefaultX509SVID(reqtor);
@@ -140,11 +141,11 @@ Suite* requestor_suite(void)
 
     return s;
 }
-int main(int argc, char const **argv)
+int main(int argc, char **argv)
 {
     Suite *s = requestor_suite();
     SRunner *sr = srunner_create(s);
-    testing::InitGoogleMock(argc, (char**)argv);
+    testing::InitGoogleMock(&argc, argv);
     srunner_run_all(sr, CK_NORMAL);
     const int number_failed = srunner_ntests_failed(sr);
     
