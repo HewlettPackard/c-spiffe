@@ -84,6 +84,9 @@ if (ENABLE_TESTS)
     find_package(Check REQUIRED)
     include_directories(${CHECK_INCLUDE_DIRS})
     link_directories(${CHECK_LIBRARY_DIRS})
+    find_package(GTest REQUIRED)
+    include_directories(${GTEST_INCLUDE_DIRS})
+    link_directories(${GTEST_LIBRARY_DIRS})
 
     include(CheckCSourceCompiles)
     include(CheckCSourceRuns)
@@ -120,6 +123,7 @@ if (ENABLE_TESTS)
     add_subdirectory(${PROJECT_SOURCE_DIR}/internal/jwtutil/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/internal/pemutil/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/internal/x509util/tests)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/workload/tests)
 
     # Add build target to generate Coverage Test Report to all compiled object files
     find_program(GCOV gcov)
