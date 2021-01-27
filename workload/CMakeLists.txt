@@ -82,7 +82,3 @@ set(C_CLIENT
 )
 add_executable(c_client "${C_CLIENT}")
 target_link_libraries(c_client librequestor)
-
-add_executable(check_requestor "tests/check_requestor.cc" ${proto_srcs} ${grpc_srcs} ${grpc_mock})
-target_link_libraries(c_client librequestor gmock gmock_main)
-add_test(requestor-test check_requestor)
