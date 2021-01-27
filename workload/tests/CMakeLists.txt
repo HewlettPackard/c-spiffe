@@ -1,7 +1,7 @@
 # Minimum CMake required
 cmake_minimum_required(VERSION 3.13)
 set (proto_name "workload")
-
+find_package(GTest REQUIRED)
 
 # Get proto files
 get_filename_component(proto "../../protos/${proto_name}.proto" ABSOLUTE)
@@ -29,7 +29,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_executable(check_requestor "./check_requestor.cc" ${grpc_srcs} ${proto_srcs} ${grpc_mock})
 
-target_link_libraries(check_requestor librequestor ${CHECK_LIBRARIES} gmock gmock_main
+target_link_libraries(check_requestor librequestor ${CHECK_LIBRARIES} gmock gmock_main gtest
   OpenSSL::SSL
   libspiffeid
   libinternal
