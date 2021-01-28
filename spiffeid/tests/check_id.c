@@ -120,6 +120,8 @@ START_TEST(test_spiffeid_FromURI)
     spiffeid_ID id = spiffeid_FromURI(&uri, &err);
     ck_assert_str_eq(id.td.name, "example.com");
     ck_assert_str_eq(id.path, "/path1/seg3/rest");
+
+    spiffeid_ID_Free(&id, false);
 }
 END_TEST
 

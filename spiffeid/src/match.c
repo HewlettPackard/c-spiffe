@@ -97,20 +97,13 @@ void spiffeid_Matcher_Free(spiffeid_Matcher *matcher)
 {
     if(matcher)
     {
-        if(matcher->ids)
+        for(size_t i = 0, size = arrlenu(matcher->ids); i < size; ++i)
         {
-            for(size_t i = 0, size = arrlenu(matcher->ids); i < size; ++i)
-            {
-                spiffeid_ID_Free(matcher->ids + i, false);
-            }
-            arrfree(matcher->ids);
+            spiffeid_ID_Free(matcher->ids + i, false);
         }
+        arrfree(matcher->ids);
+        arrfree(matcher->td.name);
 
-        if(matcher->td.name)
-        {
-            arrfree(matcher->td.name);
-        }
-        
         free(matcher);
     }
 }

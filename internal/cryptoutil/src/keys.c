@@ -29,7 +29,7 @@ bool cryptoutil_PublicKeyEqual(EVP_PKEY *pkey1, EVP_PKEY *pkey2)
         return false;
     }
 
-    return true;
+    return false;
 }
 
 bool cryptoutil_RSAPublicKeyEqual(RSA *key1, RSA *key2)

@@ -7,6 +7,10 @@
 #include <openssl/x509v3.h>
 #include "../../../utils/src/util.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct pemutil_Block
 {
     string_t type;
@@ -34,5 +38,9 @@ byte** pemutil_EncodeCertificates(X509 **certs);
 func parseBlocks(blocksBytes []byte, expectedType string) ([]interface{}, error)
 func parseBlock(pemBytes []byte, pemType string) (interface{}, []byte, error)
 */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -6,6 +6,10 @@
 #include <openssl/evp.h>
 #include "stb_ds.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // typedef bool err_t;
 typedef char* string_t;
 typedef char** string_arr_t;
@@ -28,7 +32,10 @@ enum enum_err_t
     NO_ERROR = 0,
     ERROR1,
     ERROR2,
-    ERROR3
+    ERROR3,
+    ERROR4,
+    ERROR5,
+    ERROR6
 };
 
 typedef enum enum_err_t err_t;
@@ -50,5 +57,9 @@ bool string_contains(const char *src, const char *str);
 string_t FILE_to_string(FILE *f);
 
 byte* FILE_to_bytes(FILE *f);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

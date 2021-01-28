@@ -5,7 +5,6 @@
 #include "../../../internal/x509util/src/util.h"
 #include "../../../internal/cryptoutil/src/keys.h"
 #include "../../../spiffeid/src/trustdomain.h"
-#include "../src/bundle.h"
 
 START_TEST(test_x509bundle_New)
 {

@@ -8,6 +8,10 @@
 // #include <curl/curl.h>
 #include "../../utils/src/util.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct spiffeid_TrustDomain
 {
     string_t name;
@@ -32,14 +36,14 @@ spiffeid_ID spiffeid_FromURI(const UriUriA *uri, err_t *err);
 #if __SPIFFE_ID_BY_POINTER__
 spiffeid_TrustDomain spiffeid_ID_TrustDomain(const spiffeid_ID *id);
 bool spiffeid_ID_MemberOf(const spiffeid_ID *id, const spiffeid_ID_TrustDomain *td);
-const string_t spiffeid_ID_Path(const spiffeid_ID *id);
+string_t spiffeid_ID_Path(const spiffeid_ID *id);
 string_t spiffeid_ID_String(const spiffeid_ID *id);
 CURLU* spiffeid_ID_URL(const spiffeid_ID *id);
 bool spiffeid_ID_IsZero(const spiffeid_ID *id);
 #else
 spiffeid_TrustDomain spiffeid_ID_TrustDomain(const spiffeid_ID id);
 bool spiffeid_ID_MemberOf(const spiffeid_ID id, const spiffeid_TrustDomain td);
-const string_t spiffeid_ID_Path(const spiffeid_ID id);
+string_t spiffeid_ID_Path(const spiffeid_ID id);
 string_t spiffeid_ID_String(const spiffeid_ID id);
 // UriUriA spiffeid_ID_URI(const spiffeid_ID id);
 bool spiffeid_ID_IsZero(const spiffeid_ID id);
@@ -63,5 +67,9 @@ spiffeid_ID spiffeid_ID_RequireFromString(const string_t str);
 
 spiffeid_ID spiffeid_ID_RequireFromURI(const CURLU str);
 */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
