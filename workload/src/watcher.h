@@ -12,28 +12,27 @@
 
 
 //TODO function for picking first SVID
-typedef struct X509Context
+typedef struct workloadapi_X509Context
 {
     x509svid_SVID** SVIDs;
-    size_t len_svids;
     x509bundle_Set* Bundles;
 
-} X509Context;
+} workloadapi_X509Context;
 
-typedef struct WatcherConfig
+typedef struct workloadapi_WatcherConfig
 {
     void* client; //TODO add actual client type
     void** clientOptions; //TODO add actual option type
     size_t options_size;
-} WatcherConfig;
+} workloadapi_WatcherConfig;
 
-typedef void(x509ContextFunc_t)(X509Context*);  
+typedef void (*workloadapi_x509ContextFunc_t)(workloadapi_X509Context*);  
 // typedef void(jwtBundleSetFunc_t)(jwtbundle_Set*);
 // function types eg. 
-// x509ContextFunc_t func;  =  void func(X509Context* updatedContext);
+// workloadapi_x509ContextFunc_t func;  =  void func(workloadapi_X509Context* updatedContext);
 
 
-typedef struct Watcher
+typedef struct workloadapi_Watcher
 {
     void* client; //TODO as above, pointer to Client C++ class;
     bool ownsClient = false; //did this create its client?
@@ -47,31 +46,31 @@ typedef struct Watcher
     
     thrd_t watcherThread; //thread spun to wait on updates 
 
-    x509ContextFunc_t* x509ContextUpdateFunc; //function called with updated x509Context
+    workloadapi_x509ContextFunc_t x509ContextUpdateFunc; //function called with updated x509Context
     // jwtBundleSetFunc_t* jwtBundleSetUpdateFunc ; //function called with updated x509Context
     
 
-} Watcher;
+} workloadapi_Watcher;
 
 //new watcher, dials WorkloadAPI if client hasn't yet
-Watcher* newWatcher(/*context,*/ WatcherConfig config, x509ContextFunc_t* x509ContextUpdateFunc, jwtBundleSetFunc_t* jwtBundleSetUpdateFunc);
+workloadapi_Watcher* newWatcher(/*context,*/ workloadapi_WatcherConfig config, workloadapi_x509ContextFunc_t* x509ContextUpdateFunc/*, jwtBundleSetFunc_t* jwtBundleSetUpdateFunc*/);
 
 //drops connection to WorkloadAPI (if owns client)
-void closeWatcher(/*context,*/ Watcher* watcher);
+void closeWatcher(/*context,*/ workloadapi_Watcher* watcher);
 
 //Function called by Client when new x509 response arrives
-void Watcher_OnX509ContextUpdate(Watcher* watcher, X509Context* context);
+void Watcher_OnX509ContextUpdate(workloadapi_Watcher* watcher, workloadapi_X509Context* context);
 //Called by Client when an error occurs
-void Watcher_OnX509ContextWatchError(Watcher* watcher, err_t error);
+void Watcher_OnX509ContextWatchError(workloadapi_Watcher* watcher, err_t error);
 
 // Function called by Client when new JWT response arrives
-// void Watcher_OnJwtBundlesUpdate(Watcher* watcher, jwtbundle_Set* context);
-// void Watcher_OnJwtBundlesWatchError(Watcher* watcher, err_t error);
+// void Watcher_OnJwtBundlesUpdate(workloadapi_Watcher* watcher, jwtbundle_Set* context);
+// void Watcher_OnJwtBundlesWatchError(workloadapi_Watcher* watcher, err_t error);
 
 // TODO sync functions
-// err_t Watcher_WaitUntilUpdated(Watcher* watcher/*, go channel context*/);
-// void* Watcher_Updated(Watcher* watcher); //TODO how to get updated without channels
-// err_t Watcher_DrainUpdated(Watcher* watch); //
+// err_t Watcher_WaitUntilUpdated(workloadapi_Watcher* watcher/*, go channel context*/);
+// void* Watcher_Updated(workloadapi_Watcher* watcher); //TODO how to get updated without channels
+// err_t Watcher_DrainUpdated(workloadapi_Watcher* watch); //
 // err_t Watcher_TriggerUpdated(/* go channel context*/);
 
 
