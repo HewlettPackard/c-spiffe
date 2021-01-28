@@ -125,7 +125,7 @@ jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td,
     return bundle;
 }
                                             
-const spiffeid_TrustDomain jwtbundle_Bundle_TrustDomain(const jwtbundle_Bundle *b)
+spiffeid_TrustDomain jwtbundle_Bundle_TrustDomain(const jwtbundle_Bundle *b)
 {
     return b->td;
 }
@@ -220,12 +220,6 @@ bool jwtbundle_Bundle_Empty(jwtbundle_Bundle *b)
     mtx_unlock(&(b->mtx));
 
     return empty;
-}
-
-byte* jwtbundle_Bundle_Marshal(jwtbundle_Bundle *b, err_t *err)
-{
-    //dummy
-    return NULL;
 }
 
 jwtbundle_Bundle* jwtbundle_Bundle_Clone(jwtbundle_Bundle *b)

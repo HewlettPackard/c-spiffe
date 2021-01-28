@@ -36,8 +36,8 @@ typedef struct StreamResponse
 } StreamResponse;
 
 //constructor / destructor for Requestor
-Requestor* RequestorInit(const char* address);
-Requestor* RequestorInitWithStub(const char* address,stub_ptr stub);
+Requestor* RequestorInit(char* address);
+Requestor* RequestorInitWithStub(char* address,stub_ptr stub);
 void RequestorFree(Requestor* requestor);
 
 // StreamResponse RequestorRequestStream(Requestor* requestor, Request request, (void*)(*callback)(void*));

@@ -75,7 +75,7 @@ x509bundle_Bundle* x509bundle_Parse(const spiffeid_TrustDomain td,
     return bundle;
 }
 
-const spiffeid_TrustDomain x509bundle_Bundle_TrustDomain(const x509bundle_Bundle *b)
+spiffeid_TrustDomain x509bundle_Bundle_TrustDomain(const x509bundle_Bundle *b)
 {
     return b->td;
 }

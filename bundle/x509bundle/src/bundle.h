@@ -29,7 +29,7 @@ x509bundle_Bundle* x509bundle_Parse(const spiffeid_TrustDomain td,
                                     const string_t bundle_bytes, 
                                     err_t *err);
 
-const spiffeid_TrustDomain x509bundle_Bundle_TrustDomain(const x509bundle_Bundle *b);
+spiffeid_TrustDomain x509bundle_Bundle_TrustDomain(const x509bundle_Bundle *b);
 X509** x509bundle_Bundle_X509Authorities(x509bundle_Bundle *b);
 void x509bundle_Bundle_AddX509Authority(x509bundle_Bundle *b, X509 *auth);
 void x509bundle_Bundle_RemoveX509Authority(x509bundle_Bundle *b, X509 *auth);

@@ -36,14 +36,14 @@ spiffeid_ID spiffeid_FromURI(const UriUriA *uri, err_t *err);
 #if __SPIFFE_ID_BY_POINTER__
 spiffeid_TrustDomain spiffeid_ID_TrustDomain(const spiffeid_ID *id);
 bool spiffeid_ID_MemberOf(const spiffeid_ID *id, const spiffeid_ID_TrustDomain *td);
-const string_t spiffeid_ID_Path(const spiffeid_ID *id);
+string_t spiffeid_ID_Path(const spiffeid_ID *id);
 string_t spiffeid_ID_String(const spiffeid_ID *id);
 CURLU* spiffeid_ID_URL(const spiffeid_ID *id);
 bool spiffeid_ID_IsZero(const spiffeid_ID *id);
 #else
 spiffeid_TrustDomain spiffeid_ID_TrustDomain(const spiffeid_ID id);
 bool spiffeid_ID_MemberOf(const spiffeid_ID id, const spiffeid_TrustDomain td);
-const string_t spiffeid_ID_Path(const spiffeid_ID id);
+string_t spiffeid_ID_Path(const spiffeid_ID id);
 string_t spiffeid_ID_String(const spiffeid_ID id);
 // UriUriA spiffeid_ID_URI(const spiffeid_ID id);
 bool spiffeid_ID_IsZero(const spiffeid_ID id);

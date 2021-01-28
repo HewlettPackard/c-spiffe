@@ -37,7 +37,7 @@ spiffeid_TrustDomain spiffeid_TrustDomainFromURI(const UriUriA *uri, err_t *err)
 }
 
 #if !__TRUSTDOMAIN_BY_POINTER__
-const string_t spiffeid_TrustDomain_String(const spiffeid_TrustDomain td)
+string_t spiffeid_TrustDomain_String(const spiffeid_TrustDomain td)
 {
     return td.name;
 }

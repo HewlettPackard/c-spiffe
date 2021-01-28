@@ -110,7 +110,9 @@ static X509*** considerCandidate(int type,
 
         ///TODO: implement arrpush
         // arrpush(chains, childchains);
-    } 
+    }
+
+    return chains;
 }
 
 static X509*** buildChains(X509 *cert,

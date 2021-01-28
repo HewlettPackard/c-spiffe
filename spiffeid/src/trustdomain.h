@@ -15,14 +15,14 @@ spiffeid_TrustDomain spiffeid_TrustDomainFromString(const string_t str, err_t *e
 spiffeid_TrustDomain spiffeid_TrustDomainFromURI(const UriUriA *uri, err_t *err);
 
 #if __TRUSTDOMAIN_BY_POINTER__
-const string_t spiffeid_TrustDomain_String(const spiffeid_TrustDomain *td);
+string_t spiffeid_TrustDomain_String(const spiffeid_TrustDomain *td);
 spiffeid_ID spiffeid_TrustDomain_ID(const spiffeid_TrustDomain *td);
 string_t spiffeid_TrustDomain_IDString(const spiffeid_TrustDomain *td);
 spiffeid_ID spiffeid_TrustDomain_NewID(const spiffeid_TrustDomain *td, const string_t str);
 bool spiffeid_ID_IsZero(const spiffeid_TrustDomain *td);
 int spiffeid_ID_Compare(const spiffeid_TrustDomain *td);
 #else
-const string_t spiffeid_TrustDomain_String(const spiffeid_TrustDomain td);
+string_t spiffeid_TrustDomain_String(const spiffeid_TrustDomain td);
 spiffeid_ID spiffeid_TrustDomain_ID(const spiffeid_TrustDomain td);
 string_t spiffeid_TrustDomain_IDString(const spiffeid_TrustDomain td);
 spiffeid_ID spiffeid_TrustDomain_NewID(const spiffeid_TrustDomain td, const string_t path);
