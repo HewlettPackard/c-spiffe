@@ -27,8 +27,11 @@ typedef struct WatcherConfig
     size_t options_size;
 } WatcherConfig;
 
-typedef void(x509ContextFunc_t)(X509Context*);
-typedef void(jwtBundleSetFunc_t)(jwtbundle_Set*);
+typedef void(x509ContextFunc_t)(X509Context*);  
+// typedef void(jwtBundleSetFunc_t)(jwtbundle_Set*);
+// function types eg. 
+// x509ContextFunc_t func;  =  void func(X509Context* updatedContext);
+
 
 typedef struct Watcher
 {
@@ -45,7 +48,7 @@ typedef struct Watcher
     thrd_t watcherThread; //thread spun to wait on updates 
 
     x509ContextFunc_t* x509ContextUpdateFunc; //function called with updated x509Context
-    jwtBundleSetFunc_t* jwtBundleSetUpdateFunc ; //function called with updated x509Context
+    // jwtBundleSetFunc_t* jwtBundleSetUpdateFunc ; //function called with updated x509Context
     
 
 } Watcher;
@@ -61,15 +64,15 @@ void Watcher_OnX509ContextUpdate(Watcher* watcher, X509Context* context);
 //Called by Client when an error occurs
 void Watcher_OnX509ContextWatchError(Watcher* watcher, err_t error);
 
-//Function called by Client when new JWT response arrives
-void Watcher_OnJwtBundlesUpdate(Watcher* watcher, jwtbundle_Set* context);
-void Watcher_OnJwtBundlesWatchError(Watcher* watcher, err_t error);
+// Function called by Client when new JWT response arrives
+// void Watcher_OnJwtBundlesUpdate(Watcher* watcher, jwtbundle_Set* context);
+// void Watcher_OnJwtBundlesWatchError(Watcher* watcher, err_t error);
 
-
-err_t Watcher_WaitUntilUpdated(Watcher* watcher/*, go channel context*/);
-void* Watcher_Updated(Watcher* watcher); //TODO how to get updated without channels
-err_t Watcher_DrainUpdated(Watcher* watch); //
-err_t Watcher_TriggerUpdated(/* go channel context*/);
+// TODO sync functions
+// err_t Watcher_WaitUntilUpdated(Watcher* watcher/*, go channel context*/);
+// void* Watcher_Updated(Watcher* watcher); //TODO how to get updated without channels
+// err_t Watcher_DrainUpdated(Watcher* watch); //
+// err_t Watcher_TriggerUpdated(/* go channel context*/);
 
 
 
