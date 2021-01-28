@@ -49,14 +49,6 @@ x509bundle_Bundle* x509bundle_Load(const spiffeid_TrustDomain td,
     return bundleptr;
 }
 
-/*x509bundle_Bundle* x509bundle_Read(const spiffeid_TrustDomain td, 
-                                    const void *reader, 
-                                    err_t *err)
-{
-    //dummy
-    return NULL;
-}*/
-
 x509bundle_Bundle* x509bundle_Parse(const spiffeid_TrustDomain td, 
                                     const string_t bundle_bytes, 
                                     err_t *err)
@@ -83,7 +75,7 @@ x509bundle_Bundle* x509bundle_Parse(const spiffeid_TrustDomain td,
     return bundle;
 }
 
-const spiffeid_TrustDomain x509bundle_Bundle_TrustDomain(const x509bundle_Bundle *b)
+spiffeid_TrustDomain x509bundle_Bundle_TrustDomain(const x509bundle_Bundle *b)
 {
     return b->td;
 }
@@ -156,12 +148,6 @@ bool x509bundle_Bundle_Empty(x509bundle_Bundle *b)
     mtx_unlock(&(b->mtx));
 
     return empty;
-}
-
-byte* x509bundle_Bundle_Marshal(x509bundle_Bundle *b, err_t *err)
-{
-    //dummy
-    return NULL;
 }
 
 bool x509bundle_Bundle_Equal(const x509bundle_Bundle *b1, 

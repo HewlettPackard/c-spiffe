@@ -5,8 +5,6 @@
 #include "trustdomain.h"
 #include "../../utils/src/stb_ds.h"
 
-
-
 string_t join(string_arr_t str_arr)
 {
     string_t res_str = NULL;
@@ -258,7 +256,7 @@ void spiffeid_ID_Free(spiffeid_ID *id, bool alloc)
 
 #if !__SPIFFE_ID_BY_POINTER__
 
-const spiffeid_TrustDomain spiffeid_ID_TrustDomain(const spiffeid_ID id)
+spiffeid_TrustDomain spiffeid_ID_TrustDomain(const spiffeid_ID id)
 {
     return id.td;
 }
@@ -268,7 +266,7 @@ bool spiffeid_ID_MemberOf(const spiffeid_ID id, const spiffeid_TrustDomain td)
     return !strcmp(id.td.name, td.name);
 }
 
-const string_t spiffeid_ID_Path(const spiffeid_ID id)
+string_t spiffeid_ID_Path(const spiffeid_ID id)
 {
     return id.path;
 }

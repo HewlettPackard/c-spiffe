@@ -199,7 +199,7 @@ bool spiffebundle_Bundle_HasJWTAuthority(spiffebundle_Bundle *b,
                                             const string_t keyID)
 {
     mtx_lock(&(b->mtx));
-    const bool present = shgeti(b->jwtAuths, keyID)? true : false;
+    const bool present = shgeti(b->jwtAuths, keyID) >= 0? true : false;
     mtx_unlock(&(b->mtx));
 
     return present;
@@ -236,7 +236,7 @@ void spiffebundle_Bundle_SetJWTAuthorities(spiffebundle_Bundle *b,
 {
     mtx_lock(&(b->mtx));
     ///TODO: check if it is needed to free the EVP_PKEY objs
-    for(size_t i = 0, size = shlen(b->jwtAuths); i < size; ++i)
+    for(size_t i = 0, size = shlenu(b->jwtAuths); i < size; ++i)
     {
         EVP_PKEY_free(b->jwtAuths[i].value);
     }
@@ -248,7 +248,7 @@ void spiffebundle_Bundle_SetJWTAuthorities(spiffebundle_Bundle *b,
 bool spiffebundle_Bundle_Empty(spiffebundle_Bundle *b)
 {
     mtx_lock(&(b->mtx));
-    bool empty = (arrlenu(b->x509Auths) == 0) && (shlen(b->jwtAuths) == 0);
+    bool empty = (arrlenu(b->x509Auths) == 0) && (shlenu(b->jwtAuths) == 0);
     mtx_unlock(&(b->mtx));
 
     return empty;

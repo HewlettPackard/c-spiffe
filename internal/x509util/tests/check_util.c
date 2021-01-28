@@ -1,136 +1,32 @@
 #include <openssl/pem.h>
+#include <openssl/evp.h>
 #include <check.h>
 #include "../src/util.h"
-
-#define STB_DS_IMPLEMENTATION
-#include "../../../utils/src/stb_ds.h"
 
 START_TEST(test_x509util_CopyX509Authorities)
 {
     const int ITERS = 4;
 
-    const char *buff[] = {
-        "-----BEGIN CERTIFICATE-----\n"
-        "MIIG4TCCBcmgAwIBAgIQCd0Ux6hVwNaX+SICZIR/jzANBgkqhkiG9w0BAQUFADBm\n"
-        "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n"
-        "d3cuZGlnaWNlcnQuY29tMSUwIwYDVQQDExxEaWdpQ2VydCBIaWdoIEFzc3VyYW5j\n"
-        "ZSBDQS0zMB4XDTEzMDUxNDAwMDAwMFoXDTE2MDUxODEyMDAwMFowYDELMAkGA1UE\n"
-        "BhMCQ0ExEDAOBgNVBAgTB0FsYmVydGExEDAOBgNVBAcTB0NhbGdhcnkxGTAXBgNV\n"
-        "BAoTEFNBSVQgUG9seXRlY2huaWMxEjAQBgNVBAMMCSouc2FpdC5jYTCCASIwDQYJ\n"
-        "KoZIhvcNAQEBBQADggEPADCCAQoCggEBAJv2n5mZfX6NV0jZof1WdXGiY5Q/W0yD\n"
-        "T6tUdIYUjgS8GDkeZJYjtwUCMYD2Wo3rF/1ZJ8p9p2WBP1F3CVvjgO+VeA7tLJsf\n"
-        "uAr+S8GE1q5tGO9+lPFkBAZkU38FNfBUblvz1imWb6ORXMc++HjUlrUB0nr2Ae8T\n"
-        "1I3K0XGArHJyW5utJ5Xm8dNEYCcs6EAXchiViVtcZ2xIlSQMs+AqhqnZXo2Tt1H+\n"
-        "f/tQhQJeMTkZ2kklUcnQ1izdTigMgkOvNzW4Oyd9Z0sBbxzUpneeH3nUB5bEv3MG\n"
-        "4JJx7cAVPE4rqjVbtm3v0QbCL/X0ZncJiKl7heKWO+j3DnDZS/oliIkCAwEAAaOC\n"
-        "A48wggOLMB8GA1UdIwQYMBaAFFDqc4nbKfsQj57lASDU3nmZSIP3MB0GA1UdDgQW\n"
-        "BBTk00KEbrhrTuVWBY2cPzTJd1c1BTBkBgNVHREEXTBbggkqLnNhaXQuY2GCB3Nh\n"
-        "aXQuY2GCCmNwLnNhaXQuY2GCDmNwLXVhdC5zYWl0LmNhghd1YXQtaW50ZWdyYXRp\n"
-        "b24uc2FpdC5jYYIQdWF0LWFwYXMuc2FpdC5jYTAOBgNVHQ8BAf8EBAMCBaAwHQYD\n"
-        "VR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMGEGA1UdHwRaMFgwKqAooCaGJGh0\n"
-        "dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9jYTMtZzIxLmNybDAqoCigJoYkaHR0cDov\n"
-        "L2NybDQuZGlnaWNlcnQuY29tL2NhMy1nMjEuY3JsMIIBxAYDVR0gBIIBuzCCAbcw\n"
-        "ggGzBglghkgBhv1sAQEwggGkMDoGCCsGAQUFBwIBFi5odHRwOi8vd3d3LmRpZ2lj\n"
-        "ZXJ0LmNvbS9zc2wtY3BzLXJlcG9zaXRvcnkuaHRtMIIBZAYIKwYBBQUHAgIwggFW\n"
-        "HoIBUgBBAG4AeQAgAHUAcwBlACAAbwBmACAAdABoAGkAcwAgAEMAZQByAHQAaQBm\n"
-        "AGkAYwBhAHQAZQAgAGMAbwBuAHMAdABpAHQAdQB0AGUAcwAgAGEAYwBjAGUAcAB0\n"
-        "AGEAbgBjAGUAIABvAGYAIAB0AGgAZQAgAEQAaQBnAGkAQwBlAHIAdAAgAEMAUAAv\n"
-        "AEMAUABTACAAYQBuAGQAIAB0AGgAZQAgAFIAZQBsAHkAaQBuAGcAIABQAGEAcgB0\n"
-        "AHkAIABBAGcAcgBlAGUAbQBlAG4AdAAgAHcAaABpAGMAaAAgAGwAaQBtAGkAdAAg\n"
-        "AGwAaQBhAGIAaQBsAGkAdAB5ACAAYQBuAGQAIABhAHIAZQAgAGkAbgBjAG8AcgBw\n"
-        "AG8AcgBhAHQAZQBkACAAaABlAHIAZQBpAG4AIABiAHkAIAByAGUAZgBlAHIAZQBu\n"
-        "AGMAZQAuMHsGCCsGAQUFBwEBBG8wbTAkBggrBgEFBQcwAYYYaHR0cDovL29jc3Au\n"
-        "ZGlnaWNlcnQuY29tMEUGCCsGAQUFBzAChjlodHRwOi8vY2FjZXJ0cy5kaWdpY2Vy\n"
-        "dC5jb20vRGlnaUNlcnRIaWdoQXNzdXJhbmNlQ0EtMy5jcnQwDAYDVR0TAQH/BAIw\n"
-        "ADANBgkqhkiG9w0BAQUFAAOCAQEAcl2YI0iMOwx2FOjfoA8ioCtGc5eag8Prawz4\n"
-        "FFs9pMFZfD/K8QvPycMSkw7kPtVjmuQWxNtRAvCSIhr/urqNLBO5Omerx8aZYCOz\n"
-        "nsmZpymxMt56DBw+KZrWIodsZx5QjVngbE/qIDLmsYgtKczhTCtgEM1h/IHlO3Ho\n"
-        "7IXd2Rr4CqeMoM2v+MTV2FYVEYUHJp0EBU/AMuBjPf6YT/WXMNq6fn+WJpxcqwJJ\n"
-        "KtBh7c2vRTklahbh1FaiJ0aFJkDH4tasbD69JQ8R2V5OSuGH6Q7EGlpNl+unqtUy\n"
-        "KsAL86HvgzF5D51C9TmFXEtXTlPKnjoqn1TC4Rqpqvh+FHWPJQ==\n"
-        "-----END CERTIFICATE-----",
-        "-----BEGIN CERTIFICATE-----\n"
-        "MIIB/DCCAWWgAwIBAgIBADANBgkqhkiG9w0BAQsFADCBmzELMAkGA1UEBhMCSlAx\n"
-        "DjAMBgNVBAgTBVRva3lvMRAwDgYDVQQHEwdDaHVvLWt1MREwDwYDVQQKEwhGcmFu\n"
-        "azRERDEYMBYGA1UECxMPV2ViQ2VydCBTdXBwb3J0MRgwFgYDVQQDEw9GcmFuazRE\n"
-        "RCBXZWIgQ0ExIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAZnJhbms0ZGQuY29tMAQX\n"
-        "ABcAMEoxCzAJBgNVBAYTAkpQMQ4wDAYDVQQIDAVUb2t5bzERMA8GA1UECgwIRnJh\n"
-        "bms0REQxGDAWBgNVBAMMD3d3dy5leGFtcGxlLmNvbTBcMA0GCSqGSIb3DQEBAQUA\n"
-        "A0sAMEgCQQCb/GaQeYRCu6sT/St7+N4VEuXxk+MGinu4seGeJruVAb/nMO1khQLd\n"
-        "FWmoNLAG7D81PB4bK4/6jwAb3wfGrFMHAgMBAAEwDQYJKoZIhvcNAQELBQADgYEA\n"
-        "ZH/vPnCRgpVT06qXJthl/+kch+dfkf0g1/UJHgzigJNTQIwq4NX20mNBBHaR+E/6\n"
-        "gvmDWPuHXw9xOcpnXEEIwYCdg3Cy4TjKsh0s4phSTvqrdPKlLx/io0JAauwxhZg2\n"
-        "OYWt4ulA5/7XXO+GSMiifuQObzTEmeYn7+8rAY2978Y=\n"
-        "-----END CERTIFICATE-----",
-        "-----BEGIN CERTIFICATE-----\n"
-        "MIIHIDCCBgigAwIBAgIIMrM8cLO76sYwDQYJKoZIhvcNAQEFBQAwSTELMAkGA1UE\n"
-        "BhMCVVMxEzARBgNVBAoTCkdvb2dsZSBJbmMxJTAjBgNVBAMTHEdvb2dsZSBJbnRl\n"
-        "iftrJvzAOMAPY5b/klZvqH6Ddubg/hUVPkiv4mr5MfWfglCQdFF1EBGNoZSFAU7y\n"
-        "ZkGENAvDmv+5xVCZELeiWA2PoNV4m/SW6NHrF7gz4MwQssqP9dGMbKPOF/D2nxic\n"
-        "TnD5WkGMCWpLgqDWWRoOrt6xf0BPWukQBDMHULlZgXzNtoGlEnwztLlnf0I/WWIS\n"
-        "eBSyDTeFJfopvoqXuws23X486fdKcCAV1n/Nl6y2z+uVvcyTRxY2/jegmV0n0kHf\n"
-        "gfcKzw==\n"
-        "-----END CERTIFICATE-----",
-        "-----BEGIN CERTIFICATE-----\n"
-        "MIIG4TCCBcmgAwIBAgIQCd0Ux6hVwNaX+SICZIR/jzANBgkqhkiG9w0BAQUFADBm\n"
-        "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n"
-        "d3cuZGlnaWNlcnQuY29tMSUwIwYDVQQDExxEaWdpQ2VydCBIaWdoIEFzc3VyYW5j\n"
-        "ZSBDQS0zMB4XDTEzMDUxNDAwMDAwMFoXDTE2MDUxODEyMDAwMFowYDELMAkGA1UE\n"
-        "BhMCQ0ExEDAOBgNVBAgTB0FsYmVydGExEDAOBgNVBAcTB0NhbGdhcnkxGTAXBgNV\n"
-        "BAoTEFNBSVQgUG9seXRlY2huaWMxEjAQBgNVBAMMCSouc2FpdC5jYTCCASIwDQYJ\n"
-        "KoZIhvcNAQEBBQADggEPADCCAQoCggEBAJv2n5mZfX6NV0jZof1WdXGiY5Q/W0yD\n"
-        "T6tUdIYUjgS8GDkeZJYjtwUCMYD2Wo3rF/1ZJ8p9p2WBP1F3CVvjgO+VeA7tLJsf\n"
-        "uAr+S8GE1q5tGO9+lPFkBAZkU38FNfBUblvz1imWb6ORXMc++HjUlrUB0nr2Ae8T\n"
-        "1I3K0XGArHJyW5utJ5Xm8dNEYCcs6EAXchiViVtcZ2xIlSQMs+AqhqnZXo2Tt1H+\n"
-        "f/tQhQJeMTkZ2kklUcnQ1izdTigMgkOvNzW4Oyd9Z0sBbxzUpneeH3nUB5bEv3MG\n"
-        "4JJx7cAVPE4rqjVbtm3v0QbCL/X0ZncJiKl7heKWO+j3DnDZS/oliIkCAwEAAaOC\n"
-        "A48wggOLMB8GA1UdIwQYMBaAFFDqc4nbKfsQj57lASDU3nmZSIP3MB0GA1UdDgQW\n"
-        "BBTk00KEbrhrTuVWBY2cPzTJd1c1BTBkBgNVHREEXTBbggkqLnNhaXQuY2GCB3Nh\n"
-        "aXQuY2GCCmNwLnNhaXQuY2GCDmNwLXVhdC5zYWl0LmNhghd1YXQtaW50ZWdyYXRp\n"
-        "b24uc2FpdC5jYYIQdWF0LWFwYXMuc2FpdC5jYTAOBgNVHQ8BAf8EBAMCBaAwHQYD\n"
-        "VR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMGEGA1UdHwRaMFgwKqAooCaGJGh0\n"
-        "dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9jYTMtZzIxLmNybDAqoCigJoYkaHR0cDov\n"
-        "L2NybDQuZGlnaWNlcnQuY29tL2NhMy1nMjEuY3JsMIIBxAYDVR0gBIIBuzCCAbcw\n"
-        "ggGzBglghkgBhv1sAQEwggGkMDoGCCsGAQUFBwIBFi5odHRwOi8vd3d3LmRpZ2lj\n"
-        "ZXJ0LmNvbS9zc2wtY3BzLXJlcG9zaXRvcnkuaHRtMIIBZAYIKwYBBQUHAgIwggFW\n"
-        "HoIBUgBBAG4AeQAgAHUAcwBlACAAbwBmACAAdABoAGkAcwAgAEMAZQByAHQAaQBm\n"
-        "AGkAYwBhAHQAZQAgAGMAbwBuAHMAdABpAHQAdQB0AGUAcwAgAGEAYwBjAGUAcAB0\n"
-        "AGEAbgBjAGUAIABvAGYAIAB0AGgAZQAgAEQAaQBnAGkAQwBlAHIAdAAgAEMAUAAv\n"
-        "AEMAUABTACAAYQBuAGQAIAB0AGgAZQAgAFIAZQBsAHkAaQBuAGcAIABQAGEAcgB0\n"
-        "AHkAIABBAGcAcgBlAGUAbQBlAG4AdAAgAHcAaABpAGMAaAAgAGwAaQBtAGkAdAAg\n"
-        "AGwAaQBhAGIAaQBsAGkAdAB5ACAAYQBuAGQAIABhAHIAZQAgAGkAbgBjAG8AcgBw\n"
-        "AG8AcgBhAHQAZQBkACAAaABlAHIAZQBpAG4AIABiAHkAIAByAGUAZgBlAHIAZQBu\n"
-        "AGMAZQAuMHsGCCsGAQUFBwEBBG8wbTAkBggrBgEFBQcwAYYYaHR0cDovL29jc3Au\n"
-        "ZGlnaWNlcnQuY29tMEUGCCsGAQUFBzAChjlodHRwOi8vY2FjZXJ0cy5kaWdpY2Vy\n"
-        "dC5jb20vRGlnaUNlcnRIaWdoQXNzdXJhbmNlQ0EtMy5jcnQwDAYDVR0TAQH/BAIw\n"
-        "ADANBgkqhkiG9w0BAQUFAAOCAQEAcl2YI0iMOwx2FOjfoA8ioCtGc5eag8Prawz4\n"
-        "FFs9pMFZfD/K8QvPycMSkw7kPtVjmuQWxNtRAvCSIhr/urqNLBO5Omerx8aZYCOz\n"
-        "nsmZpymxMt56DBw+KZrWIodsZx5QjVngbE/qIDLmsYgtKczhTCtgEM1h/IHlO3Ho\n"
-        "7IXd2Rr4CqeMoM2v+MTV2FYVEYUHJp0EBU/AMuBjPf6YT/WXMNq6fn+WJpxcqwJJ\n"
-        "KtBh7c2vRTklahbh1FaiJ0aFJkDH4tasbD69JQ8R2V5OSuGH6Q7EGlpNl+unqtUy\n"
-        "KsAL86HvgzF5D51C9TmFXEtXTlPKnjoqn1TC4Rqpqvh+FHWPJQ==\n"
-        "-----END CERTIFICATE-----"
-    };
+    FILE *f = fopen("certs.pem", "r");
+    string_t buffer = FILE_to_string(f);
+    fclose(f);
 
-    BIO *bio_mems[] = {
-        BIO_new_mem_buf((void*) buff[0], -1),
-        BIO_new_mem_buf((void*) buff[1], -1),
-        BIO_new_mem_buf((void*) buff[2], -1),
-        BIO_new_mem_buf((void*) buff[3], -1)
-    };
+    BIO *bio_mem = BIO_new(BIO_s_mem());
+    BIO_puts(bio_mem, buffer);
+    arrfree(buffer);
 
     X509 **certs = NULL;
     for(int i = 0; i < ITERS; ++i)
     {
         //load certificate here
-        //dummy
-        X509 *cert = PEM_read_bio_X509(bio_mems[i], NULL, NULL, NULL);
+        X509 *cert = PEM_read_bio_X509(bio_mem, NULL, NULL, NULL);
         if(cert)
             arrput(certs, cert);
     }
 
     X509 **certs_copy = x509util_CopyX509Authorities(certs);
 
+    ck_assert_uint_eq(arrlenu(certs), ITERS);
     ck_assert_uint_eq(arrlenu(certs), arrlenu(certs_copy));
     for(size_t i = 0, size = arrlenu(certs); i < size; ++i)
     {
@@ -140,8 +36,98 @@ START_TEST(test_x509util_CopyX509Authorities)
         X509_free(certs_copy[i]);
     }
 
+    BIO_free(bio_mem);
     arrfree(certs);
     arrfree(certs_copy);
+}
+END_TEST
+
+START_TEST(test_x509util_ParseCertificates)
+{
+    const int ITERS = 4;
+
+    FILE *f = fopen("certs.pem", "r");
+    string_t buffer = FILE_to_string(f);
+    fclose(f);
+
+    BIO *bio_mem = BIO_new(BIO_s_mem());
+    BIO_puts(bio_mem, buffer);
+    arrfree(buffer);
+
+    unsigned char der_bytes[10000];
+    unsigned char *pout = der_bytes;
+
+    X509 **certs = NULL;
+    for(int i = 0; i < ITERS; ++i)
+    {
+        X509 *cert = PEM_read_bio_X509(bio_mem, NULL, NULL, NULL);
+        if(cert)
+        {
+            i2d_X509(cert, &pout);
+            arrput(certs, cert);
+        }
+    }
+
+    err_t err;
+    X509 **parsed_certs = x509util_ParseCertificates(der_bytes, pout - der_bytes, &err);
+    ck_assert_uint_eq(err, NO_ERROR);
+    ck_assert_uint_eq(arrlenu(certs), arrlenu(parsed_certs));
+
+    for(size_t i = 0, size = arrlenu(certs); i < size; ++i)
+    {
+        ck_assert_int_eq(X509_cmp(certs[i], parsed_certs[i]), 0);
+
+        X509_free(certs[i]);
+        X509_free(parsed_certs[i]);
+    }
+
+    BIO_free(bio_mem);
+    arrfree(certs);
+    arrfree(parsed_certs);
+}
+END_TEST
+
+START_TEST(test_x509util_ParsePrivateKey)
+{
+    FILE *f = fopen("key-pkcs8-rsa.pem", "r");
+    string_t buffer = FILE_to_string(f);
+    fclose(f);
+
+    BIO *bio_mem = BIO_new(BIO_s_mem());
+    BIO_puts(bio_mem, buffer);
+    arrfree(buffer);
+
+    EVP_PKEY *pkey = PEM_read_bio_PrivateKey(bio_mem, NULL, NULL, NULL);
+    ck_assert_ptr_ne(pkey, NULL);
+    
+    unsigned char der_bytes[10000];
+    unsigned char *pout = der_bytes;
+
+    i2d_PrivateKey(pkey, &pout);
+
+    err_t err;
+    EVP_PKEY *parsed_pkey = x509util_ParsePrivateKey(der_bytes, pout - der_bytes, &err);
+    ck_assert_uint_eq(err, NO_ERROR);
+    ck_assert_ptr_ne(parsed_pkey, NULL);
+    
+    RSA *rsa1 = EVP_PKEY_get0_RSA(pkey);
+    RSA *rsa2 = EVP_PKEY_get0_RSA(parsed_pkey);
+
+    const BIGNUM *p1 = NULL, *q1 = NULL, *d1 = NULL;
+    RSA_get0_factors(rsa1, &p1, &q1);
+    RSA_get0_key(rsa1, NULL, NULL, &d1);
+
+    const BIGNUM *p2 = NULL, *q2 = NULL, *d2 = NULL;
+    RSA_get0_factors(rsa2, &p2, &q2);
+    RSA_get0_key(rsa1, NULL, NULL, &d2);
+
+    ck_assert_int_eq(BN_cmp(p1, p2), 0);
+    ck_assert_int_eq(BN_cmp(q1, q2), 0);
+    ck_assert_int_eq(BN_cmp(d1, d2), 0);
+
+    BIO_free(bio_mem);
+    EVP_PKEY_free(pkey);
+    EVP_PKEY_free(parsed_pkey);
 }
 END_TEST
 
@@ -149,115 +135,13 @@ START_TEST(test_x509util_CertsEqual)
 {
     const int ITERS = 4;
 
-    const char *buff[] = {
-        "-----BEGIN CERTIFICATE-----\n"
-        "MIIG4TCCBcmgAwIBAgIQCd0Ux6hVwNaX+SICZIR/jzANBgkqhkiG9w0BAQUFADBm\n"
-        "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n"
-        "d3cuZGlnaWNlcnQuY29tMSUwIwYDVQQDExxEaWdpQ2VydCBIaWdoIEFzc3VyYW5j\n"
-        "ZSBDQS0zMB4XDTEzMDUxNDAwMDAwMFoXDTE2MDUxODEyMDAwMFowYDELMAkGA1UE\n"
-        "BhMCQ0ExEDAOBgNVBAgTB0FsYmVydGExEDAOBgNVBAcTB0NhbGdhcnkxGTAXBgNV\n"
-        "BAoTEFNBSVQgUG9seXRlY2huaWMxEjAQBgNVBAMMCSouc2FpdC5jYTCCASIwDQYJ\n"
-        "KoZIhvcNAQEBBQADggEPADCCAQoCggEBAJv2n5mZfX6NV0jZof1WdXGiY5Q/W0yD\n"
-        "T6tUdIYUjgS8GDkeZJYjtwUCMYD2Wo3rF/1ZJ8p9p2WBP1F3CVvjgO+VeA7tLJsf\n"
-        "uAr+S8GE1q5tGO9+lPFkBAZkU38FNfBUblvz1imWb6ORXMc++HjUlrUB0nr2Ae8T\n"
-        "1I3K0XGArHJyW5utJ5Xm8dNEYCcs6EAXchiViVtcZ2xIlSQMs+AqhqnZXo2Tt1H+\n"
-        "f/tQhQJeMTkZ2kklUcnQ1izdTigMgkOvNzW4Oyd9Z0sBbxzUpneeH3nUB5bEv3MG\n"
-        "4JJx7cAVPE4rqjVbtm3v0QbCL/X0ZncJiKl7heKWO+j3DnDZS/oliIkCAwEAAaOC\n"
-        "A48wggOLMB8GA1UdIwQYMBaAFFDqc4nbKfsQj57lASDU3nmZSIP3MB0GA1UdDgQW\n"
-        "BBTk00KEbrhrTuVWBY2cPzTJd1c1BTBkBgNVHREEXTBbggkqLnNhaXQuY2GCB3Nh\n"
-        "aXQuY2GCCmNwLnNhaXQuY2GCDmNwLXVhdC5zYWl0LmNhghd1YXQtaW50ZWdyYXRp\n"
-        "b24uc2FpdC5jYYIQdWF0LWFwYXMuc2FpdC5jYTAOBgNVHQ8BAf8EBAMCBaAwHQYD\n"
-        "VR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMGEGA1UdHwRaMFgwKqAooCaGJGh0\n"
-        "dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9jYTMtZzIxLmNybDAqoCigJoYkaHR0cDov\n"
-        "L2NybDQuZGlnaWNlcnQuY29tL2NhMy1nMjEuY3JsMIIBxAYDVR0gBIIBuzCCAbcw\n"
-        "ggGzBglghkgBhv1sAQEwggGkMDoGCCsGAQUFBwIBFi5odHRwOi8vd3d3LmRpZ2lj\n"
-        "ZXJ0LmNvbS9zc2wtY3BzLXJlcG9zaXRvcnkuaHRtMIIBZAYIKwYBBQUHAgIwggFW\n"
-        "HoIBUgBBAG4AeQAgAHUAcwBlACAAbwBmACAAdABoAGkAcwAgAEMAZQByAHQAaQBm\n"
-        "AGkAYwBhAHQAZQAgAGMAbwBuAHMAdABpAHQAdQB0AGUAcwAgAGEAYwBjAGUAcAB0\n"
-        "AGEAbgBjAGUAIABvAGYAIAB0AGgAZQAgAEQAaQBnAGkAQwBlAHIAdAAgAEMAUAAv\n"
-        "AEMAUABTACAAYQBuAGQAIAB0AGgAZQAgAFIAZQBsAHkAaQBuAGcAIABQAGEAcgB0\n"
-        "AHkAIABBAGcAcgBlAGUAbQBlAG4AdAAgAHcAaABpAGMAaAAgAGwAaQBtAGkAdAAg\n"
-        "AGwAaQBhAGIAaQBsAGkAdAB5ACAAYQBuAGQAIABhAHIAZQAgAGkAbgBjAG8AcgBw\n"
-        "AG8AcgBhAHQAZQBkACAAaABlAHIAZQBpAG4AIABiAHkAIAByAGUAZgBlAHIAZQBu\n"
-        "AGMAZQAuMHsGCCsGAQUFBwEBBG8wbTAkBggrBgEFBQcwAYYYaHR0cDovL29jc3Au\n"
-        "ZGlnaWNlcnQuY29tMEUGCCsGAQUFBzAChjlodHRwOi8vY2FjZXJ0cy5kaWdpY2Vy\n"
-        "dC5jb20vRGlnaUNlcnRIaWdoQXNzdXJhbmNlQ0EtMy5jcnQwDAYDVR0TAQH/BAIw\n"
-        "ADANBgkqhkiG9w0BAQUFAAOCAQEAcl2YI0iMOwx2FOjfoA8ioCtGc5eag8Prawz4\n"
-        "FFs9pMFZfD/K8QvPycMSkw7kPtVjmuQWxNtRAvCSIhr/urqNLBO5Omerx8aZYCOz\n"
-        "nsmZpymxMt56DBw+KZrWIodsZx5QjVngbE/qIDLmsYgtKczhTCtgEM1h/IHlO3Ho\n"
-        "7IXd2Rr4CqeMoM2v+MTV2FYVEYUHJp0EBU/AMuBjPf6YT/WXMNq6fn+WJpxcqwJJ\n"
-        "KtBh7c2vRTklahbh1FaiJ0aFJkDH4tasbD69JQ8R2V5OSuGH6Q7EGlpNl+unqtUy\n"
-        "KsAL86HvgzF5D51C9TmFXEtXTlPKnjoqn1TC4Rqpqvh+FHWPJQ==\n"
-        "-----END CERTIFICATE-----",
-        "-----BEGIN CERTIFICATE-----\n"
-        "MIIB/DCCAWWgAwIBAgIBADANBgkqhkiG9w0BAQsFADCBmzELMAkGA1UEBhMCSlAx\n"
-        "DjAMBgNVBAgTBVRva3lvMRAwDgYDVQQHEwdDaHVvLWt1MREwDwYDVQQKEwhGcmFu\n"
-        "azRERDEYMBYGA1UECxMPV2ViQ2VydCBTdXBwb3J0MRgwFgYDVQQDEw9GcmFuazRE\n"
-        "RCBXZWIgQ0ExIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAZnJhbms0ZGQuY29tMAQX\n"
-        "ABcAMEoxCzAJBgNVBAYTAkpQMQ4wDAYDVQQIDAVUb2t5bzERMA8GA1UECgwIRnJh\n"
-        "bms0REQxGDAWBgNVBAMMD3d3dy5leGFtcGxlLmNvbTBcMA0GCSqGSIb3DQEBAQUA\n"
-        "A0sAMEgCQQCb/GaQeYRCu6sT/St7+N4VEuXxk+MGinu4seGeJruVAb/nMO1khQLd\n"
-        "FWmoNLAG7D81PB4bK4/6jwAb3wfGrFMHAgMBAAEwDQYJKoZIhvcNAQELBQADgYEA\n"
-        "ZH/vPnCRgpVT06qXJthl/+kch+dfkf0g1/UJHgzigJNTQIwq4NX20mNBBHaR+E/6\n"
-        "gvmDWPuHXw9xOcpnXEEIwYCdg3Cy4TjKsh0s4phSTvqrdPKlLx/io0JAauwxhZg2\n"
-        "OYWt4ulA5/7XXO+GSMiifuQObzTEmeYn7+8rAY2978Y=\n"
-        "-----END CERTIFICATE-----",
-        "-----BEGIN CERTIFICATE-----\n"
-        "MIIHIDCCBgigAwIBAgIIMrM8cLO76sYwDQYJKoZIhvcNAQEFBQAwSTELMAkGA1UE\n"
-        "BhMCVVMxEzARBgNVBAoTCkdvb2dsZSBJbmMxJTAjBgNVBAMTHEdvb2dsZSBJbnRl\n"
-        "iftrJvzAOMAPY5b/klZvqH6Ddubg/hUVPkiv4mr5MfWfglCQdFF1EBGNoZSFAU7y\n"
-        "ZkGENAvDmv+5xVCZELeiWA2PoNV4m/SW6NHrF7gz4MwQssqP9dGMbKPOF/D2nxic\n"
-        "TnD5WkGMCWpLgqDWWRoOrt6xf0BPWukQBDMHULlZgXzNtoGlEnwztLlnf0I/WWIS\n"
-        "eBSyDTeFJfopvoqXuws23X486fdKcCAV1n/Nl6y2z+uVvcyTRxY2/jegmV0n0kHf\n"
-        "gfcKzw==\n"
-        "-----END CERTIFICATE-----",
-        "-----BEGIN CERTIFICATE-----\n"
-        "MIIG4TCCBcmgAwIBAgIQCd0Ux6hVwNaX+SICZIR/jzANBgkqhkiG9w0BAQUFADBm\n"
-        "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n"
-        "d3cuZGlnaWNlcnQuY29tMSUwIwYDVQQDExxEaWdpQ2VydCBIaWdoIEFzc3VyYW5j\n"
-        "ZSBDQS0zMB4XDTEzMDUxNDAwMDAwMFoXDTE2MDUxODEyMDAwMFowYDELMAkGA1UE\n"
-        "BhMCQ0ExEDAOBgNVBAgTB0FsYmVydGExEDAOBgNVBAcTB0NhbGdhcnkxGTAXBgNV\n"
-        "BAoTEFNBSVQgUG9seXRlY2huaWMxEjAQBgNVBAMMCSouc2FpdC5jYTCCASIwDQYJ\n"
-        "KoZIhvcNAQEBBQADggEPADCCAQoCggEBAJv2n5mZfX6NV0jZof1WdXGiY5Q/W0yD\n"
-        "T6tUdIYUjgS8GDkeZJYjtwUCMYD2Wo3rF/1ZJ8p9p2WBP1F3CVvjgO+VeA7tLJsf\n"
-        "uAr+S8GE1q5tGO9+lPFkBAZkU38FNfBUblvz1imWb6ORXMc++HjUlrUB0nr2Ae8T\n"
-        "1I3K0XGArHJyW5utJ5Xm8dNEYCcs6EAXchiViVtcZ2xIlSQMs+AqhqnZXo2Tt1H+\n"
-        "f/tQhQJeMTkZ2kklUcnQ1izdTigMgkOvNzW4Oyd9Z0sBbxzUpneeH3nUB5bEv3MG\n"
-        "4JJx7cAVPE4rqjVbtm3v0QbCL/X0ZncJiKl7heKWO+j3DnDZS/oliIkCAwEAAaOC\n"
-        "A48wggOLMB8GA1UdIwQYMBaAFFDqc4nbKfsQj57lASDU3nmZSIP3MB0GA1UdDgQW\n"
-        "BBTk00KEbrhrTuVWBY2cPzTJd1c1BTBkBgNVHREEXTBbggkqLnNhaXQuY2GCB3Nh\n"
-        "aXQuY2GCCmNwLnNhaXQuY2GCDmNwLXVhdC5zYWl0LmNhghd1YXQtaW50ZWdyYXRp\n"
-        "b24uc2FpdC5jYYIQdWF0LWFwYXMuc2FpdC5jYTAOBgNVHQ8BAf8EBAMCBaAwHQYD\n"
-        "VR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMGEGA1UdHwRaMFgwKqAooCaGJGh0\n"
-        "dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9jYTMtZzIxLmNybDAqoCigJoYkaHR0cDov\n"
-        "L2NybDQuZGlnaWNlcnQuY29tL2NhMy1nMjEuY3JsMIIBxAYDVR0gBIIBuzCCAbcw\n"
-        "ggGzBglghkgBhv1sAQEwggGkMDoGCCsGAQUFBwIBFi5odHRwOi8vd3d3LmRpZ2lj\n"
-        "ZXJ0LmNvbS9zc2wtY3BzLXJlcG9zaXRvcnkuaHRtMIIBZAYIKwYBBQUHAgIwggFW\n"
-        "HoIBUgBBAG4AeQAgAHUAcwBlACAAbwBmACAAdABoAGkAcwAgAEMAZQByAHQAaQBm\n"
-        "AGkAYwBhAHQAZQAgAGMAbwBuAHMAdABpAHQAdQB0AGUAcwAgAGEAYwBjAGUAcAB0\n"
-        "AGEAbgBjAGUAIABvAGYAIAB0AGgAZQAgAEQAaQBnAGkAQwBlAHIAdAAgAEMAUAAv\n"
-        "AEMAUABTACAAYQBuAGQAIAB0AGgAZQAgAFIAZQBsAHkAaQBuAGcAIABQAGEAcgB0\n"
-        "AHkAIABBAGcAcgBlAGUAbQBlAG4AdAAgAHcAaABpAGMAaAAgAGwAaQBtAGkAdAAg\n"
-        "AGwAaQBhAGIAaQBsAGkAdAB5ACAAYQBuAGQAIABhAHIAZQAgAGkAbgBjAG8AcgBw\n"
-        "AG8AcgBhAHQAZQBkACAAaABlAHIAZQBpAG4AIABiAHkAIAByAGUAZgBlAHIAZQBu\n"
-        "AGMAZQAuMHsGCCsGAQUFBwEBBG8wbTAkBggrBgEFBQcwAYYYaHR0cDovL29jc3Au\n"
-        "ZGlnaWNlcnQuY29tMEUGCCsGAQUFBzAChjlodHRwOi8vY2FjZXJ0cy5kaWdpY2Vy\n"
-        "dC5jb20vRGlnaUNlcnRIaWdoQXNzdXJhbmNlQ0EtMy5jcnQwDAYDVR0TAQH/BAIw\n"
-        "ADANBgkqhkiG9w0BAQUFAAOCAQEAcl2YI0iMOwx2FOjfoA8ioCtGc5eag8Prawz4\n"
-        "FFs9pMFZfD/K8QvPycMSkw7kPtVjmuQWxNtRAvCSIhr/urqNLBO5Omerx8aZYCOz\n"
-        "nsmZpymxMt56DBw+KZrWIodsZx5QjVngbE/qIDLmsYgtKczhTCtgEM1h/IHlO3Ho\n"
-        "7IXd2Rr4CqeMoM2v+MTV2FYVEYUHJp0EBU/AMuBjPf6YT/WXMNq6fn+WJpxcqwJJ\n"
-        "KtBh7c2vRTklahbh1FaiJ0aFJkDH4tasbD69JQ8R2V5OSuGH6Q7EGlpNl+unqtUy\n"
-        "KsAL86HvgzF5D51C9TmFXEtXTlPKnjoqn1TC4Rqpqvh+FHWPJQ==\n"
-        "-----END CERTIFICATE-----"
-    };
+    FILE *f = fopen("certs.pem", "r");
+    string_t buffer = FILE_to_string(f);
+    fclose(f);
 
-    BIO *bio_mems[] = {
-        BIO_new_mem_buf((void*) buff[0], -1),
-        BIO_new_mem_buf((void*) buff[1], -1),
-        BIO_new_mem_buf((void*) buff[2], -1),
-        BIO_new_mem_buf((void*) buff[3], -1)
-    };
+    BIO *bio_mem = BIO_new(BIO_s_mem());
+    BIO_puts(bio_mem, buffer);
+    arrfree(buffer);
 
     X509 **certs1 = NULL, **certs2 = NULL;
 
@@ -265,7 +149,7 @@ START_TEST(test_x509util_CertsEqual)
     {
         //load certificate here
         //dummy
-        X509 *cert = PEM_read_bio_X509(bio_mems[i], NULL, NULL, NULL);
+        X509 *cert = PEM_read_bio_X509(bio_mem, NULL, NULL, NULL);
 
         arrput(certs1, cert);
         arrput(certs2, cert);
@@ -290,6 +174,38 @@ START_TEST(test_x509util_CertsEqual)
     arrfree(certs1);
     arrfree(certs2);
     ck_assert(x509util_CertsEqual(certs1, certs2));
+
+    BIO_free(bio_mem);
+}
+END_TEST
+
+START_TEST(test_x509util_NewCertPool)
+{
+    const int ITERS = 4;
+
+    FILE *f = fopen("certs.pem", "r");
+    string_t buffer = FILE_to_string(f);
+    fclose(f);
+
+    BIO *bio_mem = BIO_new(BIO_s_mem());
+    BIO_puts(bio_mem, buffer);
+    arrfree(buffer);
+
+    X509 **certs = NULL;
+    for(int i = 0; i < ITERS; ++i)
+    {
+        //load certificate here
+        X509 *cert = PEM_read_bio_X509(bio_mem, NULL, NULL, NULL);
+        if(cert)
+            arrput(certs, cert);
+    }
+
+    x509util_CertPool *certpool = x509util_NewCertPool(certs);
+    
+    ck_assert_uint_eq(arrlenu(certpool->certs), 3);
+    
+    BIO_free(bio_mem);
+    x509util_CertPool_Free(certpool);
 }
 END_TEST
 
@@ -301,7 +217,10 @@ Suite* util_suite(void)
     suite_add_tcase(s, tc_core);
 
     tcase_add_test(tc_core, test_x509util_CopyX509Authorities);
+    tcase_add_test(tc_core, test_x509util_ParseCertificates);
+    tcase_add_test(tc_core, test_x509util_ParsePrivateKey);
     tcase_add_test(tc_core, test_x509util_CertsEqual);
+    tcase_add_test(tc_core, test_x509util_NewCertPool);
 
     return s;
 }

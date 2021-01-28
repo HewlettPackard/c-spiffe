@@ -9,6 +9,10 @@
 #include "../../../spiffeid/src/trustdomain.h"
 #include "../../../utils/src/util.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct spiffebundle_Bundle
 {
     //bundle trust domain
@@ -93,5 +97,9 @@ bool spiffebundle_sequenceNumberEqual(const uint64_t *a,
                                         const uint64_t *b);
 struct timespec* spiffebundle_copyRefreshHint(const struct timespec *ts);
 uint64_t* spiffebundle_copySequenceNumber(const uint64_t *seqNum);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
