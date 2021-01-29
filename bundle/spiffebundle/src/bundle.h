@@ -43,15 +43,15 @@ spiffebundle_Bundle* spiffebundle_Parse(const spiffeid_TrustDomain td,
 spiffebundle_Bundle* spiffebundle_FromX509Bundle(x509bundle_Bundle *bundle);
 spiffebundle_Bundle* spiffebundle_FromJWTBundle(jwtbundle_Bundle *bundle);
 spiffebundle_Bundle* spiffebundle_FromX509Authorities(const spiffeid_TrustDomain td,
-                                                        const X509 **auths);
+                                                        X509 **auths);
 spiffebundle_Bundle* spiffebundle_FromJWTAuthorities(const spiffeid_TrustDomain td,
-                                                const map_string_EVP_PKEY *auths);
+                                                    map_string_EVP_PKEY *auths);
 spiffeid_TrustDomain spiffebundle_Bundle_TrustDomain(const spiffebundle_Bundle *b);
 X509** spiffebundle_Bundle_X509Authorities(spiffebundle_Bundle *b);
 void spiffebundle_Bundle_AddX509Authority(spiffebundle_Bundle *b, X509 *auth);
 void spiffebundle_Bundle_RemoveX509Authority(spiffebundle_Bundle *b, const X509 *auth);
 bool spiffebundle_Bundle_HasX509Authority(spiffebundle_Bundle *b, const X509 *auth);
-void spiffebundle_Bundle_SetX509Authorities(spiffebundle_Bundle *b, const X509 **auths);
+void spiffebundle_Bundle_SetX509Authorities(spiffebundle_Bundle *b, X509 **auths);
 map_string_EVP_PKEY* spiffebundle_Bundle_JWTAuthorities(spiffebundle_Bundle *b);
 EVP_PKEY* spiffebundle_Bundle_FindJWTAuthority(spiffebundle_Bundle *b, 
                                                 const string_t keyID, 

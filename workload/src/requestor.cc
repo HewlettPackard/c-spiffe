@@ -13,6 +13,9 @@
 #include "workload.pb.h"
 #include "workload.grpc.pb.h"
 #include "../../svid/x509svid/src/svid.h"
+#include "../../bundle/x509bundle/src/bundle.h"
+#include "../../bundle/x509bundle/src/set.h"
+#include "client.h"
 #include <cstring>
 
 using grpc::Channel;
@@ -22,33 +25,36 @@ using grpc::Status;
 
 //New requestor
 //for testing, RequestorInitWithStub should used directly
-Requestor* RequestorInit(char* address){
-    return RequestorInitWithStub(address,NULL);
+workloadapi_Requestor* workloadapi_RequestorInit(const char* address)
+{
+    return workloadapi_RequestorInitWithStub(address, NULL);
 }
 
-Requestor* RequestorInitWithStub(char* address, stub_ptr stub){
+workloadapi_Requestor* workloadapi_RequestorInitWithStub(const char* address, stub_ptr stub)
+{
     if( !address ) return NULL;
-    Requestor* req = (Requestor*) malloc(1 * sizeof(Requestor));
-    req->address = (char*) malloc((strlen(address)+1) * sizeof(char));
-    strcpy(req->address,address);
+    workloadapi_Requestor* req = (workloadapi_Requestor*) malloc(sizeof *req);
+    req->address = string_new(address);
     
-    if (!stub){
+    if (!stub)
+    {
         std::shared_ptr<Channel> chan = grpc::CreateChannel(req->address,grpc::InsecureChannelCredentials());
-        auto new_stub = SpiffeWorkloadAPI::NewStub(chan);
+        std::unique_ptr<SpiffeWorkloadAPI::StubInterface> new_stub = SpiffeWorkloadAPI::NewStub(chan);
         req->stub = new_stub.release();
-    }else{
+    }
+    else
+    {
         req->stub = stub;
-    } //TODO should we free the stub later?
+    }
     
     return req;
 }
 
-void RequestorFree(Requestor* requestor){
-    if(requestor){
-        if(requestor->address){
-            free(requestor->address);
-            requestor->address = NULL;
-        }
+void workloadapi_RequestorFree(workloadapi_Requestor* requestor)
+{
+    if(requestor)
+    {
+        arrfree(requestor->address);
         // TODO Should we free the stub?
         // if(requestor->stub)
         // {
@@ -58,64 +64,60 @@ void RequestorFree(Requestor* requestor){
     }
 }
 
-
 // Fetch first entitled SVID.
-x509svid_SVID* FetchDefaultX509SVID(Requestor* requestor){
-
+x509svid_SVID* workloadapi_FetchDefaultX509SVID(workloadapi_Requestor* requestor)
+{
     ClientContext ctx;
     ctx.AddMetadata("workload.spiffe.io","true"); //mandatory
 
     X509SVIDRequest req = X509SVIDRequest(); //empty request
     X509SVIDResponse response;
-    
-    std::unique_ptr<grpc::ClientReader<X509SVIDResponse>> c_reader = ((SpiffeWorkloadAPI::Stub*)requestor->stub)->FetchX509SVID(&ctx,req); //get response reader
-    
-    while (c_reader->Read(&response)){ //while there are messages
+
+    std::unique_ptr<grpc::ClientReaderInterface<X509SVIDResponse>> c_reader = 
+        ((SpiffeWorkloadAPI::StubInterface*)requestor->stub)->FetchX509SVID(&ctx, req); //get response reader
+
+    while (c_reader->Read(&response)) //while there are messages
+    { 
         x509svid_SVID* x509svid = NULL;
         auto ids = response.svids(); // all SVID's the workload is entitled to.
         for (auto &&id : ids)
         {  
             err_t err;
             //assemble SVID from response.
-            x509svid = x509svid_ParseRaw((byte*)id.x509_svid().data(),id.x509_svid().length(),(byte*) id.x509_svid_key().data(), id.x509_svid_key().length(),&err);
-            if(err){
+            x509svid = x509svid_ParseRaw((byte*)id.x509_svid().data(),
+                                        id.x509_svid().length(),
+                                        (byte*) id.x509_svid_key().data(), 
+                                        id.x509_svid_key().length(),
+                                        &err);
+            if(err)
                 return NULL;
-            }else{
+            else
                 return x509svid; //first SVID found.
-            }
         }
         return x509svid; //no SVID in response
     }
     return NULL; //no response -> no SVID
 }
 
-// Fetch ALL entitled SVIDs. Array will need to be freed.
-int FetchAllX509SVID(Requestor* requestor,x509svid_SVID*** svids_pointer){
-
+x509bundle_Set* workloadapi_FetchX509Bundles(workloadapi_Requestor* requestor)
+{    
     ClientContext ctx;
     ctx.AddMetadata("workload.spiffe.io","true"); //mandatory
 
     X509SVIDRequest req = X509SVIDRequest(); //empty request
     X509SVIDResponse response;
+
+    std::unique_ptr<grpc::ClientReaderInterface<X509SVIDResponse>> c_reader = 
+        ((SpiffeWorkloadAPI::StubInterface*)requestor->stub)->FetchX509SVID(&ctx, req); //get response reader
     
-    std::unique_ptr<grpc::ClientReader<X509SVIDResponse>> c_reader = ((SpiffeWorkloadAPI::Stub*)requestor->stub)->FetchX509SVID(&ctx,req); //get response reader
-    
-    *svids_pointer = NULL;
-    while (c_reader->Read(&response)){ //while there are messages
-        
-        x509svid_SVID* x509svid = NULL;
-        int svid_count = response.svids_size();
-        //needs to be free'd
-        *svids_pointer = (x509svid_SVID**) malloc(sizeof(x509svid_SVID*) * svid_count);
-        auto ids = response.svids(); // all SVID's the workload is entitled to.
-        for (int i = 0; i < svid_count ; i++)
-        {  
-            err_t err;
-            //assemble SVID from response.
-            x509svid = x509svid_Parse((byte*) ids[i].x509_svid().data(),(byte*) ids[i].x509_svid_key().data(),&err);
-            (*svids_pointer)[i] = x509svid;
-        }
-        return svid_count;
+    bool success = c_reader->Read(&response);
+    x509bundle_Set* ret_set = NULL;
+    err_t error;
+    if(success)
+    {
+        ret_set = workloadapi_parseX509Bundles(&response, &error);
+        //TODO check error
     }
-    return 0; //no response -> no SVID
+    
+    return ret_set; //no response -> no bundle
 }

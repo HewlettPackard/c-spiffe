@@ -31,7 +31,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         lcov \
         gcovr \
 	libjansson-dev \
-        libcjose-dev
+        libcjose-dev \
+        libgtest-dev \
+        libgmock-dev
 RUN apt-get clean
 
 # gRPC

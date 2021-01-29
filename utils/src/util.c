@@ -79,20 +79,25 @@ bool string_contains(const char *src, const char *str)
 
 string_t FILE_to_string(FILE *f)
 {
-    //go to the end of the file
-    fseek(f, 0, SEEK_END);
-    //get length in bytes
-    const long int flen = ftell(f);
-    //return to the beginning
-    rewind(f);
-    string_t buffer = NULL;
-    //set byte array capacity
-    arrsetlen(buffer, flen + 1);
-    //read bytes into buffer
-    size_t end = fread(buffer, 1, flen, f);
-    buffer[end] = '\0';
-    
-    return buffer;
+    if(f)
+    {
+        //go to the end of the file
+        fseek(f, 0, SEEK_END);
+        //get length in bytes
+        const long int flen = ftell(f);
+        //return to the beginning
+        rewind(f);
+        string_t buffer = NULL;
+        //set byte array capacity
+        arrsetlen(buffer, flen + 1);
+        //read bytes into buffer
+        size_t end = fread(buffer, 1, flen, f);
+        buffer[end] = '\0';
+        
+        return buffer;
+    }
+
+    return NULL;
 }
 
 byte* FILE_to_bytes(FILE *f)

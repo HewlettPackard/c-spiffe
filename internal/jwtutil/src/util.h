@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-map_string_EVP_PKEY* jwtutil_CopyJWTAuthorities(const map_string_EVP_PKEY *hash);
+map_string_EVP_PKEY* jwtutil_CopyJWTAuthorities(map_string_EVP_PKEY *hash);
 bool jwtutil_JWTAuthoritiesEqual(
         map_string_EVP_PKEY *hash1, 
         map_string_EVP_PKEY *hash2);
