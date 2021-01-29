@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.13)
 set (proto_name "workload")
 find_package(GTest REQUIRED)
 
+
+file(COPY ../tests/resources/ DESTINATION ${PROJECT_BINARY_DIR}/workload/tests/resources/)
+
 # Get proto files
 get_filename_component(proto "../../protos/${proto_name}.proto" ABSOLUTE)
 get_filename_component(proto_dir "${proto}" DIRECTORY)
@@ -29,7 +32,10 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_executable(check_requestor "./check_requestor.cc" ${grpc_srcs} ${proto_srcs} ${grpc_mock})
 
-target_link_libraries(check_requestor librequestor ${CHECK_LIBRARIES} gmock gmock_main gtest
+target_link_libraries(check_requestor librequestor ${CHECK_LIBRARIES} 
+  gtest
+  gmock
+  gmock_main
   OpenSSL::SSL
   libspiffeid
   libinternal
@@ -45,4 +51,27 @@ target_link_libraries(check_requestor librequestor ${CHECK_LIBRARIES} gmock gmoc
   crypto
   pthread)
 
-  add_test(requestor-test check_requestor)
+add_test(requestor-test check_requestor)
+
+add_executable(check_client "./check_client.cc" ${grpc_srcs} ${proto_srcs} ${grpc_mock})
+
+target_link_libraries(check_client librequestor ${CHECK_LIBRARIES} 
+  gtest
+  gmock
+  gmock_main
+  OpenSSL::SSL
+  libspiffeid
+  libinternal
+  uriparser
+  libbundle
+  jansson
+  cjose
+  subunit
+  check_pic
+  check
+  rt
+  m
+  crypto
+  pthread)
+
+add_test(client-test check_client)

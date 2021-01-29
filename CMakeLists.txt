@@ -28,8 +28,11 @@ endmacro(ck_check_include_file)
 # Show all warning messages
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
 
+
 find_package(Protobuf 3.13.0 REQUIRED)
 find_package(gRPC 1.34.0 REQUIRED)
+
+
 message(STATUS "Using protobuf ${Protobuf_VERSION}")
 
 set(_PROTOBUF_LIBPROTOBUF protobuf::libprotobuf)

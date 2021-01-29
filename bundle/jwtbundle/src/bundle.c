@@ -28,7 +28,7 @@ jwtbundle_Bundle* jwtbundle_New(const spiffeid_TrustDomain td)
 }
 
 jwtbundle_Bundle* jwtbundle_FromJWTAuthorities(const spiffeid_TrustDomain td,
-                                            const map_string_EVP_PKEY *auths)
+                                                map_string_EVP_PKEY *auths)
 {
     jwtbundle_Bundle *bundleptr = malloc(sizeof *bundleptr);
     if(bundleptr)
@@ -201,7 +201,7 @@ void jwtbundle_Bundle_RemoveJWTAuthority(jwtbundle_Bundle *b,
 }
 
 void jwtbundle_Bundle_SetJWTAuthorities(jwtbundle_Bundle *b,
-                                        const map_string_EVP_PKEY *auths)
+                                        map_string_EVP_PKEY *auths)
 {
     mtx_lock(&(b->mtx));
     for(size_t i = 0, size = shlenu(b->auths); i < size; ++i)

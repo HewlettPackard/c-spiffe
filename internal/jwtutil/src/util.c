@@ -1,7 +1,7 @@
 #include "util.h"
 #include "../../cryptoutil/src/keys.h"
 
-map_string_EVP_PKEY* jwtutil_CopyJWTAuthorities(const map_string_EVP_PKEY *hash)
+map_string_EVP_PKEY* jwtutil_CopyJWTAuthorities(map_string_EVP_PKEY *hash)
 {
     if(hash)
     {

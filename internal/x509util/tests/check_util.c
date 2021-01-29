@@ -148,7 +148,6 @@ START_TEST(test_x509util_CertsEqual)
     for(int i = 0; i < ITERS; ++i)
     {
         //load certificate here
-        //dummy
         X509 *cert = PEM_read_bio_X509(bio_mem, NULL, NULL, NULL);
 
         arrput(certs1, cert);

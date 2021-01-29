@@ -56,6 +56,7 @@ crypto)
 
 set(LIB_REQUESTOR
   src/requestor.cc
+  src/client.cc
   ${proto_srcs}
   ${grpc_srcs}
 )

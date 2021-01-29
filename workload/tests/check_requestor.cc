@@ -31,12 +31,13 @@ using ::testing::SetArgPointee;
 using ::testing::WithArg;
 
 
-START_TEST(test_requestor_init)
+START_TEST(test_workloadapi_RequestorInitWithStub)
 {
     //normal constructor test
     const char* addr = "unix:///tmp/agent.sock";
     MockSpiffeWorkloadAPIStub* stub = new MockSpiffeWorkloadAPIStub();
-    Requestor* reqtor = RequestorInitWithStub(addr,stub);
+    workloadapi_Requestor* reqtor = 
+        workloadapi_RequestorInitWithStub(addr,stub);
     
     ck_assert_ptr_ne(reqtor,NULL);
     ck_assert_ptr_ne(reqtor->address,NULL);
@@ -44,11 +45,11 @@ START_TEST(test_requestor_init)
     ck_assert_int_eq(strlen(reqtor->address),strlen(addr));
     ck_assert_str_eq(reqtor->address, addr);
 
-    RequestorFree(reqtor);
+    workloadapi_RequestorFree(reqtor);
 
     //NULL server address test
     
-    reqtor = RequestorInit(NULL);
+    reqtor = workloadapi_RequestorInit(NULL);
 
     ck_assert_ptr_eq(reqtor,NULL);
     
@@ -57,102 +58,97 @@ START_TEST(test_requestor_init)
 }
 END_TEST
 
-START_TEST(test_requestor_free)
+START_TEST(test_workloadapi_RequestorFree)
 {
-    const char* addr = "unix:///tmp/agent.sock";
-    Requestor* reqtor = RequestorInit(addr);
+    const char *addr = "unix:///tmp/agent.sock";
+    workloadapi_Requestor *reqtor = workloadapi_RequestorInit(addr);
     
     ck_assert_ptr_ne(reqtor,NULL);
     ck_assert_ptr_ne(reqtor->address,NULL);
-    RequestorFree(reqtor);
-    //TODO add malloc and free counter
-
+    workloadapi_RequestorFree(reqtor);
 }
 END_TEST
 
-ACTION(set_single_SVID_response) {
-    auto new_svid = ((X509SVIDResponse*)arg0)->mutable_svids()->Add();
+ACTION(set_single_SVID_response) 
+{
+    auto new_svid = arg0->mutable_svids()->Add();
     new_svid->set_spiffe_id("spiffe://example.org/workload_test");
     new_svid->set_x509_svid("X509BIN");
     new_svid->set_x509_svid_key("X509KEYBIN");
 }
-ACTION(set_multi_SVID_response) {
-    auto new_svid = ((X509SVIDResponse*)arg0)->mutable_svids()->Add();
-    new_svid->set_spiffe_id("spiffe://example.org/workload_test");
-    new_svid->set_x509_svid("X509BIN");
-    new_svid->set_x509_svid_key("X509KEYBIN");
-    new_svid = ((X509SVIDResponse*)arg0)->mutable_svids()->Add();
-    new_svid->set_spiffe_id("spiffe://example.org/workload_test2");
-    new_svid->set_x509_svid("X509BIN");
-    new_svid->set_x509_svid_key("X509KEYBIN");
-    new_svid = ((X509SVIDResponse*)arg0)->mutable_svids()->Add();
-    new_svid->set_spiffe_id("spiffe://example.org/workload_test3");
-    new_svid->set_x509_svid("X509BIN");
-    new_svid->set_x509_svid_key("X509KEYBIN");
-}
 
-
-START_TEST(test_fetch_default_x509)
+START_TEST(test_workloadapi_FetchDefaultX509SVID)
 {
     //mocks the ClientReader class so we can craft the responses
     auto cr = new MockClientReader<X509SVIDResponse>();
-    MockSpiffeWorkloadAPIStub *mock_stub = new MockSpiffeWorkloadAPIStub();
+    // std::unique_ptr<::grpc::ClientReaderInterface< ::X509SVIDResponse>> cr_ptr(&cr);
+    MockSpiffeWorkloadAPIStub mock_stub;
+
     EXPECT_CALL(*cr, Read(_))
-      .WillRepeatedly(DoAll(WithArg<0>(set_single_SVID_response()),Return(true)));
+        .WillRepeatedly(DoAll(WithArg<0>(set_single_SVID_response()),Return(true)));
     //   .WillOnce(Return(false));
-    const char* addr = "unix:///tmp/agent.sock";
-    Requestor* reqtor = RequestorInitWithStub(addr,(stub_ptr) mock_stub);
-    EXPECT_CALL(*mock_stub, FetchX509SVIDRaw)
-      .WillOnce(Return(cr));
+    EXPECT_CALL(mock_stub, FetchX509SVIDRaw(_,_))
+        .WillOnce(Return(cr));
 
-    x509svid_SVID* _svid = FetchDefaultX509SVID(reqtor);
+    const char *addr = "unix:///tmp/agent.sock";
+    workloadapi_Requestor *reqtor = 
+        workloadapi_RequestorInitWithStub(addr, (stub_ptr)&mock_stub);
 
-    ck_assert_ptr_ne(_svid,NULL);
+    x509svid_SVID *svid = workloadapi_FetchDefaultX509SVID(reqtor);
+    ck_assert_ptr_eq(svid, NULL);
 
-    
-    RequestorFree(reqtor);
-    free(_svid);
+    workloadapi_RequestorFree(reqtor);
 }
 END_TEST
 
-START_TEST(test_fetch_all_x509)
+ACTION(set_bundle_response) 
 {
-        //mocks the ClientReader class so we can craft the responses
+    auto new_svid = arg0->mutable_svids()->Add();
+    new_svid->set_spiffe_id("spiffe://example.org/workload_test");
+    new_svid->set_x509_svid("X509BIN");
+    new_svid->set_x509_svid_key("X509KEYBIN");
+}
+
+START_TEST(test_workloadapi_FetchX509Bundles)
+{
+    //mocks the ClientReader class so we can craft the responses
     auto cr = new MockClientReader<X509SVIDResponse>();
-    MockSpiffeWorkloadAPIStub *mock_stub = new MockSpiffeWorkloadAPIStub();
+    // std::unique_ptr<::grpc::ClientReaderInterface< ::X509SVIDResponse>> cr_ptr(&cr);
+    MockSpiffeWorkloadAPIStub mock_stub;
+
     EXPECT_CALL(*cr, Read(_))
-      .WillOnce(DoAll(WithArg<0>(set_multi_SVID_response()),Return(true)))
-      .WillOnce(Return(false));
-    const char* addr = "unix:///tmp/agent.sock";
-    Requestor* reqtor = RequestorInitWithStub(addr,new MockSpiffeWorkloadAPIStub());
-    EXPECT_CALL(*mock_stub, FetchX509SVIDRaw)
-      .WillOnce(Return(cr));
+        .WillRepeatedly(DoAll(WithArg<0>(set_bundle_response()),Return(false)));
+    //   .WillOnce(Return(false));
+    EXPECT_CALL(mock_stub, FetchX509SVIDRaw(_,_))
+        .WillOnce(Return(cr));
 
-    x509svid_SVID* _svid = FetchDefaultX509SVID(reqtor);
+    const char *addr = "unix:///tmp/agent.sock";
+    workloadapi_Requestor *reqtor = 
+        workloadapi_RequestorInitWithStub(addr, (stub_ptr)&mock_stub);
 
-    ck_assert_ptr_ne(_svid,NULL);
+    x509bundle_Set *set = workloadapi_FetchX509Bundles(reqtor);
+    ck_assert_ptr_eq(set, NULL);
 
-    
-    RequestorFree(reqtor);
-    free(_svid);
+    workloadapi_RequestorFree(reqtor);
 }
 END_TEST
-
 
 Suite* requestor_suite(void)
 {
     Suite *s = suite_create("requestor");
     TCase *tc_core = tcase_create("core");
 
-    tcase_add_test(tc_core, test_requestor_init);
-    tcase_add_test(tc_core, test_requestor_free);
-    // tcase_add_test(tc_core, test_fetch_default_x509);
+    tcase_add_test(tc_core, test_workloadapi_RequestorInitWithStub);
+    tcase_add_test(tc_core, test_workloadapi_RequestorFree);
+    tcase_add_test(tc_core, test_workloadapi_FetchDefaultX509SVID);
+    tcase_add_test(tc_core, test_workloadapi_FetchX509Bundles);
     // tcase_add_test(tc_core, test_fetch_all_x509);
 
     suite_add_tcase(s, tc_core);
 
     return s;
 }
+
 int main(int argc, char **argv)
 {
     Suite *s = requestor_suite();

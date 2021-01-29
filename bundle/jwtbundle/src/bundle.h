@@ -20,7 +20,7 @@ typedef struct jwtbundle_Bundle
 
 jwtbundle_Bundle* jwtbundle_New(const spiffeid_TrustDomain td);
 jwtbundle_Bundle* jwtbundle_FromJWTAuthorities(const spiffeid_TrustDomain td,
-                                            const map_string_EVP_PKEY *auths);
+                                                map_string_EVP_PKEY *auths);
 jwtbundle_Bundle* jwtbundle_Load(const spiffeid_TrustDomain td, 
                                     const char *path, 
                                     err_t *err);
@@ -41,7 +41,7 @@ err_t jwtbundle_Bundle_AddJWTAuthority(jwtbundle_Bundle *b,
 void jwtbundle_Bundle_RemoveJWTAuthority(jwtbundle_Bundle *b, 
                                             const char *keyID);
 void jwtbundle_Bundle_SetJWTAuthorities(jwtbundle_Bundle *b,
-                                        const map_string_EVP_PKEY *auths);
+                                        map_string_EVP_PKEY *auths);
 bool jwtbundle_Bundle_Empty(jwtbundle_Bundle *b);
 jwtbundle_Bundle* jwtbundle_Bundle_Clone(jwtbundle_Bundle *b);
 bool jwtbundle_Bundle_Equal(const jwtbundle_Bundle *b1, 
