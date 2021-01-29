@@ -7,7 +7,7 @@ START_TEST(test_x509util_CopyX509Authorities)
 {
     const int ITERS = 4;
 
-    FILE *f = fopen("certs.pem", "r");
+    FILE *f = fopen("./resources/certs.pem", "r");
     string_t buffer = FILE_to_string(f);
     fclose(f);
 
@@ -46,7 +46,7 @@ START_TEST(test_x509util_ParseCertificates)
 {
     const int ITERS = 4;
 
-    FILE *f = fopen("certs.pem", "r");
+    FILE *f = fopen("./resources/certs.pem", "r");
     string_t buffer = FILE_to_string(f);
     fclose(f);
 
@@ -89,7 +89,7 @@ END_TEST
 
 START_TEST(test_x509util_ParsePrivateKey)
 {
-    FILE *f = fopen("key-pkcs8-rsa.pem", "r");
+    FILE *f = fopen("./resources/key-pkcs8-rsa.pem", "r");
     string_t buffer = FILE_to_string(f);
     fclose(f);
 
@@ -135,7 +135,7 @@ START_TEST(test_x509util_CertsEqual)
 {
     const int ITERS = 4;
 
-    FILE *f = fopen("certs.pem", "r");
+    FILE *f = fopen("./resources/certs.pem", "r");
     string_t buffer = FILE_to_string(f);
     fclose(f);
 
@@ -148,7 +148,6 @@ START_TEST(test_x509util_CertsEqual)
     for(int i = 0; i < ITERS; ++i)
     {
         //load certificate here
-        //dummy
         X509 *cert = PEM_read_bio_X509(bio_mem, NULL, NULL, NULL);
 
         arrput(certs1, cert);
@@ -183,7 +182,7 @@ START_TEST(test_x509util_NewCertPool)
 {
     const int ITERS = 4;
 
-    FILE *f = fopen("certs.pem", "r");
+    FILE *f = fopen("./resources/certs.pem", "r");
     string_t buffer = FILE_to_string(f);
     fclose(f);
 

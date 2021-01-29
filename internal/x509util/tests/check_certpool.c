@@ -18,7 +18,7 @@ START_TEST(test_x509util_CertPool_contains)
 {
     const int ITERS = 4;
 
-    FILE *f = fopen("certs.pem", "r");
+    FILE *f = fopen("./resources/certs.pem", "r");
     string_t buffer = FILE_to_string(f);
     fclose(f);
 

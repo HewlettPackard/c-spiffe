@@ -29,7 +29,7 @@ spiffebundle_Bundle* spiffebundle_Load(const spiffeid_TrustDomain td,
         fclose(fsb);
         //string end
         // arrput(buffer, (byte) 0);
-        bundleptr = spiffebundle_Parse(td, buffer, err);
+        bundleptr = spiffebundle_Parse(td, (const byte*) buffer, err);
         arrfree(buffer);
     }
     else
@@ -38,19 +38,17 @@ spiffebundle_Bundle* spiffebundle_Load(const spiffeid_TrustDomain td,
     return bundleptr;
 }
 
-/*spiffebundle_Bundle* spiffebundle_Read(const spiffeid_TrustDomain td,
-                                        void *reader,
-                                        err_t *err)
-{
-    //dummy
-    return NULL;
-}*/
-
 spiffebundle_Bundle* spiffebundle_Parse(const spiffeid_TrustDomain td,
                                         const byte *bundleBytes,
                                         err_t *err)
 {
     //dummy
+    *err = ERROR1;
+    if(td.name && bundleBytes)
+    {
+        *err = NO_ERROR;
+    }    
+
     return NULL;
 }
 
@@ -81,7 +79,7 @@ spiffebundle_Bundle* spiffebundle_FromJWTBundle(jwtbundle_Bundle *jwtbundle)
 }
 
 spiffebundle_Bundle* spiffebundle_FromX509Authorities(const spiffeid_TrustDomain td,
-                                                        const X509 **auths)
+                                                        X509 **auths)
 {
     spiffebundle_Bundle *bundle = spiffebundle_New(td);
 
@@ -94,7 +92,7 @@ spiffebundle_Bundle* spiffebundle_FromX509Authorities(const spiffeid_TrustDomain
 
 spiffebundle_Bundle* spiffebundle_FromJWTAuthorities(
                             const spiffeid_TrustDomain td,
-                            const map_string_EVP_PKEY *auths)
+                            map_string_EVP_PKEY *auths)
 {
     spiffebundle_Bundle *bundle = spiffebundle_New(td);
 
@@ -114,7 +112,7 @@ spiffeid_TrustDomain spiffebundle_Bundle_TrustDomain(const spiffebundle_Bundle *
 X509** spiffebundle_Bundle_X509Authorities(spiffebundle_Bundle *b)
 {
     mtx_lock(&(b->mtx));
-    X509 **auths = x509util_CopyX509Authorities((const X509**) b->x509Auths);
+    X509 **auths = x509util_CopyX509Authorities(b->x509Auths);
     mtx_unlock(&(b->mtx));
 
     return auths;
@@ -155,7 +153,7 @@ bool spiffebundle_Bundle_HasX509Authority(spiffebundle_Bundle *b, const X509 *au
     return present;
 }
 
-void spiffebundle_Bundle_SetX509Authorities(spiffebundle_Bundle *b, const X509 **auths)
+void spiffebundle_Bundle_SetX509Authorities(spiffebundle_Bundle *b, X509 **auths)
 {
     mtx_lock(&(b->mtx));
     ///TODO: check if it is needed to free the X509 objs
@@ -315,20 +313,14 @@ void spiffebundle_Bundle_ClearSequenceNumber(spiffebundle_Bundle *b)
     mtx_unlock(&(b->mtx));
 }
 
-byte* spiffebundle_Bundle_Marshal(spiffebundle_Bundle *b, err_t *err)
-{
-    //dummy
-    return NULL;
-}
-
 spiffebundle_Bundle* spiffebundle_Bundle_Clone(spiffebundle_Bundle *b)
 {
     mtx_lock(&(b->mtx));
     spiffebundle_Bundle *nbundle = spiffebundle_New(b->td);
     nbundle->refreshHint = spiffebundle_copyRefreshHint(b->refreshHint);
     nbundle->seqNumber = spiffebundle_copySequenceNumber(b->seqNumber);
-    nbundle->x509Auths = x509util_CopyX509Authorities((const X509**) b->x509Auths);
-    nbundle->jwtAuths = jwtutil_CopyJWTAuthorities((const map_string_EVP_PKEY*) b->jwtAuths);
+    nbundle->x509Auths = x509util_CopyX509Authorities(b->x509Auths);
+    nbundle->jwtAuths = jwtutil_CopyJWTAuthorities(b->jwtAuths);
     mtx_unlock(&(b->mtx));
 
     return nbundle;
@@ -339,7 +331,7 @@ x509bundle_Bundle* spiffebundle_Bundle_X509Bundle(spiffebundle_Bundle *b)
     mtx_lock(&(b->mtx));
     x509bundle_Bundle *x509bundle = x509bundle_FromX509Authorities(
                                                 b->td, 
-                                                (const X509**) b->x509Auths);
+                                                b->x509Auths);
     mtx_unlock(&(b->mtx));
 
     return x509bundle;
@@ -350,7 +342,7 @@ jwtbundle_Bundle* spiffebundle_Bundle_JWTBundle(spiffebundle_Bundle *b)
     mtx_lock(&(b->mtx));
     jwtbundle_Bundle *jwtbundle = jwtbundle_FromJWTAuthorities(
                                                 b->td, 
-                                                (const map_string_EVP_PKEY*) b->jwtAuths);
+                                                b->jwtAuths);
     mtx_unlock(&(b->mtx));
 
     return jwtbundle;
@@ -421,7 +413,7 @@ bool spiffebundle_Bundle_Equal(const spiffebundle_Bundle *b1,
         return !strcmp(b1->td.name, b2->td.name) &&
             spiffebundle_refreshHintEqual(b1->refreshHint, b2->refreshHint) &&
             spiffebundle_sequenceNumberEqual(b1->seqNumber, b2->seqNumber) &&
-            x509util_CertsEqual((const X509**) b1->x509Auths, (const X509**) b2->x509Auths) &&
+            x509util_CertsEqual(b1->x509Auths, b2->x509Auths) &&
             jwtutil_JWTAuthoritiesEqual(b1->jwtAuths, b2->jwtAuths);        
     }
     else
@@ -456,7 +448,7 @@ struct timespec* spiffebundle_copyRefreshHint(const struct timespec *ts)
     if(ts)
     {
         struct timespec *new_ts = malloc(sizeof *new_ts);
-        strncpy(new_ts, ts, sizeof *new_ts);
+        memcpy(new_ts, ts, sizeof *new_ts);
 
         return new_ts;
     }

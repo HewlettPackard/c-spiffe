@@ -29,13 +29,6 @@ START_TEST(test_spiffeid_TrustDomainFromString)
 }
 END_TEST
 
-START_TEST(test_spiffeid_TrustDomainFromURI)
-{
-    //dummy
-    ck_assert(0 == 0);
-}
-END_TEST
-
 START_TEST(test_spiffeid_TrustDomain_String)
 {
     spiffeid_TrustDomain td = {string_new("example.com")};
@@ -126,7 +119,6 @@ Suite* trustdomain_suite(void)
     suite_add_tcase(s, tc_core);
 
     tcase_add_test(tc_core, test_spiffeid_TrustDomainFromString);
-    tcase_add_test(tc_core, test_spiffeid_TrustDomainFromURI);
     tcase_add_test(tc_core, test_spiffeid_TrustDomain_String);
     tcase_add_test(tc_core, test_spiffeid_TrustDomain_ID);
     tcase_add_test(tc_core, test_spiffeid_TrustDomain_IDString);

@@ -28,7 +28,11 @@ endmacro(ck_check_include_file)
 # Show all warning messages
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
 
-find_package(Protobuf CONFIG REQUIRED)
+
+find_package(Protobuf 3.13.0 REQUIRED)
+find_package(gRPC 1.34.0 REQUIRED)
+
+
 message(STATUS "Using protobuf ${Protobuf_VERSION}")
 
 set(_PROTOBUF_LIBPROTOBUF protobuf::libprotobuf)
@@ -83,6 +87,9 @@ if (ENABLE_TESTS)
     find_package(Check REQUIRED)
     include_directories(${CHECK_INCLUDE_DIRS})
     link_directories(${CHECK_LIBRARY_DIRS})
+    find_package(GTest REQUIRED)
+    include_directories(${GTEST_INCLUDE_DIRS})
+    link_directories(${GTEST_LIBRARY_DIRS})
 
     include(CheckCSourceCompiles)
     include(CheckCSourceRuns)
@@ -115,6 +122,11 @@ if (ENABLE_TESTS)
     ### Todo: improve this
     add_subdirectory(${PROJECT_SOURCE_DIR}/svid/x509svid/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/spiffeid/tests)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/internal/cryptoutil/tests)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/internal/jwtutil/tests)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/internal/pemutil/tests)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/internal/x509util/tests)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/workload/tests)
 
     # Add build target to generate Coverage Test Report to all compiled object files
     find_program(GCOV gcov)
