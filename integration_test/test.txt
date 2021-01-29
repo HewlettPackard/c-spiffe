@@ -1,0 +1,16 @@
+Found 2 entries
+Entry ID         : 9e0a4867-a9ba-4d69-9382-caea4efdf2cd
+SPIFFE ID        : spiffe://example.org/myagent
+Parent ID        : spiffe://example.org/myagent
+Revision         : 0
+TTL              : default
+Selector         : unix:user:root
+
+Entry ID         : 4fcacd4a-5bb9-423d-9080-91e78b000b54
+SPIFFE ID        : spiffe://example.org/myagent
+Parent ID        : spiffe://example.org/spire/agent/join_token/86dae5a2-1875-43ab-92db-14b8ac90fe6b
+Revision         : 0
+TTL              : default
+Selector         : spiffe_id:spiffe://example.org/spire/agent/join_token/86dae5a2-1875-43ab-92db-14b8ac90fe6b
+
+Error: Could not retrieve entries
