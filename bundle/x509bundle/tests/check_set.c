@@ -21,7 +21,7 @@ START_TEST(test_x509bundle_NewSet)
 
     for(int i = 0; i < ITERS; ++i)
     {
-        bundle_ptr[i] = x509bundle_Load(td[i], "certs.pem", &err);
+        bundle_ptr[i] = x509bundle_Load(td[i], "./resources/certs.pem", &err);
         ck_assert_uint_eq(err, NO_ERROR);
     }
 
@@ -56,7 +56,7 @@ START_TEST(test_x509bundle_Set_Add)
 
     for(int i = 0; i < ITERS; ++i)
     {
-        bundle_ptr[i] = x509bundle_Load(td[i], "certs.pem", &err);
+        bundle_ptr[i] = x509bundle_Load(td[i], "./resources/certs.pem", &err);
         ck_assert_uint_eq(err, NO_ERROR);
     }
 
@@ -93,7 +93,7 @@ START_TEST(test_x509bundle_Set_Remove)
 
     for(int i = 0; i < ITERS; ++i)
     {
-        bundle_ptr[i] = x509bundle_Load(td[i], "certs.pem", &err);
+        bundle_ptr[i] = x509bundle_Load(td[i], "./resources/certs.pem", &err);
         ck_assert_uint_eq(err, NO_ERROR);
     }
 
@@ -132,7 +132,7 @@ START_TEST(test_x509bundle_Set_Has)
 
     for(int i = 0; i < ITERS; ++i)
     {
-        bundle_ptr[i] = x509bundle_Load(td[i], "certs.pem", &err);
+        bundle_ptr[i] = x509bundle_Load(td[i], "./resources/certs.pem", &err);
         ck_assert_uint_eq(err, NO_ERROR);
     }
 
@@ -172,7 +172,7 @@ START_TEST(test_x509bundle_Set_Get)
 
     for(int i = 0; i < ITERS; ++i)
     {
-        bundle_ptr[i] = x509bundle_Load(td[i], "certs.pem", &err);
+        bundle_ptr[i] = x509bundle_Load(td[i], "./resources/certs.pem", &err);
         ck_assert_uint_eq(err, NO_ERROR);
     }
 
@@ -218,7 +218,7 @@ START_TEST(test_x509bundle_Set_Bundles)
 
     for(int i = 0; i < ITERS; ++i)
     {
-        bundle_ptr[i] = x509bundle_Load(td[i], "certs.pem", &err);
+        bundle_ptr[i] = x509bundle_Load(td[i], "./resources/certs.pem", &err);
         ck_assert_uint_eq(err, NO_ERROR);
     }
 
@@ -255,7 +255,7 @@ START_TEST(test_x509bundle_Set_Len)
 
     for(int i = 0; i < ITERS; ++i)
     {
-        bundle_ptr[i] = x509bundle_Load(td[i], "certs.pem", &err);
+        bundle_ptr[i] = x509bundle_Load(td[i], "./resources/certs.pem", &err);
         ck_assert_uint_eq(err, NO_ERROR);
     }
 
@@ -286,7 +286,7 @@ START_TEST(test_x509bundle_Set_GetX509BundleForTrustDomain)
 
     for(int i = 0; i < ITERS; ++i)
     {
-        bundle_ptr[i] = x509bundle_Load(td[i], "certs.pem", &err);
+        bundle_ptr[i] = x509bundle_Load(td[i], "./resources/certs.pem", &err);
         ck_assert_uint_eq(err, NO_ERROR);
     }
 
