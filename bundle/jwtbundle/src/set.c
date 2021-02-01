@@ -114,3 +114,16 @@ jwtbundle_Bundle* jwtbundle_Set_GetJWTBundleForTrustDomain(
     
     return bundle;
 }
+
+void jwtbundle_Set_Free(jwtbundle_Set *s)
+{
+    if(s)
+    {
+        for(size_t i = 0, size = shlenu(s->bundles); i < size; ++i)
+        {
+            jwtbundle_Bundle_Free(s->bundles[i].value, true);
+        }
+
+        free(s);
+    }
+}

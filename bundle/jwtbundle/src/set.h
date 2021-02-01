@@ -37,6 +37,7 @@ jwtbundle_Bundle* jwtbundle_Set_GetJWTBundleForTrustDomain(
                                     jwtbundle_Set *s, 
                                     const spiffeid_TrustDomain *td, 
                                     err_t *err);
+void jwtbundle_Set_Free(jwtbundle_Set *s);
 
 #ifdef __cplusplus
 }
