@@ -126,6 +126,8 @@ if (ENABLE_TESTS)
     add_subdirectory(${PROJECT_SOURCE_DIR}/internal/jwtutil/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/internal/pemutil/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/internal/x509util/tests)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/bundle/x509bundle/tests)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/bundle/jwtbundle/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/workload/tests)
 
     # Add build target to generate Coverage Test Report to all compiled object files
