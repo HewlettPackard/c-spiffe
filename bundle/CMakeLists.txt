@@ -5,7 +5,6 @@ set(TARGET_NAME "libbundle")
 
 project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C)
 
-
 set(LIB_BUNDLE 
 ${PROJECT_SOURCE_DIR}/jwtbundle/src/bundle.c
 ${PROJECT_SOURCE_DIR}/jwtbundle/src/set.c
