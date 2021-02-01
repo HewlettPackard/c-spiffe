@@ -22,7 +22,7 @@ START_TEST(test_jwtbundle_Parse)
     spiffeid_TrustDomain td = {"example.com"};
     err_t err;
 
-    FILE *f = fopen("jwk_keys.json", "r");
+    FILE *f = fopen("./resources/jwk_keys.json", "r");
     string_t buffer = FILE_to_string(f);
     fclose(f);
 
@@ -49,7 +49,7 @@ START_TEST(test_jwtbundle_Load)
     spiffeid_TrustDomain td = {"example.com"};
     err_t err;
 
-    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "jwk_keys.json", &err);
+    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "./resources/jwk_keys.json", &err);
 
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_uint_eq(shlenu(bundle_ptr->auths), 3);
@@ -165,7 +165,7 @@ START_TEST(test_jwtbundle_Bundle_JWTAuthorities)
     spiffeid_TrustDomain td = {"example.com"};
     err_t err;
 
-    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "jwk_keys.json", &err);
+    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "./resources/jwk_keys.json", &err);
     map_string_EVP_PKEY *jwt_auths = jwtbundle_Bundle_JWTAuthorities(bundle_ptr);
 
     ck_assert(jwtutil_JWTAuthoritiesEqual(jwt_auths, bundle_ptr->auths));
@@ -895,7 +895,7 @@ START_TEST(test_jwtbundle_Bundle_Clone)
     spiffeid_TrustDomain td = {"example.com"};
     err_t err;
 
-    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "jwk_keys.json", &err);
+    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "./resources/jwk_keys.json", &err);
     jwtbundle_Bundle *copy_ptr = jwtbundle_Bundle_Clone(bundle_ptr);
 
     ck_assert_str_eq(bundle_ptr->td.name, copy_ptr->td.name);
@@ -911,7 +911,7 @@ START_TEST(test_jwtbundle_Bundle_Equal)
     spiffeid_TrustDomain td = {"example.com"};
     err_t err;
 
-    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "jwk_keys.json", &err);
+    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "./resources/jwk_keys.json", &err);
     jwtbundle_Bundle *bundle2_ptr = jwtbundle_Bundle_Clone(bundle_ptr);
 
     ck_assert(jwtbundle_Bundle_Equal(bundle_ptr, bundle2_ptr));
@@ -928,7 +928,7 @@ START_TEST(test_jwtbundle_Bundle_GetJWTBundleForTrustDomain)
     spiffeid_TrustDomain td = {"example.com"};
     err_t err;
 
-    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "jwk_keys.json", &err);
+    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "./resources/jwk_keys.json", &err);
     
     jwtbundle_Bundle *bundle_td = jwtbundle_Bundle_GetJWTBundleForTrustDomain(
                                     bundle_ptr,
