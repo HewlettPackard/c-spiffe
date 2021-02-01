@@ -10,66 +10,180 @@ gRPC C++ examples built with CMake.
 
 ```
 .
-├── docker
-|   ├── spiffe.Dockerfile
-|   ├── ci.Dockerfile
-|   ├── test.Dockerfile
-│   └── grpc.Dockerfile
-├── worlkload
-|   ├── src
-|   │   ├── file1.cc
-|   │   ├── file2.cc
-|   │   ├── file3.cc
-|   │   └── CMakeLists.txt
-│   ├── tests
-|   │   ├── test1
-|   │   ├── test2
-|   │   ├── test3
-|   │   └── CMakeLists.txt 
-│   └── CMakeLists.txt
 ├── bundle
-│   ├── jwtbundle
-│   │   ├── src
-│   │   │   ├── file1.cc
-│   │   │   ├── file2.cc
-│   │   │   ├── file3.cc
-|   │   │   └── CMakeLists.txt 
-│   │   ├── tests
-|   │   │   ├── test1
-|   │   │   ├── test2
-|   │   │   ├── test3
-|   │   │   └── CMakeLists.txt 
-│   │   └── CMakeLists.txt
-│   ├── spiffebundle
-│   │   ├── src
-│   │   │   ├── file1.cc
-│   │   │   ├── file2.cc
-│   │   │   ├── file3.cc
-|   │   │   └── CMakeLists.txt 
-│   │   ├── tests
-|   │   │   ├── test1
-|   │   │   ├── test2
-|   │   │   ├── test3
-|   │   │   └── CMakeLists.txt 
-│   │   └── CMakeLists.txt
-│   ├── x509bundle
-│   │   ├── src
-│   │   │   ├── file1.cc
-│   │   │   ├── file2.cc
-│   │   │   ├── file3.cc
-|   │   │   └── CMakeLists.txt 
-│   │   ├── tests
-|   │   │   ├── test1
-|   │   │   ├── test2
-|   │   │   ├── test3
-|   │   │   └── CMakeLists.txt
-|   |   └── CMakeLists.txt
-│   └── CMakeLists.txt
+│   ├── CMakeLists.txt
+│   ├── jwtbundle
+│   │   ├── src
+│   │   │   ├── bundle.c
+│   │   │   ├── bundle.h
+│   │   │   ├── set.c
+│   │   │   └── set.h
+│   │   └── tests
+│   │       ├── check_bundle.c
+│   │       ├── jwk_keys.json
+│   │       └── README
+│   ├── spiffebundle
+│   │   └── src
+│   │       ├── bundle.c
+│   │       ├── bundle.h
+│   │       ├── set.c
+│   │       └── set.h
+│   └── x509bundle
+│       ├── src
+│       │   ├── bundle.c
+│       │   ├── bundle.h
+│       │   ├── set.c
+│       │   └── set.h
+│       └── tests
+│           ├── certs.pem
+│           ├── check_bundle.c
+│           ├── check_set.c
+│           └── README
+├── cmake
+│   ├── config.h.in
+│   ├── COPYING-CMAKE-SCRIPTS.txt
+│   └── FindCheck.cmake
 ├── CMakeLists.txt
-├── LICENSE.md
+├── docker
+│   └── grpc.Dockerfile
+├── file
+├── img
+│   └── ci-process.png
+├── integration_test
+│   ├── behave.ini
+│   ├── common
+│   │   ├── assets
+│   │   │   ├── good-cert-and-key.pem
+│   │   │   └── good-key-and-cert.pem
+│   │   └── constants.py
+│   ├── features
+│   │   ├── environment.py
+│   │   ├── steps
+│   │   │   └── SVID_step.py
+│   │   ├── TS_SVID.feature
+│   │   └── utils.py
+│   ├── get-entries.py
+│   ├── get-entries.sh
+│   ├── README.md
+│   ├── requirements.txt
+│   └── test.txt
+├── internal
+│   ├── CMakeLists.txt
+│   ├── cryptoutil
+│   │   ├── src
+│   │   │   ├── keys.c
+│   │   │   └── keys.h
+│   │   └── tests
+│   │       ├── check_keys.c
+│   │       ├── CMakeLists.txt
+│   │       └── README
+│   ├── jwtutil
+│   │   ├── src
+│   │   │   ├── util.c
+│   │   │   └── util.h
+│   │   └── tests
+│   │       ├── check_util.c
+│   │       ├── CMakeLists.txt
+│   │       └── README
+│   ├── pemutil
+│   │   ├── src
+│   │   │   ├── pem.c
+│   │   │   └── pem.h
+│   │   └── tests
+│   │       ├── check_pem.c
+│   │       ├── CMakeLists.txt
+│   │       └── README
+│   └── x509util
+│       ├── src
+│       │   ├── certpool.c
+│       │   ├── certpool.h
+│       │   ├── util.c
+│       │   └── util.h
+│       └── tests
+│           ├── certs.pem
+│           ├── check_certpool.c
+│           ├── check_util.c
+│           ├── CMakeLists.txt
+│           ├── key-pkcs8-rsa.pem
+│           ├── README
+│           └── resources
+│               ├── certs.pem
+│               └── key-pkcs8-rsa.pem
+├── proto
+│   └── spiffe
+│       └── workload
+│           ├── README.md
+│           └── workload.proto
 ├── protos
-│   ├── workload.proto
-└── README.md
+│   └── workload.proto
+├── README.md
+├── spiffeid
+│   ├── CMakeLists.txt
+│   ├── src
+│   │   ├── id.c
+│   │   ├── id.h
+│   │   ├── match.c
+│   │   ├── match.h
+│   │   ├── trustdomain.c
+│   │   └── trustdomain.h
+│   └── tests
+│       ├── check_id.c
+│       ├── check_match.c
+│       ├── check_trustdomain.c
+│       ├── CMakeLists.txt
+│       └── README
+├── spiffetls
+│   └── tlsconfig
+│       └── src
+│           ├── authorizer.c
+│           └── authorizer.h
+├── svid
+│   ├── CMakeLists.txt
+│   └── x509svid
+│       ├── src
+│       │   ├── svid.c
+│       │   ├── svid.h
+│       │   ├── verify.c
+│       │   └── verify.h
+│       └── tests
+│           ├── check_svid.c
+│           ├── check_verify.c
+│           ├── CMakeLists.txt
+│           ├── README
+│           └── resources
+│               ├── good-cert-and-key.pem
+│               ├── good-key-and-cert.pem
+│               ├── good-leaf-and-intermediate.pem
+│               ├── good-leaf-only.pem
+│               ├── key-pkcs8-ecdsa.pem
+│               └── key-pkcs8-rsa.pem
+├── utils
+│   ├── src
+│   │   ├── stb_ds.h
+│   │   ├── util.c
+│   │   └── util.h
+│   └── tests
+│       ├── check_util.c
+│       ├── README
+│       └── test.txt
+└── workload
+    ├── CMakeLists.txt
+    ├── src
+    │   ├── c_client_example.c
+    │   ├── client.cc
+    │   ├── client.h
+    │   ├── cpp_client_example.cc
+    │   ├── EXAMPLE.md
+    │   ├── grpc_conn_test.cc
+    │   ├── requestor.cc
+    │   └── requestor.h
+    └── tests
+        ├── check_client.cc
+        ├── check_requestor.c
+        ├── check_requestor.cc
+        ├── CMakeLists.txt
+        └── resources
+            └── certs.pem
 ```
 
 ## Dependencies
