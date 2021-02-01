@@ -1,8 +1,5 @@
 language: cpp
-dist: focal
-
-compiler:
-  - gcc
+dist: willallves/grpc-build:1.34.0
 
 before_script:
   - mkdir build && cd build
