@@ -2,6 +2,8 @@
 
 C extension for Spiffe platform.
 
+[![Build Status](https://travis-ci.com/HewlettPackard/c-spiffe.svg?branch=master)](https://travis-ci.com/github/HewlettPackard/c-spiffe)
+
 ## Introduction
 
 gRPC C++ examples built with CMake.
