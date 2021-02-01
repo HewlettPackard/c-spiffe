@@ -49,7 +49,7 @@ target_link_libraries(check_requestor librequestor ${CHECK_LIBRARIES}
   crypto
   pthread)
 
-add_test(requestor-test check_requestor)
+add_test(check_requestor check_requestor)
 
 add_executable(check_client "./check_client.cc" ${grpc_srcs} ${proto_srcs} ${grpc_mock})
 
@@ -72,4 +72,4 @@ target_link_libraries(check_client librequestor ${CHECK_LIBRARIES}
   crypto
   pthread)
 
-add_test(client-test check_client)
+add_test(check_client check_client)
