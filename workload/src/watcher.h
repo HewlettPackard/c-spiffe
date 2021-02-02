@@ -11,7 +11,7 @@
 #include <threads.h>
 
 
-//TODO function for picking first SVID
+///TODO: function for picking first SVID
 typedef struct workloadapi_X509Context
 {
     x509svid_SVID** SVIDs;
@@ -21,12 +21,16 @@ typedef struct workloadapi_X509Context
 
 typedef struct workloadapi_WatcherConfig
 {
-    void* client; //TODO add actual client type
-    void** clientOptions; //TODO add actual option type
-    size_t options_size;
+    ///TODO: add actual client type
+    void* client;
+    ///TODO: add actual client option type
+    void** clientOptions;
 } workloadapi_WatcherConfig;
 
-typedef void (*workloadapi_x509ContextFunc_t)(workloadapi_X509Context*, void*);  
+// type for callback function. will be set by X509Source.
+typedef void (*workloadapi_x509ContextFunc_t)(workloadapi_X509Context*, void*); 
+// eg.: 
+// workloadapi_x509ContextFunc_t func; -> void (*func)(workloadapi_X509Context* updatedContext);
 
 typedef struct X509Callback{
     void* args;
@@ -35,17 +39,23 @@ typedef struct X509Callback{
 
 // typedef void(workloadapi_jwtBundleSetFunc_t)(jwtbundle_Set*);
 // function types eg. 
-// workloadapi_x509ContextFunc_t func;  =  void func(workloadapi_X509Context* updatedContext);
 
 
 typedef struct workloadapi_Watcher
 {
-    void* client; //TODO as above, pointer to Client C++ class;
+    void* client; ///TODO: as above, pointer to Client C++ class;
     bool ownsClient; //did this create its client?
 
-    // void(*cancel)(void); //cancel function, might not apply to our C impl
+    //Update Sync
+    mtx_t updateMutex;
+    cnd_t updateCond;
+    bool updated;
+    
+    ///TODO: needed?
+    err_t updateError;
 
-    //TODO sync objects?
+
+    //Close sync
     mtx_t closeMutex;
     bool closed;
     err_t closeError; //needed?
@@ -59,7 +69,7 @@ typedef struct workloadapi_Watcher
 } workloadapi_Watcher;
 
 //new watcher, dials WorkloadAPI if client hasn't yet
-workloadapi_Watcher* workloadapi_newWatcher(/*context,*/ workloadapi_WatcherConfig config, workloadapi_X509Callback x509Callback/*, jwtBundleSetFunc_t* jwtBundleSetUpdateFunc*/);
+workloadapi_Watcher* workloadapi_newWatcher(workloadapi_WatcherConfig config, workloadapi_X509Callback x509Callback/*, jwtBundleSetFunc_t* jwtBundleSetUpdateFunc*/);
 
 //drops connection to WorkloadAPI (if owns client)
 void workloadapi_closeWatcher(/*context,*/ workloadapi_Watcher* watcher);
@@ -75,9 +85,9 @@ void workloadapi_Watcher_OnX509ContextWatchError(workloadapi_Watcher* watcher, e
 
 // TODO sync functions
 err_t workloadapi_Watcher_WaitUntilUpdated(workloadapi_Watcher* watcher/*, go channel context*/);
+err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher* watcher/* go channel context*/);
 // void* workloadapi_Watcher_Updated(workloadapi_Watcher* watcher); //TODO how to get updated without channels
 // err_t workloadapi_Watcher_DrainUpdated(workloadapi_Watcher* watch); //
-// err_t workloadapi_Watcher_TriggerUpdated(/* go channel context*/);
 
 
 
