@@ -3,6 +3,7 @@
 
 #include "../../../utils/src/util.h"
 #include "../../../spiffeid/src/id.h"
+#include <jansson.h>
 #include <time.h>
 
 #ifdef __cplusplus
@@ -12,7 +13,7 @@ extern "C" {
 typedef struct map_string_claim
 {
     string_t key;
-    void *value;
+    json_t *value;
 } map_string_claim;
 
 typedef struct jwtsvid_SVID
@@ -33,7 +34,7 @@ jwtsvid_SVID* jwtsvid_ParseAndValidate();
 jwtsvid_SVID* jwtsvid_ParseInsecure();
 string_t jwtsvid_SVID_Marshal();
 jwtsvid_SVID* jwtsvid_parse();
-err_t jwtsvid_ValidateTokenALgorithm();
+err_t jwtsvid_validateTokenAlgorithm();
 
 #ifdef __cplusplus
 }
