@@ -32,14 +32,18 @@ workloadapi_Requestor* workloadapi_RequestorInit(const char* address)
 
 workloadapi_Requestor* workloadapi_RequestorInitWithStub(const char* address, stub_ptr stub)
 {
-    if( !address ) return NULL;
-    workloadapi_Requestor* req = (workloadapi_Requestor*) malloc(sizeof *req);
+    if(!address) return NULL;
+    workloadapi_Requestor* req = 
+        (workloadapi_Requestor*) malloc(sizeof *req);
     req->address = string_new(address);
     
-    if (!stub)
+    if(!stub)
     {
-        std::shared_ptr<Channel> chan = grpc::CreateChannel(req->address,grpc::InsecureChannelCredentials());
-        std::unique_ptr<SpiffeWorkloadAPI::StubInterface> new_stub = SpiffeWorkloadAPI::NewStub(chan);
+        std::shared_ptr<Channel> chan = 
+            grpc::CreateChannel(req->address, 
+                                grpc::InsecureChannelCredentials());
+        std::unique_ptr<SpiffeWorkloadAPI::StubInterface> new_stub = 
+            SpiffeWorkloadAPI::NewStub(chan);
         req->stub = new_stub.release();
     }
     else
@@ -76,7 +80,7 @@ x509svid_SVID* workloadapi_FetchDefaultX509SVID(workloadapi_Requestor* requestor
     std::unique_ptr<grpc::ClientReaderInterface<X509SVIDResponse>> c_reader = 
         ((SpiffeWorkloadAPI::StubInterface*)requestor->stub)->FetchX509SVID(&ctx, req); //get response reader
 
-    while (c_reader->Read(&response)) //while there are messages
+    while(c_reader->Read(&response)) //while there are messages
     { 
         x509svid_SVID* x509svid = NULL;
         auto ids = response.svids(); // all SVID's the workload is entitled to.
