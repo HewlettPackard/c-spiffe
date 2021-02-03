@@ -38,7 +38,7 @@ typedef struct X509Callback{
 } workloadapi_X509Callback;
 
 // typedef void(workloadapi_jwtBundleSetFunc_t)(jwtbundle_Set*);
-// function types eg. 
+// eg.: 
 
 
 typedef struct workloadapi_Watcher
@@ -69,25 +69,29 @@ typedef struct workloadapi_Watcher
 } workloadapi_Watcher;
 
 //new watcher, dials WorkloadAPI if client hasn't yet
-workloadapi_Watcher* workloadapi_newWatcher(workloadapi_WatcherConfig config, workloadapi_X509Callback x509Callback/*, jwtBundleSetFunc_t* jwtBundleSetUpdateFunc*/);
+workloadapi_Watcher* workloadapi_newWatcher(workloadapi_WatcherConfig config, workloadapi_X509Callback x509Callback/*, jwtBundleSetFunc_t* jwtBundleSetUpdateFunc*/, err_t* error);
 
-//drops connection to WorkloadAPI (if owns client)
-void workloadapi_closeWatcher(/*context,*/ workloadapi_Watcher* watcher);
+//drops connection to WorkloadAPI (if watcher owns client)
+err_t workloadapi_closeWatcher(workloadapi_Watcher* watcher);
 
 //Function called by Client when new x509 response arrives
 void workloadapi_Watcher_OnX509ContextUpdate(workloadapi_Watcher* watcher, workloadapi_X509Context* context);
-//Called by Client when an error occurs
+
+//Called by Client when an error occurs and the watcher must be made aware
 void workloadapi_Watcher_OnX509ContextWatchError(workloadapi_Watcher* watcher, err_t error);
 
 // Function called by Client when new JWT response arrives
 // void workloadapi_Watcher_OnJwtBundlesUpdate(workloadapi_Watcher* watcher, jwtbundle_Set* context);
 // void workloadapi_Watcher_OnJwtBundlesWatchError(workloadapi_Watcher* watcher, err_t error);
 
-// TODO sync functions
-err_t workloadapi_Watcher_WaitUntilUpdated(workloadapi_Watcher* watcher/*, go channel context*/);
-err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher* watcher/* go channel context*/);
-// void* workloadapi_Watcher_Updated(workloadapi_Watcher* watcher); //TODO how to get updated without channels
-// err_t workloadapi_Watcher_DrainUpdated(workloadapi_Watcher* watch); //
+// Blocks until an update is received.
+err_t workloadapi_Watcher_WaitUntilUpdated(workloadapi_Watcher* watcher);
+
+// Broadcasts an update to all waiting.
+err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher* watcher);
+
+// void* workloadapi_Watcher_Updated(workloadapi_Watcher* watcher);
+// err_t workloadapi_Watcher_DrainUpdated(workloadapi_Watcher* watch);
 
 
 
