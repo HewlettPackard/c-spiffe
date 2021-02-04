@@ -27,14 +27,14 @@ void spiffebundle_Set_Add(spiffebundle_Set *s, spiffebundle_Bundle *bundle)
     mtx_unlock(&(s->mtx));
 }
 
-void spiffebundle_Set_Remove(spiffebundle_Set *s, const spiffeid_TrustDomain *td)
+void spiffebundle_Set_Remove(spiffebundle_Set *s, const spiffeid_TrustDomain td)
 {
     mtx_lock(&(s->mtx));
     shdel(s->bundles, td->name);
     mtx_unlock(&(s->mtx));
 }
 
-bool spiffebundle_Set_Has(spiffebundle_Set *s, const spiffeid_TrustDomain *td)
+bool spiffebundle_Set_Has(spiffebundle_Set *s, const spiffeid_TrustDomain td)
 {
     mtx_lock(&(s->mtx));
     const bool present = shgeti(s->bundles, td->name) >= 0? true : false;
@@ -44,7 +44,7 @@ bool spiffebundle_Set_Has(spiffebundle_Set *s, const spiffeid_TrustDomain *td)
 }
 
 spiffebundle_Bundle* spiffebundle_Set_Get(spiffebundle_Set *s, 
-                                    const spiffeid_TrustDomain *td,
+                                    const spiffeid_TrustDomain td,
                                     bool *suc)
 {
     mtx_lock(&(s->mtx));
@@ -96,7 +96,7 @@ uint32_t spiffebundle_Set_Len(spiffebundle_Set *s)
 
 spiffebundle_Bundle* spiffebundle_Set_GetBundleForTrustDomain(
                                     spiffebundle_Set *s, 
-                                    const spiffeid_TrustDomain *td,
+                                    const spiffeid_TrustDomain td,
                                     err_t *err)
 {
     mtx_lock(&(s->mtx));
@@ -116,7 +116,7 @@ spiffebundle_Bundle* spiffebundle_Set_GetBundleForTrustDomain(
 
 x509bundle_Bundle* spiffebundle_Set_GetX509BundleForTrustDomain(
                                     spiffebundle_Set *s, 
-                                    const spiffeid_TrustDomain *td,
+                                    const spiffeid_TrustDomain td,
                                     err_t *err)
 {
     mtx_lock(&(s->mtx));
@@ -136,7 +136,7 @@ x509bundle_Bundle* spiffebundle_Set_GetX509BundleForTrustDomain(
 
 jwtbundle_Bundle* spiffebundle_Set_GetJWTBundleForTrustDomain(
                                     spiffebundle_Set *s, 
-                                    const spiffeid_TrustDomain *td,
+                                    const spiffeid_TrustDomain td,
                                     err_t *err)
 {
     mtx_lock(&(s->mtx));
