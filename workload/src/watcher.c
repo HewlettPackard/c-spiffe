@@ -90,8 +90,21 @@ err_t workloadapi_Watcher_WaitUntilUpdated(workloadapi_Watcher* watcher){
         mtx_unlock(&watcher->updateMutex);
         return NO_ERROR;
     }
-    else{ ///TODO: should we wait on a timer?
+    else{
+        ///TODO: should we wait on a timer?
+        ///TODO: emit an error to watcher->updateError?
         cnd_wait(&(watcher->updateCond), &(watcher->updateMutex));
+
     }
     mtx_unlock(&watcher->updateMutex);
+    return NO_ERROR;
+}
+
+err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher* watcher){
+    mtx_lock(&(watcher->updateMutex));
+    ///TODO: should we do any other housekeeping here?
+    watcher->updated = true;
+    cnd_broadcast(&(watcher->updateCond));
+    mtx_unlock(&(watcher->updateMutex));
+    return NO_ERROR; ///TODO: error checking?
 }
