@@ -1,7 +1,6 @@
 language: cpp
 sudo: false
 dist: focal
-#image: willallves/grpc-build:1.34.0
 
 cache: # see https://docs.travis-ci.com/user/caching/
 - directories:
@@ -17,59 +16,17 @@ env:
   global:
     - IMAGE_NAME=willallves/grpc-build:1.34.0
     - CONTAINER_NAME=cspiffe
-    - CMAKE_TAR_GZ=https://cmake.org/files/v3.19/cmake-3.19.0-Linux-x86_64.tar.gz
-    - GRPC_LINK=https://github.com/grpc/grpc
-
-#addons:
-#  apt:
-#    packages:
-#      - libgmock-dev
-#      - libgtest-dev
-#      - libcjose-dev
-#      - libjansson-dev
-#      - libssl-dev
-#      - liburiparser1
-#      - liburiparser-dev
-#      - protobuf-compiler
-#      - libprotobuf-dev
-#      - libtool
-#      - gcovr
-#      - check
-#      - lcov
-
-#install:
-  # the install step will take care of deploying a newer cmake version
-#  - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
-#  - mkdir ${DEPS_DIR} && cd ${DEPS_DIR}
-#  - travis_retry wget --no-check-certificate "$CMAKE_TAR_GZ"
-#  - tar -xvf cmake-3.19.0-Linux-x86_64.tar.gz > /dev/null
-#  - mv cmake-3.19.0-Linux-x86_64 cmake-install
-#  - PATH=${DEPS_DIR}/cmake-install:${DEPS_DIR}/cmake-install/bin:$PATH
-#
-  # the install step will take care of deploying a newer grpc version
-#  - cd /tmp && git clone --recurse-submodules -b v1.34.0 "$GRPC_LINK"
-#  - mkdir -p /tmp/grpc/cmake/build
-#  - cd /tmp/grpc/cmake/build && cmake -DgRPC_INSTALL=ON -DgRPC_BUILD_TESTS=ON ../..
-#  - sed -i '7,13d' /tmp/grpc/third_party/benchmark/test/cxx03_test.cc 
-#  - cd /tmp/grpc/cmake/build && make -j8
-#  - cd /tmp/grpc/cmake/build && make install
-
-#  - cd ${TRAVIS_BUILD_DIR}
 
 before_script:
-    - docker pull "$IMAGE_NAME"
-    - docker run -d --name "$CONTAINER_NAME" "$IMAGE_NAME" ./init-server.sh
-    - docker cp . "$CONTAINER_NAME":/mnt
+  - docker pull "$IMAGE_NAME"
+  - docker run -d --name "$CONTAINER_NAME" "$IMAGE_NAME" ./init-server.sh
+  - docker cp . "$CONTAINER_NAME":/mnt
     
 script:
-    ############################################################################
-    # Build main and tests
-    ############################################################################
-#    - cd ${TRAVIS_BUILD_DIR}
-    - docker exec "$CONTAINER_NAME" mkdir -p /mnt/build
-    - docker exec "$CONTAINER_NAME" cp build.sh  /mnt/build
-    - docker exec -w /mnt/ "$CONTAINER_NAME" ls
-    - docker exec -w /mnt/build "$CONTAINER_NAME" ls
-    - docker exec -w /mnt/build "$CONTAINER_NAME" cmake ..
-    - docker exec -w /mnt/build "$CONTAINER_NAME" make
-    - docker exec -w /mnt/build "$CONTAINER_NAME" make test
+  ############################################################################
+  # Build main and tests
+  ############################################################################
+  - docker exec "$CONTAINER_NAME" mkdir -p /mnt/build
+  - docker exec -w /mnt/build "$CONTAINER_NAME" cmake ..
+  - docker exec -w /mnt/build "$CONTAINER_NAME" make
+  - docker exec -w /mnt/build "$CONTAINER_NAME" make test
