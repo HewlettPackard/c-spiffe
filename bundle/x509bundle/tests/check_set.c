@@ -109,7 +109,7 @@ START_TEST(test_x509bundle_Set_Remove)
 
     for(int i = 0; i < ITERS; ++i)
     {
-        x509bundle_Set_Remove(set, &td[i]);
+        x509bundle_Set_Remove(set, td[i]);
         ck_assert_int_lt(shgeti(set->bundles, td[i].name), 0);
     }
     
@@ -140,7 +140,7 @@ START_TEST(test_x509bundle_Set_Has)
 
     for(int i = 0; i < ITERS; ++i)
     {
-        ck_assert(!x509bundle_Set_Has(set, &td[i]));
+        ck_assert(!x509bundle_Set_Has(set, td[i]));
     }
 
     for(int i = 0; i < ITERS; ++i)
@@ -150,7 +150,7 @@ START_TEST(test_x509bundle_Set_Has)
     
     for(int i = 0; i < ITERS; ++i)
     {
-        ck_assert(x509bundle_Set_Has(set, &td[i]));
+        ck_assert(x509bundle_Set_Has(set, td[i]));
     }
     
     x509bundle_Set_Free(set);
@@ -184,7 +184,7 @@ START_TEST(test_x509bundle_Set_Get)
     for(int i = 0; i < ITERS; ++i)
     {
         bool suc;
-        x509bundle_Bundle *b = x509bundle_Set_Get(set, &td[i], &suc);
+        x509bundle_Bundle *b = x509bundle_Set_Get(set, td[i], &suc);
 
         ck_assert(suc);
         ck_assert(b != NULL);
@@ -194,7 +194,7 @@ START_TEST(test_x509bundle_Set_Get)
 
     spiffeid_TrustDomain newtd = {"example4.com"};
     bool suc;
-    x509bundle_Bundle *b = x509bundle_Set_Get(set, &newtd, &suc);
+    x509bundle_Bundle *b = x509bundle_Set_Get(set, newtd, &suc);
 
     ck_assert(!suc);
     ck_assert(b == NULL);
@@ -297,7 +297,7 @@ START_TEST(test_x509bundle_Set_GetX509BundleForTrustDomain)
     
     for(int i = 0; i < ITERS; ++i)
     {
-        x509bundle_Bundle *b = x509bundle_Set_GetX509BundleForTrustDomain(set, &td[i], &err);
+        x509bundle_Bundle *b = x509bundle_Set_GetX509BundleForTrustDomain(set, td[i], &err);
 
         ck_assert_uint_eq(err, NO_ERROR);
         ck_assert(b != NULL);
@@ -306,7 +306,7 @@ START_TEST(test_x509bundle_Set_GetX509BundleForTrustDomain)
     }
 
     spiffeid_TrustDomain newtd = {"example4.com"};
-    x509bundle_Bundle *b = x509bundle_Set_GetX509BundleForTrustDomain(set, &newtd, &err);
+    x509bundle_Bundle *b = x509bundle_Set_GetX509BundleForTrustDomain(set, newtd, &err);
 
     ck_assert_uint_ne(err, NO_ERROR);
     ck_assert(b == NULL);
