@@ -1,16 +1,18 @@
 #include <cjose/cjose.h>
 #include "svid.h"
-#include "../../../bundle/jwtbundle/src/bundle.h"
+#include "../../../bundle/jwtbundle/src/source.h"
 
 //one minute leeway
 time_t DEFAULT_LEEWAY = 60L;
 
-typedef void* jwtbundle_Source;
+jwtbundle_Source *__bundles;
 
 typedef struct 
 {
     json_t *header;
     json_t *payload;
+    string_t header_str;
+    string_t payload_str;
     string_t signature;
 } jwtsvid_JWT;
 
@@ -37,6 +39,7 @@ static jwtsvid_JWT* token_to_jwt(char *token, err_t *err)
         const char *header = strtok(token, dot);
         if(!empty_str(header))
         {
+            string_t header_new = string_new(header);
             uint8_t *header_str = NULL;
             size_t header_str_len;
             cjose_base64url_decode(header, 
@@ -45,9 +48,10 @@ static jwtsvid_JWT* token_to_jwt(char *token, err_t *err)
                                 &header_str_len,
                                 NULL);
             const char *payload = strtok(NULL, dot);
-
+            
             if(!empty_str(payload))
             {
+                string_t payload_new = string_new(payload);
                 uint8_t *payload_str = NULL;
                 size_t payload_str_len;
                 cjose_base64url_decode(payload,
@@ -57,7 +61,8 @@ static jwtsvid_JWT* token_to_jwt(char *token, err_t *err)
                                     NULL);
 
                 jwtsvid_JWT *jwt = malloc(sizeof *jwt);
-                
+                jwt->header_str = header_new;
+                jwt->payload_str = payload_new;
                 jwt->header = json_loadb((const char*) header_str, 
                                         header_str_len, 
                                         0, 
@@ -80,7 +85,7 @@ static jwtsvid_JWT* token_to_jwt(char *token, err_t *err)
                 *err = ERROR3;
                 return NULL;
             }
-            
+            arrfree(header_new);
         }
         //header or payload are empty     
         *err = ERROR2;
@@ -91,12 +96,62 @@ static jwtsvid_JWT* token_to_jwt(char *token, err_t *err)
     return NULL;
 }
 
+static err_t validate_jwt(jwtsvid_JWT *jwt, EVP_PKEY *pkey)
+{
+    if(jwt)
+    {
+        json_t *alg_json = json_object_get(jwt->header, "alg");
+        const char *alg_str = json_typeof(alg_json) == JSON_STRING?
+            json_string_value(alg_json) : NULL;
+
+        if(alg_str)
+        {
+            int sha_alg_num = 0;
+            sscanf(alg_str, "%*c%*c%d", &sha_alg_num);
+            
+            const EVP_MD* (*sha_alg)(void) = NULL;
+            if(sha_alg_num == 256) sha_alg = EVP_sha256;
+            else if(sha_alg_num == 384) sha_alg = EVP_sha384;
+            else if(sha_alg_num == 512) sha_alg = EVP_sha512;
+
+            if(sha_alg)
+            {
+                EVP_MD_CTX *ctx = EVP_MD_CTX_new();
+                EVP_DigestVerifyInit(ctx, NULL, sha_alg(), NULL, pkey);
+                
+                string_t md = string_new(jwt->header_str);
+                md = string_push(md, ".");
+                md = string_push(md, jwt->payload_str);
+                const int ret = EVP_DigestVerify(ctx, 
+                                (const unsigned char*) jwt->signature, 
+                                arrlenu(jwt->signature),
+                                (const unsigned char*) md,
+                                arrlenu(md));
+                arrfree(md);
+
+                if(ret > 0)
+                    return NO_ERROR;
+                //the signature do not match the MD
+                return ERROR4;
+            }
+            //invalid algorithm
+            return ERROR3;
+        }
+        //could not get algorithm field
+        return ERROR2;
+    }
+    //jwt is NULL
+    return ERROR1;
+}
+
 static void jwtsvid_JWT_Free(jwtsvid_JWT *jwt)
 {
     if(jwt)
     {
         free(jwt->header);
         free(jwt->payload);
+        arrfree(jwt->header_str);
+        arrfree(jwt->payload_str);
         arrfree(jwt->signature);
         free(jwt);
     }
@@ -151,8 +206,15 @@ static map_string_claim* parseAndValidate(jwtsvid_JWT *jwt,
 
         if(!empty_str(kid_str))
         {
-            ///TODO: get bundle here
-            jwtbundle_Bundle *bundle = NULL;
+            jwtbundle_Bundle *bundle = 
+                jwtbundle_Source_GetJWTBundleForTrustDomain(
+                    __bundles, td, err);
+            if(*err)
+            {
+                //could not find bundle for given trust domain
+                *err = ERROR3;
+                return NULL;
+            }
 
             bool suc;
             EVP_PKEY *pkey = 
@@ -160,7 +222,21 @@ static map_string_claim* parseAndValidate(jwtsvid_JWT *jwt,
 
             if(suc)
             {
-                ///TODO: make map here
+                if(!validate_jwt(jwt, pkey))
+                {
+                    map_string_claim *claims = json_to_map(jwt->payload);
+                    if(claims)
+                    {
+                        *err = NO_ERROR;
+                        return claims;
+                    }
+                    //error converting payload to a map
+                    *err = ERROR6;
+                    return NULL;
+                }
+                //not validated
+                *err = ERROR5;
+                return NULL;
             }
             //authority not found
             *err = ERROR4;
@@ -256,26 +332,6 @@ static jwtsvid_Claims* json_to_claims(json_t *obj)
     return NULL;
 }
 
-static err_t validate_jwt(jwtsvid_JWT *jwt, EVP_PKEY *pkey)
-{
-    if(jwt)
-    {
-        json_t *alg_json = json_object_get(jwt->header, "alg");
-        const char *alg_str = json_typeof(alg_json) == JSON_STRING?
-            json_string_value(alg_json) : NULL;
-
-        if(alg_str)
-        {
-            EVP_PKEY_CTX *ctx = EVP_PKEY_CTX_new(pkey, NULL);
-            EVP_PKEY_verify_init(ctx);
-        }
-        //could not get algorithm field
-        return ERROR2;
-    }
-    //jwt is NULL
-    return ERROR1;
-}
-
 static bool strarr_contains(string_arr_t arr, string_t str)
 {
     for(size_t i = 0, size = arrlenu(arr); i < size; ++i)
@@ -329,8 +385,8 @@ jwtsvid_SVID* jwtsvid_ParseAndValidate(char *token,
                                         string_arr_t audience,
                                         err_t *err)
 {
-    //dummy
-    return NULL;
+    __bundles = bundles;
+    return jwtsvid_parse(token, audience, parseAndValidate, err);
 }
 
 jwtsvid_SVID* jwtsvid_ParseInsecure(char *token, 
