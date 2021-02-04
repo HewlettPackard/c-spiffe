@@ -27,6 +27,7 @@ workloadapi_Watcher* workloadapi_newWatcher(workloadapi_WatcherConfig config, wo
     else{
         ///TODO: init client with constructor.
         newW->client = NULL; // = newClient(config.clientOptions);
+        newW->ownsClient = true;
     }
 
     // set by calloc:
@@ -65,8 +66,10 @@ err_t workloadapi_closeWatcher(/*context,*/ workloadapi_Watcher* watcher){
     mtx_lock(&(watcher->closeMutex));
     watcher->closed = true;
     ///TODO: check and set watcher->closeError?
-    ///TODO: notify thread of closure;
-    
+    ///TODO: notify thread of closure? trigger update on exit;
+    if(watcher->ownsClient){
+        ///TODO: destroy client? drop conn at least
+    }
     mtx_unlock(&(watcher->closeMutex));
 
     return NO_ERROR;
