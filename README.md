@@ -2,7 +2,7 @@
 
 C extension for Spiffe platform.
 
-[![Build Status](https://travis-ci.com/HewlettPackard/c-spiffe.svg?branch=master)](https://travis-ci.com/github/HewlettPackard/c-spiffe)
+[![Build Status](https://travis-ci.com/willallves/c-spiffe.svg?branch=refactor_ci)](https://travis-ci.com/github/willallves/c-spiffe)
 
 ## Introduction
 
