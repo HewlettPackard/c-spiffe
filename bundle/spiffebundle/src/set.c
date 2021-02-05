@@ -30,14 +30,14 @@ void spiffebundle_Set_Add(spiffebundle_Set *s, spiffebundle_Bundle *bundle)
 void spiffebundle_Set_Remove(spiffebundle_Set *s, const spiffeid_TrustDomain td)
 {
     mtx_lock(&(s->mtx));
-    shdel(s->bundles, td->name);
+    shdel(s->bundles, td.name);
     mtx_unlock(&(s->mtx));
 }
 
 bool spiffebundle_Set_Has(spiffebundle_Set *s, const spiffeid_TrustDomain td)
 {
     mtx_lock(&(s->mtx));
-    const bool present = shgeti(s->bundles, td->name) >= 0? true : false;
+    const bool present = shgeti(s->bundles, td.name) >= 0? true : false;
     mtx_unlock(&(s->mtx));
     
     return present;
@@ -50,7 +50,7 @@ spiffebundle_Bundle* spiffebundle_Set_Get(spiffebundle_Set *s,
     mtx_lock(&(s->mtx));
     *suc = false;
     spiffebundle_Bundle *bundle = NULL;
-    int idx = shgeti(s->bundles, td->name);
+    int idx = shgeti(s->bundles, td.name);
     if(idx >= 0)
     {
         bundle = s->bundles[idx].value;
@@ -103,7 +103,7 @@ spiffebundle_Bundle* spiffebundle_Set_GetBundleForTrustDomain(
     spiffebundle_Bundle *bundle = NULL;
     //trust domain not available
     *err = ERROR1;
-    int idx = shgeti(s->bundles, td->name);
+    int idx = shgeti(s->bundles, td.name);
     if(idx >= 0)
     {
         bundle = s->bundles[idx].value;
@@ -123,7 +123,7 @@ x509bundle_Bundle* spiffebundle_Set_GetX509BundleForTrustDomain(
     x509bundle_Bundle *bundle = NULL;
     //trust domain not available
     *err = ERROR1;
-    int idx = shgeti(s->bundles, td->name);
+    int idx = shgeti(s->bundles, td.name);
     if(idx >= 0)
     {
         bundle = spiffebundle_Bundle_X509Bundle(s->bundles[idx].value);
@@ -143,7 +143,7 @@ jwtbundle_Bundle* spiffebundle_Set_GetJWTBundleForTrustDomain(
     jwtbundle_Bundle *bundle = NULL;
     //trust domain not available
     *err = ERROR1;
-    int idx = shgeti(s->bundles, td->name);
+    int idx = shgeti(s->bundles, td.name);
     if(idx >= 0)
     {
         bundle = spiffebundle_Bundle_JWTBundle(s->bundles[idx].value);
