@@ -48,15 +48,15 @@ workloadapi_Watcher* workloadapi_newWatcher(workloadapi_WatcherConfig config, wo
     
     // if (thread_error != thrd_success){
     //     ///TODO: check error on thread creation
-         
+            ///should we just abort? failing on thread creation only happens when something IMPORTANT breaks.
     // }
 
 
     ///wait for update and check for errors.
     *error = workloadapi_Watcher_WaitUntilUpdated(newW);
-    ///TODO: add error checking.
     //if(error){
-
+    ///TODO: add error handling. error is already set so we just need to get our bearings, deallocate stuff, and return NULL;
+    //    return NULL;
     // }
     return newW;
 }
@@ -79,6 +79,7 @@ err_t workloadapi_closeWatcher(/*context,*/ workloadapi_Watcher* watcher){
 void workloadapi_Watcher_OnX509ContextUpdate(workloadapi_Watcher* watcher, workloadapi_X509Context* context){
     void *args = watcher->x509Callback.args;
     watcher->x509Callback.func(context,args);
+    ///TODO: should we trigger an update signal here? triggerUpdate returns an error and we can't propagate it here.
 }
 
 //Called by Client when an error occurs
