@@ -40,6 +40,7 @@ typedef struct X509Callback{
 // typedef void(workloadapi_jwtBundleSetFunc_t)(jwtbundle_Set*);
 // eg.: 
 
+///TODO: define error codes.
 
 typedef struct workloadapi_Watcher
 {
@@ -61,6 +62,7 @@ typedef struct workloadapi_Watcher
     err_t closeError; //needed?
     
     thrd_t watcherThread; //thread spun to wait on updates
+    int threadError;
 
     workloadapi_X509Callback x509Callback; //function called with updated x509Context
     // jwtBundleSetFunc_t* jwtBundleSetUpdateFunc ; //function called with updated x509Context
