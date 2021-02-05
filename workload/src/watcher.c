@@ -12,57 +12,68 @@ int workloadapi_Watcher_X509backgroundFunc(void * _watcher){
     //error = workloadapi_Client_WatchX509Context(watcher->client,watcher); 
 
     return (int) error;
-} 
+}
 
-
-
-//new watcher, dials WorkloadAPI if client hasn't yet
+//new watcher, creates client if not provided.
 workloadapi_Watcher* workloadapi_newWatcher(workloadapi_WatcherConfig config, workloadapi_X509Callback x509Callback/*, jwtBundleSetFunc_t* jwtBundleSetUpdateFunc*/, err_t* error){
+    
     workloadapi_Watcher* newW = (workloadapi_Watcher*) calloc(1,sizeof *newW);
-    if(config.client){
-        newW->client = config.client;
-        newW->ownsClient = false;
-        ///TODO: apply client options to client?
-    }
-    else{
-        ///TODO: init client with constructor.
-        newW->client = NULL; // = newClient(config.clientOptions);
-        newW->ownsClient = true;
-    }
-
+    
     // set by calloc:
     // newW->updated = false;
     // newW->closed = false;
     // newW->closeError = NO_ERROR;
     // newW->updateError = NO_ERROR;
+    // newW->threadError = thrd_success;
+    
+    if(config.client){
+        newW->client = config.client;
+        newW->ownsClient = false;
+        ///TODO: apply client options to client if provided
+    }
+    else{
+        ///TODO: init client with constructor.
+        newW->client = NULL; // = newClient(config.clientOptions);
+        newW->ownsClient = true;
+        ///TODO: apply client options.
+    }
 
+    ///TODO: check if callback is valid?
+    newW->x509Callback = x509Callback;
 
     mtx_init(&(newW->closeMutex),mtx_plain);
     mtx_init(&(newW->updateMutex),mtx_plain);
     cnd_init(&(newW->updateCond));
 
-    ///TODO: check if callback is valid?
-    /// set callback and spin thread out.
-    newW->x509Callback = x509Callback;
-    int thread_error = thrd_create(&(newW->watcherThread),workloadapi_Watcher_X509backgroundFunc,newW);
-    
-    // if (thread_error != thrd_success){
-    //     ///TODO: check error on thread creation
-            ///should we just abort? failing on thread creation only happens when something IMPORTANT breaks.
-    // }
-
-
-    ///wait for update and check for errors.
-    *error = workloadapi_Watcher_WaitUntilUpdated(newW);
-    //if(error){
-    ///TODO: add error handling. error is already set so we just need to get our bearings, deallocate stuff, and return NULL;
-    //    return NULL;
-    // }
     return newW;
 }
 
+//starts watcher and blocks waiting on an update.
+err_t workloadapi_startWatcher(workloadapi_Watcher* watcher){
+    err_t error = NO_ERROR;
+    if(!watcher){
+        return ERROR1; /// NULL WATCHER;
+    }
+    /// spin watcher thread out.
+    int thread_error = thrd_create(&(watcher->watcherThread),workloadapi_Watcher_X509backgroundFunc,watcher);
+    
+    if (thread_error != thrd_success){
+        watcher->threadError = thread_error;
+        return ERROR2; // THREAD ERROR, see watcher->threadERROR for error
+    }
+
+    ///wait for update and check for errors.
+    err_t error = workloadapi_Watcher_WaitUntilUpdated(watcher);
+    if(error != NO_ERROR){
+    ///TODO: add error handling and destroy thread. error is already set so we just need to get our bearings and deallocate stuff;
+       watcher->updateError = error;
+       return ERROR3;
+    }
+    return NO_ERROR;
+}
+
 //drops connection to WorkloadAPI (if owns client)
-err_t workloadapi_closeWatcher(/*context,*/ workloadapi_Watcher* watcher){
+err_t workloadapi_closeWatcher(workloadapi_Watcher* watcher){
     mtx_lock(&(watcher->closeMutex));
     watcher->closed = true;
     ///TODO: check and set watcher->closeError?
@@ -111,4 +122,15 @@ err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher* watcher){
     cnd_broadcast(&(watcher->updateCond));
     mtx_unlock(&(watcher->updateMutex));
     return NO_ERROR; ///TODO: error checking?
+}
+
+//drops connection to WorkloadAPI (if owns client)
+err_t workloadapi_freeWatcher(/*context,*/ workloadapi_Watcher* watcher){
+    ///TODO: free watcher 
+    if(watcher->ownsClient){
+        ///TODO: call freeClient();
+    }
+    
+    free(watcher);
+    return NO_ERROR;
 }
