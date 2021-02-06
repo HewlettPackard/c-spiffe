@@ -18,3 +18,50 @@ jwtbundle_Bundle* jwtbundle_Source_GetJWTBundleForTrustDomain(
 
     return NULL;
 }
+
+jwtbundle_Source* jwtbundle_SourceFromBundle(jwtbundle_Bundle *b)
+{
+    if(b)
+    {
+        jwtbundle_Source *source = malloc(sizeof *source);
+
+        source->type = JWTBUNDLE_BUNDLE;
+        source->source.bundle = b;
+
+        return source;
+    }
+
+    return NULL;
+}
+
+jwtbundle_Source* jwtbundle_SourceFromSet(jwtbundle_Set *s)
+{
+    if(s)
+    {
+        jwtbundle_Source *source = malloc(sizeof *source);
+
+        source->type = JWTBUNDLE_SET;
+        source->source.set = s;
+
+        return source;
+    }
+
+    return NULL;
+}
+
+void jwtbundle_Source_Free(jwtbundle_Source *s, bool alloc)
+{
+    if(s)
+    {
+        if(s->type == JWTBUNDLE_BUNDLE)
+        {
+            jwtbundle_Bundle_Free(s->source.bundle, alloc);
+        }
+        else if(s->type == JWTBUNDLE_SET)
+        {
+            jwtbundle_Set_Free(s->source.set);
+        }
+
+        free(s);
+    }
+}

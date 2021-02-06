@@ -19,5 +19,8 @@ jwtbundle_Bundle* jwtbundle_Source_GetJWTBundleForTrustDomain(
                                     jwtbundle_Source *s,
                                     const spiffeid_TrustDomain td,
                                     err_t *err);
+jwtbundle_Source* jwtbundle_SourceFromBundle(jwtbundle_Bundle *b);
+jwtbundle_Source* jwtbundle_SourceFromSet(jwtbundle_Set *s);
+void jwtbundle_Source_Free(jwtbundle_Source *s, bool alloc);
 
 #endif
