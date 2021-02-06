@@ -3,18 +3,9 @@
 #include "../../../bundle/jwtbundle/src/source.h"
 
 //one minute leeway
-time_t DEFAULT_LEEWAY = 60L;
+const time_t DEFAULT_LEEWAY = 60L;
 
 jwtbundle_Source *__bundles;
-
-typedef struct 
-{
-    json_t *header;
-    json_t *payload;
-    string_t header_str;
-    string_t payload_str;
-    string_t signature;
-} jwtsvid_JWT;
 
 typedef struct
 {
@@ -26,10 +17,6 @@ typedef struct
     time_t issued_at;
     string_t id;
 } jwtsvid_Claims;
-
-typedef map_string_claim* (*token_validator_t)(jwtsvid_JWT*, 
-                                            spiffeid_TrustDomain, 
-                                            err_t*);
 
 static jwtsvid_JWT* token_to_jwt(char *token, err_t *err)
 {
@@ -86,6 +73,7 @@ static jwtsvid_JWT* token_to_jwt(char *token, err_t *err)
                 return NULL;
             }
             arrfree(header_new);
+            free(header_str);
         }
         //header or payload are empty     
         *err = ERROR2;
@@ -101,8 +89,11 @@ static err_t validate_jwt(jwtsvid_JWT *jwt, EVP_PKEY *pkey)
     if(jwt)
     {
         json_t *alg_json = json_object_get(jwt->header, "alg");
-        const char *alg_str = json_typeof(alg_json) == JSON_STRING?
-            json_string_value(alg_json) : NULL;
+        
+        const char *alg_str = NULL;
+        if(alg_json)
+            alg_str = json_typeof(alg_json) == JSON_STRING?
+                json_string_value(alg_json) : NULL;
 
         if(alg_str)
         {
@@ -117,22 +108,50 @@ static err_t validate_jwt(jwtsvid_JWT *jwt, EVP_PKEY *pkey)
             if(sha_alg)
             {
                 EVP_MD_CTX *ctx = EVP_MD_CTX_new();
-                EVP_DigestVerifyInit(ctx, NULL, sha_alg(), NULL, pkey);
+                
+                const int init = EVP_DigestVerifyInit(ctx, NULL, sha_alg(), NULL, pkey);
+                if(init != 1)
+                {
+                    EVP_MD_CTX_free(ctx);
+                    //could not initialize ctx with public key
+                    return ERROR4;
+                }
                 
                 string_t md = string_new(jwt->header_str);
                 md = string_push(md, ".");
                 md = string_push(md, jwt->payload_str);
-                const int ret = EVP_DigestVerify(ctx, 
-                                (const unsigned char*) jwt->signature, 
-                                arrlenu(jwt->signature),
-                                (const unsigned char*) md,
-                                arrlenu(md));
-                arrfree(md);
 
-                if(ret > 0)
+                uint8_t *buffer;
+                size_t buffer_size;
+                cjose_base64url_decode(
+                    jwt->signature,
+                    strlen(jwt->signature),
+                    &buffer,
+                    &buffer_size,
+                    NULL);
+
+                int ret = EVP_DigestVerifyUpdate(ctx, 
+                            (const unsigned char*) md, 
+                            strlen(md));
+                if(ret != 1)
+                {
+                    EVP_MD_CTX_free(ctx);
+                    //could not initialize ctx with message digest
+                    return ERROR4;
+                }
+                
+                ret = EVP_DigestVerifyFinal(ctx,
+                                (const unsigned char*) buffer, 
+                                buffer_size);
+                
+                EVP_MD_CTX_free(ctx);
+                arrfree(md);
+                free(buffer);    
+
+                if(ret == 1)
                     return NO_ERROR;
-                //the signature do not match the MD
-                return ERROR4;
+                //the signature does not match the MD
+                return ERROR5;
             }
             //invalid algorithm
             return ERROR3;
@@ -153,6 +172,7 @@ static void jwtsvid_JWT_Free(jwtsvid_JWT *jwt)
         arrfree(jwt->header_str);
         arrfree(jwt->payload_str);
         arrfree(jwt->signature);
+        
         free(jwt);
     }
 }
@@ -184,6 +204,7 @@ static map_string_claim* json_to_map(json_t *obj)
 
             json_object_foreach(obj, key, value)
             {
+                ///TODO: check if it is needed to make a deep copy
                 shput(claims_map, key, value);
             }
 
@@ -201,8 +222,11 @@ static map_string_claim* parseAndValidate(jwtsvid_JWT *jwt,
     if(jwt)
     {
         json_t *kid_json = json_object_get(jwt->header, "kid");
-        const char *kid_str = json_typeof(kid_json) == JSON_STRING?
-            json_string_value(kid_json) : NULL;
+        
+        const char *kid_str = NULL;
+        if(kid_json)
+            kid_str = json_typeof(kid_json) == JSON_STRING?
+                json_string_value(kid_json) : NULL;
 
         if(!empty_str(kid_str))
         {
@@ -222,7 +246,8 @@ static map_string_claim* parseAndValidate(jwtsvid_JWT *jwt,
 
             if(suc)
             {
-                if(!validate_jwt(jwt, pkey))
+                err_t err2 = validate_jwt(jwt, pkey);
+                if(!err2)
                 {
                     map_string_claim *claims = json_to_map(jwt->payload);
                     if(claims)
@@ -234,6 +259,7 @@ static map_string_claim* parseAndValidate(jwtsvid_JWT *jwt,
                     *err = ERROR6;
                     return NULL;
                 }
+                printf("err2: %u\n", err2);
                 //not validated
                 *err = ERROR5;
                 return NULL;
@@ -256,20 +282,14 @@ static map_string_claim* parseInsecure(jwtsvid_JWT *jwt,
                                         err_t *err)
 {
     if(jwt)
-    {
-        if(!(*err))
+    {     
+        map_string_claim *claims = json_to_map(jwt->payload);
+        if(claims)
         {
-            map_string_claim *claims = json_to_map(jwt->payload);
-            if(claims)
-            {
-                *err = NO_ERROR;   
-                return claims;
-            }
-            //payload is not an json object
-            *err = ERROR3;
-            return NULL;
+            *err = NO_ERROR;   
+            return claims;
         }
-        //could not decode token
+        //payload is not a json object
         *err = ERROR2;
         return NULL;
     }
@@ -293,38 +313,49 @@ static jwtsvid_Claims* json_to_claims(json_t *obj)
             json_t *audience_json = json_object_get(obj, "aud");
 
             jwtsvid_Claims *claims = malloc(sizeof *claims);
-            claims->issuer = json_typeof(issuer_json) == JSON_STRING?
-                string_new(json_string_value(issuer_json)) : NULL;
-            claims->subject = json_typeof(subject_json) == JSON_STRING?
-                string_new(json_string_value(subject_json)) : NULL;
-            claims->id = json_typeof(id_json) == JSON_STRING?
-                string_new(json_string_value(id_json)) : NULL;
-            claims->expiry = json_typeof(expiry_json) == JSON_INTEGER?
-                (time_t) json_integer_value(expiry_json) : -1;
-            claims->not_before = json_typeof(notbefore_json) == JSON_INTEGER?
-                (time_t) json_integer_value(notbefore_json) : -1;
-            claims->issued_at = json_typeof(issuedat_json) == JSON_INTEGER?
-                (time_t) json_integer_value(issuedat_json) : -1;
-            claims->audience = NULL;
-            if(json_typeof(audience_json) == JSON_ARRAY)
+            memset(claims, 0, sizeof *claims);
+
+            if(issuer_json)
+                claims->issuer = json_typeof(issuer_json) == JSON_STRING?
+                    string_new(json_string_value(issuer_json)) : NULL;
+            if(subject_json)
+                claims->subject = json_typeof(subject_json) == JSON_STRING?
+                    string_new(json_string_value(subject_json)) : NULL;
+            if(id_json)
+                claims->id = json_typeof(id_json) == JSON_STRING?
+                    string_new(json_string_value(id_json)) : NULL;
+            if(expiry_json)    
+                claims->expiry = json_typeof(expiry_json) == JSON_INTEGER?
+                    (time_t) json_integer_value(expiry_json) : -1;
+            if(notbefore_json)    
+                claims->not_before = json_typeof(notbefore_json) == JSON_INTEGER?
+                    (time_t) json_integer_value(notbefore_json) : -1;
+            if(issuedat_json)
+                claims->issued_at = json_typeof(issuedat_json) == JSON_INTEGER?
+                    (time_t) json_integer_value(issuedat_json) : -1;
+
+            if(audience_json)
             {
-                size_t i;
-                json_t *value;
-                json_array_foreach(audience_json, i, value)
+                if(json_typeof(audience_json) == JSON_ARRAY)
                 {
-                    if(json_typeof(value) == JSON_STRING)
+                    size_t i;
+                    json_t *value;
+                    json_array_foreach(audience_json, i, value)
                     {
-                        arrput(claims->audience, 
-                            string_new(json_string_value(value)));
+                        if(json_typeof(value) == JSON_STRING)
+                        {
+                            arrput(claims->audience, 
+                                string_new(json_string_value(value)));
+                        }
                     }
                 }
+                else if(json_typeof(audience_json) == JSON_STRING)
+                {
+                    arrput(claims->audience, 
+                        string_new(json_string_value(audience_json)));
+                }
             }
-            else if(json_typeof(audience_json) == JSON_STRING)
-            {
-                arrput(claims->audience, 
-                    string_new(json_string_value(audience_json)));
-            }
-        
+            
             return claims;
         }
     }
@@ -349,7 +380,7 @@ static err_t validate_claims(jwtsvid_Claims *claims, string_arr_t audience)
     {
         time_t now = time(NULL);
 
-        for(size_t i = 0, size1 = arrlenu(audience); i < size1; ++i)
+        for(size_t i = 0, size = arrlenu(audience); i < size; ++i)
         {
             if(!strarr_contains(claims->audience, audience[i]))
             {
@@ -377,6 +408,46 @@ static err_t validate_claims(jwtsvid_Claims *claims, string_arr_t audience)
         return NO_ERROR;
     }
     //claims is NULL
+    return ERROR1;
+}
+
+static err_t jwtsvid_validateTokenAlgorithm(jwtsvid_JWT *jwt)
+{
+    if(jwt)
+    {
+        if(json_typeof(jwt->header) == JSON_OBJECT)
+        {
+            json_t *alg_json = json_object_get(jwt->header, "alg");
+            const char *alg_str = json_string_value(alg_json);
+            
+            const char *supported_algs[] = {
+                CJOSE_HDR_ALG_RS256,
+                CJOSE_HDR_ALG_RS384,
+                CJOSE_HDR_ALG_RS512,
+                CJOSE_HDR_ALG_ES256,
+                CJOSE_HDR_ALG_ES384,
+                CJOSE_HDR_ALG_ES512,
+                CJOSE_HDR_ALG_PS256,
+                CJOSE_HDR_ALG_PS384,
+                CJOSE_HDR_ALG_PS512
+            };
+            const int size = (sizeof supported_algs) / (sizeof *supported_algs);
+            
+            for(int i = 0; i < size; ++i)
+            {
+                if(!strcmp(alg_str, supported_algs[i]))
+                {
+                    //supported algorithm
+                    return NO_ERROR;
+                }
+            }
+            //algorithm not supported
+            return ERROR3;
+        }
+        //header is not a json object
+        return ERROR2;
+    }
+    //jwt object is NULL
     return ERROR1;
 }
 
@@ -430,17 +501,22 @@ jwtsvid_SVID* jwtsvid_parse(char *token,
                 }
 
                 spiffeid_ID id = spiffeid_FromString(claims->subject, &err2);
+
                 if(err2)
                 {
                     //subject claim is not a valid spiffe id
                     *err = ERROR4;
                     goto ret;
                 }
-
-                map_string_claim *claims_map = validator(jwt, (spiffeid_TrustDomain){NULL}, &err2);
+                
+                map_string_claim *claims_map = NULL;
+                if(validator)
+                    claims_map = validator(
+                        jwt, spiffeid_ID_TrustDomain(id), &err2);
                 if(err2)
                 {
                     //could not validate jwt object
+                    printf("err2: %u\n", err2);
                     *err = ERROR5;
                     goto ret;
                 }
@@ -465,6 +541,7 @@ jwtsvid_SVID* jwtsvid_parse(char *token,
                 arrfree(claims->subject);
                 arrfree(claims->id);
                 
+                *err = NO_ERROR;
                 return svid;
             }
         }
@@ -480,42 +557,21 @@ ret:
     return NULL;
 }
 
-err_t jwtsvid_validateTokenAlgorithm(jwtsvid_JWT *jwt)
+void jwtsvid_SVID_Free(jwtsvid_SVID *svid)
 {
-    if(jwt)
+    if(svid)
     {
-        if(json_typeof(jwt->header) == JSON_OBJECT)
+        //free spiffe id
+        spiffeid_ID_Free(&(svid->id), false);
+        //free array of strings
+        util_string_arr_t_Free(svid->audience);
+        //free each json object
+        ///TODO: verify if it is necessary
+        for(size_t i = 0, size = shlenu(svid->claims); i < size; ++i)
         {
-            json_t *alg_json = json_object_get(jwt->header, "alg");
-            const char *alg_str = json_string_value(alg_json);
-            
-            const char *supported_algs[] = {
-                CJOSE_HDR_ALG_RS256,
-                CJOSE_HDR_ALG_RS384,
-                CJOSE_HDR_ALG_RS512,
-                CJOSE_HDR_ALG_ES256,
-                CJOSE_HDR_ALG_ES384,
-                CJOSE_HDR_ALG_ES512,
-                CJOSE_HDR_ALG_PS256,
-                CJOSE_HDR_ALG_PS384,
-                CJOSE_HDR_ALG_PS512
-            };
-            const int size = (sizeof supported_algs) / (sizeof *supported_algs);
-            
-            for(int i = 0; i < size; ++i)
-            {
-                if(!strcmp(alg_str, supported_algs[i]))
-                {
-                    //supported algorithm
-                    return NO_ERROR;
-                }
-            }
-            //algorithm not supported
-            return ERROR3;
+            free(svid->claims[i].value);
         }
-        //header is not a json object
-        return ERROR2;
+        //free token string
+        arrfree(svid->token);
     }
-    //jwt object is NULL
-    return ERROR1;
 }
