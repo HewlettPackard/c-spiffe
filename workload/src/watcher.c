@@ -41,9 +41,24 @@ workloadapi_Watcher* workloadapi_newWatcher(workloadapi_WatcherConfig config, wo
     ///TODO: check if callback is valid?
     newW->x509Callback = x509Callback;
 
-    mtx_init(&(newW->closeMutex),mtx_plain);
-    mtx_init(&(newW->updateMutex),mtx_plain);
-    cnd_init(&(newW->updateCond));
+    int thread_error = mtx_init(&(newW->closeMutex),mtx_plain);
+    if(thread_error != thrd_success){
+        ///TODO: return thread error?
+        *error =  ERROR2;
+        return NULL;
+    }
+    thread_error = mtx_init(&(newW->updateMutex),mtx_plain);
+    if(thread_error != thrd_success){
+        ///TODO: return thread error?
+        *error =  ERROR2;
+        return NULL;
+    }
+    thread_error = cnd_init(&(newW->updateCond));
+    if(thread_error != thrd_success){
+        ///TODO: return thread error?
+        *error =  ERROR2;
+        return NULL;
+    }
 
     return newW;
 }
@@ -63,26 +78,40 @@ err_t workloadapi_startWatcher(workloadapi_Watcher* watcher){
     }
 
     ///wait for update and check for errors.
-    err_t error = workloadapi_Watcher_WaitUntilUpdated(watcher);
+    error = workloadapi_Watcher_WaitUntilUpdated(watcher);
     if(error != NO_ERROR){
     ///TODO: add error handling and destroy thread. error is already set so we just need to get our bearings and deallocate stuff;
        watcher->updateError = error;
        return ERROR3;
     }
-    return NO_ERROR;
+    return error;
 }
 
 //drops connection to WorkloadAPI (if owns client)
 err_t workloadapi_closeWatcher(workloadapi_Watcher* watcher){
     mtx_lock(&(watcher->closeMutex));
     watcher->closed = true;
+    err_t error = NO_ERROR;
     ///TODO: check and set watcher->closeError?
-    ///TODO: notify thread of closure? trigger update on exit;
     if(watcher->ownsClient){
-        ///TODO: destroy client? drop conn at least
+        ///TODO: close client, drop conn at least
+        //if (error), do cleanup on cleanup?
     }
     mtx_unlock(&(watcher->closeMutex));
 
+    return error;
+}
+
+//drops connection to WorkloadAPI (if owns client)
+err_t workloadapi_freeWatcher(/*context,*/ workloadapi_Watcher* watcher){
+    ///TODO: free watcher 
+    mtx_destroy(&(watcher->closeMutex));
+    cnd_destroy(&(watcher->updateCond));
+    mtx_destroy(&(watcher->updateMutex));
+    if(watcher->ownsClient){
+        ///TODO: call freeClient();
+    }
+    free(watcher);
     return NO_ERROR;
 }
 
@@ -99,20 +128,36 @@ void workloadapi_Watcher_OnX509ContextWatchError(workloadapi_Watcher* watcher, e
     ///INFO: go-spiffe does nothing.
 }
 
+
 err_t workloadapi_Watcher_WaitUntilUpdated(workloadapi_Watcher* watcher){
+    return workloadapi_Watcher_TimedWaitUntilUpdated(watcher,NULL);
+}
+
+err_t workloadapi_Watcher_TimedWaitUntilUpdated(workloadapi_Watcher* watcher, timespec *timer){
     mtx_lock(&watcher->updateMutex);
     if (watcher->updated){
         mtx_unlock(&watcher->updateMutex);
         return NO_ERROR;
     }
     else{
-        ///TODO: should we wait on a timer?
-        ///TODO: emit an error to watcher->updateError?
-        cnd_wait(&(watcher->updateCond), &(watcher->updateMutex));
-
+        int thread_error = thrd_success;
+        if(timer != NULL){
+            thread_error = cnd_timedwait(&(watcher->updateCond), &(watcher->updateMutex), timer);
+            if (thread_error == thrd_timedout){
+                mtx_unlock(&(watcher->updateMutex));
+                return ERROR1;//timed out
+            }
+        }else{
+            thread_error = cnd_wait(&(watcher->updateCond), &(watcher->updateMutex));
+        }
+        mtx_unlock(&watcher->updateMutex);
+        if(thread_error != thrd_success){
+            return ERROR2;
+        }
+        else{
+            return NO_ERROR;
+        }
     }
-    mtx_unlock(&watcher->updateMutex);
-    return NO_ERROR;
 }
 
 err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher* watcher){
@@ -122,15 +167,4 @@ err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher* watcher){
     cnd_broadcast(&(watcher->updateCond));
     mtx_unlock(&(watcher->updateMutex));
     return NO_ERROR; ///TODO: error checking?
-}
-
-//drops connection to WorkloadAPI (if owns client)
-err_t workloadapi_freeWatcher(/*context,*/ workloadapi_Watcher* watcher){
-    ///TODO: free watcher 
-    if(watcher->ownsClient){
-        ///TODO: call freeClient();
-    }
-    
-    free(watcher);
-    return NO_ERROR;
 }

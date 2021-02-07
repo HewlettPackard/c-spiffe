@@ -73,16 +73,16 @@ typedef struct workloadapi_Watcher
 // creates and sets up a new watcher, doesn't dial client yet.
 workloadapi_Watcher* workloadapi_newWatcher(workloadapi_WatcherConfig config, workloadapi_X509Callback x509Callback/*, jwtBundleSetFunc_t* jwtBundleSetUpdateFunc*/, err_t* error);
 
-//starts watcher thread and blocks until updated.
+//starts watcher thread and blocks until updated. dials client if needed.
 err_t workloadapi_startWatcher(workloadapi_Watcher* watcher);
 
 //drops connection to WorkloadAPI, and kills client (if watcher owns client)
 err_t workloadapi_closeWatcher(workloadapi_Watcher* watcher);
 
-// frees watcher object. should be closed first.
+// frees watcher object. should be closed first. also frees client, if owned.
 err_t workloadapi_freeWatcher(workloadapi_Watcher* watcher);
 
-//Function called by Client when new x509 response arrives
+//Function called by Client when new x509 response arrives.
 void workloadapi_Watcher_OnX509ContextUpdate(workloadapi_Watcher* watcher, workloadapi_X509Context* context);
 
 //Called by Client when an error occurs and the watcher must be made aware
@@ -94,12 +94,10 @@ void workloadapi_Watcher_OnX509ContextWatchError(workloadapi_Watcher* watcher, e
 
 // Blocks until an update is received.
 err_t workloadapi_Watcher_WaitUntilUpdated(workloadapi_Watcher* watcher);
-
+err_t workloadapi_Watcher_TimedWaitUntilUpdated(workloadapi_Watcher* watcher,timespec* timer);
 // Broadcasts an update to all waiting.
 err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher* watcher);
 
-// void* workloadapi_Watcher_Updated(workloadapi_Watcher* watcher);
-// err_t workloadapi_Watcher_DrainUpdated(workloadapi_Watcher* watch);
 
 
 #endif //WATCHER_H
