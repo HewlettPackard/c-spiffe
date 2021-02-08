@@ -5,6 +5,14 @@
 #include "../../../internal/cryptoutil/src/keys.h"
 #include "../../../spiffeid/src/trustdomain.h"
 
+/*
+Each test named 'test_jwtbundle_<function name>' tests
+jwtbundle_<function name> function.
+*/
+
+//precondition: valid trust domain object created
+//postcondition: non NULL bundle pointer with trust domain
+//information
 START_TEST(test_jwtbundle_New)
 {
     spiffeid_TrustDomain td = {"example.com"};
@@ -17,6 +25,10 @@ START_TEST(test_jwtbundle_New)
 }
 END_TEST
 
+//precondition: valid trust domain object created and
+//valid jwk file store in a string
+//postcondition: non NULL bundle pointer with trust domain
+//information and valid hash map
 START_TEST(test_jwtbundle_Parse)
 {
     spiffeid_TrustDomain td = {"example.com"};
@@ -44,6 +56,10 @@ START_TEST(test_jwtbundle_Parse)
 }
 END_TEST
 
+//precondition: valid trust domain object created and
+//valid path to a jwt file
+//postcondition: non NULL bundle pointer with trust domain
+//information and valid hash map
 START_TEST(test_jwtbundle_Load)
 {
     spiffeid_TrustDomain td = {"example.com"};
@@ -66,6 +82,10 @@ START_TEST(test_jwtbundle_Load)
 }
 END_TEST
 
+//precondition: valid trust domain object created and
+//valid map from key id to public key
+//postcondition: non NULL bundle pointer with trust domain
+//information and valid hash map
 START_TEST(test_jwtbundle_FromJWTAuthorities)
 {
     const int ITERS = 6;
@@ -160,6 +180,9 @@ START_TEST(test_jwtbundle_FromJWTAuthorities)
 }
 END_TEST
 
+//precondition: valid jwt bundle object
+//postcondition: valid map created equal to the original
+//object map
 START_TEST(test_jwtbundle_Bundle_JWTAuthorities)
 {
     spiffeid_TrustDomain td = {"example.com"};
@@ -179,6 +202,8 @@ START_TEST(test_jwtbundle_Bundle_JWTAuthorities)
 }
 END_TEST
 
+//precondition: valid jwt bundle object
+//postcondition: valid result for each query
 START_TEST(test_jwtbundle_Bundle_FindJWTAuthority)
 {
     const int ITERS = 6;
@@ -297,6 +322,8 @@ START_TEST(test_jwtbundle_Bundle_FindJWTAuthority)
 }
 END_TEST
 
+//precondition: valid jwt bundle object
+//postcondition: valid result for each query
 START_TEST(test_jwtbundle_Bundle_HasJWTAuthority)
 {
     const int ITERS = 6;
@@ -399,6 +426,8 @@ START_TEST(test_jwtbundle_Bundle_HasJWTAuthority)
 }
 END_TEST
 
+//precondition: valid jwt bundle object
+//postcondition: valid map after each function call
 START_TEST(test_jwtbundle_Bundle_AddJWTAuthority)
 {
     const int ITERS = 6;
@@ -553,6 +582,8 @@ START_TEST(test_jwtbundle_Bundle_AddJWTAuthority)
 }
 END_TEST
 
+//precondition: valid jwt bundle object
+//postcondition: valid map after each function call
 START_TEST(test_jwtbundle_Bundle_RemoveJWTAuthority)
 {
     const int ITERS = 6;
@@ -701,6 +732,8 @@ START_TEST(test_jwtbundle_Bundle_RemoveJWTAuthority)
 }
 END_TEST
 
+//precondition: valid jwt bundle object
+//postcondition: valid map after each function call
 START_TEST(test_jwtbundle_Bundle_SetJWTAuthorities)
 {
     const int ITERS = 6;
@@ -795,6 +828,8 @@ START_TEST(test_jwtbundle_Bundle_SetJWTAuthorities)
 }
 END_TEST
 
+//precondition: valid jwt bundle object
+//postcondition: valid function call result
 START_TEST(test_jwtbundle_Bundle_Empty)
 {
     const int ITERS = 6;
@@ -890,6 +925,9 @@ START_TEST(test_jwtbundle_Bundle_Empty)
 }
 END_TEST
 
+//precondition: valid jwt bundle object
+//postcondition: valid jwt bundle object equal to the
+//original one
 START_TEST(test_jwtbundle_Bundle_Clone)
 {
     spiffeid_TrustDomain td = {"example.com"};
@@ -906,6 +944,8 @@ START_TEST(test_jwtbundle_Bundle_Clone)
 }
 END_TEST
 
+//precondition: two valid jwt bundle objects
+//postcondition: valid comparison between objects
 START_TEST(test_jwtbundle_Bundle_Equal)
 {
     spiffeid_TrustDomain td = {"example.com"};
@@ -923,6 +963,10 @@ START_TEST(test_jwtbundle_Bundle_Equal)
 }
 END_TEST
 
+//precondition: valid jwt bundle object and valid trusted
+//domains
+//postcondition: valid bundle for correct trust domain and
+//NULL bundle otherwise
 START_TEST(test_jwtbundle_Bundle_GetJWTBundleForTrustDomain)
 {
     spiffeid_TrustDomain td = {"example.com"};

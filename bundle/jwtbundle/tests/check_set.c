@@ -5,6 +5,14 @@
 #include "../../../internal/cryptoutil/src/keys.h"
 #include "../../../spiffeid/src/trustdomain.h"
 
+/*
+Each test named 'test_jwtbundle_<function name>' tests
+jwtbundle_<function name> function.
+*/
+
+//precondition: valid jwt bundle objects
+//postcondition: valid jwt bundle set with its
+//respective bundles
 START_TEST(test_jwtbundle_NewSet)
 {
     const int ITERS = 3;
@@ -40,6 +48,9 @@ START_TEST(test_jwtbundle_NewSet)
 }
 END_TEST
 
+//precondition: valid empty jwt set object
+//postcondition: valid jwt bundle set with after
+//each function call
 START_TEST(test_jwtbundle_Set_Add)
 {
     const int ITERS = 3;
@@ -77,6 +88,9 @@ START_TEST(test_jwtbundle_Set_Add)
 }
 END_TEST
 
+//precondition: valid jwt set object
+//postcondition: valid jwt bundle set with after
+//each function call
 START_TEST(test_jwtbundle_Set_Remove)
 {
     const int ITERS = 3;
@@ -116,6 +130,8 @@ START_TEST(test_jwtbundle_Set_Remove)
 }
 END_TEST
 
+//precondition: valid jwt set object
+//postcondition: valid result for each query
 START_TEST(test_jwtbundle_Set_Has)
 {
     const int ITERS = 3;
@@ -156,6 +172,8 @@ START_TEST(test_jwtbundle_Set_Has)
 }
 END_TEST
 
+//precondition: valid jwt set object
+//postcondition: valid result for each query
 START_TEST(test_jwtbundle_Set_Get)
 {
     const int ITERS = 3;
@@ -202,6 +220,9 @@ START_TEST(test_jwtbundle_Set_Get)
 }
 END_TEST
 
+//precondition: valid jwt set object
+//postcondition: valid array of jwt bundles
+//corresponding to the bundles store in the set
 START_TEST(test_jwtbundle_Set_Bundles)
 {
     const int ITERS = 3;
@@ -239,6 +260,8 @@ START_TEST(test_jwtbundle_Set_Bundles)
 }
 END_TEST
 
+//precondition: valid jwt set object
+//postcondition: correc size of the set
 START_TEST(test_jwtbundle_Set_Len)
 {
     const int ITERS = 3;
@@ -270,6 +293,8 @@ START_TEST(test_jwtbundle_Set_Len)
 }
 END_TEST
 
+//precondition: valid jwt set object
+//postcondition: correct bundle for given trust domain
 START_TEST(test_jwtbundle_Set_GetJWTBundleForTrustDomain)
 {
     const int ITERS = 3;

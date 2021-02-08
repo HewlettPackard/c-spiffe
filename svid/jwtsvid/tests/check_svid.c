@@ -5,6 +5,14 @@
 #define STB_DS_IMPLEMENTATION
 #include "../src/svid.h"
 
+/*
+Each test named 'test_jwtsvid_<function name>' tests
+jwtsvid_<function name> function.
+*/
+
+//precondition: valid jwt token
+//postcondition: valid jwt svid corresponding to the
+//token without claims map
 START_TEST(test_jwtsvid_parse)
 {
     // spiffeid_TrustDomain td = {"example.com"};
@@ -30,6 +38,9 @@ START_TEST(test_jwtsvid_parse)
 }
 END_TEST
 
+//precondition: valid jwt token
+//postcondition: valid jwt svid corresponding to the
+//token with valid claims map
 START_TEST(test_jwtsvid_ParseInsecure)
 {
     // spiffeid_TrustDomain td = {"example.com"};
@@ -59,6 +70,9 @@ START_TEST(test_jwtsvid_ParseInsecure)
 }
 END_TEST
 
+//precondition: valid jwt token
+//postcondition: valid jwt svid corresponding to the
+//token with valid claims map and correctly verified signature
 START_TEST(test_jwtsvid_ParseAndValidate)
 {
     spiffeid_TrustDomain td = {"example.com"};
