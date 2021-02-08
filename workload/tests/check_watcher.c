@@ -21,7 +21,7 @@ START_TEST(test_workloadapi_Watcher_callback_is_called_on_update_once)
 {
     // variable to check callback
     int toModify = 0;
-    void** args;
+    void** args = NULL;
 
     arrpush(args,(void*) &toModify);
     arrpush(args,(void*) 10);
