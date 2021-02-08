@@ -32,7 +32,7 @@ START_TEST(test_workloadapi_Watcher_callback_is_called_on_update_once)
     callback.args = (void*) args;
 
     //add callback to watcher.
-    workloadapi_Watcher* watcher;
+    workloadapi_Watcher* watcher = calloc(1,sizeof *watcher);
     watcher->x509Callback = callback;
 
     //call update -> toModify = 10
