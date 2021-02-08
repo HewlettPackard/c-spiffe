@@ -75,3 +75,23 @@ target_link_libraries(check_client librequestor ${CHECK_LIBRARIES}
   pthread)
 
 add_test(client-test check_client)
+
+add_executable(check_watcher "./check_watcher.c" "../src/watcher.c")
+
+target_link_libraries(check_watcher ${CHECK_LIBRARIES} 
+  OpenSSL::SSL
+  libspiffeid
+  libinternal
+  uriparser
+  libbundle
+  jansson
+  cjose
+  subunit
+  check_pic
+  check
+  rt
+  m
+  crypto
+  pthread)
+
+add_test(watcher-test check_watcher)
