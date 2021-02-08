@@ -88,7 +88,7 @@ x509svid_SVID* workloadapi_FetchDefaultX509SVID(workloadapi_Requestor* requestor
         {  
             err_t err;
             //assemble SVID from response.
-            x509svid = x509svid_ParseRaw((byte*)id.x509_svid().data(),
+            x509svid = x509svid_ParseRaw((byte*) id.x509_svid().data(),
                                         id.x509_svid().length(),
                                         (byte*) id.x509_svid_key().data(), 
                                         id.x509_svid_key().length(),

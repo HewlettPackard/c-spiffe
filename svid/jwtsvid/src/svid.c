@@ -136,6 +136,8 @@ static err_t validate_jwt(jwtsvid_JWT *jwt, EVP_PKEY *pkey)
                 if(ret != 1)
                 {
                     EVP_MD_CTX_free(ctx);
+                    arrfree(md);
+                    free(buffer);
                     //could not initialize ctx with message digest
                     return ERROR4;
                 }
