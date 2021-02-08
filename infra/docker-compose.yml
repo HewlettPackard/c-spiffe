@@ -1,0 +1,37 @@
+#####
+# Docker compose YAML file
+#
+# For documentation see: https://docs.docker.com/compose/yml/
+#####
+
+version: '3'
+services:
+  spire-server:
+    build: ./spire-server
+    hostname: spire-server
+    tty: true
+    ports:
+      - "8081:8081"
+    ### command: ["sh", "init-server.sh"]
+  
+  # Todo: Create loop methods for fetchsvid()
+  workload:
+    build: ./workload
+    tty: true
+    hostname: workload
+    volumes:
+      - ../../c-spiffe/:/tmp/c-spiffe/
+    links:
+      - spire-server
+    ### command: ["sh", "/tmp/c-spiffe/build/build-tests-workload.sh"]
+
+  # Todo: Create sceneries for spire-server test; script python; "getRequestor" {generate, get, (entrys, token)}
+  tests:
+    image: spire-agent
+    tty: true
+    hostname: tests
+    links:
+      - spire-server
+      - workload
+      
+
