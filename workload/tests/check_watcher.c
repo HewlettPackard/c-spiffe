@@ -62,6 +62,7 @@ START_TEST(test_workloadapi_Watcher_callback_is_called_on_update_once)
     workloadapi_Watcher_OnX509ContextUpdate(watcher,NULL);
     ck_assert_int_eq(toModify, 17);
     arrfree(args);
+    free(watcher);
 }
 END_TEST
 
