@@ -98,11 +98,13 @@ err_t workloadapi_closeWatcher(workloadapi_Watcher* watcher){
         //if (error), do cleanup on cleanup?
     }
     mtx_unlock(&(watcher->closeMutex));
-
+    ///TODO: thread join???
+    //int join return;
+    //int thread_error = thrd_join(watcher->watcherThread,&join_return)
     return error;
 }
 
-//drops connection to WorkloadAPI (if owns client)
+//drops connection to WorkloadAPI (if owns client) MUST ALREADY BE CLOSED.
 err_t workloadapi_freeWatcher(/*context,*/ workloadapi_Watcher* watcher){
     ///TODO: free watcher 
     mtx_destroy(&(watcher->closeMutex));
