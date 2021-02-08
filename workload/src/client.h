@@ -13,40 +13,50 @@ extern "C" {
 #endif
 
 ///pointer to gRPC constructs, can't use those types in the header
-typedef void* stub_ptr;
-typedef void* conn_ptr;
+typedef void* stub_ptr; //api stub
+typedef void* conn_ptr; //connection
 
 //a clientOption is a function that modifies a ClientConfig
 
 typedef struct workloadapi_Client {
     stub_ptr stub;
     conn_ptr conn;
-    
     char* address;
     ///TODO:logger
-    ///TODO: dialOptions //do gRPC :(
+    ///TODO: dialOptions //from gRPC :(
+
+    bool closed;
 } workloadapi_Client;
 
 //ClientOptions are functions, that will modify the client, with an optional argument. 
-typedef void (*ClientOption)(workloadapi_Client*,void*);
-
-
+typedef void (*workloadapi_ClientOption)(workloadapi_Client*,void*);
 
 ///TODO: IMPLEMENT on client.cc:
 
-workloadapi_Client* workloadapi_NewClient(ClientOption option,err_t* error);
-err_t workloadapi_newConn(workloadapi_Client *client);
-err_t workloadapi_Close(workloadapi_Client *client);
+workloadapi_Client* workloadapi_NewClient(err_t* error);
+err_t workloadapi_ConnectClient(workloadapi_Client *client);
+err_t workloadapi_CloseClient(workloadapi_Client *client);
+err_t workloadapi_FreeClient(workloadapi_Client* client);
+
 err_t workloadapi_WatchX509Context(workloadapi_Client* client, workloadapi_Watcher* watcher); //public function
 err_t workloadapi_watchX509Context(workloadapi_Client* client, workloadapi_Watcher* Watcher, Backoff *backoff); //used internally
-workloadapi_X509Context FetchX509Context(workloadapi_Client* client, err_t* error);
 err_t workloadapi_handleWatchError(workloadapi_Client* client, err_t error, Backoff *backoff);
-x509svid_SVID* FetchX509SVID(workloadapi_Client* client, err_t* error);
-x509svid_SVID* FetchX509SVIDs(workloadapi_Client* client, err_t* error);
 
- //default options for client. must set all 
-void workloadapi_defaultClientOptions(workloadapi_Client* client);
-err_t workloadapi_setAddress(workloadapi_Client *client, const char* address);
+workloadapi_X509Context workloadapi_FetchX509Context(workloadapi_Client* client, err_t* error);
+x509svid_SVID* workloadapi_FetchX509SVID(workloadapi_Client* client, err_t* error);
+x509svid_SVID* workloadapi_FetchX509SVIDs(workloadapi_Client* client, err_t* error);
+
+//setters for client, to be used inside ClientOption's
+err_t workloadapi_setClientAddress(workloadapi_Client *client, const char* address);
+err_t workloadapi_setClientHeader(workloadapi_Client *client, const char* address);
+err_t workloadapi_setClientStub(workloadapi_Client* client, stub_ptr stub);
+err_t workloadapi_setClientConn(workloadapi_Client* client, conn_ptr conn);
+///TODO: logger and dialOptions setters.
+// err_t workloadapi_setLogger(workloadapi_Client* client, Logger* logger);
+// err_t workloadapi_setDialOptions(workloadapi_Client* client, void* dialoption); //?????
+
+//default options for client. must set all attributes 
+void workloadapi_defaultClientOptions(workloadapi_Client* client,void* not_used);
 
 ///DONE: implemented in client.cc, not part of public interface:
  
@@ -68,7 +78,6 @@ err_t workloadapi_setAddress(workloadapi_Client *client, const char* address);
 
 // workloadapi_Client* workloadapi_ClientInit(const char* address);
 // workloadapi_Client* workloadapi_ClientInitWithStub(const char* address,stub_ptr stub);
-// void workloadapi_ClientFree(workloadapi_Client* client);
 // x509svid_SVID* workloadapi_FetchDefaultX509SVID(workloadapi_Client* client); //not in definition
 // int workloadapi_FetchAllX509SVID(workloadapi_Client* client, x509svid_SVID*** svids); //not in definition
 // x509bundle_Set* workloadapi_FetchX509Bundles(workloadapi_Client* client);
@@ -81,9 +90,6 @@ err_t workloadapi_setAddress(workloadapi_Client *client, const char* address);
 ///func (c *Client) WatchJWTBundles(ctx context.Context, watcher JWTBundleWatcher) error
 ///func (c *Client) ValidateJWTSVID(ctx context.Context, token, audience string) (*jwtsvid.SVID, error)
 ///func (c *Client) watchJWTBundles(ctx context.Context, watcher JWTBundleWatcher, backoff *backoff) error
-
-///DROPPED: (for now, check back later)
-//withHeader(); //the header will be added at connection time.
 
 #ifdef __cplusplus
 }
