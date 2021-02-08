@@ -133,7 +133,7 @@ err_t workloadapi_Watcher_WaitUntilUpdated(workloadapi_Watcher* watcher){
     return workloadapi_Watcher_TimedWaitUntilUpdated(watcher,NULL);
 }
 
-err_t workloadapi_Watcher_TimedWaitUntilUpdated(workloadapi_Watcher* watcher, timespec *timer){
+err_t workloadapi_Watcher_TimedWaitUntilUpdated(workloadapi_Watcher* watcher, struct timespec *timer){
     mtx_lock(&watcher->updateMutex);
     if (watcher->updated){
         mtx_unlock(&watcher->updateMutex);

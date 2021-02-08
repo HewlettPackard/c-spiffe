@@ -9,7 +9,7 @@
 #include "../../bundle/jwtbundle/src/set.h"
 
 #include <threads.h>
-
+#include <time.h>
 
 ///TODO: function for picking first SVID
 typedef struct workloadapi_X509Context
@@ -94,7 +94,7 @@ void workloadapi_Watcher_OnX509ContextWatchError(workloadapi_Watcher* watcher, e
 
 // Blocks until an update is received.
 err_t workloadapi_Watcher_WaitUntilUpdated(workloadapi_Watcher* watcher);
-err_t workloadapi_Watcher_TimedWaitUntilUpdated(workloadapi_Watcher* watcher,timespec* timer);
+err_t workloadapi_Watcher_TimedWaitUntilUpdated(workloadapi_Watcher* watcher, struct timespec * timer);
 // Broadcasts an update to all waiting.
 err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher* watcher);
 
