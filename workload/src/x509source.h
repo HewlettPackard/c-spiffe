@@ -19,13 +19,17 @@ typedef struct workloadapi_X509Source
     x509bundle_Set *bundles;
 } workloadapi_X509Source;
 
-workloadapi_X509Source* workloadapi_NewX509Source();
-err_t workloadapi_X509Source_Close();
-x509svid_SVID* workloadapi_X509Source_GetX509SVID();
-x509bundle_Bundle* workloadapi_X509Source_GetX509BundleForTrustDomain();
-err_t workloadapi_X509Source_WaitUntilUpdated();
+workloadapi_X509Source* workloadapi_NewX509Source(workloadapi_X509Context *ctx, err_t *err);
+err_t workloadapi_X509Source_Close(workloadapi_X509Source *source);
+x509svid_SVID* workloadapi_X509Source_GetX509SVID(
+    workloadapi_X509Source *source, x509svid_SVID *svid, err_t *err);
+x509bundle_Bundle* workloadapi_X509Source_GetX509BundleForTrustDomain(
+    workloadapi_X509Source *source, spiffeid_TrustDomain td, err_t *err);
+err_t workloadapi_X509Source_WaitUntilUpdated(
+    workloadapi_X509Source *source, workloadapi_X509Context *ctx);
 void workloadapi_X509Source_Updated();
-void workloadapi_X509Source_setX509Context();
+void workloadapi_X509Source_setX509Context(
+    workloadapi_X509Source *source, workloadapi_X509Context *ctx);
 err_t workloadapi_X509Source_checkClosed(workloadapi_X509Source *source);
 void workloadapi_X509Source_Free(workloadapi_X509Source *source);
 

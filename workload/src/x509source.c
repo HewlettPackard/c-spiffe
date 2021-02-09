@@ -108,3 +108,14 @@ err_t workloadapi_X509Source_checkClosed(workloadapi_X509Source *source)
     mtx_unlock(&(source->closedMtx));
     return err;
 }
+
+void workloadapi_X509Source_Free(workloadapi_X509Source *source)
+{
+    if(source)
+    {
+        x509bundle_Set_Free(source->bundles);
+        x509svid_SVID_Free(source->svid, true);
+        workloadapi_freeWatcher(source->watcher);
+        free(source);
+    }
+}
