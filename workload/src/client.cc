@@ -393,3 +393,31 @@ workloadapi_X509Context* workloadapi_FetchX509Context(workloadapi_Client* client
     
     return ret; //no response -> no bundle
 }
+
+x509bundle_Set* workloadapi_FetchX509Bundles(workloadapi_Client* client, err_t *err)
+{    
+    grpc::ClientContext ctx;
+
+    if(client->headers){
+        for(int i = 0; i < arrlen(client->headers);i+=2)
+        ctx.AddMetadata(client->headers[i],client->headers[i+1]); 
+    }
+
+    X509SVIDRequest req = X509SVIDRequest(); //empty request
+    X509SVIDResponse response;
+
+    std::unique_ptr<grpc::ClientReaderInterface<X509SVIDResponse>> c_reader = 
+        ((SpiffeWorkloadAPI::StubInterface*)client->stub)->FetchX509SVID(&ctx, req); //get response reader
+    
+    bool success = c_reader->Read(&response);
+    x509bundle_Set* ret_set = NULL;
+    if(success)
+    {
+        ret_set = workloadapi_parseX509Bundles(&response, err);
+        if(*err != NO_ERROR){
+            return NULL;
+        }
+    }
+    
+    return ret_set; //no response -> no bundle
+}
