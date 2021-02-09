@@ -37,16 +37,18 @@ err_t workloadapi_setClientAddress(workloadapi_Client *client, const char* addre
 err_t workloadapi_addClientHeader(workloadapi_Client *client, const char* key, const char* value);
 err_t workloadapi_setClientHeader(workloadapi_Client *client, const char* key, const char* value);
 err_t workloadapi_clearClientHeaders(workloadapi_Client *client);
+err_t workloadapi_setClientStub(workloadapi_Client* client, stub_ptr stub);
 
 void workloadapi_applyClientOption(workloadapi_Client* client, workloadapi_ClientOption option);
 void workloadapi_applyClientOptionWithArg(workloadapi_Client* client, workloadapi_ClientOption option, void* arg);
 
+void setDefaultClientAddressOption(workloadapi_Client *client, void *not_used);
+void setDefaultClientHeaderOption(workloadapi_Client *client, void *not_used);
 //default options for client. must set all attributes 
 void workloadapi_defaultClientOptions(workloadapi_Client* client,void* not_used);
 
 ///TODO: IMPLEMENT on client.cc:
 
-err_t workloadapi_setClientStub(workloadapi_Client* client, stub_ptr stub);
 
 err_t workloadapi_WatchX509Context(workloadapi_Client* client, workloadapi_Watcher* watcher); //public function
 err_t workloadapi_watchX509Context(workloadapi_Client* client, workloadapi_Watcher* Watcher, Backoff *backoff); //used internally

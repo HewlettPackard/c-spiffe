@@ -113,7 +113,7 @@ err_t workloadapi_ConnectClient(workloadapi_Client *client)
     {
         return ERROR1;
     }
-    if (!client->stub)
+    if (!client->stub) //if client already has a stub, we don't create a new one.
     {
         std::shared_ptr<grpc::ChannelInterface> chan = grpc::CreateChannel(client->address, grpc::InsecureChannelCredentials());
         if (!chan)
@@ -191,12 +191,25 @@ err_t workloadapi_clearClientHeaders(workloadapi_Client *client)
     util_string_arr_t_Free(client->headers);
 }
 
-void setDefaultClientAddress(workloadapi_Client *client, void *not_used)
+err_t workloadapi_setClientStub(workloadapi_Client* client, stub_ptr stub){
+    if(!client){
+        return ERROR1;
+    }
+    ///TODO: free previous stub if set? error out?
+    // if(client->stub){
+    //     delete ((SpiffeWorkloadAPI::StubInterface *)client->stub); //delete it since grpc new'd it internally and we released it.
+    //     client->stub = NULL;//sanity?
+    // }
+    client->stub = stub;
+    return NO_ERROR;
+}
+
+void setDefaultClientAddressOption(workloadapi_Client *client, void *not_used)
 {
     workloadapi_setClientAddress(client, "unix:///var/agent.sock");
 }
 
-void setDefaultClientHeader(workloadapi_Client *client, void *not_used)
+void setDefaultClientHeaderOption(workloadapi_Client *client, void *not_used)
 {
     workloadapi_setClientHeader(client, "workload.spiffe.io", "true");
 }
@@ -213,8 +226,8 @@ void workloadapi_applyClientOptionWithArg(workloadapi_Client *client, workloadap
 
 void workloadapi_defaultClientOptions(workloadapi_Client *client, void *not_used)
 {
-    workloadapi_applyClientOption(client, setDefaultClientAddress);
-    workloadapi_applyClientOption(client, setDefaultClientHeader);
+    workloadapi_applyClientOption(client, setDefaultClientAddressOption);
+    workloadapi_applyClientOption(client, setDefaultClientHeaderOption);
 
     ///TODO: logger?
     ///TODO: dialOptions?
