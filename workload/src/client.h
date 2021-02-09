@@ -53,11 +53,11 @@ err_t workloadapi_watchX509Context(workloadapi_Client* client, workloadapi_Watch
 
 err_t workloadapi_handleWatchError(workloadapi_Client* client, err_t error, Backoff *backoff);
 
-///TODO: IMPLEMENT on client.cc:
 workloadapi_X509Context *workloadapi_FetchX509Context(workloadapi_Client* client, err_t* error);
-x509svid_SVID* workloadapi_FetchX509SVID(workloadapi_Client* client, err_t* error);
-x509svid_SVID* workloadapi_FetchX509SVIDs(workloadapi_Client* client, err_t* error);
 x509bundle_Set* workloadapi_FetchX509Bundles(workloadapi_Client* client, err_t* error);
+x509svid_SVID* workloadapi_FetchX509SVID(workloadapi_Client* client, err_t* error);
+x509svid_SVID** workloadapi_FetchX509SVIDs(workloadapi_Client* client, err_t* error);
+
 //setters for client, to be used inside ClientOption's
 ///TODO: logger and dialOptions setters.
 // err_t workloadapi_setLogger(workloadapi_Client* client, Logger* logger);
@@ -72,15 +72,12 @@ x509bundle_Bundle* workloadapi_parseX509Bundle(string_t id,
                                             const size_t len,
                                             err_t *err);
 
-workloadapi_X509Context* workloadapi_parseX509Context(X509SVIDResponse *resp, err_t *err); //implemented on fetchX509Context
+workloadapi_X509Context* workloadapi_parseX509Context(X509SVIDResponse *resp, err_t *err);
 
 x509svid_SVID** workloadapi_parseX509SVIDs(X509SVIDResponse *resp,
                                             bool firstOnly,
                                             err_t *err);
 
-// x509svid_SVID* workloadapi_FetchDefaultX509SVID(workloadapi_Client* client); //not in definition
-// int workloadapi_FetchAllX509SVID(workloadapi_Client* client, x509svid_SVID*** svids); //not in definition
-// x509bundle_Set* workloadapi_FetchX509Bundles(workloadapi_Client* client);
 
 ///TODO: implement JWT later
 ///type JWTBundleWatcher interface

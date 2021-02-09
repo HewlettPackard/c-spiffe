@@ -421,3 +421,63 @@ x509bundle_Set* workloadapi_FetchX509Bundles(workloadapi_Client* client, err_t *
     
     return ret_set; //no response -> no bundle
 }
+
+x509svid_SVID** workloadapi_FetchX509SVIDs(workloadapi_Client* client, err_t *err)
+{    
+    grpc::ClientContext ctx;
+
+    if(client->headers){
+        for(int i = 0; i < arrlen(client->headers);i+=2)
+        ctx.AddMetadata(client->headers[i],client->headers[i+1]); 
+    }
+
+    X509SVIDRequest req = X509SVIDRequest(); //empty request
+    X509SVIDResponse response;
+
+    std::unique_ptr<grpc::ClientReaderInterface<X509SVIDResponse>> c_reader = 
+        ((SpiffeWorkloadAPI::StubInterface*)client->stub)->FetchX509SVID(&ctx, req); //get response reader
+    
+    bool success = c_reader->Read(&response);
+    x509svid_SVID** ret_svids = NULL;
+    if(success)
+    {
+        ret_svids = workloadapi_parseX509SVIDs(&response,false,err);
+        if(*err != NO_ERROR){
+            return NULL;
+        }
+    }
+    
+    return ret_svids; //no response -> no bundle
+}
+
+
+x509svid_SVID* workloadapi_FetchX509SVID(workloadapi_Client* client, err_t *err)
+{    
+    grpc::ClientContext ctx;
+
+    if(client->headers){
+        for(int i = 0; i < arrlen(client->headers);i+=2)
+        ctx.AddMetadata(client->headers[i],client->headers[i+1]); 
+    }
+
+    X509SVIDRequest req = X509SVIDRequest(); //empty request
+    X509SVIDResponse response;
+
+    std::unique_ptr<grpc::ClientReaderInterface<X509SVIDResponse>> c_reader = 
+        ((SpiffeWorkloadAPI::StubInterface*)client->stub)->FetchX509SVID(&ctx, req); //get response reader
+    
+    bool success = c_reader->Read(&response);
+    x509svid_SVID** svids = NULL;
+    if(success)
+    {
+        svids = workloadapi_parseX509SVIDs(&response,true,err);
+        if(*err != NO_ERROR){
+            return NULL;
+        }
+    }
+    if(arrlen(svids) == 0)
+        return NULL;//Should never happen
+    x509svid_SVID* ret_svid = svids[0];
+    arrfree(svids); //free outer array
+    return ret_svid; //no response -> no bundle
+}
