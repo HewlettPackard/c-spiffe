@@ -1,6 +1,14 @@
 #include "client.h"
 #include "../../internal/x509util/src/util.h"
 
+#include <grpc/grpc.h>
+#include <grpcpp/grpcpp.h>
+#include "workload.pb.h"
+#include "workload.grpc.pb.h"
+#include "../../svid/x509svid/src/svid.h"
+#include "../../bundle/x509bundle/src/bundle.h"
+#include "../../bundle/x509bundle/src/set.h"
+
 x509bundle_Set* workloadapi_parseX509Bundles(const X509SVIDResponse *rep, err_t *err)
 {
     if(rep)
@@ -64,4 +72,123 @@ x509bundle_Bundle* workloadapi_parseX509Bundle(string_t id, const byte *bundle_b
     }
 
     return bundle;
+}
+
+
+workloadapi_Client* workloadapi_NewClient(err_t* error){
+    workloadapi_Client* client = (workloadapi_Client*) calloc(1,sizeof *client);
+    if(!client){
+        *error = ERROR1;
+        return NULL;
+    }
+    client->stub = NULL;
+    client->address = NULL;
+    client->headers = NULL;
+    client->closed = true;
+    *error = NO_ERROR;
+    return client;
+}
+
+err_t workloadapi_FreeClient(workloadapi_Client* client){
+    if(!client){
+        return ERROR1;
+    }
+    
+    util_string_arr_t_Free(client->headers); //null safe. free's all strings in headers.
+    client->headers = NULL; //sanity, shouldn't matter after we free everything else
+
+    util_string_t_Free(client->address);
+    client->address = NULL;
+
+    free(client);
+    return NO_ERROR;
+}
+
+err_t workloadapi_ConnectClient(workloadapi_Client *client){
+    if(!client) {
+        return ERROR1;
+    }
+    if(!client->stub){
+        std::shared_ptr<grpc::ChannelInterface> chan = grpc::CreateChannel(client->address,grpc::InsecureChannelCredentials());
+        if(!chan){
+            return ERROR2;
+        }
+        std::unique_ptr<SpiffeWorkloadAPI::StubInterface> new_stub = SpiffeWorkloadAPI::NewStub(chan);
+        if(!new_stub){
+            return ERROR3;
+        }
+        client->stub = new_stub.release(); //extends lifetime of pointer to outside this scope
+    }
+    client->closed = false;
+    return NO_ERROR;
+}
+
+err_t workloadapi_CloseClient(workloadapi_Client *client){
+    if(!client){
+        return ERROR1;
+    }
+    if(client->closed){
+        return ERROR2; //already closed
+    }
+    if(!client->stub){
+        return ERROR3; //can't close NULL stub. 
+    }
+    delete ((SpiffeWorkloadAPI::StubInterface*) client->stub); //delete it since grpc new'd it internally and we released it.
+    client->stub = NULL;
+    //grpc will free the channel when no stub is using it.
+    client->closed = true;
+}
+
+err_t workloadapi_setClientAddress(workloadapi_Client *client, const char* address){
+    if(!client){
+        return ERROR1;
+    }
+    if(client->address){
+        util_string_t_Free(client->address);
+        client->address = NULL;
+    }
+    ///TODO: validate address as URI
+    client->address = string_new(address);
+}
+
+err_t workloadapi_addClientHeader(workloadapi_Client *client, const char* key,const char* value){
+    if(!client){
+        return ERROR1;
+    }
+    else{
+        arrpush(client->headers,string_new(key));
+        arrpush(client->headers,string_new(value));
+    }
+    return NO_ERROR;
+}
+
+err_t workloadapi_clearClientHeaders(workloadapi_Client *client){
+    util_string_arr_t_Free(client->headers);
+}
+
+err_t workloadapi_setClientHeader(workloadapi_Client *client, const char* key,const char* value){
+    util_string_arr_t_Free(client->headers);
+    workloadapi_addClientHeader(client,key,value);
+}
+
+void setDefaultClientAddress(workloadapi_Client *client,void* not_used){
+    workloadapi_setClientAddress(client,"unix:///var/agent.sock");
+}
+void setDefaultClientHeader(workloadapi_Client *client,void* not_used){
+    workloadapi_setClientHeader(client,"workload.spiffe.io","true");
+}
+
+void workloadapi_applyClientOption(workloadapi_Client* client, workloadapi_ClientOption option){
+    workloadapi_applyClientOptionWithArg(client,option,NULL);
+}
+void workloadapi_applyClientOptionWithArg(workloadapi_Client* client, workloadapi_ClientOption option, void* arg){
+    option(client,arg);
+}
+
+void workloadapi_defaultClientOptions(workloadapi_Client* client,void* not_used){
+    workloadapi_applyClientOption(client,setDefaultClientAddress);
+    workloadapi_applyClientOption(client,setDefaultClientHeader);
+
+    ///TODO: logger?
+    ///TODO: dialOptions?
 }

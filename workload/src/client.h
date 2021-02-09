@@ -14,14 +14,11 @@ extern "C" {
 
 ///pointer to gRPC constructs, can't use those types in the header
 typedef void* stub_ptr; //api stub
-typedef void* conn_ptr; //connection
-
-//a clientOption is a function that modifies a ClientConfig
 
 typedef struct workloadapi_Client {
     stub_ptr stub;
-    conn_ptr conn;
-    char* address;
+    string_arr_t headers;
+    string_t address;
     ///TODO:logger
     ///TODO: dialOptions //from gRPC :(
 
@@ -31,12 +28,25 @@ typedef struct workloadapi_Client {
 //ClientOptions are functions, that will modify the client, with an optional argument. 
 typedef void (*workloadapi_ClientOption)(workloadapi_Client*,void*);
 
-///TODO: IMPLEMENT on client.cc:
-
 workloadapi_Client* workloadapi_NewClient(err_t* error);
+err_t workloadapi_FreeClient(workloadapi_Client* client);
 err_t workloadapi_ConnectClient(workloadapi_Client *client);
 err_t workloadapi_CloseClient(workloadapi_Client *client);
-err_t workloadapi_FreeClient(workloadapi_Client* client);
+
+err_t workloadapi_setClientAddress(workloadapi_Client *client, const char* address);
+err_t workloadapi_addClientHeader(workloadapi_Client *client, const char* key, const char* value);
+err_t workloadapi_clearClientHeaders(workloadapi_Client *client);
+err_t workloadapi_setClientHeader(workloadapi_Client *client, const char* key, const char* value);
+
+void workloadapi_applyClientOption(workloadapi_Client* client, workloadapi_ClientOption option);
+void workloadapi_applyClientOptionWithArg(workloadapi_Client* client, workloadapi_ClientOption option, void* arg);
+
+//default options for client. must set all attributes 
+void workloadapi_defaultClientOptions(workloadapi_Client* client,void* not_used);
+
+///TODO: IMPLEMENT on client.cc:
+
+err_t workloadapi_setClientStub(workloadapi_Client* client, stub_ptr stub);
 
 err_t workloadapi_WatchX509Context(workloadapi_Client* client, workloadapi_Watcher* watcher); //public function
 err_t workloadapi_watchX509Context(workloadapi_Client* client, workloadapi_Watcher* Watcher, Backoff *backoff); //used internally
@@ -46,26 +56,21 @@ workloadapi_X509Context workloadapi_FetchX509Context(workloadapi_Client* client,
 x509svid_SVID* workloadapi_FetchX509SVID(workloadapi_Client* client, err_t* error);
 x509svid_SVID* workloadapi_FetchX509SVIDs(workloadapi_Client* client, err_t* error);
 
+
 //setters for client, to be used inside ClientOption's
-err_t workloadapi_setClientAddress(workloadapi_Client *client, const char* address);
-err_t workloadapi_setClientHeader(workloadapi_Client *client, const char* address);
-err_t workloadapi_setClientStub(workloadapi_Client* client, stub_ptr stub);
-err_t workloadapi_setClientConn(workloadapi_Client* client, conn_ptr conn);
+// err_t workloadapi_setClientConn(workloadapi_Client* client, conn_ptr conn);
 ///TODO: logger and dialOptions setters.
 // err_t workloadapi_setLogger(workloadapi_Client* client, Logger* logger);
 // err_t workloadapi_setDialOptions(workloadapi_Client* client, void* dialoption); //?????
 
-//default options for client. must set all attributes 
-void workloadapi_defaultClientOptions(workloadapi_Client* client,void* not_used);
-
 ///DONE: implemented in client.cc, not part of public interface:
  
-// x509bundle_Set* workloadapi_parseX509Bundles(const X509SVIDResponse *rep, 
-//                                             err_t *err);
-// x509bundle_Bundle* workloadapi_parseX509Bundle(string_t id,
-//                                             const byte *bundle_bytes,
-//                                             const size_t len,
-//                                             err_t *err);
+x509bundle_Set* workloadapi_parseX509Bundles(const X509SVIDResponse *rep, 
+                                            err_t *err);
+x509bundle_Bundle* workloadapi_parseX509Bundle(string_t id,
+                                            const byte *bundle_bytes,
+                                            const size_t len,
+                                            err_t *err);
 
 ///TODO: define in client.cc:
 
