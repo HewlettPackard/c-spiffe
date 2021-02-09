@@ -59,7 +59,6 @@ x509svid_SVID* workloadapi_FetchX509SVID(workloadapi_Client* client, err_t* erro
 x509svid_SVID* workloadapi_FetchX509SVIDs(workloadapi_Client* client, err_t* error);
 
 //setters for client, to be used inside ClientOption's
-// err_t workloadapi_setClientConn(workloadapi_Client* client, conn_ptr conn);
 ///TODO: logger and dialOptions setters.
 // err_t workloadapi_setLogger(workloadapi_Client* client, Logger* logger);
 // err_t workloadapi_setDialOptions(workloadapi_Client* client, void* dialoption); //?????
@@ -73,13 +72,13 @@ x509bundle_Bundle* workloadapi_parseX509Bundle(string_t id,
                                             const size_t len,
                                             err_t *err);
 
-workloadapi_X509Context parseX509Context(X509SVIDResponse *resp, err_t *err); //implemented on fetchX509Context
+workloadapi_X509Context* parseX509Context(X509SVIDResponse *resp, err_t *err); //implemented on fetchX509Context
 
+x509svid_SVID** parseX509SVIDs(X509SVIDResponse *resp,
+                                            bool firstOnly,
+                                            err_t *err);
 ///TODO: define in client.cc:
 
-// x509SVID_svid** parseX509SVIDs(X509SVIDResponse *resp,
-                                            // bool firstOnly,
-                                            // err_t *err)
 ///TODO: migrate from Requestor??
 
 // workloadapi_Client* workloadapi_ClientInit(const char* address);

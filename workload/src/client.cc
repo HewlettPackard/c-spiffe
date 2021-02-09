@@ -292,12 +292,12 @@ err_t workloadapi_watchX509Context(workloadapi_Client* client, workloadapi_Watch
             return ERROR4; //no more messages.
         }
         resetBackoff(backoff);
-        workloadapi_X509Context x509context = parseX509Context(&response,&err);
+        workloadapi_X509Context *x509context = parseX509Context(&response,&err);
         if(err != NO_ERROR){
             ///TODO: log parse error
             workloadapi_Watcher_OnX509ContextWatchError(watcher,err);
         }else{
-            workloadapi_Watcher_OnX509ContextUpdate(watcher,&x509context);
+            workloadapi_Watcher_OnX509ContextUpdate(watcher,x509context);
         }
     }
 }
@@ -318,3 +318,27 @@ err_t workloadapi_handleWatchError(workloadapi_Client* client, err_t error, Back
     ///TODO: wait on a cond var until time, then return NO_ERROR if it times out
     return NO_ERROR;
 }
+
+workloadapi_X509Context* parseX509Context(X509SVIDResponse *resp, err_t *err){
+    auto svids = parseX509SVIDs(resp,false,err);
+    if(*err != NO_ERROR){
+        return NULL;
+    }
+    auto bundles = workloadapi_parseX509Bundles(resp,err);
+    if(*err != NO_ERROR){
+        ///TODO: free svids
+        return NULL;
+    }
+    *err = NO_ERROR;
+    workloadapi_X509Context* cntx = (workloadapi_X509Context*) calloc(1,sizeof *cntx);
+    if(!cntx){
+        ///TODO: free svids & bundles
+        *err = ERROR5;
+        return NULL;
+    }
+    cntx->Bundles = bundles;
+    cntx->SVIDs = svids;
+    return cntx;
+}
+
+
