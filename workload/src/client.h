@@ -72,9 +72,9 @@ x509bundle_Bundle* workloadapi_parseX509Bundle(string_t id,
                                             const size_t len,
                                             err_t *err);
 
-workloadapi_X509Context* parseX509Context(X509SVIDResponse *resp, err_t *err); //implemented on fetchX509Context
+workloadapi_X509Context* workloadapi_parseX509Context(X509SVIDResponse *resp, err_t *err); //implemented on fetchX509Context
 
-x509svid_SVID** parseX509SVIDs(X509SVIDResponse *resp,
+x509svid_SVID** workloadapi_parseX509SVIDs(X509SVIDResponse *resp,
                                             bool firstOnly,
                                             err_t *err);
 ///TODO: define in client.cc:

@@ -292,7 +292,7 @@ err_t workloadapi_watchX509Context(workloadapi_Client* client, workloadapi_Watch
             return ERROR4; //no more messages.
         }
         resetBackoff(backoff);
-        workloadapi_X509Context *x509context = parseX509Context(&response,&err);
+        workloadapi_X509Context *x509context = workloadapi_parseX509Context(&response,&err);
         if(err != NO_ERROR){
             ///TODO: log parse error
             workloadapi_Watcher_OnX509ContextWatchError(watcher,err);
@@ -319,8 +319,8 @@ err_t workloadapi_handleWatchError(workloadapi_Client* client, err_t error, Back
     return NO_ERROR;
 }
 
-workloadapi_X509Context* parseX509Context(X509SVIDResponse *resp, err_t *err){
-    auto svids = parseX509SVIDs(resp,false,err);
+workloadapi_X509Context* workloadapi_parseX509Context(X509SVIDResponse *resp, err_t *err){
+    auto svids = workloadapi_parseX509SVIDs(resp,false,err);
     if(*err != NO_ERROR){
         return NULL;
     }
