@@ -35,8 +35,8 @@ err_t workloadapi_CloseClient(workloadapi_Client *client);
 
 err_t workloadapi_setClientAddress(workloadapi_Client *client, const char* address);
 err_t workloadapi_addClientHeader(workloadapi_Client *client, const char* key, const char* value);
-err_t workloadapi_clearClientHeaders(workloadapi_Client *client);
 err_t workloadapi_setClientHeader(workloadapi_Client *client, const char* key, const char* value);
+err_t workloadapi_clearClientHeaders(workloadapi_Client *client);
 
 void workloadapi_applyClientOption(workloadapi_Client* client, workloadapi_ClientOption option);
 void workloadapi_applyClientOptionWithArg(workloadapi_Client* client, workloadapi_ClientOption option, void* arg);
