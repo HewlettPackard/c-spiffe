@@ -42,8 +42,8 @@ err_t workloadapi_setClientStub(workloadapi_Client* client, stub_ptr stub);
 void workloadapi_applyClientOption(workloadapi_Client* client, workloadapi_ClientOption option);
 void workloadapi_applyClientOptionWithArg(workloadapi_Client* client, workloadapi_ClientOption option, void* arg);
 
-void setDefaultClientAddressOption(workloadapi_Client *client, void *not_used);
-void setDefaultClientHeaderOption(workloadapi_Client *client, void *not_used);
+void workloadapi_setDefaultClientAddressOption(workloadapi_Client *client, void *not_used);
+void workloadapi_setDefaultClientHeaderOption(workloadapi_Client *client, void *not_used);
 //default options for client. must set all attributes 
 void workloadapi_defaultClientOptions(workloadapi_Client* client,void* not_used);
 
