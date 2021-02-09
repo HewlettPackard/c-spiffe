@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-///pointer to gRPC constructs, can't use those types in the header
+///pointer to gRPC construct, can't use those types in the header
 typedef void* stub_ptr; //api stub
 
 typedef struct workloadapi_Client {
@@ -25,13 +25,13 @@ typedef struct workloadapi_Client {
     bool closed;
 } workloadapi_Client;
 
-//ClientOptions are functions, that will modify the client, with an optional argument. 
-typedef void (*workloadapi_ClientOption)(workloadapi_Client*,void*);
-
 workloadapi_Client* workloadapi_NewClient(err_t* error);
 err_t workloadapi_FreeClient(workloadapi_Client* client);
 err_t workloadapi_ConnectClient(workloadapi_Client *client);
 err_t workloadapi_CloseClient(workloadapi_Client *client);
+
+//ClientOptions are functions, that will modify the client, with an optional argument. 
+typedef void (*workloadapi_ClientOption)(workloadapi_Client*,void*);
 
 err_t workloadapi_setClientAddress(workloadapi_Client *client, const char* address);
 err_t workloadapi_addClientHeader(workloadapi_Client *client, const char* key, const char* value);
@@ -47,10 +47,10 @@ void setDefaultClientHeaderOption(workloadapi_Client *client, void *not_used);
 //default options for client. must set all attributes 
 void workloadapi_defaultClientOptions(workloadapi_Client* client,void* not_used);
 
+err_t workloadapi_WatchX509Context(workloadapi_Client* client, workloadapi_Watcher* watcher); //public function
+
 ///TODO: IMPLEMENT on client.cc:
 
-
-err_t workloadapi_WatchX509Context(workloadapi_Client* client, workloadapi_Watcher* watcher); //public function
 err_t workloadapi_watchX509Context(workloadapi_Client* client, workloadapi_Watcher* Watcher, Backoff *backoff); //used internally
 err_t workloadapi_handleWatchError(workloadapi_Client* client, err_t error, Backoff *backoff);
 

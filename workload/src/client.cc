@@ -232,3 +232,18 @@ void workloadapi_defaultClientOptions(workloadapi_Client *client, void *not_used
     ///TODO: logger?
     ///TODO: dialOptions?
 }
+
+err_t workloadapi_WatchX509Context(workloadapi_Client* client, workloadapi_Watcher* watcher){
+
+    Backoff backoff = newBackoff(SECOND,{30,0});
+
+    while(true){
+        err_t err = workloadapi_watchX509Context(client,watcher,&backoff);
+        workloadapi_Watcher_OnX509ContextWatchError(watcher,err);
+        err = workloadapi_handleWatchError(client,err,&backoff);
+        if(err != NO_ERROR){
+            return err;
+        }
+    }
+}
+
