@@ -234,6 +234,8 @@ void workloadapi_defaultClientOptions(workloadapi_Client *client, void *not_used
 }
 
 err_t workloadapi_WatchX509Context(workloadapi_Client* client, workloadapi_Watcher* watcher){
+    if(!client) return ERROR1;
+    if(!watcher) return ERROR2;
 
     Backoff backoff = newBackoff(SECOND,{30,0});
 
@@ -247,3 +249,47 @@ err_t workloadapi_WatchX509Context(workloadapi_Client* client, workloadapi_Watch
     }
 }
 
+err_t workloadapi_watchX509Context(workloadapi_Client* client, workloadapi_Watcher* watcher, Backoff *backoff){
+    
+    if(!client){
+        return ERROR1;
+    }
+    if(!watcher){
+        return ERROR2;
+    }
+    if(!backoff){
+        return ERROR3;
+    }
+
+    ///TODO: Logger?
+
+    grpc::ClientContext ctx;
+
+    if(client->headers){
+        for(int i = 0; i < arrlen(client->headers);i+=2)
+        ctx.AddMetadata(client->headers[i],client->headers[i+1]); 
+    }
+
+    X509SVIDRequest req = X509SVIDRequest(); //empty request
+    X509SVIDResponse response;
+
+    //unique_ptr gets freed after it goes out of scope 
+    std::unique_ptr<grpc::ClientReaderInterface<X509SVIDResponse>> c_reader = 
+        ((SpiffeWorkloadAPI::StubInterface*)client->stub)->FetchX509SVID(&ctx, req); //get response reader
+
+    while(true){
+        bool ok = c_reader->Read(&response);
+        err_t err = NO_ERROR;
+        if(!ok){
+            return ERROR4; //no more messages.
+        }
+        resetBackoff(backoff);
+        workloadapi_X509Context x509context = parseX509Context(&response,&err);
+        if(err != NO_ERROR){
+            ///TODO: log parse error
+            workloadapi_Watcher_OnX509ContextWatchError(watcher,err);
+        }else{
+            workloadapi_Watcher_OnX509ContextUpdate(watcher,&x509context);
+        }
+    }
+}

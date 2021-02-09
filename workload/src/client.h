@@ -49,15 +49,14 @@ void workloadapi_defaultClientOptions(workloadapi_Client* client,void* not_used)
 
 err_t workloadapi_WatchX509Context(workloadapi_Client* client, workloadapi_Watcher* watcher); //public function
 
-///TODO: IMPLEMENT on client.cc:
-
 err_t workloadapi_watchX509Context(workloadapi_Client* client, workloadapi_Watcher* Watcher, Backoff *backoff); //used internally
+
+///TODO: IMPLEMENT on client.cc:
 err_t workloadapi_handleWatchError(workloadapi_Client* client, err_t error, Backoff *backoff);
 
 workloadapi_X509Context workloadapi_FetchX509Context(workloadapi_Client* client, err_t* error);
 x509svid_SVID* workloadapi_FetchX509SVID(workloadapi_Client* client, err_t* error);
 x509svid_SVID* workloadapi_FetchX509SVIDs(workloadapi_Client* client, err_t* error);
-
 
 //setters for client, to be used inside ClientOption's
 // err_t workloadapi_setClientConn(workloadapi_Client* client, conn_ptr conn);
@@ -74,13 +73,13 @@ x509bundle_Bundle* workloadapi_parseX509Bundle(string_t id,
                                             const size_t len,
                                             err_t *err);
 
+workloadapi_X509Context parseX509Context(X509SVIDResponse *resp, err_t *err); //implemented on fetchX509Context
+
 ///TODO: define in client.cc:
 
 // x509SVID_svid** parseX509SVIDs(X509SVIDResponse *resp,
                                             // bool firstOnly,
                                             // err_t *err)
-// workloadapi_X509Context parseX509Context(X509SVIDResponse *resp, err_t err); //implemented on fetchX509Context
-
 ///TODO: migrate from Requestor??
 
 // workloadapi_Client* workloadapi_ClientInit(const char* address);
