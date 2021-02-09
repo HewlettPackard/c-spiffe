@@ -341,4 +341,30 @@ workloadapi_X509Context* workloadapi_parseX509Context(X509SVIDResponse *resp, er
     return cntx;
 }
 
-
+x509svid_SVID** workloadapi_parseX509SVIDs(X509SVIDResponse *resp,
+                                            bool firstOnly,
+                                            err_t *err){
+    if(!resp){
+        *err = ERROR2;
+        return NULL;
+    }
+    x509svid_SVID** x509svids = NULL;
+    *err = NO_ERROR;
+    for (auto &&id : resp->svids())
+    {
+        //assemble SVID from response.
+        auto x509svid = x509svid_ParseRaw((byte*)id.x509_svid().data(),
+                                    id.x509_svid().length(),
+                                    (byte*) id.x509_svid_key().data(), 
+                                    id.x509_svid_key().length(),
+                                    err);
+        if(*err!= NO_ERROR)
+            return NULL;
+        else
+            arrpush(x509svids,x509svid); 
+        if(firstOnly)
+            break;//first SVID done.
+    }
+    return x509svids;
+}
+                                            
