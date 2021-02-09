@@ -252,13 +252,13 @@ err_t workloadapi_WatchX509Context(workloadapi_Client* client, workloadapi_Watch
 err_t workloadapi_watchX509Context(workloadapi_Client* client, workloadapi_Watcher* watcher, Backoff *backoff){
     
     if(!client){
-        return ERROR1;
+        return ERROR2;
     }
     if(!watcher){
         return ERROR2;
     }
     if(!backoff){
-        return ERROR3;
+        return ERROR2;
     }
 
     ///TODO: Logger?
@@ -276,11 +276,19 @@ err_t workloadapi_watchX509Context(workloadapi_Client* client, workloadapi_Watch
     //unique_ptr gets freed after it goes out of scope 
     std::unique_ptr<grpc::ClientReaderInterface<X509SVIDResponse>> c_reader = 
         ((SpiffeWorkloadAPI::StubInterface*)client->stub)->FetchX509SVID(&ctx, req); //get response reader
-
+    
     while(true){
         bool ok = c_reader->Read(&response);
         err_t err = NO_ERROR;
         if(!ok){
+            auto status = c_reader->Finish();
+            if(status.error_code() == grpc::StatusCode::CANCELLED){
+                return ERROR1;
+            }
+            if(status.error_code() == grpc::StatusCode::INVALID_ARGUMENT){
+                ///TODO: Logger
+                return ERROR3;
+            }
             return ERROR4; //no more messages.
         }
         resetBackoff(backoff);
@@ -292,4 +300,21 @@ err_t workloadapi_watchX509Context(workloadapi_Client* client, workloadapi_Watch
             workloadapi_Watcher_OnX509ContextUpdate(watcher,&x509context);
         }
     }
+}
+
+err_t workloadapi_handleWatchError(workloadapi_Client* client, err_t error, Backoff *backoff){
+
+    if(error == grpc::StatusCode::CANCELLED){
+        return error;
+    }
+    if(error == grpc::StatusCode::INVALID_ARGUMENT){
+        ///TODO: Logger
+        return error;
+    }
+
+    ///TODO: Log
+    timespec retryAfter = nextTime(backoff);
+
+    ///TODO: wait on a cond var until time, then return NO_ERROR if it times out
+    return NO_ERROR;
 }

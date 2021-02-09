@@ -51,9 +51,9 @@ err_t workloadapi_WatchX509Context(workloadapi_Client* client, workloadapi_Watch
 
 err_t workloadapi_watchX509Context(workloadapi_Client* client, workloadapi_Watcher* Watcher, Backoff *backoff); //used internally
 
-///TODO: IMPLEMENT on client.cc:
 err_t workloadapi_handleWatchError(workloadapi_Client* client, err_t error, Backoff *backoff);
 
+///TODO: IMPLEMENT on client.cc:
 workloadapi_X509Context workloadapi_FetchX509Context(workloadapi_Client* client, err_t* error);
 x509svid_SVID* workloadapi_FetchX509SVID(workloadapi_Client* client, err_t* error);
 x509svid_SVID* workloadapi_FetchX509SVIDs(workloadapi_Client* client, err_t* error);
