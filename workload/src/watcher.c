@@ -1,5 +1,7 @@
-
 #include "watcher.h"
+#include "x509context.h"
+#include "x509source.h"
+#include "client.h"
 
 //Function that will run on thread spun for watcher
 int workloadapi_Watcher_X509backgroundFunc(void * _watcher){
@@ -28,7 +30,7 @@ workloadapi_Watcher* workloadapi_newWatcher(workloadapi_WatcherConfig config, wo
         newW->client = config.client;
         newW->ownsClient = false;
         if(config.clientOptions){
-            for (size_t i = 0; i < arrlen(config.clientOptions); i++)
+            for (int i = 0; i < arrlen(config.clientOptions); i++)
             {
                 workloadapi_applyClientOption(config.client,config.clientOptions[i]);
             }
@@ -43,7 +45,7 @@ workloadapi_Watcher* workloadapi_newWatcher(workloadapi_WatcherConfig config, wo
         }
         newW->ownsClient = true;
         if(config.clientOptions){
-            for (size_t i = 0; i < arrlen(config.clientOptions); i++)
+            for (int i = 0; i < arrlen(config.clientOptions); i++)
             {
                 workloadapi_applyClientOption(newW->client,config.clientOptions[i]);
             }

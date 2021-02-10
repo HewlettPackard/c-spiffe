@@ -1,40 +1,26 @@
-#ifndef WATCHER_H
-#define WATCHER_H
+#ifndef __INCLUDE_WORKLOAD_WATCHER_H__
+#define __INCLUDE_WORKLOAD_WATCHER_H__
 
+#include "x509context.h"
+#include "client.h"
 #include "../../svid/x509svid/src/svid.h"
 #include "../../bundle/x509bundle/src/bundle.h"
 #include "../../bundle/x509bundle/src/set.h"
 
 #include "../../bundle/jwtbundle/src/bundle.h"
 #include "../../bundle/jwtbundle/src/set.h"
-#include "client.h"
 
 #include <threads.h>
 #include <time.h>
 
-///TODO: function for picking first SVID
-typedef struct workloadapi_X509Context
-{
-    x509svid_SVID** SVIDs;
-    x509bundle_Set* Bundles;
 
-} workloadapi_X509Context;
-
+typedef struct workloadapi_Client workloadapi_Client;
+typedef void (*workloadapi_ClientOption)(workloadapi_Client*,void*);
 typedef struct workloadapi_WatcherConfig
 {
     workloadapi_Client* client;
     workloadapi_ClientOption *clientOptions;
 } workloadapi_WatcherConfig;
-
-// type for callback function. will be set by X509Source.
-typedef void (*workloadapi_x509ContextFunc_t)(workloadapi_X509Context*, void*); 
-// eg.: 
-// workloadapi_x509ContextFunc_t func; -> void (*func)(workloadapi_X509Context* updatedContext);
-
-typedef struct X509Callback{
-    void* args;
-    workloadapi_x509ContextFunc_t func;
-} workloadapi_X509Callback;
 
 // typedef void(workloadapi_jwtBundleSetFunc_t)(jwtbundle_Set*);
 // eg.: 
@@ -99,4 +85,4 @@ err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher* watcher);
 
 
 
-#endif //WATCHER_H
+#endif //__INCLUDE_WORKLOAD_WATCHER_H__
