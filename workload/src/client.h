@@ -1,7 +1,7 @@
 #ifndef __INCLUDE_WORKLOAD_CLIENT_H__
 #define __INCLUDE_WORKLOAD_CLIENT_H__
 
-#include "workload.pb.h"
+// #include "workload.pb.h"
 #include "../../svid/x509svid/src/svid.h"
 #include "../../bundle/x509bundle/src/set.h"
 #include "../../utils/src/util.h"
@@ -19,10 +19,12 @@ typedef struct workloadapi_Client {
     stub_ptr stub;
     string_arr_t headers;
     string_t address;
+    bool closed;
+    mtx_t closedMutex;
+    cnd_t closedCond;
     ///TODO:logger
     ///TODO: dialOptions //from gRPC :(
 
-    bool closed;
 } workloadapi_Client;
 
 workloadapi_Client* workloadapi_NewClient(err_t* error);
@@ -44,6 +46,7 @@ void workloadapi_applyClientOptionWithArg(workloadapi_Client* client, workloadap
 
 void workloadapi_setDefaultClientAddressOption(workloadapi_Client *client, void *not_used);
 void workloadapi_setDefaultClientHeaderOption(workloadapi_Client *client, void *not_used);
+
 //default options for client. must set all attributes 
 void workloadapi_defaultClientOptions(workloadapi_Client* client,void* not_used);
 
@@ -65,18 +68,18 @@ x509svid_SVID** workloadapi_FetchX509SVIDs(workloadapi_Client* client, err_t* er
 
 ///DONE: implemented in client.cc, not part of public interface:
  
-x509bundle_Set* workloadapi_parseX509Bundles(const X509SVIDResponse *rep, 
-                                            err_t *err);
-x509bundle_Bundle* workloadapi_parseX509Bundle(string_t id,
-                                            const byte *bundle_bytes,
-                                            const size_t len,
-                                            err_t *err);
+// x509bundle_Set* workloadapi_parseX509Bundles(const X509SVIDResponse *rep, 
+//                                             err_t *err);
+// x509bundle_Bundle* workloadapi_parseX509Bundle(string_t id,
+//                                             const byte *bundle_bytes,
+//                                             const size_t len,
+//                                             err_t *err);
 
-workloadapi_X509Context* workloadapi_parseX509Context(X509SVIDResponse *resp, err_t *err);
+// workloadapi_X509Context* workloadapi_parseX509Context(X509SVIDResponse *resp, err_t *err);
 
-x509svid_SVID** workloadapi_parseX509SVIDs(X509SVIDResponse *resp,
-                                            bool firstOnly,
-                                            err_t *err);
+// x509svid_SVID** workloadapi_parseX509SVIDs(X509SVIDResponse *resp,
+//                                             bool firstOnly,
+//                                             err_t *err);
 
 
 ///TODO: implement JWT later

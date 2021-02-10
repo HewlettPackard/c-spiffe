@@ -1,6 +1,5 @@
 
 #include "watcher.h"
-#include "threads.h"
 
 //Function that will run on thread spun for watcher
 int workloadapi_Watcher_X509backgroundFunc(void * _watcher){
@@ -8,8 +7,7 @@ int workloadapi_Watcher_X509backgroundFunc(void * _watcher){
 
     err_t error = NO_ERROR;
     
-    ///TODO: implement on client. should only return on exit.
-    //error = workloadapi_Client_WatchX509Context(watcher->client,watcher); 
+    error = workloadapi_WatchX509Context(watcher->client,watcher); 
 
     return (int) error;
 }
@@ -29,13 +27,28 @@ workloadapi_Watcher* workloadapi_newWatcher(workloadapi_WatcherConfig config, wo
     if(config.client){
         newW->client = config.client;
         newW->ownsClient = false;
-        ///TODO: apply client options to client if provided
+        if(config.clientOptions){
+            for (size_t i = 0; i < arrlen(config.clientOptions); i++)
+            {
+                workloadapi_applyClientOption(config.client,config.clientOptions[i]);
+            }
+            
+        }
     }
     else{
-        ///TODO: init client with constructor.
-        newW->client = NULL; // = newClient(config.clientOptions);
+        newW->client = workloadapi_NewClient(error);
+        if(*error != NO_ERROR){
+            free(newW);
+            return NULL;
+        }
         newW->ownsClient = true;
-        ///TODO: apply client options.
+        if(config.clientOptions){
+            for (size_t i = 0; i < arrlen(config.clientOptions); i++)
+            {
+                workloadapi_applyClientOption(newW->client,config.clientOptions[i]);
+            }
+            
+        }
     }
 
     ///TODO: check if callback is valid?
@@ -94,14 +107,22 @@ err_t workloadapi_closeWatcher(workloadapi_Watcher* watcher){
     err_t error = NO_ERROR;
     ///TODO: check and set watcher->closeError?
     if(watcher->ownsClient){
-        ///TODO: close client, drop conn at least
-        //if (error), do cleanup on cleanup?
+        error = workloadapi_CloseClient(watcher->client);
+        if(error != NO_ERROR){
+            mtx_unlock(&(watcher->closeMutex));
+            return error;
+        }
+        error = workloadapi_FreeClient(watcher->client);
+        if(error != NO_ERROR){
+            //shouldn't reach here.
+        }
     }
     mtx_unlock(&(watcher->closeMutex));
-    ///TODO: thread join???
-    //int join return;
-    //int thread_error = thrd_join(watcher->watcherThread,&join_return)
-    return error;
+    int join_return;
+    int thread_error = thrd_join(watcher->watcherThread,&join_return);
+    if(thread_error == thrd_success){
+        return join_return;
+    } 
 }
 
 //drops connection to WorkloadAPI (if owns client) MUST ALREADY BE CLOSED.
@@ -121,7 +142,7 @@ err_t workloadapi_freeWatcher(/*context,*/ workloadapi_Watcher* watcher){
 void workloadapi_Watcher_OnX509ContextUpdate(workloadapi_Watcher* watcher, workloadapi_X509Context* context){
     void *args = watcher->x509Callback.args;
     watcher->x509Callback.func(context,args);
-    ///TODO: should we trigger an update signal here? triggerUpdate returns an error and we can't propagate it here.
+    workloadapi_Watcher_TriggerUpdated(watcher);
 }
 
 //Called by Client when an error occurs
@@ -164,7 +185,6 @@ err_t workloadapi_Watcher_TimedWaitUntilUpdated(workloadapi_Watcher* watcher, st
 
 err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher* watcher){
     mtx_lock(&(watcher->updateMutex));
-    ///TODO: should we do any other housekeeping here?
     watcher->updated = true;
     cnd_broadcast(&(watcher->updateCond));
     mtx_unlock(&(watcher->updateMutex));

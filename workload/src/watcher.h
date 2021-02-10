@@ -7,6 +7,7 @@
 
 #include "../../bundle/jwtbundle/src/bundle.h"
 #include "../../bundle/jwtbundle/src/set.h"
+#include "client.h"
 
 #include <threads.h>
 #include <time.h>
@@ -21,10 +22,8 @@ typedef struct workloadapi_X509Context
 
 typedef struct workloadapi_WatcherConfig
 {
-    ///TODO: add actual client type
-    void* client;
-    ///TODO: add actual client option type
-    void** clientOptions;
+    workloadapi_Client* client;
+    workloadapi_ClientOption *clientOptions;
 } workloadapi_WatcherConfig;
 
 // type for callback function. will be set by X509Source.

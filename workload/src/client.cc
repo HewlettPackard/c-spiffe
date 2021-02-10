@@ -85,7 +85,11 @@ workloadapi_Client *workloadapi_NewClient(err_t *error)
     client->stub = NULL;
     client->address = NULL;
     client->headers = NULL;
+    mtx_init(&(client->closedMutex),mtx_plain);
+    cnd_init(&(client->closedCond));
+    mtx_lock(&(client->closedMutex));
     client->closed = true;
+    mtx_unlock(&(client->closedMutex));
     *error = NO_ERROR;
     return client;
 }
@@ -98,11 +102,12 @@ err_t workloadapi_FreeClient(workloadapi_Client *client)
     }
 
     util_string_arr_t_Free(client->headers); //null safe. free's all strings in headers.
-    client->headers = NULL;                  //sanity, shouldn't matter after we free everything else
 
     util_string_t_Free(client->address);
-    client->address = NULL;
 
+    mtx_destroy(&(client->closedMutex));
+    cnd_destroy(&(client->closedCond));
+    
     free(client);
     return NO_ERROR;
 }
@@ -127,7 +132,9 @@ err_t workloadapi_ConnectClient(workloadapi_Client *client)
         }
         client->stub = new_stub.release(); //extends lifetime of pointer to outside this scope
     }
+    mtx_lock(&(client->closedMutex));
     client->closed = false;
+    mtx_unlock(&(client->closedMutex));
     return NO_ERROR;
 }
 
@@ -137,18 +144,22 @@ err_t workloadapi_CloseClient(workloadapi_Client *client)
     {
         return ERROR1;
     }
-    if (client->closed)
-    {
-        return ERROR2; //already closed
-    }
     if (!client->stub)
     {
         return ERROR3; //can't close NULL stub.
     }
+    mtx_lock(&(client->closedMutex));
+    if (client->closed)
+    {
+        mtx_unlock(&(client->closedMutex));
+        return ERROR2; //already closed
+    }
+    client->closed = true;
+    cnd_broadcast(&(client->closedCond));
+    mtx_unlock(&(client->closedMutex));
     delete ((SpiffeWorkloadAPI::StubInterface *)client->stub); //delete it since grpc new'd it internally and we released it.
     client->stub = NULL;
     //grpc will free the channel when no stub is using it.
-    client->closed = true;
 }
 
 err_t workloadapi_setClientAddress(workloadapi_Client *client, const char *address)
@@ -299,6 +310,7 @@ err_t workloadapi_watchX509Context(workloadapi_Client* client, workloadapi_Watch
         }else{
             workloadapi_Watcher_OnX509ContextUpdate(watcher,x509context);
         }
+        ///TODO: free context.
     }
 }
 
@@ -315,8 +327,25 @@ err_t workloadapi_handleWatchError(workloadapi_Client* client, err_t error, Back
     ///TODO: Log
     timespec retryAfter = nextTime(backoff);
 
-    ///TODO: wait on a cond var until time, then return NO_ERROR if it times out
-    return NO_ERROR;
+    mtx_lock(&(client->closedMutex));
+    if(client->closed){
+        mtx_unlock(&(client->closedMutex));
+        return ERROR4;
+    }else{
+        int wait_ret = cnd_timedwait(&(client->closedCond),&(client->closedMutex),&retryAfter);
+        if(wait_ret==thrd_timedout){ //waited enough
+            mtx_unlock(&(client->closedMutex));
+            return NO_ERROR;
+        }else if(wait_ret == thrd_success){ //signaled by closeClient
+            mtx_unlock(&(client->closedMutex));
+            return ERROR5;
+        }
+        else{
+            mtx_unlock(&(client->closedMutex));
+            return ERROR6;
+        }
+    }
+    return ERROR2;///shouldn't reach this.
 }
 
 workloadapi_X509Context* workloadapi_parseX509Context(X509SVIDResponse *resp, err_t *err){
@@ -326,13 +355,22 @@ workloadapi_X509Context* workloadapi_parseX509Context(X509SVIDResponse *resp, er
     }
     auto bundles = workloadapi_parseX509Bundles(resp,err);
     if(*err != NO_ERROR){
-        ///TODO: free svids
+        for (int i = 0; i < arrlen(svids);i++)
+        {
+            x509svid_SVID_Free(svids[i],true);
+        }
+        arrfree(svids);
         return NULL;
     }
     *err = NO_ERROR;
     workloadapi_X509Context* cntx = (workloadapi_X509Context*) calloc(1,sizeof *cntx);
     if(!cntx){
-        ///TODO: free svids & bundles
+        for (int i = 0; i < arrlen(svids);i++)
+        {
+            x509svid_SVID_Free(svids[i],true);
+        }
+        arrfree(svids);
+        x509bundle_Set_Free(bundles);
         *err = ERROR5;
         return NULL;
     }
