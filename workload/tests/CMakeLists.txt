@@ -30,32 +30,35 @@ add_custom_command(
 # Include generated *.pb.h files
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_executable(check_requestor "./check_requestor.cc" ${grpc_srcs} ${proto_srcs} ${grpc_mock})
+# add_executable(check_requestor "./check_requestor.cc" ${grpc_srcs} ${proto_srcs} ${grpc_mock})
 
-target_link_libraries(check_requestor librequestor ${CHECK_LIBRARIES} 
-  gtest
-  gmock
-  gmock_main
-  OpenSSL::SSL
-  libspiffeid
-  libinternal
-  uriparser
-  libbundle
-  jansson
-  cjose
-  subunit
-  check_pic
-  check
-  rt
-  m
-  crypto
-  pthread)
+# target_link_libraries(check_requestor librequestor ${CHECK_LIBRARIES} 
+#   gtest
+#   gmock
+#   gmock_main
+#   OpenSSL::SSL
+#   libspiffeid
+#   libinternal
+#   uriparser
+#   libbundle
+#   jansson
+#   cjose
+#   subunit
+#   check_pic
+#   check
+#   rt
+#   m
+#   crypto
+#   pthread)
 
-add_test(requestor-test check_requestor)
+# add_test(requestor-test check_requestor)
 
 add_executable(check_client "./check_client.cc" ${grpc_srcs} ${proto_srcs} ${grpc_mock})
 
-target_link_libraries(check_client librequestor ${CHECK_LIBRARIES} 
+target_link_libraries(check_client ${CHECK_LIBRARIES} 
+  libwatcher
+  libclient
+  libsource
   gtest
   gmock
   gmock_main
@@ -76,9 +79,12 @@ target_link_libraries(check_client librequestor ${CHECK_LIBRARIES}
 
 add_test(client-test check_client)
 
-add_executable(check_watcher "./check_watcher.c" "../src/watcher.c")
+add_executable(check_watcher "./check_watcher.c")
 
 target_link_libraries(check_watcher ${CHECK_LIBRARIES} 
+libwatcher
+libclient
+libsource
   OpenSSL::SSL
   libspiffeid
   libinternal

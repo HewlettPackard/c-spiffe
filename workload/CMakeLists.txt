@@ -54,16 +54,34 @@ pthread
 ssl
 crypto)
 
-set(LIB_REQUESTOR
-  src/requestor.cc
+set(LIB_SOURCE
+  src/x509source.c
+)
+
+set(LIB_WATCHER
+  src/watcher.c
+)
+
+set(LIB_BACKOFF
+  src/backoff.c
+)
+
+set(LIB_CLIENT
   src/client.cc
   ${proto_srcs}
   ${grpc_srcs}
 )
 
-add_library(librequestor SHARED ${LIB_REQUESTOR})
+add_library(libbackoff SHARED ${LIB_BACKOFF})
+target_link_libraries(libbackoff
+${OWN_LIBS}
+${EXT_LIBS}
+)
 
-target_link_libraries(librequestor
+add_library(libclient STATIC ${LIB_CLIENT})
+
+target_link_libraries(libclient
+libwatcher
 ${OWN_LIBS}
 ${EXT_LIBS}
 ${_REFLECTION}
@@ -72,14 +90,29 @@ ${_GRPC_GRPC}
 ${_PROTOBUF_LIBPROTOBUF}
 )
 
+add_library(libwatcher STATIC ${LIB_WATCHER})
+target_link_libraries(libwatcher
+libclient
+${OWN_LIBS}
+${EXT_LIBS}
+)
+
+add_library(libsource STATIC ${LIB_SOURCE})
+target_link_libraries(libsource
+libwatcher
+libclient
+${OWN_LIBS}
+${EXT_LIBS}
+)
+
 set(CPP_CLIENT
     src/cpp_client_example.cc
 )
 add_executable(cpp_client "${CPP_CLIENT}")
-target_link_libraries(cpp_client librequestor)
+target_link_libraries(cpp_client libclient libwatcher libsource libbackoff)
 
 set(C_CLIENT
     src/c_client_example.c
 )
 add_executable(c_client "${C_CLIENT}")
-target_link_libraries(c_client librequestor)
+target_link_libraries(c_client libclient libwatcher libsource libbackoff)
