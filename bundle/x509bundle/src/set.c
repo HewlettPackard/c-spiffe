@@ -28,30 +28,30 @@ void x509bundle_Set_Add(x509bundle_Set *s, x509bundle_Bundle *bundle)
     mtx_unlock(&(s->mtx));
 }
 
-void x509bundle_Set_Remove(x509bundle_Set *s, const spiffeid_TrustDomain *td)
+void x509bundle_Set_Remove(x509bundle_Set *s, const spiffeid_TrustDomain td)
 {
     mtx_lock(&(s->mtx));
-    shdel(s->bundles, td->name);
+    shdel(s->bundles, td.name);
     mtx_unlock(&(s->mtx));
 }
 
-bool x509bundle_Set_Has(x509bundle_Set *s, const spiffeid_TrustDomain *td)
+bool x509bundle_Set_Has(x509bundle_Set *s, const spiffeid_TrustDomain td)
 {
     mtx_lock(&(s->mtx));
-    const bool present = shgeti(s->bundles, td->name) >= 0? true : false;
+    const bool present = shgeti(s->bundles, td.name) >= 0? true : false;
     mtx_unlock(&(s->mtx));
     
     return present;
 }
 
 x509bundle_Bundle* x509bundle_Set_Get(x509bundle_Set *s, 
-                                    const spiffeid_TrustDomain *td, 
+                                    const spiffeid_TrustDomain td, 
                                     bool *suc)
 {
     mtx_lock(&(s->mtx));
     *suc = false;
     x509bundle_Bundle *bundle = NULL;
-    int idx = shgeti(s->bundles, td->name);
+    int idx = shgeti(s->bundles, td.name);
     if(idx >= 0)
     {
         bundle = s->bundles[idx].value;
@@ -97,14 +97,14 @@ uint32_t x509bundle_Set_Len(x509bundle_Set *s)
 
 x509bundle_Bundle* x509bundle_Set_GetX509BundleForTrustDomain(
                                     x509bundle_Set *s, 
-                                    const spiffeid_TrustDomain *td, 
+                                    const spiffeid_TrustDomain td, 
                                     err_t *err)
 {
     mtx_lock(&(s->mtx));
     x509bundle_Bundle *bundle = NULL;
     //trust domain not available
     *err = ERROR1;
-    int idx = shgeti(s->bundles, td->name);
+    int idx = shgeti(s->bundles, td.name);
     if(idx >= 0)
     {
         bundle = s->bundles[idx].value;

@@ -34,9 +34,6 @@ spiffebundle_Bundle* spiffebundle_New(const spiffeid_TrustDomain td);
 spiffebundle_Bundle* spiffebundle_Load(const spiffeid_TrustDomain td, 
                                         const string_t path, 
                                         err_t *err);
-// spiffebundle_Bundle* spiffebundle_Read(const spiffeid_TrustDomain td,
-//                                         void *reader,
-//                                         err_t *err);
 spiffebundle_Bundle* spiffebundle_Parse(const spiffeid_TrustDomain td,
                                         const byte *bundleBytes,
                                         err_t *err);

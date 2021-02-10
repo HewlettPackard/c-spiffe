@@ -5,6 +5,14 @@
 #include "../../../internal/cryptoutil/src/keys.h"
 #include "../../../spiffeid/src/trustdomain.h"
 
+/*
+Each test named 'test_jwtbundle_<function name>' tests
+jwtbundle_<function name> function.
+*/
+
+//precondition: valid trust domain object created
+//postcondition: non NULL bundle pointer with trust domain
+//information
 START_TEST(test_jwtbundle_New)
 {
     spiffeid_TrustDomain td = {"example.com"};
@@ -17,12 +25,16 @@ START_TEST(test_jwtbundle_New)
 }
 END_TEST
 
+//precondition: valid trust domain object created and
+//valid jwk file store in a string
+//postcondition: non NULL bundle pointer with trust domain
+//information and valid hash map
 START_TEST(test_jwtbundle_Parse)
 {
     spiffeid_TrustDomain td = {"example.com"};
     err_t err;
 
-    FILE *f = fopen("jwk_keys.json", "r");
+    FILE *f = fopen("./resources/jwk_keys.json", "r");
     string_t buffer = FILE_to_string(f);
     fclose(f);
 
@@ -44,12 +56,16 @@ START_TEST(test_jwtbundle_Parse)
 }
 END_TEST
 
+//precondition: valid trust domain object created and
+//valid path to a jwt file
+//postcondition: non NULL bundle pointer with trust domain
+//information and valid hash map
 START_TEST(test_jwtbundle_Load)
 {
     spiffeid_TrustDomain td = {"example.com"};
     err_t err;
 
-    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "jwk_keys.json", &err);
+    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "./resources/jwk_keys.json", &err);
 
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_uint_eq(shlenu(bundle_ptr->auths), 3);
@@ -66,6 +82,10 @@ START_TEST(test_jwtbundle_Load)
 }
 END_TEST
 
+//precondition: valid trust domain object created and
+//valid map from key id to public key
+//postcondition: non NULL bundle pointer with trust domain
+//information and valid hash map
 START_TEST(test_jwtbundle_FromJWTAuthorities)
 {
     const int ITERS = 6;
@@ -160,12 +180,15 @@ START_TEST(test_jwtbundle_FromJWTAuthorities)
 }
 END_TEST
 
+//precondition: valid jwt bundle object
+//postcondition: valid map created equal to the original
+//object map
 START_TEST(test_jwtbundle_Bundle_JWTAuthorities)
 {
     spiffeid_TrustDomain td = {"example.com"};
     err_t err;
 
-    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "jwk_keys.json", &err);
+    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "./resources/jwk_keys.json", &err);
     map_string_EVP_PKEY *jwt_auths = jwtbundle_Bundle_JWTAuthorities(bundle_ptr);
 
     ck_assert(jwtutil_JWTAuthoritiesEqual(jwt_auths, bundle_ptr->auths));
@@ -179,6 +202,8 @@ START_TEST(test_jwtbundle_Bundle_JWTAuthorities)
 }
 END_TEST
 
+//precondition: valid jwt bundle object
+//postcondition: valid result for each query
 START_TEST(test_jwtbundle_Bundle_FindJWTAuthority)
 {
     const int ITERS = 6;
@@ -297,6 +322,8 @@ START_TEST(test_jwtbundle_Bundle_FindJWTAuthority)
 }
 END_TEST
 
+//precondition: valid jwt bundle object
+//postcondition: valid result for each query
 START_TEST(test_jwtbundle_Bundle_HasJWTAuthority)
 {
     const int ITERS = 6;
@@ -399,6 +426,8 @@ START_TEST(test_jwtbundle_Bundle_HasJWTAuthority)
 }
 END_TEST
 
+//precondition: valid jwt bundle object
+//postcondition: valid map after each function call
 START_TEST(test_jwtbundle_Bundle_AddJWTAuthority)
 {
     const int ITERS = 6;
@@ -553,6 +582,8 @@ START_TEST(test_jwtbundle_Bundle_AddJWTAuthority)
 }
 END_TEST
 
+//precondition: valid jwt bundle object
+//postcondition: valid map after each function call
 START_TEST(test_jwtbundle_Bundle_RemoveJWTAuthority)
 {
     const int ITERS = 6;
@@ -701,6 +732,8 @@ START_TEST(test_jwtbundle_Bundle_RemoveJWTAuthority)
 }
 END_TEST
 
+//precondition: valid jwt bundle object
+//postcondition: valid map after each function call
 START_TEST(test_jwtbundle_Bundle_SetJWTAuthorities)
 {
     const int ITERS = 6;
@@ -795,6 +828,8 @@ START_TEST(test_jwtbundle_Bundle_SetJWTAuthorities)
 }
 END_TEST
 
+//precondition: valid jwt bundle object
+//postcondition: valid function call result
 START_TEST(test_jwtbundle_Bundle_Empty)
 {
     const int ITERS = 6;
@@ -890,12 +925,15 @@ START_TEST(test_jwtbundle_Bundle_Empty)
 }
 END_TEST
 
+//precondition: valid jwt bundle object
+//postcondition: valid jwt bundle object equal to the
+//original one
 START_TEST(test_jwtbundle_Bundle_Clone)
 {
     spiffeid_TrustDomain td = {"example.com"};
     err_t err;
 
-    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "jwk_keys.json", &err);
+    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "./resources/jwk_keys.json", &err);
     jwtbundle_Bundle *copy_ptr = jwtbundle_Bundle_Clone(bundle_ptr);
 
     ck_assert_str_eq(bundle_ptr->td.name, copy_ptr->td.name);
@@ -906,12 +944,14 @@ START_TEST(test_jwtbundle_Bundle_Clone)
 }
 END_TEST
 
+//precondition: two valid jwt bundle objects
+//postcondition: valid comparison between objects
 START_TEST(test_jwtbundle_Bundle_Equal)
 {
     spiffeid_TrustDomain td = {"example.com"};
     err_t err;
 
-    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "jwk_keys.json", &err);
+    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "./resources/jwk_keys.json", &err);
     jwtbundle_Bundle *bundle2_ptr = jwtbundle_Bundle_Clone(bundle_ptr);
 
     ck_assert(jwtbundle_Bundle_Equal(bundle_ptr, bundle2_ptr));
@@ -923,12 +963,16 @@ START_TEST(test_jwtbundle_Bundle_Equal)
 }
 END_TEST
 
+//precondition: valid jwt bundle object and valid trusted
+//domains
+//postcondition: valid bundle for correct trust domain and
+//NULL bundle otherwise
 START_TEST(test_jwtbundle_Bundle_GetJWTBundleForTrustDomain)
 {
     spiffeid_TrustDomain td = {"example.com"};
     err_t err;
 
-    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "jwk_keys.json", &err);
+    jwtbundle_Bundle *bundle_ptr = jwtbundle_Load(td, "./resources/jwk_keys.json", &err);
     
     jwtbundle_Bundle *bundle_td = jwtbundle_Bundle_GetJWTBundleForTrustDomain(
                                     bundle_ptr,

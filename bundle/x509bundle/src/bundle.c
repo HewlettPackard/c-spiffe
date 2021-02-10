@@ -169,8 +169,7 @@ x509bundle_Bundle* x509bundle_Bundle_Clone(x509bundle_Bundle *b)
 {
     mtx_lock(&(b->mtx));
     x509bundle_Bundle *bundle = x509bundle_FromX509Authorities(
-                                                    b->td, 
-                                                    (X509**) b->auths);
+                                            b->td, (X509**) b->auths);
     mtx_unlock(&(b->mtx));
 
     return bundle;

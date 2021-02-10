@@ -23,7 +23,7 @@ START_TEST(test_x509bundle_Parse)
     spiffeid_TrustDomain td = {"example.com"};
     err_t err;
 
-    FILE *f = fopen("certs.pem", "r");
+    FILE *f = fopen("./resources/certs.pem", "r");
     string_t buffer = FILE_to_string(f);
     fclose(f);
 
@@ -48,7 +48,7 @@ START_TEST(test_x509bundle_Load)
     spiffeid_TrustDomain td = {"example.com"};
     err_t err;
 
-    x509bundle_Bundle *bundle_ptr = x509bundle_Load(td, "certs.pem", &err);
+    x509bundle_Bundle *bundle_ptr = x509bundle_Load(td, "./resources/certs.pem", &err);
 
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_uint_eq(arrlenu(bundle_ptr->auths), 4);
@@ -171,7 +171,7 @@ START_TEST(test_x509bundle_Bundle_X509Authorities)
     spiffeid_TrustDomain td = {"example.com"};
     err_t err;
 
-    x509bundle_Bundle *bundle_ptr = x509bundle_Load(td, "certs.pem", &err);
+    x509bundle_Bundle *bundle_ptr = x509bundle_Load(td, "./resources/certs.pem", &err);
     X509 **x509_auths = x509bundle_Bundle_X509Authorities(bundle_ptr);
 
     ck_assert(x509util_CertsEqual(x509_auths, bundle_ptr->auths));
@@ -887,7 +887,7 @@ START_TEST(test_x509bundle_Bundle_Clone)
     spiffeid_TrustDomain td = {"example.com"};
     err_t err;
 
-    x509bundle_Bundle *bundle_ptr1 = x509bundle_Load(td, "certs.pem", &err);
+    x509bundle_Bundle *bundle_ptr1 = x509bundle_Load(td, "./resources/certs.pem", &err);
     x509bundle_Bundle *bundle_ptr2 = x509bundle_Bundle_Clone(bundle_ptr1);
 
     ck_assert(x509bundle_Bundle_Equal(bundle_ptr1, bundle_ptr2));
@@ -903,7 +903,7 @@ START_TEST(test_x509bundle_Bundle_GetX509BundleForTrustDomain)
     spiffeid_TrustDomain td2 = {"example2.com"};
     err_t err;
 
-    x509bundle_Bundle *bundle_ptr = x509bundle_Load(td1, "certs.pem", &err);
+    x509bundle_Bundle *bundle_ptr = x509bundle_Load(td1, "./resources/certs.pem", &err);
     
     x509bundle_Bundle *td_bundle;
 
