@@ -2,7 +2,7 @@
 #include "backoff.h"
 
 
-Backoff newBackoff(timespec initial, timespec max){
+Backoff newBackoff(struct timespec initial, struct timespec max){
     Backoff ret;
 
     ret.initial = initial; //set to canon representation
@@ -14,19 +14,20 @@ Backoff newBackoff(timespec initial, timespec max){
     ret.max.tv_nsec = ret.max.tv_nsec%10000000000;
 
     ret.times = 0;
+    return ret;
 }
 
 Backoff newDefaultBackoff(){
-    timespec initial = SECOND;
-    timespec max = SECOND;
+    struct timespec initial = SECOND;
+    struct timespec max = SECOND;
     max.tv_sec = SECOND.tv_sec * 30; //30 seconds
     return newBackoff(initial,max);
 }
 
 
-timespec nextTime(Backoff* backoff){
+struct timespec nextTime(Backoff* backoff){
 
-    timespec delta = backoff->initial;
+    struct timespec delta = backoff->initial;
     int mult = pow(2,backoff->times); // 2^times (exponential backoff)
 
     delta.tv_sec *= mult;
@@ -38,10 +39,10 @@ timespec nextTime(Backoff* backoff){
         delta = backoff->max;
     }
 
-    timespec now;
+    struct timespec now;
     timespec_get(&now,0);
 
-    timespec ret;
+    struct timespec ret;
     ret.tv_sec = now.tv_sec + delta.tv_sec;
     ret.tv_nsec = now.tv_nsec + delta.tv_nsec;
 

@@ -1,21 +1,21 @@
-#ifndef BACKOFF_H
-#define BACKOFF_H
+#ifndef __INCLUDE_WORKLOAD_BACKOFF_H__
+#define __INCLUDE_WORKLOAD_BACKOFF_H__
 
 #include <time.h>
 
-const timespec SECOND = timespec{1,0};
+const struct timespec SECOND = {1,0};
 
 typedef struct Backoff
 {
-    timespec initial; //initial wait time for backoff
-    timespec max;
+    struct timespec initial; //initial wait time for backoff
+    struct timespec max;
     int times;
 
 } Backoff;
 
 Backoff newDefaultBackoff(); // constructor with default settings
-Backoff newBackoff(timespec initial, timespec max); //constructor
-timespec nextTime(Backoff* backoff); // returns a timestamp
+Backoff newBackoff(struct timespec initial, struct timespec max); //constructor
+struct timespec nextTime(Backoff* backoff); // returns a timestamp
 void resetBackoff(Backoff* backoff);
 
-#endif //BACKOFF_H
+#endif //__INCLUDE_WORKLOAD_BACKOFF_H__
