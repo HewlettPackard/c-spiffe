@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 int main(void) {
-   err_t error = NO_ERROR;
+  err_t error = NO_ERROR;
   workloadapi_Client *client = workloadapi_NewClient(&error);
   x509svid_SVID *svid = workloadapi_FetchX509SVID(client,&error);
   printf("Address : %p\n", svid);

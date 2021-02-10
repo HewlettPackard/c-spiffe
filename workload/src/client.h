@@ -91,7 +91,6 @@ x509svid_SVID** workloadapi_FetchX509SVIDs(workloadapi_Client* client, err_t* er
 ///func (c *Client) WatchJWTBundles(ctx context.Context, watcher JWTBundleWatcher) error
 ///func (c *Client) ValidateJWTSVID(ctx context.Context, token, audience string) (*jwtsvid.SVID, error)
 ///func (c *Client) watchJWTBundles(ctx context.Context, watcher JWTBundleWatcher, backoff *backoff) error
-
 #ifdef __cplusplus
 }
 #endif

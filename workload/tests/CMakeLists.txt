@@ -85,7 +85,7 @@ target_link_libraries(check_watcher ${CHECK_LIBRARIES}
 libwatcher
 libclient
 libsource
-  OpenSSL::SSL
+ OpenSSL::SSL
   libspiffeid
   libinternal
   uriparser

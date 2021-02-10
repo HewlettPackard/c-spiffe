@@ -69,6 +69,7 @@ x509bundle_Set *workloadapi_parseX509Bundles(const X509SVIDResponse *rep, err_t 
             x509bundle_Set_Add(set, b);
         }
 
+    
         return set;
     }
     //null pointer error
@@ -530,3 +531,4 @@ x509svid_SVID* workloadapi_FetchX509SVID(workloadapi_Client* client, err_t *err)
     arrfree(svids); //free outer array
     return ret_svid; //no response -> no bundle
 }
+
