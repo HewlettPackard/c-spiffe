@@ -1,12 +1,11 @@
-#include "requestor.h"
+#include "client.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 int main(void) {
-  workloadapi_Requestor *requestor =
-      workloadapi_RequestorInit("unix:///tmp/agent.sock");
-
-  x509svid_SVID *svid = workloadapi_FetchDefaultX509SVID(requestor);
+   err_t error = NO_ERROR;
+  workloadapi_Client *client = workloadapi_NewClient(&error);
+  x509svid_SVID *svid = workloadapi_FetchX509SVID(client,&error);
   printf("Address : %p\n", svid);
 
   if (svid) {
@@ -15,7 +14,7 @@ int main(void) {
     printf("Cert(s) Address: %p\n", svid->certs);
     printf("Key Address: %p\n", svid->privateKey);
   }
-  workloadapi_RequestorFree(requestor);
+  workloadapi_FreeClient(client);
   x509svid_SVID_Free(svid, true);
 
   return 0;
