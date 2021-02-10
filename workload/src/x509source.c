@@ -1,33 +1,51 @@
 #include "x509source.h"
+#include "watcher.h"
 
-typedef struct workloadapi_X509SourceConfig
-{
-    workloadapi_WatcherConfig watcher;
-    x509svid_SVID* (*picker)(x509svid_SVID**);
-} workloadapi_X509SourceConfig;
 
-workloadapi_X509Source* workloadapi_NewX509Source(
-    workloadapi_X509Context *ctx, err_t *err)
+void workloadapi_x509Source_onX509ContextCallback(workloadapi_X509Context* x509cntx, void* args){
+    workloadapi_X509Source* source = (workloadapi_X509Source*) args;
+    workloadapi_X509Source_applyX509Context(source,x509cntx);
+}
+//blocks
+workloadapi_X509Source* workloadapi_NewX509Source(workloadapi_X509SourceConfig *config,err_t *err)
 {
-    workloadapi_X509SourceConfig *config = malloc(sizeof *config);
-    memset(config, 0, sizeof *config);
+    if(!config){
+        config = (workloadapi_X509SourceConfig *)malloc(sizeof *config);
+        memset(config, 0, sizeof *config);
+    }
+    
     ///TODO: add X509SourceOption to set config
-
-    workloadapi_X509Source *source = malloc(sizeof *source);
-    source->picker = config->picker;
-
-    ///TODO: initialize callback properly;
-    workloadapi_X509Callback cb = {.args = NULL, .func = NULL};
-    source->watcher = workloadapi_newWatcher(config->watcher, cb, err);
-
-    if(!(*err))
-    {
-        return source;
+    
+    workloadapi_X509Source *source = (workloadapi_X509Source *) malloc(sizeof *source);
+    source->config = config;
+    if(!source->config->picker){
+        source->config->picker = x509svid_SVID_GetDefaultX509SVID;
     }
 
-    workloadapi_X509Source_Free(source);
-    return NULL;
+    workloadapi_X509Callback cb = {.args = source, .func = workloadapi_x509Source_onX509ContextCallback};
+    source->watcher = workloadapi_newWatcher(config->watcherConfig, cb, err);
+    if((*err))
+    {
+        workloadapi_X509Source_Free(source);
+        return NULL;
+    }
+    *err = workloadapi_startWatcher(source->watcher); //blocks until first update
+    if((*err))
+    {
+        workloadapi_X509Source_Free(source);
+        return NULL;
+    }
+    return source;
 }
+
+///TODO: migrate to x509svid/
+x509svid_SVID* x509svid_SVID_GetDefaultX509SVID(x509svid_SVID **svids){
+    if(!svids){
+        return NULL;
+    }
+    return svids[0];
+}
+
 
 err_t workloadapi_X509Source_Close(workloadapi_X509Source *source)
 {
@@ -45,7 +63,8 @@ x509svid_SVID* workloadapi_X509Source_GetX509SVID(
     if(!(*err))
     {
         mtx_lock(&(source->mtx));
-        x509svid_SVID *svid = source->svid;
+        x509svid_SVID *svid = source->config->picker? 
+        source->config->picker(source->SVIDs) : source->SVIDs[0];
         mtx_unlock(&(source->mtx));
 
         if(svid)
@@ -61,7 +80,7 @@ x509svid_SVID* workloadapi_X509Source_GetX509SVID(
 }
 
 x509bundle_Bundle* workloadapi_X509Source_GetX509BundleForTrustDomain(
-    workloadapi_X509Source *source, spiffeid_TrustDomain td, err_t *err)
+    workloadapi_X509Source *source, spiffeid_TrustDomain *td, err_t *err)
 {
     *err = workloadapi_X509Source_checkClosed(source);
     if(!(*err))
@@ -79,19 +98,22 @@ err_t workloadapi_X509Source_WaitUntilUpdated(
     return workloadapi_Watcher_WaitUntilUpdated(source->watcher);
 }
 
-void workloadapi_X509Source_Updated()
-{
+// void workloadapi_X509Source_Updated()
+// {
 
-}
+// }
 
-void workloadapi_X509Source_setX509Context(
+
+void workloadapi_X509Source_applyX509Context(
     workloadapi_X509Source *source, workloadapi_X509Context *ctx)
 {
-    x509svid_SVID *svid = source->picker? 
-        source->picker(ctx->SVIDs) : ctx->SVIDs[0];
-
     mtx_lock(&(source->mtx));
-    source->svid = svid;
+    x509bundle_Set_Free(source->bundles);
+    for(int i = 0; i < arrlenu(source->SVIDs); i++){
+        x509svid_SVID_Free(source->SVIDs[i], true);
+    }
+    arrfree(source->SVIDs);
+    source->SVIDs = ctx->SVIDs;
     source->bundles = ctx->Bundles;
     mtx_unlock(&(source->mtx));
 }
@@ -113,9 +135,16 @@ void workloadapi_X509Source_Free(workloadapi_X509Source *source)
 {
     if(source)
     {
+        mtx_lock(&(source->mtx));
         x509bundle_Set_Free(source->bundles);
-        x509svid_SVID_Free(source->svid, true);
-        workloadapi_freeWatcher(source->watcher);
+        
+        for(int i = 0; i < arrlenu(source->SVIDs); i++){
+            x509svid_SVID_Free(source->SVIDs[i], true);
+        }
+        arrfree(source->SVIDs);
+        if(source->watcher) workloadapi_freeWatcher(source->watcher);
+        free(source->config);
+        mtx_unlock(&(source->mtx));
         free(source);
     }
 }
