@@ -61,10 +61,11 @@ END_TEST
 
 START_TEST(test_FILE_to_string)
 {
-    FILE *f = fopen("test.txt", "r");
+    FILE *f = fopen("./resources/test.txt", "r");
     string_t buffer = FILE_to_string(f);
     fclose(f);
 
+    ck_assert_ptr_ne(buffer, NULL);
     ck_assert_uint_ge(arrlenu(buffer), 63);
     ck_assert_str_eq(buffer, 
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"

@@ -12,10 +12,9 @@ set(SOURCES_CHECK
 
 add_executable(check_x509util ${SOURCES_CHECK})
 
-target_link_libraries(check_x509util libsvid ${CHECK_LIBRARIES}
+target_link_libraries(check_x509util libinternal ${CHECK_LIBRARIES}
   OpenSSL::SSL
   libspiffeid
-  libinternal
   uriparser
   libbundle
   jansson
