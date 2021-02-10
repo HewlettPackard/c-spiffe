@@ -1,4 +1,6 @@
+#include "backoff.h"
 #include "client.h"
+#include "watcher.h"
 #include "../../internal/x509util/src/util.h"
 
 #include <grpc/grpc.h>
@@ -8,6 +10,30 @@
 #include "../../svid/x509svid/src/svid.h"
 #include "../../bundle/x509bundle/src/bundle.h"
 #include "../../bundle/x509bundle/src/set.h"
+
+x509bundle_Bundle *workloadapi_parseX509Bundle(string_t id, const byte *bundle_bytes, const size_t len, err_t *err)
+{
+    x509bundle_Bundle *bundle = NULL;
+
+    if (id && bundle_bytes)
+    {
+        spiffeid_TrustDomain td = spiffeid_TrustDomainFromString(id, err);
+
+        if (!(*err))
+        {
+            X509 **certs = x509util_ParseCertificates(bundle_bytes, len, err);
+
+            if (!(*err) && arrlenu(certs) > 0)
+            {
+                bundle = x509bundle_FromX509Authorities(td, certs);
+            }
+        }
+
+        spiffeid_TrustDomain_Free(&td, false);
+    }
+
+    return bundle;
+}
 
 x509bundle_Set *workloadapi_parseX509Bundles(const X509SVIDResponse *rep, err_t *err)
 {
@@ -50,29 +76,65 @@ x509bundle_Set *workloadapi_parseX509Bundles(const X509SVIDResponse *rep, err_t 
     return NULL;
 }
 
-x509bundle_Bundle *workloadapi_parseX509Bundle(string_t id, const byte *bundle_bytes, const size_t len, err_t *err)
-{
-    x509bundle_Bundle *bundle = NULL;
 
-    if (id && bundle_bytes)
-    {
-        spiffeid_TrustDomain td = spiffeid_TrustDomainFromString(id, err);
-
-        if (!(*err))
-        {
-            X509 **certs = x509util_ParseCertificates(bundle_bytes, len, err);
-
-            if (!(*err) && arrlenu(certs) > 0)
-            {
-                bundle = x509bundle_FromX509Authorities(td, certs);
-            }
-        }
-
-        spiffeid_TrustDomain_Free(&td, false);
+x509svid_SVID** workloadapi_parseX509SVIDs(X509SVIDResponse *resp,
+                                            bool firstOnly,
+                                            err_t *err){
+    if(!resp){
+        *err = ERROR2;
+        return NULL;
     }
-
-    return bundle;
+    x509svid_SVID** x509svids = NULL;
+    *err = NO_ERROR;
+    for (auto &&id : resp->svids())
+    {
+        //assemble SVID from response.
+        auto x509svid = x509svid_ParseRaw((byte*)id.x509_svid().data(),
+                                    id.x509_svid().length(),
+                                    (byte*) id.x509_svid_key().data(), 
+                                    id.x509_svid_key().length(),
+                                    err);
+        if(*err!= NO_ERROR)
+            return NULL;
+        else
+            arrpush(x509svids,x509svid); 
+        if(firstOnly)
+            break;//first SVID done.
+    }
+    return x509svids;
 }
+
+workloadapi_X509Context* workloadapi_parseX509Context(X509SVIDResponse *resp, err_t *err){
+    auto svids = workloadapi_parseX509SVIDs(resp,false,err);
+    if(*err != NO_ERROR){
+        return NULL;
+    }
+    auto bundles = workloadapi_parseX509Bundles(resp,err);
+    if(*err != NO_ERROR){
+        for (int i = 0; i < arrlen(svids);i++)
+        {
+            x509svid_SVID_Free(svids[i],true);
+        }
+        arrfree(svids);
+        return NULL;
+    }
+    *err = NO_ERROR;
+    workloadapi_X509Context* cntx = (workloadapi_X509Context*) calloc(1,sizeof *cntx);
+    if(!cntx){
+        for (int i = 0; i < arrlen(svids);i++)
+        {
+            x509svid_SVID_Free(svids[i],true);
+        }
+        arrfree(svids);
+        x509bundle_Set_Free(bundles);
+        *err = ERROR5;
+        return NULL;
+    }
+    cntx->Bundles = bundles;
+    cntx->SVIDs = svids;
+    return cntx;
+}
+
 
 workloadapi_Client *workloadapi_NewClient(err_t *error)
 {
@@ -160,6 +222,7 @@ err_t workloadapi_CloseClient(workloadapi_Client *client)
     delete ((SpiffeWorkloadAPI::StubInterface *)client->stub); //delete it since grpc new'd it internally and we released it.
     client->stub = NULL;
     //grpc will free the channel when no stub is using it.
+    return NO_ERROR;
 }
 
 err_t workloadapi_setClientAddress(workloadapi_Client *client, const char *address)
@@ -175,6 +238,7 @@ err_t workloadapi_setClientAddress(workloadapi_Client *client, const char *addre
     }
     ///TODO: validate address as URI
     client->address = string_new(address);
+    return NO_ERROR;
 }
 
 err_t workloadapi_addClientHeader(workloadapi_Client *client, const char *key, const char *value)
@@ -195,11 +259,13 @@ err_t workloadapi_setClientHeader(workloadapi_Client *client, const char *key, c
 {
     workloadapi_clearClientHeaders(client);
     workloadapi_addClientHeader(client, key, value);
+    return NO_ERROR;
 }
 
 err_t workloadapi_clearClientHeaders(workloadapi_Client *client)
 {
     util_string_arr_t_Free(client->headers);
+    return NO_ERROR;
 }
 
 err_t workloadapi_setClientStub(workloadapi_Client* client, stub_ptr stub){
@@ -309,8 +375,8 @@ err_t workloadapi_watchX509Context(workloadapi_Client* client, workloadapi_Watch
             workloadapi_Watcher_OnX509ContextWatchError(watcher,err);
         }else{
             workloadapi_Watcher_OnX509ContextUpdate(watcher,x509context);
+            free(x509context);
         }
-        ///TODO: free context.
     }
 }
 
@@ -325,7 +391,7 @@ err_t workloadapi_handleWatchError(workloadapi_Client* client, err_t error, Back
     }
 
     ///TODO: Log
-    timespec retryAfter = nextTime(backoff);
+    struct timespec retryAfter = nextTime(backoff);
 
     mtx_lock(&(client->closedMutex));
     if(client->closed){
@@ -348,63 +414,6 @@ err_t workloadapi_handleWatchError(workloadapi_Client* client, err_t error, Back
     return ERROR2;///shouldn't reach this.
 }
 
-workloadapi_X509Context* workloadapi_parseX509Context(X509SVIDResponse *resp, err_t *err){
-    auto svids = workloadapi_parseX509SVIDs(resp,false,err);
-    if(*err != NO_ERROR){
-        return NULL;
-    }
-    auto bundles = workloadapi_parseX509Bundles(resp,err);
-    if(*err != NO_ERROR){
-        for (int i = 0; i < arrlen(svids);i++)
-        {
-            x509svid_SVID_Free(svids[i],true);
-        }
-        arrfree(svids);
-        return NULL;
-    }
-    *err = NO_ERROR;
-    workloadapi_X509Context* cntx = (workloadapi_X509Context*) calloc(1,sizeof *cntx);
-    if(!cntx){
-        for (int i = 0; i < arrlen(svids);i++)
-        {
-            x509svid_SVID_Free(svids[i],true);
-        }
-        arrfree(svids);
-        x509bundle_Set_Free(bundles);
-        *err = ERROR5;
-        return NULL;
-    }
-    cntx->Bundles = bundles;
-    cntx->SVIDs = svids;
-    return cntx;
-}
-
-x509svid_SVID** workloadapi_parseX509SVIDs(X509SVIDResponse *resp,
-                                            bool firstOnly,
-                                            err_t *err){
-    if(!resp){
-        *err = ERROR2;
-        return NULL;
-    }
-    x509svid_SVID** x509svids = NULL;
-    *err = NO_ERROR;
-    for (auto &&id : resp->svids())
-    {
-        //assemble SVID from response.
-        auto x509svid = x509svid_ParseRaw((byte*)id.x509_svid().data(),
-                                    id.x509_svid().length(),
-                                    (byte*) id.x509_svid_key().data(), 
-                                    id.x509_svid_key().length(),
-                                    err);
-        if(*err!= NO_ERROR)
-            return NULL;
-        else
-            arrpush(x509svids,x509svid); 
-        if(firstOnly)
-            break;//first SVID done.
-    }
-    return x509svids;
-}
 
 workloadapi_X509Context* workloadapi_FetchX509Context(workloadapi_Client* client, err_t* error){
     grpc::ClientContext ctx;
@@ -426,7 +435,9 @@ workloadapi_X509Context* workloadapi_FetchX509Context(workloadapi_Client* client
     if(success)
     {
         ret = workloadapi_parseX509Context(&response, error);
-        //TODO check error
+        if(*error != NO_ERROR){
+            return NULL;
+        }
     }
     
     return ret; //no response -> no bundle

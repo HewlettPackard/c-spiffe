@@ -1,12 +1,12 @@
 #ifndef __INCLUDE_WORKLOAD_CLIENT_H__
 #define __INCLUDE_WORKLOAD_CLIENT_H__
 
-// #include "workload.pb.h"
+
+#include "backoff.h"
+#include "watcher.h"
 #include "../../svid/x509svid/src/svid.h"
 #include "../../bundle/x509bundle/src/set.h"
 #include "../../utils/src/util.h"
-#include "watcher.h"
-#include "backoff.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -14,6 +14,7 @@ extern "C" {
 
 ///pointer to gRPC construct, can't use those types in the header
 typedef void* stub_ptr; //api stub
+typedef struct workloadapi_Watcher workloadapi_Watcher;
 
 typedef struct workloadapi_Client {
     stub_ptr stub;
