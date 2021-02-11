@@ -156,7 +156,7 @@ workloadapi_Client *workloadapi_NewClient(err_t *error)
     return client;
 }
 
-err_t workloadapi_FreeClient(workloadapi_Client *client)
+err_t workloadapi_Client_Free(workloadapi_Client *client)
 {
     if (!client)
     {
@@ -174,7 +174,7 @@ err_t workloadapi_FreeClient(workloadapi_Client *client)
     return NO_ERROR;
 }
 
-err_t workloadapi_ConnectClient(workloadapi_Client *client)
+err_t workloadapi_Client_Connect(workloadapi_Client *client)
 {
     if (!client)
     {
@@ -200,7 +200,7 @@ err_t workloadapi_ConnectClient(workloadapi_Client *client)
     return NO_ERROR;
 }
 
-err_t workloadapi_CloseClient(workloadapi_Client *client)
+err_t workloadapi_Client_Close(workloadapi_Client *client)
 {
     if (!client)
     {
@@ -225,7 +225,7 @@ err_t workloadapi_CloseClient(workloadapi_Client *client)
     return NO_ERROR;
 }
 
-err_t workloadapi_setClientAddress(workloadapi_Client *client, const char *address)
+err_t workloadapi_Client_SetAddress(workloadapi_Client *client, const char *address)
 {
     if (!client)
     {
@@ -241,7 +241,7 @@ err_t workloadapi_setClientAddress(workloadapi_Client *client, const char *addre
     return NO_ERROR;
 }
 
-err_t workloadapi_addClientHeader(workloadapi_Client *client, const char *key, const char *value)
+err_t workloadapi_Client_AddHeader(workloadapi_Client *client, const char *key, const char *value)
 {
     if (!client)
     {
@@ -255,20 +255,20 @@ err_t workloadapi_addClientHeader(workloadapi_Client *client, const char *key, c
     return NO_ERROR;
 }
 
-err_t workloadapi_setClientHeader(workloadapi_Client *client, const char *key, const char *value)
+err_t workloadapi_Client_SetHeader(workloadapi_Client *client, const char *key, const char *value)
 {
-    workloadapi_clearClientHeaders(client);
-    workloadapi_addClientHeader(client, key, value);
+    workloadapi_Client_ClearHeaders(client);
+    workloadapi_Client_AddHeader(client, key, value);
     return NO_ERROR;
 }
 
-err_t workloadapi_clearClientHeaders(workloadapi_Client *client)
+err_t workloadapi_Client_ClearHeaders(workloadapi_Client *client)
 {
     util_string_arr_t_Free(client->headers);
     return NO_ERROR;
 }
 
-err_t workloadapi_setClientStub(workloadapi_Client* client, stub_ptr stub){
+err_t workloadapi_Client_SetStub(workloadapi_Client* client, workloadapi_Stub stub){
     if(!client){
         return ERROR1;
     }
@@ -281,52 +281,52 @@ err_t workloadapi_setClientStub(workloadapi_Client* client, stub_ptr stub){
     return NO_ERROR;
 }
 
-void setDefaultClientAddressOption(workloadapi_Client *client, void *not_used)
+void workloadapi_Client_setDefaultAddressOption(workloadapi_Client *client, void *not_used)
 {
-    workloadapi_setClientAddress(client, "unix:///tmp/agent.sock");
+    workloadapi_Client_SetAddress(client, "unix:///tmp/agent.sock");
 }
 
-void setDefaultClientHeaderOption(workloadapi_Client *client, void *not_used)
+void workloadapi_Client_setDefaultHeaderOption(workloadapi_Client *client, void *not_used)
 {
-    workloadapi_setClientHeader(client, "workload.spiffe.io", "true");
+    workloadapi_Client_SetHeader(client, "workload.spiffe.io", "true");
 }
 
-void workloadapi_applyClientOption(workloadapi_Client *client, workloadapi_ClientOption option)
+void workloadapi_Client_ApplyOption(workloadapi_Client *client, workloadapi_ClientOption option)
 {
-    workloadapi_applyClientOptionWithArg(client, option, NULL);
+    workloadapi_Client_ApplyOptionWithArg(client, option, NULL);
 }
 
-void workloadapi_applyClientOptionWithArg(workloadapi_Client *client, workloadapi_ClientOption option, void *arg)
+void workloadapi_Client_ApplyOptionWithArg(workloadapi_Client *client, workloadapi_ClientOption option, void *arg)
 {
     option(client, arg);
 }
 
-void workloadapi_defaultClientOptions(workloadapi_Client *client, void *not_used)
+void workloadapi_Client_defaultOptions(workloadapi_Client *client, void *not_used)
 {
-    workloadapi_applyClientOption(client, setDefaultClientAddressOption);
-    workloadapi_applyClientOption(client, setDefaultClientHeaderOption);
+    workloadapi_Client_ApplyOption(client, workloadapi_Client_setDefaultAddressOption);
+    workloadapi_Client_ApplyOption(client, workloadapi_Client_setDefaultHeaderOption);
 
     ///TODO: logger?
     ///TODO: dialOptions?
 }
 
-err_t workloadapi_WatchX509Context(workloadapi_Client* client, workloadapi_Watcher* watcher){
+err_t workloadapi_Client_WatchX509Context(workloadapi_Client* client, workloadapi_Watcher* watcher){
     if(!client) return ERROR1;
     if(!watcher) return ERROR2;
 
-    Backoff backoff = newBackoff({1,0},{30,0});
+    workloadapi_Backoff backoff = workloadapi_NewBackoff({1,0},{30,0});
 
     while(true){
-        err_t err = workloadapi_watchX509Context(client,watcher,&backoff);
+        err_t err = workloadapi_Client_watchX509Context(client,watcher,&backoff);
         workloadapi_Watcher_OnX509ContextWatchError(watcher,err);
-        err = workloadapi_handleWatchError(client,err,&backoff);
+        err = workloadapi_Client_HandleWatchError(client,err,&backoff);
         if(err != NO_ERROR){
             return err;
         }
     }
 }
 
-err_t workloadapi_watchX509Context(workloadapi_Client* client, workloadapi_Watcher* watcher, Backoff *backoff){
+err_t workloadapi_Client_watchX509Context(workloadapi_Client* client, workloadapi_Watcher* watcher, workloadapi_Backoff *backoff){
     
     if(!client){
         return ERROR2;
@@ -368,7 +368,7 @@ err_t workloadapi_watchX509Context(workloadapi_Client* client, workloadapi_Watch
             }
             return ERROR4; //no more messages.
         }
-        resetBackoff(backoff);
+        workloadapi_Backoff_Reset(backoff);
         workloadapi_X509Context *x509context = workloadapi_parseX509Context(&response,&err);
         if(err != NO_ERROR){
             ///TODO: log parse error
@@ -380,7 +380,7 @@ err_t workloadapi_watchX509Context(workloadapi_Client* client, workloadapi_Watch
     }
 }
 
-err_t workloadapi_handleWatchError(workloadapi_Client* client, err_t error, Backoff *backoff){
+err_t workloadapi_Client_HandleWatchError(workloadapi_Client* client, err_t error, workloadapi_Backoff *backoff){
 
     if(error == grpc::StatusCode::CANCELLED){
         return error;
@@ -391,7 +391,7 @@ err_t workloadapi_handleWatchError(workloadapi_Client* client, err_t error, Back
     }
 
     ///TODO: Log
-    struct timespec retryAfter = nextTime(backoff);
+    struct timespec retryAfter = workloadapi_Backoff_NextTime(backoff);
 
     mtx_lock(&(client->closedMutex));
     if(client->closed){
@@ -415,7 +415,7 @@ err_t workloadapi_handleWatchError(workloadapi_Client* client, err_t error, Back
 }
 
 
-workloadapi_X509Context* workloadapi_FetchX509Context(workloadapi_Client* client, err_t* error){
+workloadapi_X509Context* workloadapi_Client_FetchX509Context(workloadapi_Client* client, err_t* error){
     grpc::ClientContext ctx;
 
     if(client->headers){
@@ -443,7 +443,7 @@ workloadapi_X509Context* workloadapi_FetchX509Context(workloadapi_Client* client
     return ret; //no response -> no bundle
 }
 
-x509bundle_Set* workloadapi_FetchX509Bundles(workloadapi_Client* client, err_t *err)
+x509bundle_Set* workloadapi_Client_FetchX509Bundles(workloadapi_Client* client, err_t *err)
 {    
     grpc::ClientContext ctx;
 
@@ -471,7 +471,7 @@ x509bundle_Set* workloadapi_FetchX509Bundles(workloadapi_Client* client, err_t *
     return ret_set; //no response -> no bundle
 }
 
-x509svid_SVID** workloadapi_FetchX509SVIDs(workloadapi_Client* client, err_t *err)
+x509svid_SVID** workloadapi_Client_FetchX509SVIDs(workloadapi_Client* client, err_t *err)
 {    
     grpc::ClientContext ctx;
 
@@ -500,7 +500,7 @@ x509svid_SVID** workloadapi_FetchX509SVIDs(workloadapi_Client* client, err_t *er
 }
 
 
-x509svid_SVID* workloadapi_FetchX509SVID(workloadapi_Client* client, err_t *err)
+x509svid_SVID* workloadapi_Client_FetchX509SVID(workloadapi_Client* client, err_t *err)
 {    
     grpc::ClientContext ctx;
 

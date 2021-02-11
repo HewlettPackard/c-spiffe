@@ -2,8 +2,8 @@
 #include "backoff.h"
 
 
-Backoff newBackoff(struct timespec initial, struct timespec max){
-    Backoff ret;
+workloadapi_Backoff workloadapi_NewBackoff(struct timespec initial, struct timespec max){
+    workloadapi_Backoff ret;
 
     ret.initial = initial; //set to canon representation
     ret.initial.tv_sec += ret.initial.tv_nsec/10000000000;
@@ -17,14 +17,14 @@ Backoff newBackoff(struct timespec initial, struct timespec max){
     return ret;
 }
 
-Backoff newDefaultBackoff(){
+workloadapi_Backoff workloadapi_NewDefaultBackoff(){
     struct timespec initial = {1,0};
     struct timespec max = {30,0};//30 seconds
-    return newBackoff(initial,max);
+    return workloadapi_NewBackoff(initial,max);
 }
 
 
-struct timespec nextTime(Backoff* backoff){
+struct timespec workloadapi_Backoff_NextTime(workloadapi_Backoff* backoff){
 
     struct timespec delta = backoff->initial;
     int mult = pow(2,backoff->times); // 2^times (exponential backoff)
@@ -52,6 +52,6 @@ struct timespec nextTime(Backoff* backoff){
     return ret;
 }
 
-void resetBackoff(Backoff* backoff){
+void workloadapi_Backoff_Reset(workloadapi_Backoff* backoff){
     backoff->times = 0;
 }

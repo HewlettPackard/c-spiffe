@@ -9,7 +9,7 @@ int workloadapi_Watcher_X509backgroundFunc(void * _watcher){
 
     err_t error = NO_ERROR;
     
-    error = workloadapi_WatchX509Context(watcher->client,watcher); 
+    error = workloadapi_Client_WatchX509Context(watcher->client,watcher); 
 
     return (int) error;
 }
@@ -32,7 +32,7 @@ workloadapi_Watcher* workloadapi_newWatcher(workloadapi_WatcherConfig config, wo
         if(config.clientOptions){
             for (int i = 0; i < arrlen(config.clientOptions); i++)
             {
-                workloadapi_applyClientOption(config.client,config.clientOptions[i]);
+                workloadapi_Client_ApplyOption(config.client,config.clientOptions[i]);
             }
             
         }
@@ -47,7 +47,7 @@ workloadapi_Watcher* workloadapi_newWatcher(workloadapi_WatcherConfig config, wo
         if(config.clientOptions){
             for (int i = 0; i < arrlen(config.clientOptions); i++)
             {
-                workloadapi_applyClientOption(newW->client,config.clientOptions[i]);
+                workloadapi_Client_ApplyOption(newW->client,config.clientOptions[i]);
             }
             
         }
@@ -79,7 +79,7 @@ workloadapi_Watcher* workloadapi_newWatcher(workloadapi_WatcherConfig config, wo
 }
 
 //starts watcher and blocks waiting on an update.
-err_t workloadapi_startWatcher(workloadapi_Watcher* watcher){
+err_t workloadapi_Watcher_Start(workloadapi_Watcher* watcher){
     err_t error = NO_ERROR;
     if(!watcher){
         return ERROR1; /// NULL WATCHER;
@@ -103,18 +103,18 @@ err_t workloadapi_startWatcher(workloadapi_Watcher* watcher){
 }
 
 //drops connection to WorkloadAPI (if owns client)
-err_t workloadapi_closeWatcher(workloadapi_Watcher* watcher){
+err_t workloadapi_Watcher_Close(workloadapi_Watcher* watcher){
     mtx_lock(&(watcher->closeMutex));
     watcher->closed = true;
     err_t error = NO_ERROR;
     ///TODO: check and set watcher->closeError?
     if(watcher->ownsClient){
-        error = workloadapi_CloseClient(watcher->client);
+        error = workloadapi_Client_Close(watcher->client);
         if(error != NO_ERROR){
             mtx_unlock(&(watcher->closeMutex));
             return error;
         }
-        error = workloadapi_FreeClient(watcher->client);
+        error = workloadapi_Client_Free(watcher->client);
         if(error != NO_ERROR){
             //shouldn't reach here.
         }
@@ -129,7 +129,7 @@ err_t workloadapi_closeWatcher(workloadapi_Watcher* watcher){
 }
 
 //drops connection to WorkloadAPI (if owns client) MUST ALREADY BE CLOSED.
-err_t workloadapi_freeWatcher(/*context,*/ workloadapi_Watcher* watcher){
+err_t workloadapi_Watcher_Free(/*context,*/ workloadapi_Watcher* watcher){
     ///TODO: free watcher 
     mtx_destroy(&(watcher->closeMutex));
     cnd_destroy(&(watcher->updateCond));

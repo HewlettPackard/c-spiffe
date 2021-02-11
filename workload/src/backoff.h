@@ -7,18 +7,18 @@
 extern "C" {
 #endif
 
-typedef struct Backoff
+typedef struct workloadapi_Backoff
 {
     struct timespec initial; //initial wait time for backoff
     struct timespec max;
     int times;
 
-} Backoff;
+} workloadapi_Backoff;
 
-Backoff newDefaultBackoff(); // constructor with default settings
-Backoff newBackoff(struct timespec initial, struct timespec max); //constructor
-struct timespec nextTime(Backoff* backoff); // returns a timestamp
-void resetBackoff(Backoff* backoff);
+workloadapi_Backoff workloadapi_NewDefaultBackoff(); // constructor with default settings
+workloadapi_Backoff workloadapi_NewBackoff(struct timespec initial, struct timespec max); //constructor
+struct timespec workloadapi_Backoff_NextTime(workloadapi_Backoff* backoff); // returns a timestamp
+void workloadapi_Backoff_Reset(workloadapi_Backoff* backoff);
 
 #endif //__INCLUDE_WORKLOAD_BACKOFF_H__
 #ifdef __cplusplus

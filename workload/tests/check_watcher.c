@@ -100,7 +100,7 @@ START_TEST(test_workloadapi_newWatcher_creates_client_if_null)
     ///TODO: check if client is valid by...?
 
     //free allocated watcher.
-    workloadapi_freeWatcher(watcher);
+    workloadapi_Watcher_Free(watcher);
 }
 END_TEST
 
@@ -135,7 +135,7 @@ START_TEST(test_workloadapi_newWatcher_uses_provided_client)
     ///TODO: check if client is valid by...?
 
     //free allocated watcher.
-    error = workloadapi_freeWatcher(watcher);
+    error = workloadapi_Watcher_Free(watcher);
     ck_assert_int_eq(error,NO_ERROR);
 }
 END_TEST

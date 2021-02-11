@@ -29,7 +29,7 @@ workloadapi_X509Source* workloadapi_NewX509Source(workloadapi_X509SourceConfig *
         workloadapi_X509Source_Free(source);
         return NULL;
     }
-    *err = workloadapi_startWatcher(source->watcher); //blocks until first update
+    *err = workloadapi_Watcher_Start(source->watcher); //blocks until first update
     if((*err))
     {
         workloadapi_X509Source_Free(source);
@@ -53,7 +53,7 @@ err_t workloadapi_X509Source_Close(workloadapi_X509Source *source)
     source->closed = true;
     mtx_unlock(&(source->closedMtx));
 
-    return workloadapi_closeWatcher(source->watcher);
+    return workloadapi_Watcher_Close(source->watcher);
 }
 
 x509svid_SVID* workloadapi_X509Source_GetX509SVID(
@@ -142,7 +142,7 @@ void workloadapi_X509Source_Free(workloadapi_X509Source *source)
             x509svid_SVID_Free(source->SVIDs[i], true);
         }
         arrfree(source->SVIDs);
-        if(source->watcher) workloadapi_freeWatcher(source->watcher);
+        if(source->watcher) workloadapi_Watcher_Free(source->watcher);
         free(source->config);
         mtx_unlock(&(source->mtx));
         free(source);

@@ -11,13 +11,13 @@ int main(void)
   {
     std::cout << "client error! " << (int)error <<std::endl;
   }
-  workloadapi_defaultClientOptions(client, NULL);
-  error = workloadapi_ConnectClient(client);
+  workloadapi_Client_defaultOptions(client, NULL);
+  error = workloadapi_Client_Connect(client);
   if (error != NO_ERROR)
   {
     std::cout << "conn error! " << (int)error <<std::endl;
   }
-  x509svid_SVID *svid = workloadapi_FetchX509SVID(client, &error);
+  x509svid_SVID *svid = workloadapi_Client_FetchX509SVID(client, &error);
   if (error != NO_ERROR)
   {
     std::cout << "fetch error! " << (int)error <<std::endl;
@@ -30,12 +30,12 @@ int main(void)
               << "Cert(s) Address: " << svid->certs << std::endl
               << "Key Address: " << svid->privateKey << std::endl;
   }
-  error = workloadapi_CloseClient(client);
+  error = workloadapi_Client_Close(client);
   if (error != NO_ERROR)
   {
     std::cout << "close error! " << (int)error <<std::endl;
   }
-  workloadapi_FreeClient(client);
+  workloadapi_Client_Free(client);
   if (error != NO_ERROR)
   {
     std::cout << "free client error! " << (int)error <<std::endl;
