@@ -17,6 +17,22 @@
 #include "../../svid/x509svid/src/svid.h"
 #include "../src/client.h"
 
+///DONE: implemented in client.cc, not part of public interface:
+ 
+x509bundle_Set* workloadapi_parseX509Bundles(const X509SVIDResponse *rep, 
+                                            err_t *err);
+x509bundle_Bundle* workloadapi_parseX509Bundle(string_t id,
+                                            const byte *bundle_bytes,
+                                            const size_t len,
+                                            err_t *err);
+
+workloadapi_X509Context* workloadapi_parseX509Context(X509SVIDResponse *resp, err_t *err);
+
+x509svid_SVID** workloadapi_parseX509SVIDs(X509SVIDResponse *resp,
+                                            bool firstOnly,
+                                            err_t *err);
+
+
 START_TEST(test_workloadapi_parseX509Bundles)
 {
     const int ITERS = 4;
