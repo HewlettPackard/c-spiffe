@@ -2,6 +2,8 @@
 
 C extension for Spiffe platform.
 
+[![Build Status](https://travis-ci.com/HewlettPackard/c-spiffe.svg?branch=master)](https://travis-ci.com/github/HewlettPackard/c-spiffe)
+
 ## Introduction
 
 gRPC C++ examples built with CMake.
@@ -10,66 +12,180 @@ gRPC C++ examples built with CMake.
 
 ```
 .
-├── docker
-|   ├── spiffe.Dockerfile
-|   ├── ci.Dockerfile
-|   ├── test.Dockerfile
-│   └── grpc.Dockerfile
-├── worlkload
-|   ├── src
-|   │   ├── file1.cc
-|   │   ├── file2.cc
-|   │   ├── file3.cc
-|   │   └── CMakeLists.txt
-│   ├── tests
-|   │   ├── test1
-|   │   ├── test2
-|   │   ├── test3
-|   │   └── CMakeLists.txt 
-│   └── CMakeLists.txt
 ├── bundle
-│   ├── jwtbundle
-│   │   ├── src
-│   │   │   ├── file1.cc
-│   │   │   ├── file2.cc
-│   │   │   ├── file3.cc
-|   │   │   └── CMakeLists.txt 
-│   │   ├── tests
-|   │   │   ├── test1
-|   │   │   ├── test2
-|   │   │   ├── test3
-|   │   │   └── CMakeLists.txt 
-│   │   └── CMakeLists.txt
-│   ├── spiffebundle
-│   │   ├── src
-│   │   │   ├── file1.cc
-│   │   │   ├── file2.cc
-│   │   │   ├── file3.cc
-|   │   │   └── CMakeLists.txt 
-│   │   ├── tests
-|   │   │   ├── test1
-|   │   │   ├── test2
-|   │   │   ├── test3
-|   │   │   └── CMakeLists.txt 
-│   │   └── CMakeLists.txt
-│   ├── x509bundle
-│   │   ├── src
-│   │   │   ├── file1.cc
-│   │   │   ├── file2.cc
-│   │   │   ├── file3.cc
-|   │   │   └── CMakeLists.txt 
-│   │   ├── tests
-|   │   │   ├── test1
-|   │   │   ├── test2
-|   │   │   ├── test3
-|   │   │   └── CMakeLists.txt
-|   |   └── CMakeLists.txt
-│   └── CMakeLists.txt
+│   ├── CMakeLists.txt
+│   ├── jwtbundle
+│   │   ├── src
+│   │   │   ├── bundle.c
+│   │   │   ├── bundle.h
+│   │   │   ├── set.c
+│   │   │   └── set.h
+│   │   └── tests
+│   │       ├── check_bundle.c
+│   │       ├── jwk_keys.json
+│   │       └── README
+│   ├── spiffebundle
+│   │   └── src
+│   │       ├── bundle.c
+│   │       ├── bundle.h
+│   │       ├── set.c
+│   │       └── set.h
+│   └── x509bundle
+│       ├── src
+│       │   ├── bundle.c
+│       │   ├── bundle.h
+│       │   ├── set.c
+│       │   └── set.h
+│       └── tests
+│           ├── certs.pem
+│           ├── check_bundle.c
+│           ├── check_set.c
+│           └── README
+├── cmake
+│   ├── config.h.in
+│   ├── COPYING-CMAKE-SCRIPTS.txt
+│   └── FindCheck.cmake
 ├── CMakeLists.txt
-├── LICENSE.md
+├── docker
+│   └── grpc.Dockerfile
+├── file
+├── img
+│   └── ci-process.png
+├── integration_test
+│   ├── behave.ini
+│   ├── common
+│   │   ├── assets
+│   │   │   ├── good-cert-and-key.pem
+│   │   │   └── good-key-and-cert.pem
+│   │   └── constants.py
+│   ├── features
+│   │   ├── environment.py
+│   │   ├── steps
+│   │   │   └── SVID_step.py
+│   │   ├── TS_SVID.feature
+│   │   └── utils.py
+│   ├── get-entries.py
+│   ├── get-entries.sh
+│   ├── README.md
+│   ├── requirements.txt
+│   └── test.txt
+├── internal
+│   ├── CMakeLists.txt
+│   ├── cryptoutil
+│   │   ├── src
+│   │   │   ├── keys.c
+│   │   │   └── keys.h
+│   │   └── tests
+│   │       ├── check_keys.c
+│   │       ├── CMakeLists.txt
+│   │       └── README
+│   ├── jwtutil
+│   │   ├── src
+│   │   │   ├── util.c
+│   │   │   └── util.h
+│   │   └── tests
+│   │       ├── check_util.c
+│   │       ├── CMakeLists.txt
+│   │       └── README
+│   ├── pemutil
+│   │   ├── src
+│   │   │   ├── pem.c
+│   │   │   └── pem.h
+│   │   └── tests
+│   │       ├── check_pem.c
+│   │       ├── CMakeLists.txt
+│   │       └── README
+│   └── x509util
+│       ├── src
+│       │   ├── certpool.c
+│       │   ├── certpool.h
+│       │   ├── util.c
+│       │   └── util.h
+│       └── tests
+│           ├── certs.pem
+│           ├── check_certpool.c
+│           ├── check_util.c
+│           ├── CMakeLists.txt
+│           ├── key-pkcs8-rsa.pem
+│           ├── README
+│           └── resources
+│               ├── certs.pem
+│               └── key-pkcs8-rsa.pem
+├── proto
+│   └── spiffe
+│       └── workload
+│           ├── README.md
+│           └── workload.proto
 ├── protos
-│   ├── workload.proto
-└── README.md
+│   └── workload.proto
+├── README.md
+├── spiffeid
+│   ├── CMakeLists.txt
+│   ├── src
+│   │   ├── id.c
+│   │   ├── id.h
+│   │   ├── match.c
+│   │   ├── match.h
+│   │   ├── trustdomain.c
+│   │   └── trustdomain.h
+│   └── tests
+│       ├── check_id.c
+│       ├── check_match.c
+│       ├── check_trustdomain.c
+│       ├── CMakeLists.txt
+│       └── README
+├── spiffetls
+│   └── tlsconfig
+│       └── src
+│           ├── authorizer.c
+│           └── authorizer.h
+├── svid
+│   ├── CMakeLists.txt
+│   └── x509svid
+│       ├── src
+│       │   ├── svid.c
+│       │   ├── svid.h
+│       │   ├── verify.c
+│       │   └── verify.h
+│       └── tests
+│           ├── check_svid.c
+│           ├── check_verify.c
+│           ├── CMakeLists.txt
+│           ├── README
+│           └── resources
+│               ├── good-cert-and-key.pem
+│               ├── good-key-and-cert.pem
+│               ├── good-leaf-and-intermediate.pem
+│               ├── good-leaf-only.pem
+│               ├── key-pkcs8-ecdsa.pem
+│               └── key-pkcs8-rsa.pem
+├── utils
+│   ├── src
+│   │   ├── stb_ds.h
+│   │   ├── util.c
+│   │   └── util.h
+│   └── tests
+│       ├── check_util.c
+│       ├── README
+│       └── test.txt
+└── workload
+    ├── CMakeLists.txt
+    ├── src
+    │   ├── c_client_example.c
+    │   ├── client.cc
+    │   ├── client.h
+    │   ├── cpp_client_example.cc
+    │   ├── EXAMPLE.md
+    │   ├── grpc_conn_test.cc
+    │   ├── requestor.cc
+    │   └── requestor.h
+    └── tests
+        ├── check_client.cc
+        ├── check_requestor.c
+        ├── check_requestor.cc
+        ├── CMakeLists.txt
+        └── resources
+            └── certs.pem
 ```
 
 ## Dependencies
@@ -131,21 +247,22 @@ To adopt continuous integration, we will need to run your tests on every change 
 
 ![Alt text](img/ci-process.png "Commit, Build and Deploy")
 
-# The .gitlab-ci.yml file
-To use GitLab CI/CD, you need:
+# To use Travis CI/CD, you need:
 
-Application code hosted in a Git repository.
-A file called .gitlab-ci.yml in the root of your repository, which contains the CI/CD configuration.
-In the .gitlab-ci.yml file, you can define:
+Connect Travis CI to your project
+Most CI tools integrate seamlessly with Git services — especially GitHub. Go to travis-ci.com and sign up. I suggest logging in with your GitHub account — it’ll make things easier at later stages.
 
-The scripts you want to run.
-Other configuration files and templates you want to include.
-Dependencies and caches.
-The commands you want to run in sequence and those you want to run in parallel.
-The location to deploy your application to.
-Whether you want to run the scripts automatically or trigger any of them manually.
-The scripts are grouped into jobs, and jobs run as part of a larger pipeline. You can group multiple independent jobs into stages that run in a defined order.
+Inside Travis CI, there is a search bar on the left side of the screen; Click the + sign below it.
 
-You should organize your jobs in a sequence that suits your application and is in accordance with the tests you wish to perform. To visualize the process, imagine the scripts you add to jobs are the same as CLI commands you run on your computer.
+![Alt text](img/my-repository.png "My repository")
 
-When you add a .gitlab-ci.yml file to your repository, GitLab detects it and an application called GitLab Runner runs the scripts defined in the jobs.
+If you connected your GitHub account, you should see a list of your existing repositories, from which you can add:
+
+![Alt text](img/list-projects.png "Projects list")
+
+## The configuration file
+Most CI tools expect a configuration file to exist in the project. Travis CI expects a .travis.yml file to exist in the project root.
+
+ The following example specifies a cpp project that should be built with gcc and the latest versions of docker image.
+
+![Alt text](img/travis.png "Travis file")

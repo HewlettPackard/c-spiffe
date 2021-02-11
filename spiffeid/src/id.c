@@ -83,7 +83,7 @@ string_t spiffeid_Join(string_t td_str,
     }
 }
 
-static UriUriA URL_parse(const string_t str, err_t *err)
+static UriUriA URL_parse(const char *str, err_t *err)
 {
     UriUriA uri;
     const char *err_pos;
@@ -229,7 +229,7 @@ spiffeid_ID spiffeid_ID_New(string_t td_str,
     }
 }
 
-spiffeid_ID spiffeid_FromString(const string_t str, err_t *err)
+spiffeid_ID spiffeid_FromString(const char *str, err_t *err)
 {
     spiffeid_ID id = {{NULL}, NULL};
     UriUriA uri = URL_parse(str, err);

@@ -2,6 +2,8 @@
 
 DOCS/
 test.c
+test2.c
+privkey.pem
 test.json
 *.o
 # Visual Studio Code
@@ -32,4 +34,6 @@ internal/pemutil/tests/pem.o
 internal/x509util/tests/check_util
 internal/x509util/tests/check_util.o
 internal/x509util/tests/util.o
+# Integration test files
+integration_test/data
 

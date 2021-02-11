@@ -330,8 +330,7 @@ x509bundle_Bundle* spiffebundle_Bundle_X509Bundle(spiffebundle_Bundle *b)
 {
     mtx_lock(&(b->mtx));
     x509bundle_Bundle *x509bundle = x509bundle_FromX509Authorities(
-                                                b->td, 
-                                                b->x509Auths);
+                                                b->td, b->x509Auths);
     mtx_unlock(&(b->mtx));
 
     return x509bundle;
@@ -341,8 +340,7 @@ jwtbundle_Bundle* spiffebundle_Bundle_JWTBundle(spiffebundle_Bundle *b)
 {
     mtx_lock(&(b->mtx));
     jwtbundle_Bundle *jwtbundle = jwtbundle_FromJWTAuthorities(
-                                                b->td, 
-                                                b->jwtAuths);
+                                            b->td, b->jwtAuths);
     mtx_unlock(&(b->mtx));
 
     return jwtbundle;

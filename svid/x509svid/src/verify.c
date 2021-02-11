@@ -200,7 +200,7 @@ static X509*** verifyX509(X509 *cert,
 }
 
 X509*** x509svid_ParseAndVerify(byte **raw_certs, 
-                    x509bundle_Bundle *b, 
+                    x509bundle_Source *source, 
                     spiffeid_ID *id, 
                     err_t *err)
 {
@@ -229,11 +229,11 @@ X509*** x509svid_ParseAndVerify(byte **raw_certs,
         }
     }
 
-    return x509svid_Verify(certs, b, id, err);
+    return x509svid_Verify(certs, source, id, err);
 }
 
 X509*** x509svid_Verify(X509 **certs, 
-                    x509bundle_Bundle *b, 
+                    x509bundle_Source *source, 
                     spiffeid_ID *id, 
                     err_t *err)
 {
@@ -241,7 +241,7 @@ X509*** x509svid_Verify(X509 **certs,
     memset(id, 0, sizeof *id);
     *err = NO_ERROR;
 
-    if(arrlenu(certs) > 0 && b)
+    if(arrlenu(certs) > 0 && source)
     {
         X509 *leaf = certs[0];
         spiffeid_ID leaf_id = x509svid_IDFromCert(leaf, err);
@@ -255,10 +255,8 @@ X509*** x509svid_Verify(X509 **certs,
                 !X509_check_ca(leaf))
             {
                 x509bundle_Bundle *bundle = 
-                    x509bundle_Bundle_GetX509BundleForTrustDomain(
-                        b, 
-                        spiffeid_ID_TrustDomain(leaf_id), 
-                        err);
+                    x509bundle_Source_GetX509BundleForTrustDomain(
+                        source, spiffeid_ID_TrustDomain(leaf_id), err);
 
                 if(!(*err))
                 {

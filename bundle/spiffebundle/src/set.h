@@ -21,24 +21,24 @@ typedef struct spiffebundle_Set
 
 spiffebundle_Set* spiffebundle_NewSet(int n_args, ...);
 void spiffebundle_Set_Add(spiffebundle_Set *s, spiffebundle_Bundle *bundle);
-void spiffebundle_Set_Remove(spiffebundle_Set *s, const spiffeid_TrustDomain *td);
-bool spiffebundle_Set_Has(spiffebundle_Set *s, const spiffeid_TrustDomain *td);
+void spiffebundle_Set_Remove(spiffebundle_Set *s, const spiffeid_TrustDomain td);
+bool spiffebundle_Set_Has(spiffebundle_Set *s, const spiffeid_TrustDomain td);
 spiffebundle_Bundle* spiffebundle_Set_Get(spiffebundle_Set *s, 
-                                    const spiffeid_TrustDomain *td,
+                                    const spiffeid_TrustDomain td,
                                     bool *suc);
 spiffebundle_Bundle** spiffebundle_Set_Bundles(spiffebundle_Set *s);
 uint32_t spiffebundle_Set_Len(spiffebundle_Set *s);
 spiffebundle_Bundle* spiffebundle_Set_GetBundleForTrustDomain(
                                     spiffebundle_Set *s, 
-                                    const spiffeid_TrustDomain *td,
+                                    const spiffeid_TrustDomain td,
                                     err_t *err);
 x509bundle_Bundle* spiffebundle_Set_GetX509BundleForTrustDomain(
                                     spiffebundle_Set *s, 
-                                    const spiffeid_TrustDomain *td,
+                                    const spiffeid_TrustDomain td,
                                     err_t *err);
 jwtbundle_Bundle* spiffebundle_Set_GetJWTBundleForTrustDomain(
                                     spiffebundle_Set *s, 
-                                    const spiffeid_TrustDomain *td,
+                                    const spiffeid_TrustDomain td,
                                     err_t *err);
 
 #ifdef __cplusplus

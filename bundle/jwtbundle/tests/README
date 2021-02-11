@@ -1,9 +1,12 @@
 gcc -c -Wall -Wno-unused-value  ../src/bundle.c -O2 -o bundle.o
+gcc -c -Wall -Wno-unused-value  ../src/set.c -O2 -o set.o
 gcc -c -Wall -Wno-unused-value  ../../../utils/src/util.c -O2 -o util1.o
 gcc -c -Wall ../../../spiffeid/src/id.c -O2 -o id.o
 gcc -c -Wall ../../../spiffeid/src/trustdomain.c -O2 -o trustdomain.o
 gcc -c -Wall ../../../internal/cryptoutil/src/keys.c -O2 -o keys.o
 gcc -c -Wall ../../../internal/jwtutil/src/util.c -O2 -o util2.o
 gcc -c -Wall check_bundle.c -O2 -o check_bundle.o
+gcc -c -Wall check_set.c -O2 -o check_set.o
 gcc bundle.o util1.o id.o trustdomain.o keys.o util2.o check_bundle.o -lcheck -lcheck_pic -lm -lrt -lpthread -lsubunit -luriparser -ljansson -lcjose -lcrypto -o check_bundle
+gcc bundle.o util1.o id.o trustdomain.o keys.o util2.o set.o check_set.o -lcheck -lcheck_pic -lm -lrt -lpthread -lsubunit -luriparser -ljansson -lcjose -lcrypto -o check_set
 rm *.o

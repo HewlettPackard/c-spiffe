@@ -86,7 +86,7 @@ x509bundle_Bundle* workloadapi_X509Source_GetX509BundleForTrustDomain(
     if(!(*err))
     {
         return x509bundle_Set_GetX509BundleForTrustDomain(
-                                    source->bundles, td, err);
+                                    source->bundles, *td, err);
     }
 
     return NULL;
