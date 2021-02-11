@@ -78,10 +78,10 @@ ${OWN_LIBS}
 ${EXT_LIBS}
 )
 
-add_library(libclient STATIC ${LIB_CLIENT})
+add_library(libclient SHARED ${LIB_CLIENT} ${LIB_WATCHER})
 
 target_link_libraries(libclient
-libwatcher
+libbackoff
 ${OWN_LIBS}
 ${EXT_LIBS}
 ${_REFLECTION}
@@ -90,16 +90,8 @@ ${_GRPC_GRPC}
 ${_PROTOBUF_LIBPROTOBUF}
 )
 
-add_library(libwatcher STATIC ${LIB_WATCHER})
-target_link_libraries(libwatcher
-libclient
-${OWN_LIBS}
-${EXT_LIBS}
-)
-
-add_library(libsource STATIC ${LIB_SOURCE})
+add_library(libsource SHARED ${LIB_SOURCE})
 target_link_libraries(libsource
-libwatcher
 libclient
 ${OWN_LIBS}
 ${EXT_LIBS}
@@ -109,10 +101,10 @@ set(CPP_CLIENT
     src/cpp_client_example.cc
 )
 add_executable(cpp_client "${CPP_CLIENT}")
-target_link_libraries(cpp_client libclient libwatcher libsource libbackoff)
+target_link_libraries(cpp_client libsource libclient libbackoff)
 
 set(C_CLIENT
     src/c_client_example.c
 )
 add_executable(c_client "${C_CLIENT}")
-target_link_libraries(c_client libclient libwatcher libsource libbackoff)
+target_link_libraries(c_client libsource libclient libbackoff)
