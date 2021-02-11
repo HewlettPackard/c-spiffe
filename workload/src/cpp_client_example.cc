@@ -30,7 +30,16 @@ int main(void)
               << "Cert(s) Address: " << svid->certs << std::endl
               << "Key Address: " << svid->privateKey << std::endl;
   }
+  error = workloadapi_CloseClient(client);
+  if (error != NO_ERROR)
+  {
+    std::cout << "close error! " << (int)error <<std::endl;
+  }
   workloadapi_FreeClient(client);
+  if (error != NO_ERROR)
+  {
+    std::cout << "free client error! " << (int)error <<std::endl;
+  }
   x509svid_SVID_Free(svid, true);
   return 0;
 }
