@@ -104,6 +104,7 @@ START_TEST(test_workloadapi_newWatcher_creates_client_if_null)
 }
 END_TEST
 
+
 START_TEST(test_workloadapi_newWatcher_uses_provided_client)
 {
     // empty but valid callback object
@@ -140,8 +141,112 @@ START_TEST(test_workloadapi_newWatcher_uses_provided_client)
 }
 END_TEST
 
+void setAddress(workloadapi_Client* client, void* not_used){
+    workloadapi_Client_SetAddress(client,"http://example.com");
+}
+void setHeader(workloadapi_Client* client, void* not_used){
+    workloadapi_Client_SetHeader(client,"workload.example.io","true");
+}
 
-Suite* client_suite(void)
+START_TEST(test_workloadapi_newWatcher_applies_Options)
+{
+    // empty but valid callback object
+    workloadapi_X509Callback callback;
+    callback.func = empty_callback;
+    callback.args = NULL;
+
+    // empty but valid watcher config
+    workloadapi_WatcherConfig config;
+    config.clientOptions = NULL;
+    
+    // error not set.
+    err_t error = NO_ERROR;
+
+    config.client = workloadapi_NewClient(&error);
+    arrput(config.clientOptions,setAddress);
+    arrput(config.clientOptions,setHeader);
+
+    //create watcher with null client.    
+    workloadapi_Watcher* watcher = workloadapi_newWatcher(config,callback,&error);
+    
+    // new watcher succeded
+    ck_assert_ptr_ne(watcher,NULL);
+    // a new client was created and watcher owns it.
+    ck_assert_ptr_eq(watcher->client,config.client);
+    ck_assert_int_eq(watcher->ownsClient,false);
+
+    ck_assert_ptr_ne(config.client->address,NULL);
+    ck_assert_uint_eq(strlen(config.client->address),strlen("http://example.com"));
+    ck_assert_uint_eq(strcmp(config.client->address,"http://example.com"),0);
+    
+    ck_assert_ptr_ne(config.client->headers,NULL);
+    ck_assert_uint_eq(strlen(config.client->headers[0]),strlen("workload.example.io"));
+    ck_assert_uint_eq(strlen(config.client->headers[1]),strlen("true"));
+    ck_assert_uint_eq(strcmp(config.client->headers[0],"workload.example.io"),0);
+    ck_assert_uint_eq(strcmp(config.client->headers[1],"true"),0);
+
+    // There was no error.
+    ck_assert_uint_eq(error,NO_ERROR);
+
+    //free allocated watcher.
+    workloadapi_Client_Free(config.client);
+    workloadapi_Watcher_Free(watcher);
+}
+END_TEST
+
+
+int waitAndUpdate(void* args){
+    struct timespec now = {3,0};
+    // now.tv_nsec +=5000000000; //+.5 seconds
+    // now.tv_sec += now.tv_nsec/10000000000;
+    // now.tv_nsec = now.tv_nsec%10000000000;
+    printf("sleeping\n");
+    thrd_sleep(&now,NULL);
+    printf("awake\n");
+    workloadapi_Watcher_TriggerUpdated((workloadapi_Watcher*)args);
+}
+
+START_TEST(test_workloadapi_Watcher_TimedWaitUntilUpdated_blocks);
+{
+    // empty but valid callback object
+    workloadapi_X509Callback callback;
+    callback.func = empty_callback;
+    callback.args = NULL;
+
+    // empty but valid watcher config
+    workloadapi_WatcherConfig config;
+    config.clientOptions = NULL;
+    
+    // error not set.
+    err_t error = NO_ERROR;
+
+    config.client = workloadapi_NewClient(&error);
+    arrput(config.clientOptions,setAddress);
+    arrput(config.clientOptions,setHeader);
+    
+    workloadapi_Watcher* watcher = workloadapi_newWatcher(config,callback,&error);  
+
+    struct timespec now;
+    timespec_get(&now,TIME_UTC);
+    thrd_t thread;
+    thrd_create(&thread,waitAndUpdate,watcher);
+    struct timespec timeout = now;
+    timeout.tv_sec+=5;
+    workloadapi_Watcher_TimedWaitUntilUpdated(watcher,&timeout);
+    
+    struct timespec then;
+    timespec_get(&then,TIME_UTC);
+    
+    ck_assert_int_ge(then.tv_sec,now.tv_sec+2);
+    ck_assert_int_lt(then.tv_sec,now.tv_sec+5);
+
+    //free allocated watcher.
+    workloadapi_Client_Free(config.client);
+    workloadapi_Watcher_Free(watcher);
+}
+END_TEST
+
+Suite* watcher_suite(void)
 {
     Suite *s = suite_create("watcher");
     TCase *tc_core = tcase_create("core");
@@ -149,6 +254,8 @@ Suite* client_suite(void)
     tcase_add_test(tc_core, test_workloadapi_Watcher_callback_is_called_on_update_once);
     tcase_add_test(tc_core, test_workloadapi_newWatcher_creates_client_if_null);
     tcase_add_test(tc_core, test_workloadapi_newWatcher_uses_provided_client);
+    tcase_add_test(tc_core, test_workloadapi_newWatcher_applies_Options);
+    tcase_add_test(tc_core, test_workloadapi_Watcher_TimedWaitUntilUpdated_blocks);
 
     suite_add_tcase(s, tc_core);
 
@@ -157,7 +264,7 @@ Suite* client_suite(void)
 
 int main(int argc, char **argv)
 {
-    Suite *s = client_suite();
+    Suite *s = watcher_suite();
     SRunner *sr = srunner_create(s);
     // testing::InitGoogleMock(&argc, argv);
     srunner_run_all(sr, CK_NORMAL);
