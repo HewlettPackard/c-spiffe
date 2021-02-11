@@ -1,7 +1,7 @@
-#include "watcher.h"
 #include "x509context.h"
 #include "x509source.h"
 #include "client.h"
+#include "watcher.h"
 
 //Function that will run on thread spun for watcher
 int workloadapi_Watcher_X509backgroundFunc(void * _watcher){
@@ -125,6 +125,7 @@ err_t workloadapi_closeWatcher(workloadapi_Watcher* watcher){
     if(thread_error == thrd_success){
         return join_return;
     } 
+    return ERROR2;
 }
 
 //drops connection to WorkloadAPI (if owns client) MUST ALREADY BE CLOSED.
