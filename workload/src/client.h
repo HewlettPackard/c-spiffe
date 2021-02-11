@@ -2,11 +2,11 @@
 #define __INCLUDE_WORKLOAD_CLIENT_H__
 
 
-#include "backoff.h"
-#include "watcher.h"
 #include "../../svid/x509svid/src/svid.h"
 #include "../../bundle/x509bundle/src/set.h"
 #include "../../utils/src/util.h"
+#include "watcher.h"
+#include "backoff.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,6 +1,4 @@
-#include "backoff.h"
-#include "client.h"
-#include "watcher.h"
+
 #include "../../internal/x509util/src/util.h"
 
 #include <grpc/grpc.h>
@@ -10,6 +8,7 @@
 #include "../../svid/x509svid/src/svid.h"
 #include "../../bundle/x509bundle/src/bundle.h"
 #include "../../bundle/x509bundle/src/set.h"
+#include "client.h"
 
 x509bundle_Bundle *workloadapi_parseX509Bundle(string_t id, const byte *bundle_bytes, const size_t len, err_t *err)
 {
@@ -284,7 +283,7 @@ err_t workloadapi_setClientStub(workloadapi_Client* client, stub_ptr stub){
 
 void setDefaultClientAddressOption(workloadapi_Client *client, void *not_used)
 {
-    workloadapi_setClientAddress(client, "unix:///var/agent.sock");
+    workloadapi_setClientAddress(client, "unix:///tmp/agent.sock");
 }
 
 void setDefaultClientHeaderOption(workloadapi_Client *client, void *not_used)
@@ -315,7 +314,7 @@ err_t workloadapi_WatchX509Context(workloadapi_Client* client, workloadapi_Watch
     if(!client) return ERROR1;
     if(!watcher) return ERROR2;
 
-    Backoff backoff = newBackoff(SECOND,{30,0});
+    Backoff backoff = newBackoff({1,0},{30,0});
 
     while(true){
         err_t err = workloadapi_watchX509Context(client,watcher,&backoff);
