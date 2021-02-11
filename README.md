@@ -19,7 +19,9 @@ gRPC C++ examples built with CMake.
 │   │   │   ├── bundle.c
 │   │   │   ├── bundle.h
 │   │   │   ├── set.c
-│   │   │   └── set.h
+│   │   │   ├── set.h
+│   │   │   ├── source.c
+│   │   │   └── source.h
 │   │   └── tests
 │   │       ├── check_bundle.c
 │   │       ├── jwk_keys.json
@@ -35,7 +37,9 @@ gRPC C++ examples built with CMake.
 │       │   ├── bundle.c
 │       │   ├── bundle.h
 │       │   ├── set.c
-│       │   └── set.h
+│       │   ├── set.h
+│       │   ├── source.c
+│       │   └── source.h
 │       └── tests
 │           ├── certs.pem
 │           ├── check_bundle.c
@@ -61,14 +65,15 @@ gRPC C++ examples built with CMake.
 │   ├── features
 │   │   ├── environment.py
 │   │   ├── steps
-│   │   │   └── SVID_step.py
-│   │   ├── TS_SVID.feature
+│   │   │   └── fetch_x509_step.py
+│   │   ├── Fetch_X509.feature
 │   │   └── utils.py
 │   ├── get-entries.py
-│   ├── get-entries.sh
+│   ├── grpc_conn_test_agent.sh
+│   ├── grpc_conn_test_entries.sh
+│   ├── grpc_conn_test_server.sh
 │   ├── README.md
-│   ├── requirements.txt
-│   └── test.txt
+│   └── requirements.txt
 ├── internal
 │   ├── CMakeLists.txt
 │   ├── cryptoutil
@@ -111,11 +116,6 @@ gRPC C++ examples built with CMake.
 │           └── resources
 │               ├── certs.pem
 │               └── key-pkcs8-rsa.pem
-├── proto
-│   └── spiffe
-│       └── workload
-│           ├── README.md
-│           └── workload.proto
 ├── protos
 │   └── workload.proto
 ├── README.md
@@ -141,24 +141,33 @@ gRPC C++ examples built with CMake.
 │           └── authorizer.h
 ├── svid
 │   ├── CMakeLists.txt
-│   └── x509svid
+│   ├── x509svid
+│   |   ├── src
+│   |   │   ├── svid.c
+│   |   │   ├── svid.h
+│   |   │   ├── verify.c
+│   |   │   └── verify.h
+│   |   └── tests
+│   |       ├── check_svid.c
+│   |       ├── check_verify.c
+│   |       ├── CMakeLists.txt
+│   |       ├── README
+│   |       └── resources
+│   |           ├── good-cert-and-key.pem
+│   |           ├── good-key-and-cert.pem
+│   |           ├── good-leaf-and-intermediate.pem
+│   |           ├── good-leaf-only.pem
+│   |           ├── key-pkcs8-ecdsa.pem
+│   |           └── key-pkcs8-rsa.pem
+│   └── jwtsvid
 │       ├── src
 │       │   ├── svid.c
-│       │   ├── svid.h
-│       │   ├── verify.c
-│       │   └── verify.h
+│       │   └── svid.h
 │       └── tests
 │           ├── check_svid.c
-│           ├── check_verify.c
 │           ├── CMakeLists.txt
-│           ├── README
 │           └── resources
-│               ├── good-cert-and-key.pem
-│               ├── good-key-and-cert.pem
-│               ├── good-leaf-and-intermediate.pem
-│               ├── good-leaf-only.pem
-│               ├── key-pkcs8-ecdsa.pem
-│               └── key-pkcs8-rsa.pem
+│               └── privkey.pem
 ├── utils
 │   ├── src
 │   │   ├── stb_ds.h
@@ -167,10 +176,12 @@ gRPC C++ examples built with CMake.
 │   └── tests
 │       ├── check_util.c
 │       ├── README
-│       └── test.txt
+|       └── resources
+│           └── test.txt
 └── workload
     ├── CMakeLists.txt
     ├── src
+    │   ├── c_client_example_bundle.c
     │   ├── c_client_example.c
     │   ├── client.cc
     │   ├── client.h
@@ -181,7 +192,6 @@ gRPC C++ examples built with CMake.
     │   └── requestor.h
     └── tests
         ├── check_client.cc
-        ├── check_requestor.c
         ├── check_requestor.cc
         ├── CMakeLists.txt
         └── resources
