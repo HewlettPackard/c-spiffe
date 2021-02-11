@@ -9,12 +9,12 @@ ARG SPIRE_RELEASE=https://github.com/spiffe/spire/releases/download/v${SPIRE_VER
 ARG SPIRE_DIR=/opt/spire
 
 ARG C_SPIFFE_DIR=/mnt/c-spiffe
-ARG BRANCH=create_infra
+ARG BRANCH=master
 
 RUN curl --silent --location $SPIRE_RELEASE | tar -xzf -
 RUN mv spire-${SPIRE_VERSION} ${SPIRE_DIR}
 
-RUN cd /mnt && git clone -b ${BRANCH} https://github.com/willallves/c-spiffe.git
+RUN cd /mnt && git clone -b ${BRANCH} https://github.com/HewlettPackard/c-spiffe.git
 RUN mkdir -p ${C_SPIFFE_DIR}/build/
 
 # Configure Spire
