@@ -48,3 +48,6 @@ RUN mkdir -p /tmp/grpc/cmake/build
 RUN cd /tmp/grpc/cmake/build && cmake -DgRPC_INSTALL=ON -DgRPC_BUILD_TESTS=ON ../..
 RUN sed -i '7,13d' /tmp/grpc/third_party/benchmark/test/cxx03_test.cc 
 RUN cd /tmp/grpc/cmake/build && make -j${NUM_JOBS} && make install
+
+RUN ln -s /opt/spire/bin/spire-server /usr/bin/spire-server
+RUN ln -s /opt/spire/bin/spire-agent /usr/bin/spire-agent
