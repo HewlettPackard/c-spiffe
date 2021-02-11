@@ -92,7 +92,7 @@ START_TEST(test_workloadapi_FetchDefaultX509SVID)
 
     const char *addr = "unix:///tmp/agent.sock";
     workloadapi_Requestor *reqtor = 
-        workloadapi_RequestorInitWithStub(addr, (stub_ptr)&mock_stub);
+        workloadapi_RequestorInitWithStub(addr, (workloadapi_Stub_Pointer)&mock_stub);
 
     x509svid_SVID *svid = workloadapi_FetchDefaultX509SVID(reqtor);
     ck_assert_ptr_eq(svid, NULL);
@@ -124,7 +124,7 @@ START_TEST(test_workloadapi_FetchX509Bundles)
 
     const char *addr = "unix:///tmp/agent.sock";
     workloadapi_Requestor *reqtor = 
-        workloadapi_RequestorInitWithStub(addr, (stub_ptr)&mock_stub);
+        workloadapi_RequestorInitWithStub(addr, (workloadapi_Stub_Pointer)&mock_stub);
 
     x509bundle_Set *set = workloadapi_FetchX509Bundles(reqtor);
     ck_assert_ptr_eq(set, NULL);
