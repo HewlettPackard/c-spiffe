@@ -83,3 +83,9 @@ set(C_CLIENT
 )
 add_executable(c_client "${C_CLIENT}")
 target_link_libraries(c_client librequestor)
+
+set(C_CLIENT_BUNDLE
+    src/c_client_example_bundle.c
+)
+add_executable(c_client_bundle "${C_CLIENT_BUNDLE}")
+target_link_libraries(c_client_bundle librequestor)
