@@ -1,7 +1,8 @@
 #include "client.h"
 #include "../../internal/x509util/src/util.h"
 
-x509bundle_Set* workloadapi_parseX509Bundles(const X509SVIDResponse *resp, err_t *err)
+x509bundle_Set* workloadapi_parseX509Bundles(
+    const X509SVIDResponse *resp, err_t *err)
 {
     if(resp)
     {
@@ -42,7 +43,10 @@ x509bundle_Set* workloadapi_parseX509Bundles(const X509SVIDResponse *resp, err_t
     return NULL;
 }
 
-x509bundle_Bundle* workloadapi_parseX509Bundle(string_t id, const byte *bundle_bytes, const size_t len, err_t *err)
+x509bundle_Bundle* workloadapi_parseX509Bundle(string_t id, 
+                                            const byte *bundle_bytes, 
+                                            const size_t len, 
+                                            err_t *err)
 {
     x509bundle_Bundle *bundle = NULL;
 

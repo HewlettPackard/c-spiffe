@@ -1,9 +1,8 @@
-FROM ubuntu:focal
-
-LABEL maintainer="Willian Alves <wra@cesar.org.br>"
+FROM spire-agent
 
 ARG GRPC_VERSION=1.34.0
 ARG NUM_JOBS=8
+ARG C_SPIFFE_DIR=/mnt/c-spiffe
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -42,12 +41,15 @@ RUN apt-get clean
 # https://github.com/grpc/grpc/tree/master/src/cpp
 # https://github.com/grpc/grpc/blob/master/BUILDING.md
 
-# RUN apt-get install -y build-essential autoconf libtool pkg-config && \
 RUN cd /tmp && git clone --recurse-submodules -b v${GRPC_VERSION} https://github.com/grpc/grpc
 RUN mkdir -p /tmp/grpc/cmake/build
 RUN cd /tmp/grpc/cmake/build && cmake -DgRPC_INSTALL=ON -DgRPC_BUILD_TESTS=ON ../..
 RUN sed -i '7,13d' /tmp/grpc/third_party/benchmark/test/cxx03_test.cc 
 RUN cd /tmp/grpc/cmake/build && make -j${NUM_JOBS} && make install
 
-RUN ln -s /opt/spire/bin/spire-server /usr/bin/spire-server
-RUN ln -s /opt/spire/bin/spire-agent /usr/bin/spire-agent
+# failed to build : ADD failed: forbidden path outside the build context:
+### ADD ../../infra ${C_SPIFFE_DIR}
+
+WORKDIR ${C_SPIFFE_DIR}/build
+COPY build-tests-workload.sh .
+RUN chmod +x build-tests-workload.sh
