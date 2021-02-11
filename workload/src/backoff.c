@@ -39,7 +39,7 @@ struct timespec workloadapi_Backoff_NextTime(workloadapi_Backoff* backoff){
     }
 
     struct timespec now;
-    timespec_get(&now,0);
+    timespec_get(&now,TIME_UTC);
 
     struct timespec ret;
     ret.tv_sec = now.tv_sec + delta.tv_sec;
