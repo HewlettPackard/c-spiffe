@@ -63,7 +63,7 @@ jwtbundle_Bundle* jwtbundle_Load(const spiffeid_TrustDomain td,
 }
 
 jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td, 
-                                    const string_t bundle_bytes, 
+                                    const char *bundle_bytes, 
                                     err_t *err)
 {
 
