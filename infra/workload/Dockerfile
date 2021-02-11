@@ -2,7 +2,7 @@ FROM spire-agent
 
 ARG GRPC_VERSION=1.34.0
 ARG NUM_JOBS=8
-ARG C_SPIFFE_DIR=/tmp/c-spiffe
+ARG C_SPIFFE_DIR=/mnt/c-spiffe
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -47,10 +47,9 @@ RUN cd /tmp/grpc/cmake/build && cmake -DgRPC_INSTALL=ON -DgRPC_BUILD_TESTS=ON ..
 RUN sed -i '7,13d' /tmp/grpc/third_party/benchmark/test/cxx03_test.cc 
 RUN cd /tmp/grpc/cmake/build && make -j${NUM_JOBS} && make install
 
-# Todo: any build 
-# RUN cd /tmp && git clone https://github.com/HewlettPackard/c-spiffe.git
+# failed to build : ADD failed: forbidden path outside the build context:
+### ADD ../../infra ${C_SPIFFE_DIR}
 
-RUN mkdir -p ${C_SPIFFE_DIR}/build/
 WORKDIR ${C_SPIFFE_DIR}/build
 COPY build-tests-workload.sh .
 RUN chmod +x build-tests-workload.sh
