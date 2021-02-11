@@ -30,6 +30,11 @@ add_custom_command(
 # Include generated *.pb.h files
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
+SET(GCC_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
+SET(GCC_COVERAGE_LINK_FLAGS    "-lgcov")
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
+SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
+
 # add_executable(check_requestor "./check_requestor.cc" ${grpc_srcs} ${proto_srcs} ${grpc_mock})
 
 # target_link_libraries(check_requestor librequestor ${CHECK_LIBRARIES} 
@@ -56,9 +61,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 add_executable(check_client "./check_client.cc" ${grpc_srcs} ${proto_srcs} ${grpc_mock})
 
 target_link_libraries(check_client ${CHECK_LIBRARIES} 
-  libwatcher
   libclient
-  libsource
   gtest
   gmock
   gmock_main
@@ -82,9 +85,7 @@ add_test(client-test check_client)
 add_executable(check_watcher "./check_watcher.c")
 
 target_link_libraries(check_watcher ${CHECK_LIBRARIES} 
-libwatcher
 libclient
-libsource
  OpenSSL::SSL
   libspiffeid
   libinternal
