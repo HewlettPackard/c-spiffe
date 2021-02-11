@@ -3,7 +3,9 @@
 
 #include <time.h>
 
-const struct timespec SECOND = {1,0};
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef struct Backoff
 {
@@ -19,3 +21,8 @@ struct timespec nextTime(Backoff* backoff); // returns a timestamp
 void resetBackoff(Backoff* backoff);
 
 #endif //__INCLUDE_WORKLOAD_BACKOFF_H__
+#ifdef __cplusplus
+
+}
+
+#endif

@@ -18,9 +18,8 @@ Backoff newBackoff(struct timespec initial, struct timespec max){
 }
 
 Backoff newDefaultBackoff(){
-    struct timespec initial = SECOND;
-    struct timespec max = SECOND;
-    max.tv_sec = SECOND.tv_sec * 30; //30 seconds
+    struct timespec initial = {1,0};
+    struct timespec max = {30,0};//30 seconds
     return newBackoff(initial,max);
 }
 
