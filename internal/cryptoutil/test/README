@@ -1,4 +1,0 @@
-gcc -c -Wall ../src/keys.c -O2 -o keys.o
-gcc -c -Wall check_keys.c -O2 -o check_keys.o
-gcc keys.o check_keys.o -lcheck -lcheck_pic -lm -lrt -lpthread -lsubunit -lcrypto -o check_keys
-rm *.o
