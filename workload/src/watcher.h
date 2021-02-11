@@ -13,6 +13,9 @@
 #include <threads.h>
 #include <time.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef struct workloadapi_Client workloadapi_Client;
 typedef void (*workloadapi_ClientOption)(workloadapi_Client*,void*);
@@ -84,5 +87,8 @@ err_t workloadapi_Watcher_TimedWaitUntilUpdated(workloadapi_Watcher* watcher, st
 err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher* watcher);
 
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif //__INCLUDE_WORKLOAD_WATCHER_H__
