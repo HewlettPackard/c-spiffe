@@ -57,7 +57,7 @@ err_t workloadapi_X509Source_Close(workloadapi_X509Source *source)
 }
 
 x509svid_SVID* workloadapi_X509Source_GetX509SVID(
-    workloadapi_X509Source *source, x509svid_SVID *svid, err_t *err)
+    workloadapi_X509Source *source, err_t *err)
 {
     *err = workloadapi_X509Source_checkClosed(source);
     if(!(*err))
@@ -93,7 +93,7 @@ x509bundle_Bundle* workloadapi_X509Source_GetX509BundleForTrustDomain(
 }
 
 err_t workloadapi_X509Source_WaitUntilUpdated(
-    workloadapi_X509Source *source, workloadapi_X509Context *ctx)
+    workloadapi_X509Source *source)
 {
     return workloadapi_Watcher_WaitUntilUpdated(source->watcher);
 }
