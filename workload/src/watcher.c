@@ -8,7 +8,7 @@ int workloadapi_Watcher_X509backgroundFunc(void * _watcher){
     workloadapi_Watcher* watcher = (workloadapi_Watcher*) _watcher;
 
     err_t error = NO_ERROR;
-    
+    //TODO: CHECK ERROR AND RETRY
     error = workloadapi_Client_WatchX509Context(watcher->client,watcher); 
 
     return (int) error;
@@ -84,6 +84,11 @@ err_t workloadapi_Watcher_Start(workloadapi_Watcher* watcher){
     if(!watcher){
         return ERROR1; /// NULL WATCHER;
     }
+    error = workloadapi_Client_Connect(watcher->client);
+    ///TODO: ERROR HANDLING
+    // if(error!=NO_ERROR){
+    //     return n
+    // }
     /// spin watcher thread out.
     int thread_error = thrd_create(&(watcher->watcherThread),workloadapi_Watcher_X509backgroundFunc,watcher);
     
@@ -91,7 +96,6 @@ err_t workloadapi_Watcher_Start(workloadapi_Watcher* watcher){
         watcher->threadError = thread_error;
         return ERROR2; // THREAD ERROR, see watcher->threadERROR for error
     }
-
     ///wait for update and check for errors.
     error = workloadapi_Watcher_WaitUntilUpdated(watcher);
     if(error != NO_ERROR){
