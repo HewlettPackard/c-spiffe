@@ -11,7 +11,7 @@ set(CMAKE_BUILD_TYPE RelWithDebInfo)
 set(protobuf_MODULE_COMPATIBLE TRUE)
 
 # Enable debugging
-set(CMAKE_BUILD_TYPE Debug)
+### set(CMAKE_BUILD_TYPE Debug)
 
 # Check headers
 set(INCLUDES "")
@@ -22,11 +22,8 @@ macro(ck_check_include_file header var)
   endif(${var})
 endmacro(ck_check_include_file)
 
-
-
-
 # Show all warning messages
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
+### set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
 
 
 find_package(Protobuf 3.13.0 REQUIRED)
