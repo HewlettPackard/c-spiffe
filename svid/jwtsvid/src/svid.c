@@ -239,8 +239,8 @@ static map_string_claim* parseAndValidate(jwtsvid_JWT *jwt,
                 json_string_value(type_json) : NULL;
             if(type_str)
             {
-                if(strcmp(type_str, "jwt") != 0 && 
-                    strcmp(type_str, "jose") != 0)
+                if(strcmp(type_str, "JWT") != 0 && 
+                    strcmp(type_str, "JOSE") != 0)
                 {
                     type_correct = false;
                 }
