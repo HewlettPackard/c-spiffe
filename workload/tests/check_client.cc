@@ -13,8 +13,11 @@
 #include <openssl/pem.h>
 #include <openssl/bio.h>
 #include <check.h>
+#include <gmock/gmock.h>
+#include <grpcpp/test/mock_stream.h>
 #include "workload.pb.h"
 #include "workload.grpc.pb.h"
+#include "workload_mock.grpc.pb.h"
 #include "../../svid/x509svid/src/svid.h"
 #include "../src/client.h"
 
@@ -87,7 +90,17 @@ END_TEST
 
 START_TEST(test_workloadapi_NewClient)
 {
-    ///TODO:GET FROM check_requestor.cc
+    err_t error = NO_ERROR;
+    workloadapi_Client* client = workloadapi_NewClient(&error);
+    ck_assert_ptr_ne(client,NULL);
+    ck_assert_ptr_eq(client->stub,NULL);
+    ck_assert_ptr_eq(client->address,NULL);
+    ck_assert_int_eq(error,NO_ERROR);
+    ck_assert(!client->closed);
+    ck_assert_int_eq(arrlen(client->headers),0);
+
+    error = workloadapi_Client_Free(client);
+    ck_assert_int_eq(error,NO_ERROR);
 }
 END_TEST
 
