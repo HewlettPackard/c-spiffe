@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.13)
 
 set(TARGET_NAME "workload")
 project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C CXX)
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_BUILD_TYPE RelWithDebInfo)
+#set(CMAKE_CXX_STANDARD 14)
+#set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
 find_package(OpenSSL REQUIRED)
 find_package(GTest REQUIRED)
@@ -36,10 +36,10 @@ add_custom_command(
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(OWN_LIBS 
-libsvid
-libspiffeid
-libinternal
-libbundle
+svid
+spiffeid
+internal
+bundle
 )
 
 set(EXT_LIBS
@@ -61,9 +61,9 @@ set(LIB_REQUESTOR
   ${grpc_srcs}
 )
 
-add_library(librequestor SHARED ${LIB_REQUESTOR})
+add_library(requestor SHARED ${LIB_REQUESTOR})
 
-target_link_libraries(librequestor
+target_link_libraries(requestor
 ${OWN_LIBS}
 ${EXT_LIBS}
 ${_REFLECTION}
@@ -72,20 +72,20 @@ ${_GRPC_GRPC}
 ${_PROTOBUF_LIBPROTOBUF}
 )
 
-set(CPP_CLIENT
-    src/cpp_client_example.cc
-)
-add_executable(cpp_client "${CPP_CLIENT}")
-target_link_libraries(cpp_client librequestor)
+#set(CPP_CLIENT
+#    src/cpp_client_example.cc
+#)
+add_executable(cpp_client src/cpp_client_example.cc)
+target_link_libraries(cpp_client requestor)
 
-set(C_CLIENT
-    src/c_client_example.c
-)
-add_executable(c_client "${C_CLIENT}")
-target_link_libraries(c_client librequestor)
+#set(C_CLIENT
+#    src/c_client_example.c
+#)
+add_executable(c_client src/c_client_example.c)
+target_link_libraries(c_client requestor)
 
-set(C_CLIENT_BUNDLE
-    src/c_client_example_bundle.c
-)
-add_executable(c_client_bundle "${C_CLIENT_BUNDLE}")
-target_link_libraries(c_client_bundle librequestor)
+#set(C_CLIENT_BUNDLE
+#    src/c_client_example_bundle.c
+#)
+add_executable(c_client_bundle src/c_client_example_bundle.c)
+target_link_libraries(c_client_bundle requestor)
