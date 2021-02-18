@@ -2,12 +2,13 @@
 #include "watcher.h"
 
 
-void workloadapi_x509Source_onX509ContextCallback(workloadapi_X509Context* x509cntx, void* args){
+void workloadapi_x509Source_onX509ContextCallback(workloadapi_X509Context* x509cntx, void* args)
+{
     workloadapi_X509Source* source = (workloadapi_X509Source*) args;
     workloadapi_X509Source_applyX509Context(source,x509cntx);
 }
 //blocks
-workloadapi_X509Source* workloadapi_NewX509Source(workloadapi_X509SourceConfig *config,err_t *err)
+workloadapi_X509Source* workloadapi_NewX509Source(workloadapi_X509SourceConfig *config, err_t *err)
 {
     if(!config){
         config = (workloadapi_X509SourceConfig *)malloc(sizeof *config);
@@ -17,6 +18,11 @@ workloadapi_X509Source* workloadapi_NewX509Source(workloadapi_X509SourceConfig *
     ///TODO: add X509SourceOption to set config
     
     workloadapi_X509Source *source = (workloadapi_X509Source *) malloc(sizeof *source);
+    source->closed = false;
+    mtx_init(&(source->mtx), mtx_plain);
+    mtx_init(&(source->closedMtx), mtx_plain);
+    source->SVIDs = NULL;
+    source->bundles = NULL;
     source->config = config;
     if(!source->config->picker){
         source->config->picker = x509svid_SVID_GetDefaultX509SVID;
@@ -64,7 +70,7 @@ x509svid_SVID* workloadapi_X509Source_GetX509SVID(
     {
         mtx_lock(&(source->mtx));
         x509svid_SVID *svid = source->config->picker? 
-        source->config->picker(source->SVIDs) : source->SVIDs[0];
+            source->config->picker(source->SVIDs) : source->SVIDs[0];
         mtx_unlock(&(source->mtx));
 
         if(svid)
@@ -98,18 +104,13 @@ err_t workloadapi_X509Source_WaitUntilUpdated(
     return workloadapi_Watcher_WaitUntilUpdated(source->watcher);
 }
 
-// void workloadapi_X509Source_Updated()
-// {
-
-// }
-
-
 void workloadapi_X509Source_applyX509Context(
     workloadapi_X509Source *source, workloadapi_X509Context *ctx)
 {
     mtx_lock(&(source->mtx));
     x509bundle_Set_Free(source->bundles);
-    for(int i = 0; i < arrlenu(source->SVIDs); i++){
+    for(size_t i = 0, size = arrlenu(source->SVIDs); i < size; ++i)
+    {
         x509svid_SVID_Free(source->SVIDs[i], true);
     }
     arrfree(source->SVIDs);
@@ -138,7 +139,8 @@ void workloadapi_X509Source_Free(workloadapi_X509Source *source)
         mtx_lock(&(source->mtx));
         x509bundle_Set_Free(source->bundles);
         
-        for(int i = 0; i < arrlenu(source->SVIDs); i++){
+        for(size_t i = 0, size = arrlenu(source->SVIDs); i < size; ++i)
+        {
             x509svid_SVID_Free(source->SVIDs[i], true);
         }
         arrfree(source->SVIDs);
