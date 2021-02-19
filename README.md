@@ -261,8 +261,6 @@ Most CI tools integrate seamlessly with Git services — especially GitHub.
     </li>
     <li>
     Copy the following YAML contents into the superlinter.yml file. Note: If your default branch is not main, update the value of DEFAULT_BRANCH to match your repository's default branch name.
-    </li>
- </ol>
 
 ```
 name: Super-Linter
@@ -291,3 +289,45 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
+</li>
+    <li>
+    To run your workflow, scroll to the bottom of the page and select Create a new branch for this commit and start a pull request. Then, to create a pull request, click Propose new file.
+    </li>
+ </ol>
+
+ ![Alt text](img/commit-workflow-file.png)
+
+Committing the workflow file in your repository triggers the push event and runs your workflow.
+
+# Viewing your workflow results
+
+<ol>
+    <li>
+    On GitHub, navigate to the main page of the repository.
+    </li>
+    <li>
+    Under your repository name, click <b>Actions</b>.
+
+![Alt text](img/actions-tab.png)
+    </li>
+    <li>
+    In the left sidebar, click the workflow you want to see.
+
+![Alt text](img/superlinter-workflow-sidebar.png)
+    </li>
+    <li>
+    From the list of workflow runs, click the name of the run you want to see.
+
+![Alt text](img/superlinter-run-name.png)
+    </li>
+    <li>
+    Under <b>Jobs</b> or in the visualization graph, <b>click the Lint code base</b> job.
+
+![Alt text](img/superlinter-lint-code-base-job-updated.png)
+    </li>
+    <li>
+    Any failed steps are automatically expanded to display the results.
+
+![Alt text](img/super-linter-workflow-results-updated-2.png)
+    </li>
+</ol>
