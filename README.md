@@ -247,22 +247,47 @@ To adopt continuous integration, we will need to run your tests on every change 
 
 ![Alt text](img/ci-process.png "Commit, Build and Deploy")
 
-# To use Travis CI/CD, you need:
+# Introduction
 
-Connect Travis CI to your project
-Most CI tools integrate seamlessly with Git services — especially GitHub. Go to travis-ci.com and sign up. I suggest logging in with your GitHub account — it’ll make things easier at later stages.
+We only need an existing GitHub repository to create and run a GitHub Actions workflow. In this guide, you'll add a workflow that lints multiple coding languages using the GitHub Super-Linter action. The workflow uses Super-Linter to validate your source code every time a new commit is pushed to your repository.
 
-Inside Travis CI, there is a search bar on the left side of the screen; Click the + sign below it.
+# To use Github Actions CI/CD, we need:
 
-![Alt text](img/my-repository.png "My repository")
+Most CI tools integrate seamlessly with Git services — especially GitHub.
 
-If you connected your GitHub account, you should see a list of your existing repositories, from which you can add:
+<ol>
+    <li>
+    From your repository on GitHub, create a new file in the .github/workflows directory named superlinter.yml.
+    </li>
+    <li>
+    Copy the following YAML contents into the superlinter.yml file. Note: If your default branch is not main, update the value of DEFAULT_BRANCH to match your repository's default branch name.
+    </li>
+ </ol>
 
-![Alt text](img/list-projects.png "Projects list")
+```
+name: Super-Linter
 
-## The configuration file
-Most CI tools expect a configuration file to exist in the project. Travis CI expects a .travis.yml file to exist in the project root.
+# Run this workflow every time a new commit pushed to your repository
+on: push
 
- The following example specifies a cpp project that should be built with gcc and the latest versions of docker image.
+jobs:
+  # Set the job key. The key is displayed as the job name
+  # when a job name is not provided
+  super-lint:
+    # Name the Job
+    name: Lint code base
+    # Set the type of machine to run on
+    runs-on: ubuntu-latest
 
-![Alt text](img/travis.png "Travis file")
+    steps:
+      # Checks out a copy of your repository on the ubuntu-latest machine
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Runs the Super-Linter action
+      - name: Run Super-Linter
+        uses: github/super-linter@v3
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
