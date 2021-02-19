@@ -1,7 +1,7 @@
 # Minimum CMake required
 cmake_minimum_required(VERSION 3.13)
 
-set(TARGET_NAME "libbundle")
+set(TARGET_NAME "bundle")
 
 project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C)
 

@@ -30,15 +30,15 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_executable(check_requestor "./check_requestor.cc" ${grpc_srcs} ${proto_srcs} ${grpc_mock})
 
-target_link_libraries(check_requestor librequestor ${CHECK_LIBRARIES} 
+target_link_libraries(check_requestor requestor ${CHECK_LIBRARIES} 
   gtest
   gmock
   gmock_main
   OpenSSL::SSL
-  libspiffeid
-  libinternal
+  spiffeid
+  internal
   uriparser
-  libbundle
+  bundle
   jansson
   cjose
   subunit
@@ -53,15 +53,15 @@ add_test(check_requestor check_requestor)
 
 add_executable(check_client "./check_client.cc" ${grpc_srcs} ${proto_srcs} ${grpc_mock})
 
-target_link_libraries(check_client librequestor ${CHECK_LIBRARIES} 
+target_link_libraries(check_client requestor ${CHECK_LIBRARIES} 
   gtest
   gmock
   gmock_main
   OpenSSL::SSL
-  libspiffeid
-  libinternal
+  spiffeid
+  internal
   uriparser
-  libbundle
+  bundle
   jansson
   cjose
   subunit
