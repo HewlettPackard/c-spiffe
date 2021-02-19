@@ -64,7 +64,7 @@ x509bundle_Bundle* workloadapi_parseX509Bundle(string_t id,
             }
         }
 
-        spiffeid_TrustDomain_Free(&td, false);
+        spiffeid_TrustDomain_Free(&td);
     }
 
     return bundle;
@@ -116,7 +116,7 @@ jwtbundle_Set* workloadapi_parseJWTBundles(
                 }
             }
             arrfree(td_str);
-            spiffeid_TrustDomain_Free(&td, false);
+            spiffeid_TrustDomain_Free(&td);
         }
 
         return set;

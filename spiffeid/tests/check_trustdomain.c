@@ -24,7 +24,7 @@ START_TEST(test_spiffeid_TrustDomainFromString)
         spiffeid_TrustDomain td = spiffeid_TrustDomainFromString(str_tds[i], &err);
         ck_assert_str_eq(td.name, str_res[i]);
         ck_assert_uint_eq(err, 0);
-        spiffeid_TrustDomain_Free(&td, false);
+        spiffeid_TrustDomain_Free(&td);
     }
 }
 END_TEST
@@ -32,10 +32,10 @@ END_TEST
 START_TEST(test_spiffeid_TrustDomain_String)
 {
     spiffeid_TrustDomain td = {string_new("example.com")};
-    const string_t str_td = spiffeid_TrustDomain_String(td);
+    const char* str_td = spiffeid_TrustDomain_String(td);
 
     ck_assert_str_eq(str_td, "example.com");
-    spiffeid_TrustDomain_Free(&td, false);
+    spiffeid_TrustDomain_Free(&td);
 }
 END_TEST
 
@@ -47,7 +47,7 @@ START_TEST(test_spiffeid_TrustDomain_ID)
     ck_assert_str_eq(id.td.name, "example.com");
     ck_assert_str_eq(id.path, "");
 
-    spiffeid_TrustDomain_Free(&td, false);
+    spiffeid_TrustDomain_Free(&td);
     spiffeid_ID_Free(&id);
 }
 END_TEST
@@ -75,7 +75,7 @@ START_TEST(test_spiffeid_TrustDomain_NewID)
 
     util_string_t_Free(path);
     spiffeid_ID_Free(&id);
-    spiffeid_TrustDomain_Free(&td, false);
+    spiffeid_TrustDomain_Free(&td);
 }
 END_TEST
 
@@ -89,9 +89,9 @@ START_TEST(test_spiffeid_TrustDomain_IsZero)
     ck_assert(spiffeid_TrustDomain_IsZero(td1));
     ck_assert(!spiffeid_TrustDomain_IsZero(td2));
 
-    spiffeid_TrustDomain_Free(&td0, false);
-    spiffeid_TrustDomain_Free(&td1, false);
-    spiffeid_TrustDomain_Free(&td2, false);
+    spiffeid_TrustDomain_Free(&td0);
+    spiffeid_TrustDomain_Free(&td1);
+    spiffeid_TrustDomain_Free(&td2);
 }
 END_TEST
 
@@ -105,9 +105,9 @@ START_TEST(test_spiffeid_TrustDomain_Compare)
     ck_assert_int_gt(spiffeid_TrustDomain_Compare(td1, td0), 0);
     ck_assert_int_eq(spiffeid_TrustDomain_Compare(td0, td2), 0);
 
-    spiffeid_TrustDomain_Free(&td0, false);
-    spiffeid_TrustDomain_Free(&td1, false);
-    spiffeid_TrustDomain_Free(&td2, false);
+    spiffeid_TrustDomain_Free(&td0);
+    spiffeid_TrustDomain_Free(&td1);
+    spiffeid_TrustDomain_Free(&td2);
 }
 END_TEST
 

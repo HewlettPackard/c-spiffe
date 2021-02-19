@@ -280,7 +280,7 @@ void jwtbundle_Bundle_Free(jwtbundle_Bundle *b, bool alloc)
             EVP_PKEY_free(b->auths[i].value);
         }
         shfree(b->auths);
-        spiffeid_TrustDomain_Free(&(b->td), false);
+        spiffeid_TrustDomain_Free(&(b->td));
 
         if(alloc)
         {
