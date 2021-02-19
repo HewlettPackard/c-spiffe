@@ -48,7 +48,7 @@ START_TEST(test_spiffeid_TrustDomain_ID)
     ck_assert_str_eq(id.path, "");
 
     spiffeid_TrustDomain_Free(&td, false);
-    spiffeid_ID_Free(&id, false);
+    spiffeid_ID_Free(&id);
 }
 END_TEST
 
@@ -74,7 +74,7 @@ START_TEST(test_spiffeid_TrustDomain_NewID)
     ck_assert_str_eq(id.path, "/path1/path2/PATH3");
 
     util_string_t_Free(path);
-    spiffeid_ID_Free(&id, false);
+    spiffeid_ID_Free(&id);
     spiffeid_TrustDomain_Free(&td, false);
 }
 END_TEST

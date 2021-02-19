@@ -579,7 +579,7 @@ void jwtsvid_SVID_Free(jwtsvid_SVID *svid)
     if(svid)
     {
         //free spiffe id
-        spiffeid_ID_Free(&(svid->id), false);
+        spiffeid_ID_Free(&(svid->id));
         //free array of strings
         util_string_arr_t_Free(svid->audience);
         //free each json object

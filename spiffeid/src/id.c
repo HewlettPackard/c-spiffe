@@ -87,7 +87,7 @@ static UriUriA URL_parse(const char *str, err_t *err)
 {
     UriUriA uri;
     const char *err_pos;
-    if(uriParseSingleUriA(&uri, (const char*) str, &err_pos) == URI_SUCCESS)
+    if(uriParseSingleUriA(&uri, str, &err_pos) == URI_SUCCESS)
     {   
         *err = NO_ERROR;
     }
@@ -243,14 +243,12 @@ spiffeid_ID spiffeid_FromString(const char *str, err_t *err)
     return id;
 }
 
-void spiffeid_ID_Free(spiffeid_ID *id, bool alloc)
+void spiffeid_ID_Free(spiffeid_ID *id)
 {
     if(id)
     {
         arrfree(id->td.name);
         arrfree(id->path);
-        if(alloc)
-            free(id);
     }
 }
 
@@ -266,7 +264,7 @@ bool spiffeid_ID_MemberOf(const spiffeid_ID id, const spiffeid_TrustDomain td)
     return !strcmp(id.td.name, td.name);
 }
 
-string_t spiffeid_ID_Path(const spiffeid_ID id)
+const char* spiffeid_ID_Path(const spiffeid_ID id)
 {
     return id.path;
 }
@@ -316,7 +314,8 @@ string_t spiffeid_ID_String(const spiffeid_ID id)
     arrfree(uri.scheme.first);
     arrfree(uri.hostText.first);
     arrfree(uri.pathHead->text.first);
-    // curl_url_cleanup(uri);
+    free(uri.pathHead);
+    
     return str;
 }
 

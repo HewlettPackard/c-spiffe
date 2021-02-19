@@ -59,7 +59,7 @@ string_t spiffeid_TrustDomain_IDString(const spiffeid_TrustDomain td)
 {
     spiffeid_ID id = spiffeid_TrustDomain_ID(td);
     string_t str = spiffeid_ID_String(id);
-    spiffeid_ID_Free(&id, false);
+    spiffeid_ID_Free(&id);
 
     return str;
 }

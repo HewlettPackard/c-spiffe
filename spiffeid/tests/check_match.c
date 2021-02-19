@@ -28,7 +28,7 @@ START_TEST(test_spiffeid_MatchID)
     ck_assert_str_eq(m->ids[0].path, "/path1");
     ck_assert(m->td.name == NULL);
 
-    spiffeid_ID_Free(&id, false);
+    spiffeid_ID_Free(&id);
     spiffeid_Matcher_Free(m);
 }
 END_TEST
@@ -55,9 +55,9 @@ START_TEST(test_spiffeid_MatchOneOf)
     ck_assert_str_eq(m->ids[2].path, "/path5");
     ck_assert(m->td.name == NULL);
 
-    spiffeid_ID_Free(&id0, false);
-    spiffeid_ID_Free(&id1, false);
-    spiffeid_ID_Free(&id2, false);
+    spiffeid_ID_Free(&id0);
+    spiffeid_ID_Free(&id1);
+    spiffeid_ID_Free(&id2);
     spiffeid_Matcher_Free(m);
 }
 END_TEST

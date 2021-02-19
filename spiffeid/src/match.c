@@ -99,7 +99,7 @@ void spiffeid_Matcher_Free(spiffeid_Matcher *matcher)
     {
         for(size_t i = 0, size = arrlenu(matcher->ids); i < size; ++i)
         {
-            spiffeid_ID_Free(matcher->ids + i, false);
+            spiffeid_ID_Free(matcher->ids + i);
         }
         arrfree(matcher->ids);
         arrfree(matcher->td.name);
