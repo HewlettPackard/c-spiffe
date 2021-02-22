@@ -2,7 +2,7 @@
 
 C extension for Spiffe platform.
 
-[![Actions-CI](https://github.com/willallves/c-spiffe/workflows/CI/badge.svg)](https://github.com/willallves/c-spiffe/actions)
+[![Build and run tests](https://github.com/willallves/c-spiffe/actions/workflows/actions.yml/badge.svg)](https://github.com/willallves/c-spiffe/actions/workflows/actions.yml)
 
 
 ## Introduction
