@@ -151,6 +151,7 @@ workloadapi_Client *workloadapi_NewClient(err_t *error)
     cnd_init(&(client->closedCond));
     mtx_lock(&(client->closedMutex));
     client->closed = true;
+    client->ownsStub = false;
     mtx_unlock(&(client->closedMutex));
     *error = NO_ERROR;
     return client;
@@ -193,6 +194,7 @@ err_t workloadapi_Client_Connect(workloadapi_Client *client)
             return ERROR3;
         }
         client->stub = new_stub.release(); //extends lifetime of pointer to outside this scope
+        client->ownsStub = true;
     }
     mtx_lock(&(client->closedMutex));
     client->closed = false;
@@ -219,7 +221,11 @@ err_t workloadapi_Client_Close(workloadapi_Client *client)
     client->closed = true;
     cnd_broadcast(&(client->closedCond));
     mtx_unlock(&(client->closedMutex));
-    delete ((SpiffeWorkloadAPI::StubInterface *)client->stub); //delete it since grpc new'd it internally and we released it.
+    if(client->ownsStub){
+        delete ((SpiffeWorkloadAPI::StubInterface *)client->stub); //delete it since grpc new'd it internally and we released it.
+        client->ownsStub = false;
+
+    }
     client->stub = NULL;
     //grpc will free the channel when no stub is using it.
     return NO_ERROR;
@@ -272,11 +278,11 @@ err_t workloadapi_Client_SetStub(workloadapi_Client* client, workloadapi_Stub st
     if(!client){
         return ERROR1;
     }
-    ///TODO: free previous stub if set? error out?
-    // if(client->stub){
-    //     delete ((SpiffeWorkloadAPI::StubInterface *)client->stub); //delete it since grpc new'd it internally and we released it.
-    //     client->stub = NULL;//sanity?
-    // }
+    if(client->ownsStub){
+        delete ((SpiffeWorkloadAPI::StubInterface *)client->stub); //delete it since grpc new'd it internally and we released it.
+        client->stub = NULL;
+    }
+    client->ownsStub = false;
     client->stub = stub;
     return NO_ERROR;
 }

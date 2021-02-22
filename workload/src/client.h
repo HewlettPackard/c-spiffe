@@ -18,6 +18,7 @@ typedef struct workloadapi_Watcher workloadapi_Watcher;
 
 typedef struct workloadapi_Client {
     workloadapi_Stub stub;
+    bool ownsStub;
     string_arr_t headers;
     string_t address;
     bool closed;
