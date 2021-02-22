@@ -9,7 +9,7 @@ extern "C"
 {
 #endif
 
-/** Source is a represents a source of X.509 bundles keyed by trust domain. */
+/** Source represents a source of X.509 bundles keyed by trust domain. */
 typedef struct {
     enum x509bundle_Source_Cardinality {
         X509BUNDLE_BUNDLE,
@@ -27,15 +27,15 @@ typedef struct {
  * \param source [in] Source of X.509 bundles object pointer.
  * \param td [in] Trust Domain object.
  * \param err [out] Variable to get information in the event of error.
- * \returns The bundle for the given Trust Domain if it exists, <tt>NULL</tt>
- * otherwise.
+ * \returns The bundle for the given Trust Domain if it exists,
+ * <tt>NULL</tt> otherwise.
  */
 x509bundle_Bundle *x509bundle_Source_GetX509BundleForTrustDomain(
     x509bundle_Source *source, const spiffeid_TrustDomain td, err_t *err);
 
 /**
- * Creates a source of X.509 bundles from a X.509 bundle. Takes ownership of
- * the object, so it will be freed when the source is freed.
+ * Creates a source of X.509 bundles from a X.509 bundle. Takes ownership
+ * of the object, so it will be freed when the source is freed.
  *
  * \param bundle [in] X.509 Bundle object pointer.
  * \returns A source of X.509 bundles object pointer.

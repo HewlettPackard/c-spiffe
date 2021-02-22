@@ -16,7 +16,7 @@ extern "C"
 typedef struct {
     /** bundle trust domain */
     spiffeid_TrustDomain td;
-    /** array of X.509 certificate pointers */
+    /** stb array of X.509 certificate pointers */
     X509 **auths;
     /** mutex */
     mtx_t mtx;
@@ -58,7 +58,7 @@ x509bundle_Bundle *x509bundle_Load(const spiffeid_TrustDomain td,
                                     const char *path, err_t *err);
 
 /**
- * Decodes a bundle from a reader. The contents must be PEM-encoded
+ * Decodes a bundle from bytes. The contents must be PEM-encoded
  * certificate blocks.
  *
  * \param td [in] Trust Domain object.

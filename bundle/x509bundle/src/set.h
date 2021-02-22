@@ -9,16 +9,16 @@ extern "C"
 {
 #endif
 
-typedef struct map_string_x509bundle_Bundle {
+typedef struct {
     string_t key;
     x509bundle_Bundle *value;
 } map_string_x509bundle_Bundle;
 
 /** Set is a set of bundles, keyed by trust domain. */
-typedef struct x509bundle_Set {
-    // map of bundles
+typedef struct {
+    /** map of bundles */
     map_string_x509bundle_Bundle *bundles;
-    // lock
+    /** mutex */
     mtx_t mtx;
 } x509bundle_Set;
 
@@ -78,7 +78,7 @@ x509bundle_Bundle *x509bundle_Set_Get(x509bundle_Set *set,
  *
  * \param set [in] Set of X.509 bundles object pointer.
  * \returns stb array of X.509 bundle pointers. Each element must be freed
- * directly using X509bundle_Bundle_Free, followed by the deallocation of
+ * directly using x509bundle_Bundle_Free, followed by the deallocation of
  * the array using arrfree.
  */
 x509bundle_Bundle **x509bundle_Set_Bundles(x509bundle_Set *set);
