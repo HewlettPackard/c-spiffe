@@ -107,7 +107,7 @@ START_TEST(test_jwtsvid_ParseAndValidate)
     ck_assert_ptr_ne(svid->token, NULL);
     ck_assert_str_eq(svid->token, token);
 
-    jwtbundle_Source_Free(source, true);
+    jwtbundle_Source_Free(source);
     EVP_PKEY_free(pkey);
     jwtsvid_SVID_Free(svid);
 }
