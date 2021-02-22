@@ -2,7 +2,8 @@
 
 C extension for Spiffe platform.
 
-[![Build Status](https://travis-ci.com/HewlettPackard/c-spiffe.svg?branch=master)](https://travis-ci.com/github/HewlettPackard/c-spiffe)
+[![Actions-CI](https://github.com/willallves/c-spiffe/workflows/CI/badge.svg)](https://github.com/willallves/c-spiffe/actions)
+
 
 ## Introduction
 
