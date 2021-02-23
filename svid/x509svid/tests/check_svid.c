@@ -216,7 +216,7 @@ START_TEST(test_x509svid_validateCertificates)
     {
         X509_free(certs[i]);
     }
-    spiffeid_ID_Free(&id, false);
+    spiffeid_ID_Free(&id);
 }
 END_TEST
 
@@ -245,7 +245,7 @@ START_TEST(test_x509svid_validateLeafCertificate)
     
     BIO_free(bio_mem);
     X509_free(cert);
-    spiffeid_ID_Free(&id, false);
+    spiffeid_ID_Free(&id);
 }
 END_TEST
 
