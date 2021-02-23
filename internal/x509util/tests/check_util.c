@@ -1,7 +1,7 @@
-#include <openssl/pem.h>
-#include <openssl/evp.h>
-#include <check.h>
 #include "../src/util.h"
+#include <check.h>
+#include <openssl/evp.h>
+#include <openssl/pem.h>
 
 START_TEST(test_x509util_CopyX509Authorities)
 {
@@ -16,9 +16,8 @@ START_TEST(test_x509util_CopyX509Authorities)
     arrfree(buffer);
 
     X509 **certs = NULL;
-    for(int i = 0; i < ITERS; ++i)
-    {
-        //load certificate here
+    for(int i = 0; i < ITERS; ++i) {
+        // load certificate here
         X509 *cert = PEM_read_bio_X509(bio_mem, NULL, NULL, NULL);
         if(cert)
             arrput(certs, cert);
@@ -28,8 +27,7 @@ START_TEST(test_x509util_CopyX509Authorities)
 
     ck_assert_uint_eq(arrlenu(certs), ITERS);
     ck_assert_uint_eq(arrlenu(certs), arrlenu(certs_copy));
-    for(size_t i = 0, size = arrlenu(certs); i < size; ++i)
-    {
+    for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
         ck_assert_int_eq(X509_cmp(certs[i], certs_copy[i]), 0);
 
         X509_free(certs[i]);
@@ -58,23 +56,21 @@ START_TEST(test_x509util_ParseCertificates)
     unsigned char *pout = der_bytes;
 
     X509 **certs = NULL;
-    for(int i = 0; i < ITERS; ++i)
-    {
+    for(int i = 0; i < ITERS; ++i) {
         X509 *cert = PEM_read_bio_X509(bio_mem, NULL, NULL, NULL);
-        if(cert)
-        {
+        if(cert) {
             i2d_X509(cert, &pout);
             arrput(certs, cert);
         }
     }
 
     err_t err;
-    X509 **parsed_certs = x509util_ParseCertificates(der_bytes, pout - der_bytes, &err);
+    X509 **parsed_certs
+        = x509util_ParseCertificates(der_bytes, pout - der_bytes, &err);
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_uint_eq(arrlenu(certs), arrlenu(parsed_certs));
 
-    for(size_t i = 0, size = arrlenu(certs); i < size; ++i)
-    {
+    for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
         ck_assert_int_eq(X509_cmp(certs[i], parsed_certs[i]), 0);
 
         X509_free(certs[i]);
@@ -99,17 +95,18 @@ START_TEST(test_x509util_ParsePrivateKey)
 
     EVP_PKEY *pkey = PEM_read_bio_PrivateKey(bio_mem, NULL, NULL, NULL);
     ck_assert_ptr_ne(pkey, NULL);
-    
+
     unsigned char der_bytes[10000];
     unsigned char *pout = der_bytes;
 
     i2d_PrivateKey(pkey, &pout);
 
     err_t err;
-    EVP_PKEY *parsed_pkey = x509util_ParsePrivateKey(der_bytes, pout - der_bytes, &err);
+    EVP_PKEY *parsed_pkey
+        = x509util_ParsePrivateKey(der_bytes, pout - der_bytes, &err);
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_ne(parsed_pkey, NULL);
-    
+
     RSA *rsa1 = EVP_PKEY_get0_RSA(pkey);
     RSA *rsa2 = EVP_PKEY_get0_RSA(parsed_pkey);
 
@@ -145,9 +142,8 @@ START_TEST(test_x509util_CertsEqual)
 
     X509 **certs1 = NULL, **certs2 = NULL;
 
-    for(int i = 0; i < ITERS; ++i)
-    {
-        //load certificate here
+    for(int i = 0; i < ITERS; ++i) {
+        // load certificate here
         X509 *cert = PEM_read_bio_X509(bio_mem, NULL, NULL, NULL);
 
         arrput(certs1, cert);
@@ -155,13 +151,13 @@ START_TEST(test_x509util_CertsEqual)
     }
 
     ck_assert(x509util_CertsEqual(certs1, certs2));
-    
+
     arrpop(certs1);
     ck_assert(!x509util_CertsEqual(certs1, certs2));
 
     arrpop(certs2);
     ck_assert(x509util_CertsEqual(certs1, certs2));
-    
+
     arrdel(certs1, 0);
     ck_assert(!x509util_CertsEqual(certs1, certs2));
 
@@ -191,24 +187,23 @@ START_TEST(test_x509util_NewCertPool)
     arrfree(buffer);
 
     X509 **certs = NULL;
-    for(int i = 0; i < ITERS; ++i)
-    {
-        //load certificate here
+    for(int i = 0; i < ITERS; ++i) {
+        // load certificate here
         X509 *cert = PEM_read_bio_X509(bio_mem, NULL, NULL, NULL);
         if(cert)
             arrput(certs, cert);
     }
 
     x509util_CertPool *certpool = x509util_NewCertPool(certs);
-    
+
     ck_assert_uint_eq(arrlenu(certpool->certs), 3);
-    
+
     BIO_free(bio_mem);
     x509util_CertPool_Free(certpool);
 }
 END_TEST
 
-Suite* util_suite(void)
+Suite *util_suite(void)
 {
     Suite *s = suite_create("util");
     TCase *tc_core = tcase_create("core");
@@ -231,8 +226,8 @@ int main(void)
 
     srunner_run_all(sr, CK_NORMAL);
     const int number_failed = srunner_ntests_failed(sr);
-    
+
     srunner_free(sr);
-    
+
     return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
