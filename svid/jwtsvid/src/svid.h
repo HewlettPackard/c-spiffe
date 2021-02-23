@@ -112,9 +112,9 @@ const char *jwtsvid_SVID_Marshal(jwtsvid_SVID *svid);
 /**
  * Frees a JWT-SVID object.
  *
- * \param jwt [in] JWT-SVID object pointer.
+ * \param svid [in] JWT-SVID object pointer.
  */
-void jwtsvid_SVID_Free(jwtsvid_SVID *jwt);
+void jwtsvid_SVID_Free(jwtsvid_SVID *svid);
 
 #ifdef __cplusplus
 }
