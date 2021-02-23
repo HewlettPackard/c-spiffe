@@ -18,7 +18,7 @@ extern "C"
  * \param certs [in] stb array of X.509 certificate object pointers.
  * \returns a stb array with a copy of the objects, with the reference
  * count increased. Must be freed iterations over the array using
- * EVP_PKEY_free and then arrfree.
+ * X509_free and then arrfree.
  */
 X509 **x509util_CopyX509Authorities(X509 **certs);
 
@@ -39,7 +39,7 @@ bool x509util_CertsEqual(X509 **certs1, X509 **certs2);
  * \param len [in] Length of the array.
  * \param err [out] Variable to get information in the event of error.
  * \returns stb array of X.509 certificate object pointers. Must be freed
- * iterations over the array using EVP_PKEY_free and then arrfree.
+ * iterations over the array using X509_free and then arrfree.
  */
 X509 **x509util_ParseCertificates(const byte *bytes, const size_t len,
                                     err_t *err);
