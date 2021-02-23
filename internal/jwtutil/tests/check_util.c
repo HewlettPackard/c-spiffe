@@ -1,6 +1,6 @@
-#include <openssl/pem.h>
-#include <check.h>
 #include "../src/util.h"
+#include <check.h>
+#include <openssl/pem.h>
 
 #define STB_DS_IMPLEMENTATION
 #include "../../../utils/src/stb_ds.h"
@@ -14,7 +14,7 @@ START_TEST(test_jwtutil_JWTAuthoritiesEqual)
         "UxT7SufdVXcgVFK9M3BYzvroA1uO/parFOJABTkNhTPPP/6mjrU2CPEZJ1zIkpaS\n"
         "NJrrhpp/rNMO9nyLYPGs9MfdBiWUPmHW5mY1oD0ye4my0tEsHOlgHC8AhA8OtiHr\n"
         "6IY0agXmH/y5YmSWbwIDAQAB\n"
-        "-----END PUBLIC KEY-----", 
+        "-----END PUBLIC KEY-----",
         "-----BEGIN PUBLIC KEY-----\n"
         "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA61BjmfXGEvWmegnBGSuS\n"
         "+rU9soUg2FnODva32D1AqhwdziwHINFaD1MVlcrYG6XRKfkcxnaXGfFDWHLEvNBS\n"
@@ -50,23 +50,20 @@ START_TEST(test_jwtutil_JWTAuthoritiesEqual)
         "-----END PUBLIC KEY-----"
     };
 
-    BIO *bio_mems[] = {
-        BIO_new_mem_buf((void*) pubkeys[0], -1),
-        BIO_new_mem_buf((void*) pubkeys[1], -1),
-        BIO_new_mem_buf((void*) pubkeys[2], -1),
-        BIO_new_mem_buf((void*) pubkeys[3], -1),
-        BIO_new_mem_buf((void*) pubkeys[4], -1),
-        BIO_new_mem_buf((void*) pubkeys[5], -1)
-    };
+    BIO *bio_mems[] = { BIO_new_mem_buf((void *) pubkeys[0], -1),
+                        BIO_new_mem_buf((void *) pubkeys[1], -1),
+                        BIO_new_mem_buf((void *) pubkeys[2], -1),
+                        BIO_new_mem_buf((void *) pubkeys[3], -1),
+                        BIO_new_mem_buf((void *) pubkeys[4], -1),
+                        BIO_new_mem_buf((void *) pubkeys[5], -1) };
 
-    EVP_PKEY *evp_pubkeys[] = {
-        PEM_read_bio_PUBKEY(bio_mems[0], NULL, NULL, NULL),
-        PEM_read_bio_PUBKEY(bio_mems[1], NULL, NULL, NULL),
-        PEM_read_bio_PUBKEY(bio_mems[2], NULL, NULL, NULL),
-        PEM_read_bio_PUBKEY(bio_mems[3], NULL, NULL, NULL),
-        PEM_read_bio_PUBKEY(bio_mems[4], NULL, NULL, NULL),
-        PEM_read_bio_PUBKEY(bio_mems[5], NULL, NULL, NULL)
-    };
+    EVP_PKEY *evp_pubkeys[]
+        = { PEM_read_bio_PUBKEY(bio_mems[0], NULL, NULL, NULL),
+            PEM_read_bio_PUBKEY(bio_mems[1], NULL, NULL, NULL),
+            PEM_read_bio_PUBKEY(bio_mems[2], NULL, NULL, NULL),
+            PEM_read_bio_PUBKEY(bio_mems[3], NULL, NULL, NULL),
+            PEM_read_bio_PUBKEY(bio_mems[4], NULL, NULL, NULL),
+            PEM_read_bio_PUBKEY(bio_mems[5], NULL, NULL, NULL) };
 
     map_string_EVP_PKEY *str_evp0 = NULL;
     map_string_EVP_PKEY *str_evp1 = NULL;
@@ -100,10 +97,9 @@ START_TEST(test_jwtutil_JWTAuthoritiesEqual)
 
     shput(str_evp1, "key2", evp_pubkeys[2]);
     ck_assert(jwtutil_JWTAuthoritiesEqual(str_evp0, str_evp1));
-    ck_assert(jwtutil_JWTAuthoritiesEqual(str_evp1, str_evp0));    
+    ck_assert(jwtutil_JWTAuthoritiesEqual(str_evp1, str_evp0));
 
-    for(int i = 0; i < ITERS; ++i)
-    {
+    for(int i = 0; i < ITERS; ++i) {
         BIO_free(bio_mems[i]);
         EVP_PKEY_free(evp_pubkeys[i]);
     }
@@ -115,14 +111,7 @@ END_TEST
 START_TEST(test_jwtutil_CopyJWTAuthorities)
 {
     const int ITERS = 6;
-    const char *keys[] = {
-        "key0",
-        "key1",
-        "key2",
-        "key3",
-        "key4",
-        "key5"
-    };
+    const char *keys[] = { "key0", "key1", "key2", "key3", "key4", "key5" };
 
     const char *pubkeys[] = {
         "-----BEGIN PUBLIC KEY-----\n"
@@ -130,7 +119,7 @@ START_TEST(test_jwtutil_CopyJWTAuthorities)
         "UxT7SufdVXcgVFK9M3BYzvroA1uO/parFOJABTkNhTPPP/6mjrU2CPEZJ1zIkpaS\n"
         "NJrrhpp/rNMO9nyLYPGs9MfdBiWUPmHW5mY1oD0ye4my0tEsHOlgHC8AhA8OtiHr\n"
         "6IY0agXmH/y5YmSWbwIDAQAB\n"
-        "-----END PUBLIC KEY-----", 
+        "-----END PUBLIC KEY-----",
         "-----BEGIN PUBLIC KEY-----\n"
         "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA61BjmfXGEvWmegnBGSuS\n"
         "+rU9soUg2FnODva32D1AqhwdziwHINFaD1MVlcrYG6XRKfkcxnaXGfFDWHLEvNBS\n"
@@ -166,28 +155,24 @@ START_TEST(test_jwtutil_CopyJWTAuthorities)
         "-----END PUBLIC KEY-----"
     };
 
-    BIO *bio_mems[] = {
-        BIO_new_mem_buf((void*) pubkeys[0], -1),
-        BIO_new_mem_buf((void*) pubkeys[1], -1),
-        BIO_new_mem_buf((void*) pubkeys[2], -1),
-        BIO_new_mem_buf((void*) pubkeys[3], -1),
-        BIO_new_mem_buf((void*) pubkeys[4], -1),
-        BIO_new_mem_buf((void*) pubkeys[5], -1)
-    };
+    BIO *bio_mems[] = { BIO_new_mem_buf((void *) pubkeys[0], -1),
+                        BIO_new_mem_buf((void *) pubkeys[1], -1),
+                        BIO_new_mem_buf((void *) pubkeys[2], -1),
+                        BIO_new_mem_buf((void *) pubkeys[3], -1),
+                        BIO_new_mem_buf((void *) pubkeys[4], -1),
+                        BIO_new_mem_buf((void *) pubkeys[5], -1) };
 
-    EVP_PKEY *evp_pubkeys[] = {
-        PEM_read_bio_PUBKEY(bio_mems[0], NULL, NULL, NULL),
-        PEM_read_bio_PUBKEY(bio_mems[1], NULL, NULL, NULL),
-        PEM_read_bio_PUBKEY(bio_mems[2], NULL, NULL, NULL),
-        PEM_read_bio_PUBKEY(bio_mems[3], NULL, NULL, NULL),
-        PEM_read_bio_PUBKEY(bio_mems[4], NULL, NULL, NULL),
-        PEM_read_bio_PUBKEY(bio_mems[5], NULL, NULL, NULL)
-    };
+    EVP_PKEY *evp_pubkeys[]
+        = { PEM_read_bio_PUBKEY(bio_mems[0], NULL, NULL, NULL),
+            PEM_read_bio_PUBKEY(bio_mems[1], NULL, NULL, NULL),
+            PEM_read_bio_PUBKEY(bio_mems[2], NULL, NULL, NULL),
+            PEM_read_bio_PUBKEY(bio_mems[3], NULL, NULL, NULL),
+            PEM_read_bio_PUBKEY(bio_mems[4], NULL, NULL, NULL),
+            PEM_read_bio_PUBKEY(bio_mems[5], NULL, NULL, NULL) };
 
     map_string_EVP_PKEY *str_evp0 = NULL;
 
-    for(int i = 0; i < ITERS; ++i)
-    {
+    for(int i = 0; i < ITERS; ++i) {
         shput(str_evp0, keys[i], evp_pubkeys[i]);
     }
 
@@ -195,8 +180,7 @@ START_TEST(test_jwtutil_CopyJWTAuthorities)
 
     ck_assert(jwtutil_JWTAuthoritiesEqual(str_evp0, str_evp1));
 
-    for(int i = 0; i < ITERS; ++i)
-    {
+    for(int i = 0; i < ITERS; ++i) {
         BIO_free(bio_mems[i]);
         EVP_PKEY_free(evp_pubkeys[i]);
     }
@@ -205,7 +189,7 @@ START_TEST(test_jwtutil_CopyJWTAuthorities)
 }
 END_TEST
 
-Suite* util_suite(void)
+Suite *util_suite(void)
 {
     Suite *s = suite_create("util");
     TCase *tc_core = tcase_create("core");
@@ -214,7 +198,7 @@ Suite* util_suite(void)
 
     tcase_add_test(tc_core, test_jwtutil_JWTAuthoritiesEqual);
     tcase_add_test(tc_core, test_jwtutil_CopyJWTAuthorities);
-    
+
     return s;
 }
 
@@ -225,8 +209,8 @@ int main(void)
 
     srunner_run_all(sr, CK_NORMAL);
     const int number_failed = srunner_ntests_failed(sr);
-    
+
     srunner_free(sr);
-    
+
     return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
