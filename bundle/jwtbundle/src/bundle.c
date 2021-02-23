@@ -63,7 +63,7 @@ jwtbundle_Bundle* jwtbundle_Load(const spiffeid_TrustDomain td,
 }
 
 jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td, 
-                                    const string_t bundle_bytes, 
+                                    const char *bundle_bytes, 
                                     err_t *err)
 {
 
@@ -81,12 +81,11 @@ jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td,
         //get i-th element of the JWKS
 
         json_t *elem_obj = json_array_get(keys, i);
-        const char *key_str = json_dumps(elem_obj, 0);
 
         cjose_err cj_err;
-        //parse the raw bytes into a JWK object
+        //import json object into a JWK object
         const cjose_jwk_t *jwk = 
-            cjose_jwk_import(key_str, strlen(key_str), &cj_err);
+            cjose_jwk_import_json(elem_obj, &cj_err);
         //get key id field
         const char *kid = 
             cjose_jwk_get_kid(jwk, &cj_err);
@@ -100,20 +99,25 @@ jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td,
         // const long keysize = 
         //     cjose_jwk_get_keysize(jwk, &cj_err);
         EVP_PKEY *pkey = EVP_PKEY_new();
+        RSA *rsa = NULL;
+        EC_KEY *ec_key = NULL;
         
         switch(kty)
         {
         case CJOSE_JWK_KTY_RSA:
-            EVP_PKEY_set1_RSA(pkey, (RSA*) keydata);
+            rsa = (RSA*) keydata;
+            EVP_PKEY_set1_RSA(pkey, rsa);
             break;
         case CJOSE_JWK_KTY_EC:
-            EVP_PKEY_set1_EC_KEY(pkey, ((ec_keydata*) keydata)->key);
+            ec_key = ((ec_keydata*) keydata)->key;
+            EVP_PKEY_set1_EC_KEY(pkey, ec_key);
             break;
         default:
             //type not supported currently
             ///TODO: handle unexpected key type
             break;
         }
+        // cjose_jwk_release(jwk);
 
         if(pkey)
         {
@@ -122,6 +126,8 @@ jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td,
         }
     }
     
+    free(root);
+
     return bundle;
 }
                                             
