@@ -10,11 +10,11 @@ set(SOURCES_CHECK
 
 add_executable(check_jwtutil ${SOURCES_CHECK})
 
-target_link_libraries(check_jwtutil libinternal ${CHECK_LIBRARIES}
+target_link_libraries(check_jwtutil internal ${CHECK_LIBRARIES}
   OpenSSL::SSL
-  libspiffeid
+  spiffeid
   uriparser
-  libbundle
+  bundle
   jansson
   cjose
   subunit

@@ -5,10 +5,10 @@ file(COPY ../tests/resources/ DESTINATION ${PROJECT_BINARY_DIR}/bundle/jwtbundle
 
 add_executable(check_jwtbundle check_bundle.c)
 
-target_link_libraries(check_jwtbundle libbundle ${CHECK_LIBRARIES}
+target_link_libraries(check_jwtbundle bundle ${CHECK_LIBRARIES}
   OpenSSL::SSL
-  libspiffeid
-  libinternal
+  spiffeid
+  internal
   uriparser
   jansson
   cjose
@@ -24,10 +24,10 @@ add_test(check_jwtbundle check_jwtbundle)
 
 add_executable(check_jwtset check_set.c)
 
-target_link_libraries(check_jwtset libbundle ${CHECK_LIBRARIES}
+target_link_libraries(check_jwtset bundle ${CHECK_LIBRARIES}
   OpenSSL::SSL
-  libspiffeid
-  libinternal
+  spiffeid
+  internal
   uriparser
   jansson
   cjose

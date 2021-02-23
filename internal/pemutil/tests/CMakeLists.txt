@@ -3,11 +3,11 @@ cmake_minimum_required(VERSION 3.13)
 
 add_executable(check_pem check_pem.c )
 
-target_link_libraries(check_pem libinternal ${CHECK_LIBRARIES}
+target_link_libraries(check_pem internal ${CHECK_LIBRARIES}
   OpenSSL::SSL
-  libspiffeid
+  spiffeid
   uriparser
-  libbundle
+  bundle
   jansson
   cjose
   subunit
