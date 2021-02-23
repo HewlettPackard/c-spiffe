@@ -12,9 +12,9 @@ int main(void) {
     std::cout << "SVID Path: " << svid->id.path << std::endl
               << "Trust Domain: " << svid->id.td.name << std::endl
               << "Cert(s) Address: " << svid->certs << std::endl
-              << "Key Address: " << svid->privateKey << std::endl;
+              << "Key Address: " << svid->private_key << std::endl;
   }
   workloadapi_RequestorFree(requestor);
-  x509svid_SVID_Free(svid, true);
+  x509svid_SVID_Free(svid);
   return 0;
 }

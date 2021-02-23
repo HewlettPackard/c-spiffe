@@ -13,10 +13,10 @@ int main(void) {
     printf("SVID Path: %s\n", svid->id.path);
     printf("Trust Domain: %s\n", svid->id.td.name);
     printf("Cert(s) Address: %p\n", svid->certs);
-    printf("Key Address: %p\n", svid->privateKey);
+    printf("Key Address: %p\n", svid->private_key);
   }
   workloadapi_RequestorFree(requestor);
-  x509svid_SVID_Free(svid, true);
+  x509svid_SVID_Free(svid);
 
   return 0;
 }
