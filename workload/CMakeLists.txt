@@ -54,16 +54,34 @@ pthread
 ssl
 crypto)
 
-set(LIB_REQUESTOR
-  src/requestor.cc
+set(LIB_SOURCE
+  src/x509source.c
+)
+
+set(LIB_WATCHER
+  src/watcher.c
+)
+
+set(LIB_BACKOFF
+  src/backoff.c
+)
+
+set(LIB_CLIENT
   src/client.cc
   ${proto_srcs}
   ${grpc_srcs}
 )
 
-add_library(requestor SHARED ${LIB_REQUESTOR})
+add_library(backoff SHARED ${LIB_BACKOFF})
+target_link_libraries(backoff
+${OWN_LIBS}
+${EXT_LIBS}
+)
 
-target_link_libraries(requestor
+add_library(client SHARED ${LIB_CLIENT} ${LIB_WATCHER})
+
+target_link_libraries(client
+backoff
 ${OWN_LIBS}
 ${EXT_LIBS}
 ${_REFLECTION}
@@ -72,20 +90,28 @@ ${_GRPC_GRPC}
 ${_PROTOBUF_LIBPROTOBUF}
 )
 
-#set(CPP_CLIENT
-#    src/cpp_client_example.cc
-#)
-add_executable(cpp_client src/cpp_client_example.cc)
-target_link_libraries(cpp_client requestor)
+add_library(source SHARED ${LIB_SOURCE})
+target_link_libraries(source
+client
+${OWN_LIBS}
+${EXT_LIBS}
+)
 
-#set(C_CLIENT
-#    src/c_client_example.c
-#)
-add_executable(c_client src/c_client_example.c)
-target_link_libraries(c_client requestor)
+set(CPP_CLIENT
+    src/cpp_client_example.cc
+)
+add_executable(cpp_client "${CPP_CLIENT}")
+target_link_libraries(cpp_client source client backoff)
 
-#set(C_CLIENT_BUNDLE
-#    src/c_client_example_bundle.c
-#)
-add_executable(c_client_bundle src/c_client_example_bundle.c)
-target_link_libraries(c_client_bundle requestor)
+set(C_CLIENT
+    src/c_client_example.c
+)
+add_executable(c_client "${C_CLIENT}")
+target_link_libraries(c_client source client backoff)
+
+
+set(C_CLIENT_BUNDLE
+    src/c_client_example_bundle.c
+)
+add_executable(c_client_bundle "${C_CLIENT_BUNDLE}")
+target_link_libraries(c_client_bundle client)
