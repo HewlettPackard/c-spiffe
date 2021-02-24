@@ -32,7 +32,7 @@ typedef struct workloadapi_WatcherConfig
 
 typedef struct workloadapi_Watcher
 {
-    void* client; ///TODO: as above, pointer to Client C++ class;
+    workloadapi_Client* client;
     bool ownsClient; //did this create its client?
 
     //Update Sync
