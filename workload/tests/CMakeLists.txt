@@ -1,6 +1,8 @@
 # Minimum CMake required
 cmake_minimum_required(VERSION 3.13)
 set (proto_name "workload")
+find_package(GTest REQUIRED)
+
 
 file(COPY ../tests/resources/ DESTINATION ${PROJECT_BINARY_DIR}/workload/tests/resources/)
 
@@ -28,32 +30,15 @@ add_custom_command(
 # Include generated *.pb.h files
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_executable(check_requestor "./check_requestor.cc" ${grpc_srcs} ${proto_srcs} ${grpc_mock})
-
-target_link_libraries(check_requestor requestor ${CHECK_LIBRARIES} 
-  gtest
-  gmock
-  gmock_main
-  OpenSSL::SSL
-  spiffeid
-  internal
-  uriparser
-  bundle
-  jansson
-  cjose
-  subunit
-  check_pic
-  check
-  rt
-  m
-  crypto
-  pthread)
-
-add_test(check_requestor check_requestor)
+SET(GCC_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
+SET(GCC_COVERAGE_LINK_FLAGS    "-lgcov")
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
+SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
 
 add_executable(check_client "./check_client.cc" ${grpc_srcs} ${proto_srcs} ${grpc_mock})
 
-target_link_libraries(check_client requestor ${CHECK_LIBRARIES} 
+target_link_libraries(check_client ${CHECK_LIBRARIES} 
+  client
   gtest
   gmock
   gmock_main
@@ -73,3 +58,24 @@ target_link_libraries(check_client requestor ${CHECK_LIBRARIES}
   pthread)
 
 add_test(check_client check_client)
+
+add_executable(check_watcher "./check_watcher.c")
+
+target_link_libraries(check_watcher ${CHECK_LIBRARIES} 
+client
+ OpenSSL::SSL
+  spiffeid
+  internal
+  uriparser
+  bundle
+  jansson
+  cjose
+  subunit
+  check_pic
+  check
+  rt
+  m
+  crypto
+  pthread)
+
+add_test(check_watcher check_watcher)
