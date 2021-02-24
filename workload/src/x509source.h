@@ -11,7 +11,7 @@ extern "C" {
 #endif
 
 typedef struct workloadapi_X509SourceConfig {
-    workloadapi_WatcherConfig watcherConfig;
+    workloadapi_WatcherConfig watcher_config;
     x509svid_SVID *(*picker)(x509svid_SVID **);
 } workloadapi_X509SourceConfig;
 
@@ -19,10 +19,10 @@ typedef struct workloadapi_X509Source {
     workloadapi_Watcher *watcher;
     workloadapi_X509SourceConfig *config;
     mtx_t mtx;
-    mtx_t closedMtx;
+    mtx_t closed_mutex;
     bool closed;
 
-    x509svid_SVID **SVIDs;
+    x509svid_SVID **svids;
     x509bundle_Set *bundles;
 } workloadapi_X509Source;
 

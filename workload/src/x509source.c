@@ -22,8 +22,8 @@ workloadapi_NewX509Source(workloadapi_X509SourceConfig *config, err_t *err)
         = (workloadapi_X509Source *) malloc(sizeof *source);
     source->closed = false;
     mtx_init(&(source->mtx), mtx_plain);
-    mtx_init(&(source->closedMtx), mtx_plain);
-    source->SVIDs = NULL;
+    mtx_init(&(source->closed_mutex), mtx_plain);
+    source->svids = NULL;
     source->bundles = NULL;
     source->config = config;
     if(!source->config->picker) {
@@ -33,7 +33,7 @@ workloadapi_NewX509Source(workloadapi_X509SourceConfig *config, err_t *err)
     workloadapi_X509Callback cb
         = { .args = source,
             .func = workloadapi_x509Source_onX509ContextCallback };
-    source->watcher = workloadapi_newWatcher(config->watcherConfig, cb, err);
+    source->watcher = workloadapi_newWatcher(config->watcher_config, cb, err);
     if((*err)) {
         workloadapi_X509Source_Free(source);
         return NULL;
@@ -58,9 +58,9 @@ x509svid_SVID *x509svid_SVID_GetDefaultX509SVID(x509svid_SVID **svids)
 
 err_t workloadapi_X509Source_Close(workloadapi_X509Source *source)
 {
-    mtx_lock(&(source->closedMtx));
+    mtx_lock(&(source->closed_mutex));
     source->closed = true;
-    mtx_unlock(&(source->closedMtx));
+    mtx_unlock(&(source->closed_mutex));
 
     return workloadapi_Watcher_Close(source->watcher);
 }
@@ -72,8 +72,8 @@ workloadapi_X509Source_GetX509SVID(workloadapi_X509Source *source, err_t *err)
     if(!(*err)) {
         mtx_lock(&(source->mtx));
         x509svid_SVID *svid = source->config->picker
-                                  ? source->config->picker(source->SVIDs)
-                                  : source->SVIDs[0];
+                                  ? source->config->picker(source->svids)
+                                  : source->svids[0];
         mtx_unlock(&(source->mtx));
 
         if(svid) {
@@ -109,11 +109,11 @@ void workloadapi_X509Source_applyX509Context(workloadapi_X509Source *source,
 {
     mtx_lock(&(source->mtx));
     x509bundle_Set_Free(source->bundles);
-    for(size_t i = 0, size = arrlenu(source->SVIDs); i < size; ++i) {
-        x509svid_SVID_Free(source->SVIDs[i], true);
+    for(size_t i = 0, size = arrlenu(source->svids); i < size; ++i) {
+        x509svid_SVID_Free(source->svids[i], true);
     }
-    arrfree(source->SVIDs);
-    source->SVIDs = ctx->svids;
+    arrfree(source->svids);
+    source->svids = ctx->svids;
     source->bundles = ctx->bundles;
     mtx_unlock(&(source->mtx));
 }
@@ -121,12 +121,12 @@ void workloadapi_X509Source_applyX509Context(workloadapi_X509Source *source,
 err_t workloadapi_X509Source_checkClosed(workloadapi_X509Source *source)
 {
     err_t err = NO_ERROR;
-    mtx_lock(&(source->closedMtx));
+    mtx_lock(&(source->closed_mutex));
     if(source->closed) {
         // source is closed
         err = ERROR1;
     }
-    mtx_unlock(&(source->closedMtx));
+    mtx_unlock(&(source->closed_mutex));
     return err;
 }
 
@@ -136,10 +136,10 @@ void workloadapi_X509Source_Free(workloadapi_X509Source *source)
         mtx_lock(&(source->mtx));
         x509bundle_Set_Free(source->bundles);
 
-        for(size_t i = 0, size = arrlenu(source->SVIDs); i < size; ++i) {
-            x509svid_SVID_Free(source->SVIDs[i], true);
+        for(size_t i = 0, size = arrlenu(source->svids); i < size; ++i) {
+            x509svid_SVID_Free(source->svids[i], true);
         }
-        arrfree(source->SVIDs);
+        arrfree(source->svids);
         if(source->watcher)
             workloadapi_Watcher_Free(source->watcher);
         free(source->config);
