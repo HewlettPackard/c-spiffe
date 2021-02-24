@@ -114,7 +114,7 @@ void workloadapi_X509Source_applyX509Context(workloadapi_X509Source *source,
     }
     arrfree(source->SVIDs);
     source->SVIDs = ctx->svids;
-    source->bundles = ctx->Bundles;
+    source->bundles = ctx->bundles;
     mtx_unlock(&(source->mtx));
 }
 

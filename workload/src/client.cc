@@ -120,7 +120,7 @@ workloadapi_X509Context *workloadapi_parseX509Context(X509SVIDResponse *resp,
         *err = ERROR5;
         return NULL;
     }
-    cntx->Bundles = bundles;
+    cntx->bundles = bundles;
     cntx->svids = svids;
 
     return cntx;

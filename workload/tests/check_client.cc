@@ -186,7 +186,7 @@ START_TEST(test_workloadapi_parseX509Context)
     //check context has been returned
     ck_assert_ptr_ne(ctx, NULL);
     //check all bundles have been created
-    ck_assert_uint_eq(x509bundle_Set_Len(ctx->Bundles), 3);
+    ck_assert_uint_eq(x509bundle_Set_Len(ctx->bundles), 3);
     //ditto for svids
     ck_assert_uint_eq(arrlenu(ctx->svids), 2);
     
@@ -211,7 +211,7 @@ START_TEST(test_workloadapi_parseX509Context)
     EVP_PKEY_free(pkey);
     arrfree(tds);
     arrfree(paths);
-    x509bundle_Set_Free(ctx->Bundles);
+    x509bundle_Set_Free(ctx->bundles);
     for (int i = 0; i < arrlen(ctx->svids);i++)
     {
         x509svid_SVID_Free(ctx->svids[i],true);
@@ -370,7 +370,7 @@ START_TEST(test_workloadapi_Client_FetchX509Context)
     workloadapi_Client_Free(client);
     ck_assert_ptr_ne(ctx->svids,NULL);
 
-    ck_assert_ptr_ne(ctx->Bundles,NULL);
+    ck_assert_ptr_ne(ctx->bundles,NULL);
     ck_assert_str_eq(ctx->svids[0]->id.td.name,"example.org");
     delete stub;
     free(ctx);
@@ -453,10 +453,10 @@ ACTION(set_double_SVID_response){
 void callback_Watch_context_test(workloadapi_X509Context * ctx,void* ctxs){
     workloadapi_X509Context ***arr = (workloadapi_X509Context***) ctxs;
     auto svids = ctx->svids;
-    auto bundles = ctx->Bundles;
+    auto bundles = ctx->bundles;
     ctx = (workloadapi_X509Context*) calloc(1,sizeof *ctx);
     ctx->svids = svids;
-    ctx->Bundles = bundles;
+    ctx->bundles = bundles;
     arrpush((*arr),ctx);
 
     return;
@@ -529,7 +529,7 @@ START_TEST(test_workloadapi_Client_WatchX509Context)
 
     // free(ctx);
 
-    // ck_assert_ptr_ne(ctx->Bundles,NULL);
+    // ck_assert_ptr_ne(ctx->bundles,NULL);
     // ck_assert_str_eq(ctx->svids[0]->id.td.name,"example.org");
     delete stub;
     // free(ctx);
