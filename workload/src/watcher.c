@@ -9,8 +9,9 @@ int workloadapi_Watcher_X509backgroundFunc(void * _watcher){
 
     err_t error = NO_ERROR;
     //TODO: CHECK ERROR AND RETRY
-    error = workloadapi_Client_WatchX509Context(watcher->client,watcher); 
-
+    do {
+        error = workloadapi_Client_WatchX509Context(watcher->client,watcher); 
+    }while(error != ERROR5); //error5 == client closed
     return (int) error;
 }
 
@@ -21,11 +22,12 @@ workloadapi_Watcher* workloadapi_newWatcher(workloadapi_WatcherConfig config, wo
     
     // set by calloc:
     // newW->updated = false;
-    // newW->closed = false;
     // newW->closeError = NO_ERROR;
     // newW->updateError = NO_ERROR;
     // newW->threadError = thrd_success;
     
+    newW->closed = true;
+
     if(config.client){
         newW->client = config.client;
         newW->ownsClient = false;
@@ -85,10 +87,9 @@ err_t workloadapi_Watcher_Start(workloadapi_Watcher* watcher){
         return ERROR1; /// NULL WATCHER;
     }
     error = workloadapi_Client_Connect(watcher->client);
-    ///TODO: ERROR HANDLING
-    // if(error!=NO_ERROR){
-    //     return n
-    // }
+    if(error!=NO_ERROR){
+        return error;
+    }
     /// spin watcher thread out.
     int thread_error = thrd_create(&(watcher->watcherThread),workloadapi_Watcher_X509backgroundFunc,watcher);
     
@@ -113,8 +114,11 @@ err_t workloadapi_Watcher_Close(workloadapi_Watcher* watcher){
     err_t error = NO_ERROR;
     ///TODO: check and set watcher->closeError?
     if(watcher->ownsClient){
+        
         error = workloadapi_Client_Close(watcher->client);
         if(error != NO_ERROR){
+            
+            watcher->closeError = error;
             mtx_unlock(&(watcher->closeMutex));
             return error;
         }
@@ -127,7 +131,7 @@ err_t workloadapi_Watcher_Close(workloadapi_Watcher* watcher){
     int join_return;
     int thread_error = thrd_join(watcher->watcherThread,&join_return);
     if(thread_error == thrd_success){
-        return join_return;
+        return (err_t) join_return;
     } 
     return ERROR2;
 }
@@ -191,9 +195,12 @@ err_t workloadapi_Watcher_TimedWaitUntilUpdated(workloadapi_Watcher* watcher, st
 }
 
 err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher* watcher){
+    
     mtx_lock(&(watcher->updateMutex));
+
     watcher->updated = true;
     cnd_broadcast(&(watcher->updateCond));
     mtx_unlock(&(watcher->updateMutex));
+
     return NO_ERROR; ///TODO: error checking?
 }
