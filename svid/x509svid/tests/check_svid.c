@@ -1,12 +1,13 @@
-#include <check.h>
 #include "../src/svid.h"
+#include <check.h>
 
 START_TEST(test_x509svid_Load)
 {
     const int ITERS = 2;
     err_t err;
-    x509svid_SVID *svid = x509svid_Load("./resources/good-leaf-and-intermediate.pem",
-                                        "./resources/key-pkcs8-ecdsa.pem", &err);
+    x509svid_SVID *svid
+        = x509svid_Load("./resources/good-leaf-and-intermediate.pem",
+                        "./resources/key-pkcs8-ecdsa.pem", &err);
 
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert(svid != NULL);
@@ -15,9 +16,9 @@ START_TEST(test_x509svid_Load)
     ck_assert(svid->id.path != NULL);
     ck_assert_str_eq(svid->id.td.name, "example.org");
     ck_assert_str_eq(svid->id.path, "/workload-1");
-    ck_assert(svid->privateKey != NULL);
-    
-    x509svid_SVID_Free(svid, true);
+    ck_assert(svid->private_key != NULL);
+
+    x509svid_SVID_Free(svid);
 }
 END_TEST
 
@@ -42,11 +43,11 @@ START_TEST(test_x509svid_Parse)
     ck_assert(svid->id.path != NULL);
     ck_assert_str_eq(svid->id.td.name, "example.org");
     ck_assert_str_eq(svid->id.path, "/workload-1");
-    ck_assert(svid->privateKey != NULL);
-    
+    ck_assert(svid->private_key != NULL);
+
     arrfree(raw_certs);
     arrfree(raw_key);
-    x509svid_SVID_Free(svid, true);
+    x509svid_SVID_Free(svid);
 }
 END_TEST
 
@@ -66,11 +67,9 @@ START_TEST(test_x509svid_ParseRaw)
     unsigned char *certs_pout = certs_der_bytes;
 
     X509 **certs = NULL;
-    for(int i = 0; i < ITERS; ++i)
-    {
+    for(int i = 0; i < ITERS; ++i) {
         X509 *cert = PEM_read_bio_X509(bio_mem, NULL, NULL, NULL);
-        if(cert)
-        {
+        if(cert) {
             i2d_X509(cert, &certs_pout);
             arrput(certs, cert);
         }
@@ -91,18 +90,16 @@ START_TEST(test_x509svid_ParseRaw)
     i2d_PrivateKey(pkey, &pkey_pout);
 
     err_t err;
-    x509svid_SVID *svid = x509svid_ParseRaw(certs_der_bytes, 
-                                            certs_pout - certs_der_bytes,
-                                            pkey_der_bytes,
-                                            pkey_pout - pkey_der_bytes,
-                                            &err);
+    x509svid_SVID *svid
+        = x509svid_ParseRaw(certs_der_bytes, certs_pout - certs_der_bytes,
+                            pkey_der_bytes, pkey_pout - pkey_der_bytes, &err);
 
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_ne(svid, NULL);
     ck_assert(x509util_CertsEqual(certs, svid->certs));
 
     EC_KEY *ec_key1 = EVP_PKEY_get0_EC_KEY(pkey);
-    EC_KEY *ec_key2 = EVP_PKEY_get0_EC_KEY(svid->privateKey);
+    EC_KEY *ec_key2 = EVP_PKEY_get0_EC_KEY(svid->private_key);
 
     const BIGNUM *n1 = EC_KEY_get0_private_key(ec_key1);
     const EC_GROUP *group1 = EC_KEY_get0_group(ec_key1);
@@ -113,14 +110,13 @@ START_TEST(test_x509svid_ParseRaw)
     ck_assert_int_eq(BN_cmp(n1, n2), 0);
     ck_assert_int_eq(EC_GROUP_cmp(group1, group2, NULL), 0);
 
-    for(size_t i = 0, size = arrlenu(certs); i < size; ++i)
-    {
+    for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
         X509_free(certs[i]);
     }
     arrfree(certs);
     EVP_PKEY_free(pkey);
     BIO_free(bio_mem);
-    x509svid_SVID_Free(svid, true);
+    x509svid_SVID_Free(svid);
 }
 END_TEST
 
@@ -135,9 +131,8 @@ START_TEST(test_x509svid_newSVID)
     BIO_puts(bio_mem, buffer);
     arrfree(buffer);
 
-    X509 **certs = NULL;    
-    do
-    {
+    X509 **certs = NULL;
+    do {
         X509 *cert = PEM_read_bio_X509(bio_mem, NULL, NULL, NULL);
         if(cert)
             arrput(certs, cert);
@@ -167,14 +162,13 @@ START_TEST(test_x509svid_newSVID)
     ck_assert(svid->id.path != NULL);
     ck_assert_str_eq(svid->id.td.name, "example.org");
     ck_assert_str_eq(svid->id.path, "/workload-1");
-    ck_assert(svid->privateKey != NULL);
-    
+    ck_assert(svid->private_key != NULL);
+
     BIO_free(bio_mem);
-    for(size_t i = 0, size = arrlenu(certs); i < size; ++i)
-    {
+    for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
         X509_free(certs[i]);
     }
-    x509svid_SVID_Free(svid, true);
+    x509svid_SVID_Free(svid);
 }
 END_TEST
 
@@ -189,9 +183,8 @@ START_TEST(test_x509svid_validateCertificates)
     BIO_puts(bio_mem, buffer);
     arrfree(buffer);
 
-    X509 **certs = NULL;    
-    do
-    {
+    X509 **certs = NULL;
+    do {
         X509 *cert = PEM_read_bio_X509(bio_mem, NULL, NULL, NULL);
         if(cert)
             arrput(certs, cert);
@@ -210,10 +203,9 @@ START_TEST(test_x509svid_validateCertificates)
     ck_assert(id.path != NULL);
     ck_assert_str_eq(id.td.name, "example.org");
     ck_assert_str_eq(id.path, "/workload-1");
-    
+
     BIO_free(bio_mem);
-    for(size_t i = 0, size = arrlenu(certs); i < size; ++i)
-    {
+    for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
         X509_free(certs[i]);
     }
     spiffeid_ID_Free(&id);
@@ -236,13 +228,13 @@ START_TEST(test_x509svid_validateLeafCertificate)
 
     err_t err;
     spiffeid_ID id = x509svid_validateLeafCertificate(cert, &err);
-    
+
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert(id.td.name != NULL);
     ck_assert(id.path != NULL);
     ck_assert_str_eq(id.td.name, "example.org");
     ck_assert_str_eq(id.path, "/workload-1");
-    
+
     BIO_free(bio_mem);
     X509_free(cert);
     spiffeid_ID_Free(&id);
@@ -260,9 +252,8 @@ START_TEST(test_x509svid_validateSigningCertificates)
     BIO_puts(bio_mem, buffer);
     arrfree(buffer);
 
-    X509 **certs = NULL;    
-    do
-    {
+    X509 **certs = NULL;
+    do {
         X509 *cert = PEM_read_bio_X509(bio_mem, NULL, NULL, NULL);
         if(cert)
             arrput(certs, cert);
@@ -282,10 +273,9 @@ START_TEST(test_x509svid_validateSigningCertificates)
     arrins(certs, 0, leaf);
 
     ck_assert_uint_eq(err, NO_ERROR);
-    
+
     BIO_free(bio_mem);
-    for(size_t i = 0, size = arrlenu(certs); i < size; ++i)
-    {
+    for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
         X509_free(certs[i]);
     }
 }
@@ -307,9 +297,9 @@ START_TEST(test_x509svid_validateKeyUsage)
 
     err_t err;
     x509svid_validateKeyUsage(cert, &err);
-    
+
     ck_assert_uint_eq(err, NO_ERROR);
-    
+
     BIO_free(bio_mem);
     X509_free(cert);
 }
@@ -336,7 +326,7 @@ START_TEST(test_x509svid_validatePrivateKey)
 
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert(signer != NULL);
-    
+
     BIO_free(bio_mem);
     X509_free(cert);
     EVP_PKEY_free(pkey);
@@ -367,7 +357,7 @@ START_TEST(test_x509svid_keyMatches)
 
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert(suc);
-    
+
     BIO_free(bio_mem);
     X509_free(cert);
     EVP_PKEY_free(pkey);
@@ -375,7 +365,7 @@ START_TEST(test_x509svid_keyMatches)
 }
 END_TEST
 
-Suite* svid_suite(void)
+Suite *svid_suite(void)
 {
     Suite *s = suite_create("svid");
     TCase *tc_core = tcase_create("core");
@@ -403,8 +393,8 @@ int main(void)
 
     srunner_run_all(sr, CK_NORMAL);
     const int number_failed = srunner_ntests_failed(sr);
-    
+
     srunner_free(sr);
-    
+
     return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

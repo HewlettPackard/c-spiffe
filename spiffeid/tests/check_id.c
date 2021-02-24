@@ -1,5 +1,5 @@
-#include <check.h>
 #include "../src/id.h"
+#include <check.h>
 
 START_TEST(test_join)
 {
@@ -57,13 +57,12 @@ END_TEST
 START_TEST(test_spiffeid_FromString)
 {
     const size_t ITERS = 4;
-    const string_t strs[] = {
-        string_new("spiffe://example.br/path1/p3"), 
-        string_new("https://example.us/path2/path3"), 
-        string_new("example.gov/path1"),
-        string_new("spiffe://www.anything.com.uk/p1/PATH2/p333J")
-    };
-    
+    const string_t strs[]
+        = { string_new("spiffe://example.br/path1/p3"),
+            string_new("https://example.us/path2/path3"),
+            string_new("example.gov/path1"),
+            string_new("spiffe://www.anything.com.uk/p1/PATH2/p333J") };
+
     err_t err0, err1, err2, err3;
     spiffeid_ID id0 = spiffeid_FromString(strs[0], &err0);
     spiffeid_ID id1 = spiffeid_FromString(strs[1], &err1);
@@ -109,14 +108,14 @@ START_TEST(test_spiffeid_FromURI)
     uri.hostText.afterLast = host + sizeof host - 1;
     uri.scheme.first = scheme;
     uri.scheme.afterLast = scheme + sizeof scheme - 1;
-    
+
     uri.pathHead = malloc(sizeof(UriPathSegmentA));
     memset(uri.pathHead, 0, sizeof *(uri.pathHead));
     uri.pathHead->next = NULL;
     uri.pathTail = uri.pathHead;
     uri.pathHead->text.first = path;
     uri.pathHead->text.afterLast = path + sizeof path - 1;
-    
+
     spiffeid_ID id = spiffeid_FromURI(&uri, &err);
     ck_assert_str_eq(id.td.name, "example.com");
     ck_assert_str_eq(id.path, "/path1/seg3/rest");
@@ -128,29 +127,26 @@ END_TEST
 START_TEST(test_spiffeid_ID_String)
 {
     const size_t ITERS = 4;
-    spiffeid_ID ids[] = {
-        {{string_new("example.com")}, string_new("path1")},
-        {{string_new("www.gov.br")}, string_new("/path1")},
-        {{string_new("www.spiffe.com")}, string_new("path1/path2/path3")},
-        {{string_new("spirex")}, string_new("/path1/path2/path3")}
-    };
+    spiffeid_ID ids[]
+        = { { { string_new("example.com") }, string_new("path1") },
+            { { string_new("www.gov.br") }, string_new("/path1") },
+            { { string_new("www.spiffe.com") },
+              string_new("path1/path2/path3") },
+            { { string_new("spirex") }, string_new("/path1/path2/path3") } };
 
-    string_t str_res[] = {
-        string_new("spiffe://example.com/path1"),
-        string_new("spiffe://www.gov.br/path1"),
-        string_new("spiffe://www.spiffe.com/path1/path2/path3"),
-        string_new("spiffe://spirex/path1/path2/path3")
-    };
-    
-    for(size_t i = 0; i < ITERS; ++i)
-    {
+    string_t str_res[]
+        = { string_new("spiffe://example.com/path1"),
+            string_new("spiffe://www.gov.br/path1"),
+            string_new("spiffe://www.spiffe.com/path1/path2/path3"),
+            string_new("spiffe://spirex/path1/path2/path3") };
+
+    for(size_t i = 0; i < ITERS; ++i) {
         string_t str_id = spiffeid_ID_String(ids[i]);
         ck_assert_str_eq(str_id, str_res[i]);
         util_string_t_Free(str_id);
     }
 
-    for(size_t i = 0; i < ITERS; ++i)
-    {
+    for(size_t i = 0; i < ITERS; ++i) {
         spiffeid_ID_Free(&ids[i]);
         arrfree(str_res[i]);
     }
@@ -160,28 +156,20 @@ END_TEST
 START_TEST(test_spiffeid_normalizeTrustDomain)
 {
     const size_t ITERS = 4;
-    string_t str_td[] = {
-        string_new("Example0.com"),
-        string_new("EXAMPLE1.GOV"),
-        string_new("eXaMpLe2.Br"),
-        string_new("ExAmPlE33.GOV.br")
-    };
+    string_t str_td[]
+        = { string_new("Example0.com"), string_new("EXAMPLE1.GOV"),
+            string_new("eXaMpLe2.Br"), string_new("ExAmPlE33.GOV.br") };
 
-    string_t str_res[] = {
-        string_new("example0.com"),
-        string_new("example1.gov"),
-        string_new("example2.br"),
-        string_new("example33.gov.br")
-    };
+    string_t str_res[]
+        = { string_new("example0.com"), string_new("example1.gov"),
+            string_new("example2.br"), string_new("example33.gov.br") };
 
-    for(size_t i = 0; i < ITERS; ++i)
-    {
+    for(size_t i = 0; i < ITERS; ++i) {
         str_td[i] = spiffeid_normalizeTrustDomain(str_td[i]);
         ck_assert_str_eq(str_td[i], str_res[i]);
     }
 
-    for(size_t i = 0; i < ITERS; ++i)
-    {
+    for(size_t i = 0; i < ITERS; ++i) {
         util_string_t_Free(str_td[i]);
         util_string_t_Free(str_res[i]);
     }
@@ -204,7 +192,7 @@ START_TEST(test_spiffeid_normalizePath)
 }
 END_TEST
 
-Suite* id_suite(void)
+Suite *id_suite(void)
 {
     Suite *s = suite_create("id");
     TCase *tc_core = tcase_create("core");
@@ -230,8 +218,8 @@ int main(void)
 
     srunner_run_all(sr, CK_NORMAL);
     const int number_failed = srunner_ntests_failed(sr);
-    
+
     srunner_free(sr);
-    
+
     return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
