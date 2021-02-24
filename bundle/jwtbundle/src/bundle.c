@@ -46,8 +46,6 @@ jwtbundle_Bundle *jwtbundle_Load(const spiffeid_TrustDomain td,
     if(fjwks) {
         string_t buffer = FILE_to_string(fjwks);
         fclose(fjwks);
-        // string end
-        // arrput(buffer, (byte) 0);
         bundleptr = jwtbundle_Parse(td, buffer, err);
         arrfree(buffer);
     } else
