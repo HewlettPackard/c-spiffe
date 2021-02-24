@@ -1,26 +1,25 @@
 #ifndef INCLUDE_WORKLOAD_X509CONTEXT_H
 #define INCLUDE_WORKLOAD_X509CONTEXT_H
 
-#include "../../svid/x509svid/src/svid.h"
 #include "../../bundle/x509bundle/src/set.h"
+#include "../../svid/x509svid/src/svid.h"
 
-
-typedef struct workloadapi_X509Context
-{
-    x509svid_SVID** SVIDs;
-    x509bundle_Set* Bundles;
+typedef struct workloadapi_X509Context {
+    x509svid_SVID **SVIDs;
+    x509bundle_Set *Bundles;
 
 } workloadapi_X509Context;
 
 // type for callback function. will be set by X509Source.
-typedef void (*workloadapi_x509ContextFunc_t)(workloadapi_X509Context*, void*); 
-// eg.: 
-// workloadapi_x509ContextFunc_t func; -> void (*func)(workloadapi_X509Context* updatedContext);
+typedef void (*workloadapi_x509ContextFunc_t)(workloadapi_X509Context *,
+                                              void *);
+// eg.:
+// workloadapi_x509ContextFunc_t func; -> void (*func)(workloadapi_X509Context*
+// updatedContext);
 
-typedef struct X509Callback{
-    void* args;
+typedef struct X509Callback {
+    void *args;
     workloadapi_x509ContextFunc_t func;
 } workloadapi_X509Callback;
 
-
-#endif //INCLUDE_WORKLOAD_X509CONTEXT_H
+#endif // INCLUDE_WORKLOAD_X509CONTEXT_H
