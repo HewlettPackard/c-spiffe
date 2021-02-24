@@ -1,72 +1,142 @@
-#ifndef __INCLUDE_SPIFFEID_ID_H__ 
-#define __INCLUDE_SPIFFEID_ID_H__
+#ifndef SPIFFEID_ID_H
+#define SPIFFEID_ID_H
 
-#define __SPIFFE_ID_BY_POINTER__ 0
-
+#include "../../utils/src/util.h"
 #include <stdbool.h>
 #include <uriparser/Uri.h>
-// #include <curl/curl.h>
-#include "../../utils/src/util.h"
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-typedef struct spiffeid_TrustDomain
-{
+/** An instance of a Trust Domain object. */
+typedef struct {
+    /** stb string for the name of the Trust Domain. */
     string_t name;
 } spiffeid_TrustDomain;
 
-typedef struct spiffeid_ID
-{
+/** An instance of a SPIFFE ID object. */
+typedef struct {
+    /** Trust Domain object of the SPIFFE ID */
     spiffeid_TrustDomain td;
-    //use stbds_arr or stb_sb for dynamic array allocation
+    /** stb string for the path of the SPIFFE ID */
     string_t path;
 } spiffeid_ID;
 
+/**
+ * Creates a path from the segments in the string array.
+ *
+ * \param str_arr [in] A stb array of stb strings composed of segments. Its
+ * elements may be modified. \returns (new reference) Path created from the
+ * segments. Must be freed using arrfree function.
+ */
 string_t join(string_arr_t str_arr);
 
-spiffeid_ID spiffeid_ID_New(string_t td_str, 
-                            const string_arr_t segments, err_t *err);
-string_t spiffeid_Join(string_t td_str, 
-                        const string_arr_t segments, err_t *err);
+/**
+ * Creates a SPIFFE ID object from trust domain and segments.
+ *
+ * \param td_str [in] A stb string for the Trust Domain name.
+ * \param segments [in] A stb array of stb strings of segments for the
+ * path. \param err [out] Variable to get information in the event of
+ * error. \returns A new SPIFFE ID object constructed from the parameters.
+ * The fields are NULL in case of error. Must be freed using
+ * spiffeid_ID_Free function.
+ */
+spiffeid_ID spiffeid_ID_New(string_t td_str, const string_arr_t segments,
+                            err_t *err);
+
+/**
+ * Creates a SPIFFE ID string from trust domain and segments.
+ *
+ * \param td_str [in] A stb string for the Trust Domain name.
+ * \param segments [in] A stb array of stb strings of segments for the
+ * path. \param err [out] Variable to get information in the event of
+ * error. \returns A new SPIFFE ID string constructed from the parameters.
+ * The fields are NULL in case of error. Must be freed using arrfree
+ * function.
+ */
+string_t spiffeid_Join(string_t td_str, const string_arr_t segments,
+                        err_t *err);
+
+/**
+ * Creates a SPIFFE ID object from a SPIFFE ID string representation;
+ *
+ * \param str [in] A SPIFFE ID string.
+ * \param err [out] Variable to get information in the event of error.
+ * \returns A new SPIFFE ID string constructed from the parameters. The
+ * fields are NULL in case of error. Must be freed using spiffeid_ID_Free
+ * function.
+ */
 spiffeid_ID spiffeid_FromString(const char *str, err_t *err);
+
+/**
+ * Creates a SPIFFE ID object from a URI object.
+ *
+ * \param uri [in] An URI object.
+ * \param err [out] Variable to get information in the event of error.
+ * \returns A new SPIFFE ID string constructed from the parameters. The
+ * fields are NULL in case of error. Must be freed using spiffeid_ID_Free
+ * function.
+ */
 spiffeid_ID spiffeid_FromURI(const UriUriA *uri, err_t *err);
 
-#if __SPIFFE_ID_BY_POINTER__
-spiffeid_TrustDomain spiffeid_ID_TrustDomain(const spiffeid_ID *id);
-bool spiffeid_ID_MemberOf(const spiffeid_ID *id, const spiffeid_ID_TrustDomain *td);
-string_t spiffeid_ID_Path(const spiffeid_ID *id);
-string_t spiffeid_ID_String(const spiffeid_ID *id);
-CURLU* spiffeid_ID_URL(const spiffeid_ID *id);
-bool spiffeid_ID_IsZero(const spiffeid_ID *id);
-#else
+/**
+ * Gets a Trust Domain object from a SPIFFE ID object.
+ *
+ * \param id [in] A SPIFFE ID object.
+ * \returns A Trust Domain object of the SPIFFE ID. Must NOT be modified or
+ * freed directly. The object will be freed once the SPIFFE ID object is
+ * freed.
+ */
 spiffeid_TrustDomain spiffeid_ID_TrustDomain(const spiffeid_ID id);
-bool spiffeid_ID_MemberOf(const spiffeid_ID id, const spiffeid_TrustDomain td);
-string_t spiffeid_ID_Path(const spiffeid_ID id);
+
+/**
+ * Checks whether a SPIFFE ID is member of a given Trust Domain.
+ *
+ * \param id A SPIFFE ID object.
+ * \param td A Trust Domain object.
+ * \returns <tt>true</tt> if the ID is a member of the Trust Domain.
+ * <tt>false</tt> otherwise.
+ */
+bool spiffeid_ID_MemberOf(const spiffeid_ID id,
+                            const spiffeid_TrustDomain td);
+
+/**
+ * Gets the path from a SPIFFE ID object.
+ *
+ * \param id [in] A SPIFFE ID object.
+ * \returns A stb string for the path. Must NOT be modified or freed
+ * directly. The string will be freed once the SPIFFE ID object is freed.
+ */
+const char *spiffeid_ID_Path(const spiffeid_ID id);
+
+/**
+ * Gets a string representation of a SPIFFE ID object.
+ *
+ * \param id [in] A SPIFFE ID object.
+ * \returns A stb string for the representation. Must be freed using
+ * arrfree function.
+ */
 string_t spiffeid_ID_String(const spiffeid_ID id);
-// UriUriA spiffeid_ID_URI(const spiffeid_ID id);
+
+/**
+ * Check whether a SPIFFE ID object is zero value.
+ *
+ * \param id [in] A SPIFFE ID object.
+ * \returns <tt>true</tt> if the object is zero, <tt>false</tt> otherwise.
+ */
 bool spiffeid_ID_IsZero(const spiffeid_ID id);
-#endif
 
 string_t spiffeid_normalizeTrustDomain(string_t str);
 string_t spiffeid_normalizePath(string_t str);
 
-// void spiffeid_ID_Free(spiffeid_ID **id);
-void spiffeid_ID_Free(spiffeid_ID *id, bool alloc);
-
-/*
-these functions below can panic (throw exception) on the original
-Go implementation.
-
-spiffeid_ID spiffeid_ID_Must(string_t trustDomain, string_arr_t segments);
-
-string_t spiffeid_ID_MustJoin(string_t trustDomain, string_arr_t segments);
-
-spiffeid_ID spiffeid_ID_RequireFromString(const string_t str);
-
-spiffeid_ID spiffeid_ID_RequireFromURI(const CURLU str);
-*/
+/**
+ * Frees a SPIFFE ID object.
+ *
+ * \param id [in] A SPIFFE ID object pointer to be deallocated.
+ */
+void spiffeid_ID_Free(spiffeid_ID *id);
 
 #ifdef __cplusplus
 }

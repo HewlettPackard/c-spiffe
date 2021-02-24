@@ -25,7 +25,7 @@ jwtbundle_Bundle* jwtbundle_Load(const spiffeid_TrustDomain td,
                                     const char *path, 
                                     err_t *err);
 jwtbundle_Bundle* jwtbundle_Parse(const spiffeid_TrustDomain td, 
-                                    const string_t bbytes, 
+                                    const char *bbytes, 
                                     err_t *err);
 
 spiffeid_TrustDomain jwtbundle_Bundle_TrustDomain(const jwtbundle_Bundle *b);

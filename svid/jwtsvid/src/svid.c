@@ -224,13 +224,30 @@ static map_string_claim* parseAndValidate(jwtsvid_JWT *jwt,
     if(jwt)
     {
         json_t *kid_json = json_object_get(jwt->header, "kid");
+        json_t *type_json = json_object_get(jwt->header, "typ");
         
         const char *kid_str = NULL;
+        bool type_correct = true;
         if(kid_json)
+        {
             kid_str = json_typeof(kid_json) == JSON_STRING?
                 json_string_value(kid_json) : NULL;
+        }
+        if(type_json)
+        {
+            const char *type_str = json_typeof(type_json) == JSON_STRING?
+                json_string_value(type_json) : NULL;
+            if(type_str)
+            {
+                if(strcmp(type_str, "JWT") != 0 && 
+                    strcmp(type_str, "JOSE") != 0)
+                {
+                    type_correct = false;
+                }
+            }
+        }
 
-        if(!empty_str(kid_str))
+        if(!empty_str(kid_str) && type_correct)
         {
             jwtbundle_Bundle *bundle = 
                 jwtbundle_Source_GetJWTBundleForTrustDomain(
@@ -261,7 +278,6 @@ static map_string_claim* parseAndValidate(jwtsvid_JWT *jwt,
                     *err = ERROR6;
                     return NULL;
                 }
-                printf("err2: %u\n", err2);
                 //not validated
                 *err = ERROR5;
                 return NULL;
@@ -270,7 +286,7 @@ static map_string_claim* parseAndValidate(jwtsvid_JWT *jwt,
             *err = ERROR4;
             return NULL;
         }
-        //key id is empty or not found
+        //key id is empty or type is incorrect
         *err = ERROR2;
         return NULL;
     }
@@ -518,7 +534,6 @@ jwtsvid_SVID* jwtsvid_parse(char *token,
                 if(err2)
                 {
                     //could not validate jwt object
-                    printf("err2: %u\n", err2);
                     *err = ERROR5;
                     goto ret;
                 }
@@ -564,7 +579,7 @@ void jwtsvid_SVID_Free(jwtsvid_SVID *svid)
     if(svid)
     {
         //free spiffe id
-        spiffeid_ID_Free(&(svid->id), false);
+        spiffeid_ID_Free(&(svid->id));
         //free array of strings
         util_string_arr_t_Free(svid->audience);
         //free each json object

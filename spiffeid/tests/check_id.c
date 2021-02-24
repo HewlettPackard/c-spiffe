@@ -30,7 +30,7 @@ START_TEST(test_spiffeid_ID_New)
     ck_assert_str_eq(id.td.name, "example.com");
     ck_assert_str_eq(id.path, "/path1/path1/path22/p333");
     util_string_arr_t_Free(str_arr);
-    spiffeid_ID_Free(&id, false);
+    spiffeid_ID_Free(&id);
 }
 END_TEST
 
@@ -86,10 +86,10 @@ START_TEST(test_spiffeid_FromString)
     ck_assert_str_eq(id3.path, "/p1/PATH2/p333J");
     ck_assert_uint_eq(err3, 0);
 
-    spiffeid_ID_Free(&id0, false);
-    spiffeid_ID_Free(&id1, false);
-    spiffeid_ID_Free(&id2, false);
-    spiffeid_ID_Free(&id3, false);
+    spiffeid_ID_Free(&id0);
+    spiffeid_ID_Free(&id1);
+    spiffeid_ID_Free(&id2);
+    spiffeid_ID_Free(&id3);
     for(size_t i = 0; i < ITERS; ++i)
         util_string_t_Free(strs[i]);
 }
@@ -121,7 +121,7 @@ START_TEST(test_spiffeid_FromURI)
     ck_assert_str_eq(id.td.name, "example.com");
     ck_assert_str_eq(id.path, "/path1/seg3/rest");
 
-    spiffeid_ID_Free(&id, false);
+    spiffeid_ID_Free(&id);
 }
 END_TEST
 
@@ -151,7 +151,7 @@ START_TEST(test_spiffeid_ID_String)
 
     for(size_t i = 0; i < ITERS; ++i)
     {
-        spiffeid_ID_Free(&ids[i], false);
+        spiffeid_ID_Free(&ids[i]);
         arrfree(str_res[i]);
     }
 }
