@@ -346,7 +346,7 @@ START_TEST(test_workloadapi_Watcher_Close);
     ck_assert(watcher->closed);
     ck_assert_ptr_ne(watcher->client,NULL);
     ck_assert(watcher->client->closed);
-    ck_assert(!watcher->client->ownsStub);
+    ck_assert(!watcher->client->owns_stub);
     ck_assert_ptr_eq(watcher->client->stub,NULL);
 
     struct timespec then;
@@ -394,7 +394,6 @@ int main(int argc, char **argv)
 {
     Suite *s = watcher_suite();
     SRunner *sr = srunner_create(s);
-    // testing::InitGoogleMock(&argc, argv);
     srunner_run_all(sr, CK_NORMAL);
     const int number_failed = srunner_ntests_failed(sr);
     

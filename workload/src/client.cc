@@ -137,12 +137,12 @@ workloadapi_Client *workloadapi_NewClient(err_t *error)
     client->stub = NULL;
     client->address = NULL;
     client->headers = NULL;
-    mtx_init(&(client->closedMutex), mtx_plain);
-    cnd_init(&(client->closedCond));
-    mtx_lock(&(client->closedMutex));
+    mtx_init(&(client->closed_mutex), mtx_plain);
+    cnd_init(&(client->closed_cond));
+    mtx_lock(&(client->closed_mutex));
     client->closed = true;
-    client->ownsStub = false;
-    mtx_unlock(&(client->closedMutex));
+    client->owns_stub = false;
+    mtx_unlock(&(client->closed_mutex));
     *error = NO_ERROR;
     return client;
 }
@@ -158,8 +158,8 @@ err_t workloadapi_Client_Free(workloadapi_Client *client)
 
     util_string_t_Free(client->address);
 
-    mtx_destroy(&(client->closedMutex));
-    cnd_destroy(&(client->closedCond));
+    mtx_destroy(&(client->closed_mutex));
+    cnd_destroy(&(client->closed_cond));
 
     free(client);
     return NO_ERROR;
@@ -184,11 +184,11 @@ err_t workloadapi_Client_Connect(workloadapi_Client *client)
         }
         // extends lifetime of pointer to outside this scope
         client->stub = new_stub.release();
-        client->ownsStub = true;
+        client->owns_stub = true;
     }
-    mtx_lock(&(client->closedMutex));
+    mtx_lock(&(client->closed_mutex));
     client->closed = false;
-    mtx_unlock(&(client->closedMutex));
+    mtx_unlock(&(client->closed_mutex));
     return NO_ERROR;
 }
 
@@ -201,20 +201,20 @@ err_t workloadapi_Client_Close(workloadapi_Client *client)
     if(!client->stub) {
         return ERROR3; // can't close NULL stub.
     }
-    mtx_lock(&(client->closedMutex));
+    mtx_lock(&(client->closed_mutex));
     if(client->closed) {
-        mtx_unlock(&(client->closedMutex));
+        mtx_unlock(&(client->closed_mutex));
         return ERROR2; // already closed
     }
     client->closed = true;
-    if(client->ownsStub) {
+    if(client->owns_stub) {
         // delete it since grpc new'd it internally and we released it.
         delete((SpiffeWorkloadAPI::Stub *) client->stub);
-        client->ownsStub = false;
+        client->owns_stub = false;
     }
     client->stub = NULL;
-    cnd_broadcast(&(client->closedCond));
-    mtx_unlock(&(client->closedMutex));
+    cnd_broadcast(&(client->closed_cond));
+    mtx_unlock(&(client->closed_mutex));
 
     // grpc will free the channel when no stub is using it.
     return NO_ERROR;
@@ -267,12 +267,12 @@ err_t workloadapi_Client_SetStub(workloadapi_Client *client,
     if(!client) {
         return ERROR1;
     }
-    if(client->ownsStub) {
+    if(client->owns_stub) {
         // delete it since grpc new'd it internally and we released it.
         delete((SpiffeWorkloadAPI::StubInterface *) client->stub);
         client->stub = NULL;
     }
-    client->ownsStub = false;
+    client->owns_stub = false;
     client->stub = stub;
     return NO_ERROR;
 }
@@ -417,21 +417,21 @@ err_t workloadapi_Client_HandleWatchError(workloadapi_Client *client,
     /// TODO: Log
     struct timespec retryAfter = workloadapi_Backoff_NextTime(backoff);
 
-    mtx_lock(&(client->closedMutex));
+    mtx_lock(&(client->closed_mutex));
     if(client->closed) {
-        mtx_unlock(&(client->closedMutex));
+        mtx_unlock(&(client->closed_mutex));
         return ERROR4;
     } else {
-        int wait_ret = cnd_timedwait(&(client->closedCond),
-                                     &(client->closedMutex), &retryAfter);
+        int wait_ret = cnd_timedwait(&(client->closed_cond),
+                                     &(client->closed_mutex), &retryAfter);
         if(wait_ret == thrd_timedout) { // waited enough
-            mtx_unlock(&(client->closedMutex));
+            mtx_unlock(&(client->closed_mutex));
             return NO_ERROR;
         } else if(wait_ret == thrd_success) { // signaled by closeClient
-            mtx_unlock(&(client->closedMutex));
+            mtx_unlock(&(client->closed_mutex));
             return ERROR5;
         } else {
-            mtx_unlock(&(client->closedMutex));
+            mtx_unlock(&(client->closed_mutex));
             return ERROR6;
         }
     }

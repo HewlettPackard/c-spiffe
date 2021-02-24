@@ -139,7 +139,7 @@ START_TEST(test_workloadapi_parseX509Context)
     auto new_bundle = rep.mutable_federated_bundles();
     (*new_bundle)["spiffe://example3.com"] = 
         std::string((char*) bundle_der_bytes, bundle_pout - bundle_der_bytes);
-    ///TODO: add files to resources/
+    
     //set certificates and private key
     FILE *certs_file = fopen("./resources/good-leaf-and-intermediate.pem", "r");
     FILE *pkey_file = fopen("./resources/key-pkcs8-ecdsa.pem", "r");
@@ -292,13 +292,13 @@ START_TEST(test_workloadapi_Client_Close)
 
     err = workloadapi_Client_Connect(client); 
 
-    ck_assert(!client->ownsStub);
+    ck_assert(!client->owns_stub);
     ck_assert_ptr_eq(client->stub,stub);
     ck_assert(!client->closed);
 
     err = workloadapi_Client_Close(client);
 
-    ck_assert(!client->ownsStub);
+    ck_assert(!client->owns_stub);
     ck_assert_ptr_eq(client->stub,NULL);
     ck_assert(client->closed);
     ck_assert_int_eq(err,NO_ERROR);

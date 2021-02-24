@@ -16,19 +16,16 @@ extern "C" {
 /// pointer to gRPC construct, can't use those types in the header
 typedef void *workloadapi_Stub; // api stub
 
-
 typedef struct workloadapi_Watcher workloadapi_Watcher;
 
 typedef struct workloadapi_Client {
     workloadapi_Stub stub;
-    bool ownsStub;
+    bool owns_stub;
     string_arr_t headers;
     string_t address;
     bool closed;
-    mtx_t closedMutex;
-    cnd_t closedCond;
-    /// TODO:logger
-    /// TODO: dialOptions //from gRPC :(
+    mtx_t closed_mutex;
+    cnd_t closed_cond;
 
 } workloadapi_Client;
 
