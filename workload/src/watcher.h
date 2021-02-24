@@ -44,7 +44,7 @@ typedef struct workloadapi_Watcher {
     // Close sync
     mtx_t close_mutex;
     bool closed;
-    err_t closeError;
+    err_t close_error;
 
     // thread spun to wait on updates
     thrd_t watcherThread;

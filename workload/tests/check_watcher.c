@@ -364,7 +364,7 @@ START_TEST(test_workloadapi_Watcher_Close);
     error = workloadapi_Watcher_Close(watcher);
 
     ck_assert(watcher->closed);
-    ck_assert(watcher->closeError == NO_ERROR);
+    ck_assert(watcher->close_error == NO_ERROR);
     ck_assert_ptr_ne(watcher->client,NULL);
     //free allocated watcher.
     workloadapi_Watcher_Free(watcher);

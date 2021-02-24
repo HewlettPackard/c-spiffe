@@ -29,7 +29,7 @@ workloadapi_Watcher *workloadapi_newWatcher(
 
     // set by calloc:
     // newW->updated = false;
-    // newW->closeError = NO_ERROR;
+    // newW->close_error = NO_ERROR;
     // newW->update_error = NO_ERROR;
     // newW->threadError = thrd_success;
 
@@ -121,13 +121,13 @@ err_t workloadapi_Watcher_Close(workloadapi_Watcher *watcher)
     mtx_lock(&(watcher->close_mutex));
     watcher->closed = true;
     err_t error = NO_ERROR;
-    /// TODO: check and set watcher->closeError?
+    /// TODO: check and set watcher->close_error?
     if(watcher->owns_client) {
 
         error = workloadapi_Client_Close(watcher->client);
         if(error != NO_ERROR) {
 
-            watcher->closeError = error;
+            watcher->close_error = error;
             mtx_unlock(&(watcher->close_mutex));
             return error;
         }
