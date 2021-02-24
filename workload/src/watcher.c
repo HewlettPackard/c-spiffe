@@ -68,7 +68,7 @@ workloadapi_Watcher *workloadapi_newWatcher(
         *error = ERROR2;
         return NULL;
     }
-    thread_error = mtx_init(&(newW->updateMutex), mtx_plain);
+    thread_error = mtx_init(&(newW->update_mutex), mtx_plain);
     if(thread_error != thrd_success) {
         /// TODO: return thread error?
         *error = ERROR2;
@@ -151,7 +151,7 @@ err_t workloadapi_Watcher_Free(/*context,*/ workloadapi_Watcher *watcher)
     /// TODO: free watcher
     mtx_destroy(&(watcher->closeMutex));
     cnd_destroy(&(watcher->updateCond));
-    mtx_destroy(&(watcher->updateMutex));
+    mtx_destroy(&(watcher->update_mutex));
     if(watcher->owns_client) {
         /// TODO: call freeClient();
     }
@@ -184,24 +184,24 @@ err_t workloadapi_Watcher_WaitUntilUpdated(workloadapi_Watcher *watcher)
 err_t workloadapi_Watcher_TimedWaitUntilUpdated(workloadapi_Watcher *watcher,
                                                 struct timespec *timer)
 {
-    mtx_lock(&watcher->updateMutex);
+    mtx_lock(&watcher->update_mutex);
     if(watcher->updated) {
-        mtx_unlock(&watcher->updateMutex);
+        mtx_unlock(&watcher->update_mutex);
         return NO_ERROR;
     } else {
         int thread_error = thrd_success;
         if(timer != NULL) {
             thread_error = cnd_timedwait(&(watcher->updateCond),
-                                         &(watcher->updateMutex), timer);
+                                         &(watcher->update_mutex), timer);
             if(thread_error == thrd_timedout) {
-                mtx_unlock(&(watcher->updateMutex));
+                mtx_unlock(&(watcher->update_mutex));
                 return ERROR1; // timed out
             }
         } else {
             thread_error
-                = cnd_wait(&(watcher->updateCond), &(watcher->updateMutex));
+                = cnd_wait(&(watcher->updateCond), &(watcher->update_mutex));
         }
-        mtx_unlock(&watcher->updateMutex);
+        mtx_unlock(&watcher->update_mutex);
         if(thread_error != thrd_success) {
             return ERROR2;
         } else {
@@ -213,11 +213,11 @@ err_t workloadapi_Watcher_TimedWaitUntilUpdated(workloadapi_Watcher *watcher,
 err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher *watcher)
 {
 
-    mtx_lock(&(watcher->updateMutex));
+    mtx_lock(&(watcher->update_mutex));
 
     watcher->updated = true;
     cnd_broadcast(&(watcher->updateCond));
-    mtx_unlock(&(watcher->updateMutex));
+    mtx_unlock(&(watcher->update_mutex));
 
     return NO_ERROR; /// TODO: error checking?
 }

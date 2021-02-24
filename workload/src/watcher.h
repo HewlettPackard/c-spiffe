@@ -35,7 +35,7 @@ typedef struct workloadapi_Watcher {
     bool owns_client;
 
     // Update Sync
-    mtx_t updateMutex;
+    mtx_t update_mutex;
     cnd_t updateCond;
     bool updated;
 
