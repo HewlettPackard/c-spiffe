@@ -132,6 +132,7 @@ workloadapi_X509Context* workloadapi_parseX509Context(X509SVIDResponse *resp, er
     }
     cntx->Bundles = bundles;
     cntx->SVIDs = svids;
+    
     return cntx;
 }
 
@@ -165,7 +166,7 @@ err_t workloadapi_Client_Free(workloadapi_Client *client)
     }
 
     util_string_arr_t_Free(client->headers); //null safe. free's all strings in headers.
-
+    
     util_string_t_Free(client->address);
 
     mtx_destroy(&(client->closedMutex));
@@ -204,6 +205,7 @@ err_t workloadapi_Client_Connect(workloadapi_Client *client)
 
 err_t workloadapi_Client_Close(workloadapi_Client *client)
 {
+    
     if (!client)
     {
         return ERROR1;
@@ -219,14 +221,16 @@ err_t workloadapi_Client_Close(workloadapi_Client *client)
         return ERROR2; //already closed
     }
     client->closed = true;
-    cnd_broadcast(&(client->closedCond));
-    mtx_unlock(&(client->closedMutex));
     if(client->ownsStub){
-        delete ((SpiffeWorkloadAPI::StubInterface *)client->stub); //delete it since grpc new'd it internally and we released it.
+
+        delete ((SpiffeWorkloadAPI::Stub *)client->stub); //delete it since grpc new'd it internally and we released it.
         client->ownsStub = false;
 
     }
     client->stub = NULL;
+    cnd_broadcast(&(client->closedCond));
+    mtx_unlock(&(client->closedMutex));
+
     //grpc will free the channel when no stub is using it.
     return NO_ERROR;
 }
@@ -326,7 +330,11 @@ err_t workloadapi_Client_WatchX509Context(workloadapi_Client* client, workloadap
         err_t err = workloadapi_Client_watchX509Context(client,watcher,&backoff);
         workloadapi_Watcher_OnX509ContextWatchError(watcher,err);
         err = workloadapi_Client_HandleWatchError(client,err,&backoff);
-        if(err != NO_ERROR){
+        //TODO: check error and reuse backoff if not cancelled
+        if(err == grpc::CANCELLED || err == grpc::INVALID_ARGUMENT){
+            return err;
+        }
+        else if(err != NO_ERROR){
             return err;
         }
     }
@@ -359,10 +367,13 @@ err_t workloadapi_Client_watchX509Context(workloadapi_Client* client, workloadap
     //unique_ptr gets freed after it goes out of scope 
     std::unique_ptr<grpc::ClientReaderInterface<X509SVIDResponse>> c_reader = 
         ((SpiffeWorkloadAPI::StubInterface*)client->stub)->FetchX509SVID(&ctx, req); //get response reader
-    
     while(true){
+
+        response.clear_svids();
+        response.clear_crl();
+        response.clear_federated_bundles();
+
         bool ok = c_reader->Read(&response);
-        err_t err = NO_ERROR;
         if(!ok){
             auto status = c_reader->Finish();
             if(status.error_code() == grpc::StatusCode::CANCELLED){
@@ -375,6 +386,7 @@ err_t workloadapi_Client_watchX509Context(workloadapi_Client* client, workloadap
             return ERROR4; //no more messages.
         }
         workloadapi_Backoff_Reset(backoff);
+        err_t err = NO_ERROR;
         workloadapi_X509Context *x509context = workloadapi_parseX509Context(&response,&err);
         if(err != NO_ERROR){
             ///TODO: log parse error
