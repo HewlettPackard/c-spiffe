@@ -188,12 +188,9 @@ gRPC C++ examples built with CMake.
     │   ├── client.h
     │   ├── cpp_client_example.cc
     │   ├── EXAMPLE.md
-    │   ├── grpc_conn_test.cc
-    │   ├── requestor.cc
-    │   └── requestor.h
+    │   └──  grpc_conn_test.cc
     └── tests
         ├── check_client.cc
-        ├── check_requestor.cc
         ├── CMakeLists.txt
         └── resources
             └── certs.pem
