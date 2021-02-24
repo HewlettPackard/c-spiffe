@@ -62,7 +62,7 @@ workloadapi_Watcher *workloadapi_newWatcher(
     /// TODO: check if callback is valid?
     newW->x509callback = x509callback;
 
-    int thread_error = mtx_init(&(newW->closeMutex), mtx_plain);
+    int thread_error = mtx_init(&(newW->close_mutex), mtx_plain);
     if(thread_error != thrd_success) {
         /// TODO: return thread error?
         *error = ERROR2;
@@ -118,7 +118,7 @@ err_t workloadapi_Watcher_Start(workloadapi_Watcher *watcher)
 // drops connection to WorkloadAPI (if owns client)
 err_t workloadapi_Watcher_Close(workloadapi_Watcher *watcher)
 {
-    mtx_lock(&(watcher->closeMutex));
+    mtx_lock(&(watcher->close_mutex));
     watcher->closed = true;
     err_t error = NO_ERROR;
     /// TODO: check and set watcher->closeError?
@@ -128,7 +128,7 @@ err_t workloadapi_Watcher_Close(workloadapi_Watcher *watcher)
         if(error != NO_ERROR) {
 
             watcher->closeError = error;
-            mtx_unlock(&(watcher->closeMutex));
+            mtx_unlock(&(watcher->close_mutex));
             return error;
         }
         error = workloadapi_Client_Free(watcher->client);
@@ -136,7 +136,7 @@ err_t workloadapi_Watcher_Close(workloadapi_Watcher *watcher)
             // shouldn't reach here.
         }
     }
-    mtx_unlock(&(watcher->closeMutex));
+    mtx_unlock(&(watcher->close_mutex));
     int join_return;
     int thread_error = thrd_join(watcher->watcherThread, &join_return);
     if(thread_error == thrd_success) {
@@ -149,7 +149,7 @@ err_t workloadapi_Watcher_Close(workloadapi_Watcher *watcher)
 err_t workloadapi_Watcher_Free(/*context,*/ workloadapi_Watcher *watcher)
 {
     /// TODO: free watcher
-    mtx_destroy(&(watcher->closeMutex));
+    mtx_destroy(&(watcher->close_mutex));
     cnd_destroy(&(watcher->update_cond));
     mtx_destroy(&(watcher->update_mutex));
     if(watcher->owns_client) {
