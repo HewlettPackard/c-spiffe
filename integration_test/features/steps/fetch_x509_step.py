@@ -12,7 +12,7 @@ if PARENT_PATH not in sys.path:
 from hamcrest import assert_that, is_, is_not
 
 
-@when(u'I fetch SVID')
+@when('I fetch SVID')
 def step_impl(context):
     c_client_bin = os.popen("../build/workload/c_client")
     result = c_client_bin.read()
@@ -20,12 +20,12 @@ def step_impl(context):
     context.svid = result.replace("Address : ", "")
 
 
-@then(u'I check that the SVID is returned correctly')
+@then('I check that the SVID is returned correctly')
 def step_impl(context):
     assert_that(context.svid, is_not("(nil)"))
 
 
-@when(u'I fetch bundle')
+@when('I fetch Bundle')
 def step_impl(context):
     c_client_bin = os.popen("../build/workload/c_client_bundle")
     result = c_client_bin.read()
@@ -33,12 +33,12 @@ def step_impl(context):
     context.bundle = result.replace("Address : ", "")
     
 
-@then(u'I check that the Bundle is returned correctly')
+@then('I check that the Bundle is returned correctly')
 def step_impl(context):
     assert_that(context.bundle, is_not("(nil)"))
 
 
-@when(u'I down the server')
+@when('The agent is turned off')
 def step_impl(context):
     #List all process
     processes = os.popen('ps aux | grep spire-agent')
@@ -51,7 +51,7 @@ def step_impl(context):
     time.sleep(5)
 
 
-@when(u'I up the server')
+@when('The agent is turned on')
 def step_impl(context):
     path = ["spire-agent"]
     command = ["run", "-joinToken", "$TOKEN", "-config", "/opt/spire/conf/agent/agent.conf"]
@@ -59,11 +59,11 @@ def step_impl(context):
     time.sleep(5)
 
 
-@then(u'I check that the SVID is not returned')
+@then('I check that the SVID is not returned')
 def step_impl(context):
     assert_that(context.svid, is_("(nil)"))
 
 
-@then(u'I check that the Bundle is not returned')
+@then('I check that the Bundle is not returned')
 def step_impl(context):
     assert_that(context.bundle, is_("(nil)"))

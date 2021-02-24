@@ -10,7 +10,7 @@ Feature: Fetch X509
 
     @Sprint6 @X509
     Scenario: TC_002 - Check that it is possible to fetch Bundle
-        When I fetch bundle
+        When I fetch Bundle
         Then I check that the Bundle is returned correctly
 
 
@@ -26,7 +26,7 @@ Feature: Fetch X509
     @Sprint6 @X509
     Scenario: TC_004 - Check that it is not possible to fetch Bundle with the sever down
         When I down the server
-        And  I fetch bundle
+        And  I fetch Bundle
         Then I check that the Bundle is not returned
         # Tear Down
         When I up the server
