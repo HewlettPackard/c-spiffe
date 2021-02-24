@@ -1,5 +1,5 @@
-#ifndef __INCLUDE_WORKLOAD_CLIENT_H__
-#define __INCLUDE_WORKLOAD_CLIENT_H__
+#ifndef INCLUDE_WORKLOAD_CLIENT_H
+#define INCLUDE_WORKLOAD_CLIENT_H
 
 
 #include "../../svid/x509svid/src/svid.h"
@@ -85,8 +85,9 @@ x509svid_SVID** workloadapi_Client_FetchX509SVIDs(workloadapi_Client* client, er
 ///func (c *Client) WatchJWTBundles(ctx context.Context, watcher JWTBundleWatcher) error
 ///func (c *Client) ValidateJWTSVID(ctx context.Context, token, audience string) (*jwtsvid.SVID, error)
 ///func (c *Client) watchJWTBundles(ctx context.Context, watcher JWTBundleWatcher, backoff *backoff) error
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+#endif //INCLUDE_WORKLOAD_CLIENT_H

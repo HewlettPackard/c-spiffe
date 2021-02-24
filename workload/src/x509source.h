@@ -1,5 +1,5 @@
-#ifndef __INCLUDE_WORKLOAD_X509SOURCE_H__
-#define __INCLUDE_WORKLOAD_X509SOURCE_H__
+#ifndef INCLUDE_WORKLOAD_X509SOURCE_H
+#define INCLUDE_WORKLOAD_X509SOURCE_H
 
 #include <threads.h>
 #include "watcher.h"
@@ -47,8 +47,8 @@ void workloadapi_X509Source_applyX509Context(
 err_t workloadapi_X509Source_checkClosed(workloadapi_X509Source *source);
 void workloadapi_X509Source_Free(workloadapi_X509Source *source);
 
-#endif
-
 #ifdef __cplusplus
 }
 #endif
+
+#endif //INCLUDE_WORKLOAD_X509SOURCE_H

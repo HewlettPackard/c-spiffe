@@ -1,5 +1,5 @@
-#ifndef __INCLUDE_WORKLOAD_X509CONTEXT_H__
-#define __INCLUDE_WORKLOAD_X509CONTEXT_H__
+#ifndef INCLUDE_WORKLOAD_X509CONTEXT_H
+#define INCLUDE_WORKLOAD_X509CONTEXT_H
 
 #include "../../svid/x509svid/src/svid.h"
 #include "../../bundle/x509bundle/src/set.h"
@@ -23,4 +23,4 @@ typedef struct X509Callback{
 } workloadapi_X509Callback;
 
 
-#endif //__INCLUDE_WORKLOAD_X509CONTEXT_H__
+#endif //INCLUDE_WORKLOAD_X509CONTEXT_H

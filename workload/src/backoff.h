@@ -1,5 +1,5 @@
-#ifndef __INCLUDE_WORKLOAD_BACKOFF_H__
-#define __INCLUDE_WORKLOAD_BACKOFF_H__
+#ifndef INCLUDE_WORKLOAD_BACKOFF_H
+#define INCLUDE_WORKLOAD_BACKOFF_H
 
 #include <time.h>
 
@@ -20,9 +20,8 @@ workloadapi_Backoff workloadapi_NewBackoff(struct timespec initial, struct times
 struct timespec workloadapi_Backoff_NextTime(workloadapi_Backoff* backoff); // returns a timestamp
 void workloadapi_Backoff_Reset(workloadapi_Backoff* backoff);
 
-#endif //__INCLUDE_WORKLOAD_BACKOFF_H__
 #ifdef __cplusplus
-
 }
-
 #endif
+
+#endif //INCLUDE_WORKLOAD_BACKOFF_H

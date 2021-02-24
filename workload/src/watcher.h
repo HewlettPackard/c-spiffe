@@ -1,5 +1,5 @@
-#ifndef __INCLUDE_WORKLOAD_WATCHER_H__
-#define __INCLUDE_WORKLOAD_WATCHER_H__
+#ifndef INCLUDE_WORKLOAD_WATCHER_H
+#define INCLUDE_WORKLOAD_WATCHER_H
 
 #include "x509context.h"
 #include "client.h"
@@ -91,4 +91,4 @@ err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher* watcher);
 }
 #endif
 
-#endif //__INCLUDE_WORKLOAD_WATCHER_H__
+#endif //INCLUDE_WORKLOAD_WATCHER_H
