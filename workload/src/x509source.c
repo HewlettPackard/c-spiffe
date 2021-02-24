@@ -113,7 +113,7 @@ void workloadapi_X509Source_applyX509Context(workloadapi_X509Source *source,
         x509svid_SVID_Free(source->SVIDs[i], true);
     }
     arrfree(source->SVIDs);
-    source->SVIDs = ctx->SVIDs;
+    source->SVIDs = ctx->svids;
     source->bundles = ctx->Bundles;
     mtx_unlock(&(source->mtx));
 }

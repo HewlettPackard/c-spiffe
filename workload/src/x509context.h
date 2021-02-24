@@ -9,7 +9,7 @@ extern "C"{
 #endif
 
 typedef struct workloadapi_X509Context {
-    x509svid_SVID **SVIDs;
+    x509svid_SVID **svids;
     x509bundle_Set *Bundles;
 
 } workloadapi_X509Context;

@@ -188,7 +188,7 @@ START_TEST(test_workloadapi_parseX509Context)
     //check all bundles have been created
     ck_assert_uint_eq(x509bundle_Set_Len(ctx->Bundles), 3);
     //ditto for svids
-    ck_assert_uint_eq(arrlenu(ctx->SVIDs), 2);
+    ck_assert_uint_eq(arrlenu(ctx->svids), 2);
     
     string_arr_t paths = NULL;
     arrput(paths,"/workload-1");
@@ -199,10 +199,10 @@ START_TEST(test_workloadapi_parseX509Context)
     arrput(tds,"example.org");
 
     //test if SVIDs have been parsed properly
-    for (int i = 0; i < arrlen(ctx->SVIDs);i++)
+    for (int i = 0; i < arrlen(ctx->svids);i++)
     {
-        ck_assert_str_eq(paths[i],ctx->SVIDs[i]->id.path);
-        ck_assert_str_eq(tds[i],ctx->SVIDs[i]->id.td.name);
+        ck_assert_str_eq(paths[i],ctx->svids[i]->id.path);
+        ck_assert_str_eq(tds[i],ctx->svids[i]->id.td.name);
     }
 
     //needed freeing
@@ -212,11 +212,11 @@ START_TEST(test_workloadapi_parseX509Context)
     arrfree(tds);
     arrfree(paths);
     x509bundle_Set_Free(ctx->Bundles);
-    for (int i = 0; i < arrlen(ctx->SVIDs);i++)
+    for (int i = 0; i < arrlen(ctx->svids);i++)
     {
-        x509svid_SVID_Free(ctx->SVIDs[i],true);
+        x509svid_SVID_Free(ctx->svids[i],true);
     }
-    arrfree(ctx->SVIDs);
+    arrfree(ctx->svids);
     free(ctx);
 }
 END_TEST
@@ -368,10 +368,10 @@ START_TEST(test_workloadapi_Client_FetchX509Context)
     workloadapi_X509Context* ctx = workloadapi_Client_FetchX509Context(client,&err);
     workloadapi_Client_Close(client);
     workloadapi_Client_Free(client);
-    ck_assert_ptr_ne(ctx->SVIDs,NULL);
+    ck_assert_ptr_ne(ctx->svids,NULL);
 
     ck_assert_ptr_ne(ctx->Bundles,NULL);
-    ck_assert_str_eq(ctx->SVIDs[0]->id.td.name,"example.org");
+    ck_assert_str_eq(ctx->svids[0]->id.td.name,"example.org");
     delete stub;
     free(ctx);
 }
@@ -452,10 +452,10 @@ ACTION(set_double_SVID_response){
 
 void callback_Watch_context_test(workloadapi_X509Context * ctx,void* ctxs){
     workloadapi_X509Context ***arr = (workloadapi_X509Context***) ctxs;
-    auto svids = ctx->SVIDs;
+    auto svids = ctx->svids;
     auto bundles = ctx->Bundles;
     ctx = (workloadapi_X509Context*) calloc(1,sizeof *ctx);
-    ctx->SVIDs = svids;
+    ctx->svids = svids;
     ctx->Bundles = bundles;
     arrpush((*arr),ctx);
 
@@ -512,25 +512,25 @@ START_TEST(test_workloadapi_Client_WatchX509Context)
 
     ck_assert_int_eq(arrlen(ctxs),4);
     ck_assert_ptr_ne(ctxs[0],NULL);
-    ck_assert_ptr_ne(ctxs[0]->SVIDs,NULL);
-    ck_assert_int_eq(arrlen(ctxs[0]->SVIDs),1);
+    ck_assert_ptr_ne(ctxs[0]->svids,NULL);
+    ck_assert_int_eq(arrlen(ctxs[0]->svids),1);
 
     ck_assert_ptr_ne(ctxs[1],NULL);
-    ck_assert_ptr_ne(ctxs[1]->SVIDs,NULL);
-    ck_assert_int_eq(arrlen(ctxs[1]->SVIDs),2);
+    ck_assert_ptr_ne(ctxs[1]->svids,NULL);
+    ck_assert_int_eq(arrlen(ctxs[1]->svids),2);
 
     ck_assert_ptr_ne(ctxs[2],NULL);
-    ck_assert_ptr_ne(ctxs[2]->SVIDs,NULL);
-    ck_assert_int_eq(arrlen(ctxs[2]->SVIDs),1);
+    ck_assert_ptr_ne(ctxs[2]->svids,NULL);
+    ck_assert_int_eq(arrlen(ctxs[2]->svids),1);
 
     ck_assert_ptr_ne(ctxs[3],NULL);
-    ck_assert_ptr_ne(ctxs[3]->SVIDs,NULL);
-    ck_assert_int_eq(arrlen(ctxs[3]->SVIDs),2);
+    ck_assert_ptr_ne(ctxs[3]->svids,NULL);
+    ck_assert_int_eq(arrlen(ctxs[3]->svids),2);
 
     // free(ctx);
 
     // ck_assert_ptr_ne(ctx->Bundles,NULL);
-    // ck_assert_str_eq(ctx->SVIDs[0]->id.td.name,"example.org");
+    // ck_assert_str_eq(ctx->svids[0]->id.td.name,"example.org");
     delete stub;
     // free(ctx);
 }
