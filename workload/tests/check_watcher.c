@@ -204,6 +204,7 @@ int waitAndUpdate(void* args){
     thrd_sleep(&now,NULL);
     printf("awake\n");
     workloadapi_Watcher_TriggerUpdated((workloadapi_Watcher*)args);
+    return 0;
 }
 
 START_TEST(test_workloadapi_Watcher_TimedWaitUntilUpdated_blocks);
@@ -226,19 +227,58 @@ START_TEST(test_workloadapi_Watcher_TimedWaitUntilUpdated_blocks);
     
     workloadapi_Watcher* watcher = workloadapi_newWatcher(config,callback,&error);  
 
-    struct timespec now;
-    timespec_get(&now,TIME_UTC);
+    struct timespec then;
+    timespec_get(&then,TIME_UTC);
     thrd_t thread;
     thrd_create(&thread,waitAndUpdate,watcher);
-    struct timespec timeout = now;
+    struct timespec timeout = then;
     timeout.tv_sec+=5;
     workloadapi_Watcher_TimedWaitUntilUpdated(watcher,&timeout);
     
+    struct timespec now;
+    timespec_get(&now,TIME_UTC);
+    
+    ck_assert_int_ge(now.tv_sec,then.tv_sec+2);
+    ck_assert_int_lt(now.tv_sec,then.tv_sec+5);
+
+    //free allocated watcher.
+    workloadapi_Client_Free(config.client);
+    workloadapi_Watcher_Free(watcher);
+}
+END_TEST
+
+START_TEST(test_workloadapi_Watcher_WaitUntilUpdated_blocks);
+{
+    // empty but valid callback object
+    workloadapi_X509Callback callback;
+    callback.func = empty_callback;
+    callback.args = NULL;
+
+    // empty but valid watcher config
+    workloadapi_WatcherConfig config;
+    config.clientOptions = NULL;
+    
+    // error not set.
+    err_t error = NO_ERROR;
+
+    config.client = workloadapi_NewClient(&error);
+    arrput(config.clientOptions,setAddress);
+    arrput(config.clientOptions,setHeader);
+    
+    workloadapi_Watcher* watcher = workloadapi_newWatcher(config,callback,&error);  
+
     struct timespec then;
     timespec_get(&then,TIME_UTC);
+    thrd_t thread;
+    thrd_create(&thread,waitAndUpdate,watcher);
     
-    ck_assert_int_ge(then.tv_sec,now.tv_sec+2);
-    ck_assert_int_lt(then.tv_sec,now.tv_sec+5);
+    workloadapi_Watcher_WaitUntilUpdated(watcher);
+    
+    struct timespec now;
+    timespec_get(&now,TIME_UTC);
+    
+    ck_assert_int_ge(now.tv_sec,then.tv_sec+2);
+    ck_assert_int_lt(now.tv_sec,then.tv_sec+5);
 
     //free allocated watcher.
     workloadapi_Client_Free(config.client);
@@ -261,19 +301,21 @@ START_TEST(test_workloadapi_Watcher_Start_blocks);
     err_t error = NO_ERROR;
 
     config.client = NULL; // no client = create client
+    arrput(config.clientOptions,setAddress);
+    arrput(config.clientOptions,setHeader);
     
     workloadapi_Watcher* watcher = workloadapi_newWatcher(config,callback,&error);  
 
-    struct timespec now;
-    timespec_get(&now,TIME_UTC);
+    struct timespec then;
+    timespec_get(&then,TIME_UTC);
     thrd_t thread;
     thrd_create(&thread,waitAndUpdate,watcher);
     error = workloadapi_Watcher_Start(watcher);
-    struct timespec then;
-    timespec_get(&then,TIME_UTC);
+    struct timespec now;
+    timespec_get(&now,TIME_UTC);
     
-    ck_assert_int_ge(then.tv_sec,now.tv_sec+2);
-    ck_assert_int_lt(then.tv_sec,now.tv_sec+5);
+    ck_assert_int_ge(now.tv_sec,then.tv_sec+2);
+    ck_assert_int_lt(now.tv_sec,then.tv_sec+5);
 
     //free allocated watcher.
     workloadapi_Client_Free(config.client);
@@ -281,38 +323,52 @@ START_TEST(test_workloadapi_Watcher_Start_blocks);
 }
 END_TEST
 
-START_TEST(test_workloadapi_Watcher_Start_starts_thread);
+START_TEST(test_workloadapi_Watcher_Close);
 {
     // empty but valid callback object
     workloadapi_X509Callback callback;
     callback.func = empty_callback;
     callback.args = NULL;
-
+    
     // empty but valid watcher config
     workloadapi_WatcherConfig config;
     config.clientOptions = NULL;
     config.client = NULL; // no client = create client
     
+    arrput(config.clientOptions,setAddress);
+    // arrput(config.clientOptions,setHeader);
     // error not set.
     err_t error = NO_ERROR;
 
     
     workloadapi_Watcher* watcher = workloadapi_newWatcher(config,callback,&error);  
     
-    struct timespec now;
-    timespec_get(&now,TIME_UTC);
-    thrd_t thread;
-    thrd_create(&thread,waitAndUpdate,watcher);
-    error = workloadapi_Watcher_Start(watcher);
+    ck_assert(watcher->closed);
+    ck_assert_ptr_ne(watcher->client,NULL);
+    ck_assert(watcher->client->closed);
+    ck_assert(!watcher->client->ownsStub);
+    ck_assert_ptr_eq(watcher->client->stub,NULL);
+
     struct timespec then;
     timespec_get(&then,TIME_UTC);
+    thrd_t thread;
+    thrd_create(&thread,waitAndUpdate,watcher);//unblocks thread
+    error = workloadapi_Watcher_Start(watcher);
+    struct timespec now;
+    timespec_get(&now,TIME_UTC);
     
-    ck_assert_int_ge(then.tv_sec,now.tv_sec+2);
-    ck_assert_int_lt(then.tv_sec,now.tv_sec+5);
+    ck_assert_int_ge(now.tv_sec,then.tv_sec+2);
+    ck_assert_int_lt(now.tv_sec,then.tv_sec+5);
+    
+    
+    error = workloadapi_Watcher_Close(watcher);
 
+    ck_assert(watcher->closed);
+    ck_assert(watcher->closeError == NO_ERROR);
+    ck_assert_ptr_ne(watcher->client,NULL);
     //free allocated watcher.
-    workloadapi_Client_Free(config.client);
     workloadapi_Watcher_Free(watcher);
+    
 }
 END_TEST
 
@@ -320,13 +376,14 @@ Suite* watcher_suite(void)
 {
     Suite *s = suite_create("watcher");
     TCase *tc_core = tcase_create("core");
-
     tcase_add_test(tc_core, test_workloadapi_Watcher_callback_is_called_on_update_once);
     tcase_add_test(tc_core, test_workloadapi_newWatcher_creates_client_if_null);
     tcase_add_test(tc_core, test_workloadapi_newWatcher_uses_provided_client);
     tcase_add_test(tc_core, test_workloadapi_newWatcher_applies_Options);
     tcase_add_test(tc_core, test_workloadapi_Watcher_TimedWaitUntilUpdated_blocks);
+    tcase_add_test(tc_core, test_workloadapi_Watcher_WaitUntilUpdated_blocks);
     tcase_add_test(tc_core, test_workloadapi_Watcher_Start_blocks);
+    tcase_add_test(tc_core, test_workloadapi_Watcher_Close);
 
     suite_add_tcase(s, tc_core);
 
