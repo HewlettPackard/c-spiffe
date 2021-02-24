@@ -2,7 +2,8 @@
 
 C extension for Spiffe platform.
 
-[![Build Status](https://travis-ci.com/HewlettPackard/c-spiffe.svg?branch=master)](https://travis-ci.com/github/HewlettPackard/c-spiffe)
+[![Build and run tests](https://github.com/HewlettPackard/c-spiffe/actions/workflows/actions.yml/badge.svg)](https://github.com/HewlettPackard/c-spiffe/actions/workflows/actions.yml)
+
 
 ## Introduction
 
@@ -19,7 +20,9 @@ gRPC C++ examples built with CMake.
 │   │   │   ├── bundle.c
 │   │   │   ├── bundle.h
 │   │   │   ├── set.c
-│   │   │   └── set.h
+│   │   │   ├── set.h
+│   │   │   ├── source.c
+│   │   │   └── source.h
 │   │   └── tests
 │   │       ├── check_bundle.c
 │   │       ├── jwk_keys.json
@@ -35,7 +38,9 @@ gRPC C++ examples built with CMake.
 │       │   ├── bundle.c
 │       │   ├── bundle.h
 │       │   ├── set.c
-│       │   └── set.h
+│       │   ├── set.h
+│       │   ├── source.c
+│       │   └── source.h
 │       └── tests
 │           ├── certs.pem
 │           ├── check_bundle.c
@@ -61,14 +66,15 @@ gRPC C++ examples built with CMake.
 │   ├── features
 │   │   ├── environment.py
 │   │   ├── steps
-│   │   │   └── SVID_step.py
-│   │   ├── TS_SVID.feature
+│   │   │   └── fetch_x509_step.py
+│   │   ├── Fetch_X509.feature
 │   │   └── utils.py
 │   ├── get-entries.py
-│   ├── get-entries.sh
+│   ├── grpc_conn_test_agent.sh
+│   ├── grpc_conn_test_entries.sh
+│   ├── grpc_conn_test_server.sh
 │   ├── README.md
-│   ├── requirements.txt
-│   └── test.txt
+│   └── requirements.txt
 ├── internal
 │   ├── CMakeLists.txt
 │   ├── cryptoutil
@@ -111,11 +117,6 @@ gRPC C++ examples built with CMake.
 │           └── resources
 │               ├── certs.pem
 │               └── key-pkcs8-rsa.pem
-├── proto
-│   └── spiffe
-│       └── workload
-│           ├── README.md
-│           └── workload.proto
 ├── protos
 │   └── workload.proto
 ├── README.md
@@ -141,24 +142,33 @@ gRPC C++ examples built with CMake.
 │           └── authorizer.h
 ├── svid
 │   ├── CMakeLists.txt
-│   └── x509svid
+│   ├── x509svid
+│   |   ├── src
+│   |   │   ├── svid.c
+│   |   │   ├── svid.h
+│   |   │   ├── verify.c
+│   |   │   └── verify.h
+│   |   └── tests
+│   |       ├── check_svid.c
+│   |       ├── check_verify.c
+│   |       ├── CMakeLists.txt
+│   |       ├── README
+│   |       └── resources
+│   |           ├── good-cert-and-key.pem
+│   |           ├── good-key-and-cert.pem
+│   |           ├── good-leaf-and-intermediate.pem
+│   |           ├── good-leaf-only.pem
+│   |           ├── key-pkcs8-ecdsa.pem
+│   |           └── key-pkcs8-rsa.pem
+│   └── jwtsvid
 │       ├── src
 │       │   ├── svid.c
-│       │   ├── svid.h
-│       │   ├── verify.c
-│       │   └── verify.h
+│       │   └── svid.h
 │       └── tests
 │           ├── check_svid.c
-│           ├── check_verify.c
 │           ├── CMakeLists.txt
-│           ├── README
 │           └── resources
-│               ├── good-cert-and-key.pem
-│               ├── good-key-and-cert.pem
-│               ├── good-leaf-and-intermediate.pem
-│               ├── good-leaf-only.pem
-│               ├── key-pkcs8-ecdsa.pem
-│               └── key-pkcs8-rsa.pem
+│               └── privkey.pem
 ├── utils
 │   ├── src
 │   │   ├── stb_ds.h
@@ -167,10 +177,12 @@ gRPC C++ examples built with CMake.
 │   └── tests
 │       ├── check_util.c
 │       ├── README
-│       └── test.txt
+|       └── resources
+│           └── test.txt
 └── workload
     ├── CMakeLists.txt
     ├── src
+    │   ├── c_client_example_bundle.c
     │   ├── c_client_example.c
     │   ├── client.cc
     │   ├── client.h
@@ -181,7 +193,6 @@ gRPC C++ examples built with CMake.
     │   └── requestor.h
     └── tests
         ├── check_client.cc
-        ├── check_requestor.c
         ├── check_requestor.cc
         ├── CMakeLists.txt
         └── resources
@@ -247,22 +258,87 @@ To adopt continuous integration, we will need to run your tests on every change 
 
 ![Alt text](img/ci-process.png "Commit, Build and Deploy")
 
-# To use Travis CI/CD, you need:
+# Introduction
 
-Connect Travis CI to your project
-Most CI tools integrate seamlessly with Git services — especially GitHub. Go to travis-ci.com and sign up. I suggest logging in with your GitHub account — it’ll make things easier at later stages.
+We only need an existing GitHub repository to create and run a GitHub Actions workflow. In this guide, you'll add a workflow that lints multiple coding languages using the GitHub Super-Linter action. The workflow uses Super-Linter to validate your source code every time a new commit is pushed to your repository.
 
-Inside Travis CI, there is a search bar on the left side of the screen; Click the + sign below it.
+# To use Github Actions CI/CD, we need:
 
-![Alt text](img/my-repository.png "My repository")
+Most CI tools integrate seamlessly with Git services — especially GitHub.
 
-If you connected your GitHub account, you should see a list of your existing repositories, from which you can add:
+<ol>
+    <li>
+    From your repository on GitHub, create a new file in the .github/workflows directory named superlinter.yml.
+    </li>
+    <li>
+    Copy the following YAML contents into the superlinter.yml file. Note: If your default branch is not main, update the value of DEFAULT_BRANCH to match your repository's default branch name.
 
-![Alt text](img/list-projects.png "Projects list")
+```
+name: Super-Linter
 
-## The configuration file
-Most CI tools expect a configuration file to exist in the project. Travis CI expects a .travis.yml file to exist in the project root.
+# Run this workflow every time a new commit pushed to your repository
+on: push
 
- The following example specifies a cpp project that should be built with gcc and the latest versions of docker image.
+jobs:
+  # Set the job key. The key is displayed as the job name
+  # when a job name is not provided
+  super-lint:
+    # Name the Job
+    name: Lint code base
+    # Set the type of machine to run on
+    runs-on: ubuntu-latest
 
-![Alt text](img/travis.png "Travis file")
+    steps:
+      # Checks out a copy of your repository on the ubuntu-latest machine
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Runs the Super-Linter action
+      - name: Run Super-Linter
+        uses: github/super-linter@v3
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+</li>
+    <li>
+    To run your workflow, scroll to the bottom of the page and select Create a new branch for this commit and start a pull request. Then, to create a pull request, click Propose new file.
+    </li>
+ </ol>
+
+ ![Alt text](img/commit-workflow-file.png)
+
+Committing the workflow file in your repository triggers the push event and runs your workflow.
+
+# Viewing your workflow results
+
+<ol>
+    <li>
+    On GitHub, navigate to the main page of the repository.
+    </li>
+    <li>
+    Under your repository name, click <b>Actions</b>.
+
+![Alt text](img/actions-tab.png)
+    </li>
+    <li>
+    In the left sidebar, click the workflow you want to see.
+
+![Alt text](img/superlinter-workflow-sidebar.png)
+    </li>
+    <li>
+    From the list of workflow runs, click the name of the run you want to see.
+
+![Alt text](img/superlinter-run-name.png)
+    </li>
+    <li>
+    Under <b>Jobs</b> or in the visualization graph, <b>click the Lint code base</b> job.
+
+![Alt text](img/superlinter-lint-code-base-job-updated.png)
+    </li>
+    <li>
+    Any failed steps are automatically expanded to display the results.
+
+![Alt text](img/super-linter-workflow-results-updated-2.png)
+    </li>
+</ol>

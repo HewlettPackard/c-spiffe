@@ -1,0 +1,31 @@
+name: Build and run tests
+
+on: push
+
+jobs:
+  build-and-tests:
+    runs-on: ubuntu-latest
+    container:
+      image: willallves/grpc-build:1.34.0
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v1
+
+      - name: Log the parent container ubuntu version
+        run: lsb_release -a
+
+      - name: Create Build Environment
+        shell: bash
+        run: mkdir build
+      
+      - name: Configure CMake
+        shell: bash
+        run: cd build && cmake ..
+      
+      - name: Build
+        shell: bash
+        run:  cd build && make
+      
+      - name: tests
+        shell: bash
+        run: cd build && make test

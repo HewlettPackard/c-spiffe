@@ -191,7 +191,7 @@ spiffeid_ID x509svid_validateLeafCertificate(X509 *cert, err_t *err)
             *err = ERROR2;
         }
 
-        spiffeid_ID_Free(&id, false);
+        spiffeid_ID_Free(&id);
     }
     else
     {
@@ -399,7 +399,7 @@ void x509svid_SVID_Free(x509svid_SVID *svid, bool alloc)
 {
     if(svid)
     {
-        spiffeid_ID_Free(&(svid->id), false);
+        spiffeid_ID_Free(&(svid->id));
         
         for(size_t i = 0, size = arrlenu(svid->certs); i < size; ++i)
         {

@@ -26,6 +26,13 @@ typedef struct
     string_t signature;
 } jwtsvid_JWT;
 
+typedef struct jwtsvid_Params
+{
+    string_t audience;
+    string_arr_t extraAudiences;
+    spiffeid_ID subject;
+} jwtsvid_Params;
+
 typedef struct jwtsvid_SVID
 {
     //its own spiffe id

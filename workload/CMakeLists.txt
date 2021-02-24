@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.13)
 
 set(TARGET_NAME "workload")
 project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C CXX)
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_BUILD_TYPE RelWithDebInfo)
+#set(CMAKE_CXX_STANDARD 14)
+#set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
 find_package(OpenSSL REQUIRED)
 find_package(GTest REQUIRED)
@@ -36,10 +36,10 @@ add_custom_command(
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(OWN_LIBS 
-libsvid
-libspiffeid
-libinternal
-libbundle
+svid
+spiffeid
+internal
+bundle
 )
 
 set(EXT_LIBS
@@ -72,16 +72,16 @@ set(LIB_CLIENT
   ${grpc_srcs}
 )
 
-add_library(libbackoff SHARED ${LIB_BACKOFF})
-target_link_libraries(libbackoff
+add_library(backoff SHARED ${LIB_BACKOFF})
+target_link_libraries(backoff
 ${OWN_LIBS}
 ${EXT_LIBS}
 )
 
-add_library(libclient SHARED ${LIB_CLIENT} ${LIB_WATCHER})
+add_library(client SHARED ${LIB_CLIENT} ${LIB_WATCHER})
 
-target_link_libraries(libclient
-libbackoff
+target_link_libraries(client
+backoff
 ${OWN_LIBS}
 ${EXT_LIBS}
 ${_REFLECTION}
@@ -90,9 +90,9 @@ ${_GRPC_GRPC}
 ${_PROTOBUF_LIBPROTOBUF}
 )
 
-add_library(libsource SHARED ${LIB_SOURCE})
-target_link_libraries(libsource
-libclient
+add_library(source SHARED ${LIB_SOURCE})
+target_link_libraries(source
+client
 ${OWN_LIBS}
 ${EXT_LIBS}
 )
@@ -101,17 +101,17 @@ set(CPP_CLIENT
     src/cpp_client_example.cc
 )
 add_executable(cpp_client "${CPP_CLIENT}")
-target_link_libraries(cpp_client libsource libclient libbackoff)
+target_link_libraries(cpp_client source client backoff)
 
 set(C_CLIENT
     src/c_client_example.c
 )
 add_executable(c_client "${C_CLIENT}")
-target_link_libraries(c_client libsource libclient libbackoff)
+target_link_libraries(c_client source client backoff)
 
 
 set(C_CLIENT_BUNDLE
     src/c_client_example_bundle.c
 )
 add_executable(c_client_bundle "${C_CLIENT_BUNDLE}")
-target_link_libraries(c_client_bundle libclient)
+target_link_libraries(c_client_bundle client)

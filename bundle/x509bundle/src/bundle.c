@@ -204,7 +204,7 @@ void x509bundle_Bundle_Free(x509bundle_Bundle *b, bool alloc)
             X509_free(b->auths[i]);
         }
         arrfree(b->auths);
-        spiffeid_TrustDomain_Free(&(b->td), false);
+        spiffeid_TrustDomain_Free(&(b->td));
 
         if(alloc)
         {

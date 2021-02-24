@@ -5,12 +5,12 @@ file(COPY ../tests/resources/ DESTINATION ${PROJECT_BINARY_DIR}/svid/x509svid/te
 
 add_executable(check_x509svid check_svid.c)
 
-target_link_libraries(check_x509svid libsvid ${CHECK_LIBRARIES}
+target_link_libraries(check_x509svid svid ${CHECK_LIBRARIES}
   OpenSSL::SSL
-  libspiffeid
-  libinternal
+  spiffeid
+  internal
   uriparser
-  libbundle
+  bundle
   jansson
   cjose
   subunit
@@ -25,12 +25,12 @@ add_test(check_x509svid check_x509svid)
 
 add_executable(check_x509verify check_verify.c)
 
-target_link_libraries(check_x509verify libsvid ${CHECK_LIBRARIES}
+target_link_libraries(check_x509verify svid ${CHECK_LIBRARIES}
   OpenSSL::SSL
-  libspiffeid
-  libinternal
+  spiffeid
+  internal
   uriparser
-  libbundle
+  bundle
   jansson
   cjose
   subunit

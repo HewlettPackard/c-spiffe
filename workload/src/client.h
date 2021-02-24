@@ -3,6 +3,7 @@
 
 
 #include "../../svid/x509svid/src/svid.h"
+#include "../../svid/jwtsvid/src/svid.h"
 #include "../../bundle/x509bundle/src/set.h"
 #include "../../utils/src/util.h"
 #include "watcher.h"
@@ -63,25 +64,17 @@ x509bundle_Set* workloadapi_Client_FetchX509Bundles(workloadapi_Client* client, 
 x509svid_SVID* workloadapi_Client_FetchX509SVID(workloadapi_Client* client, err_t* error);
 x509svid_SVID** workloadapi_Client_FetchX509SVIDs(workloadapi_Client* client, err_t* error);
 
-//setters for client, to be used inside ClientOption's
-///TODO: logger and dialOptions setters.
-// err_t workloadapi_Client_setLogger(workloadapi_Client* client, Logger* logger);
-// err_t workloadapi_Client_setDialOptions(workloadapi_Client* client, void* dialoption); //?????
-
-///DONE: implemented in client.cc, not part of public interface:
- 
-// x509bundle_Set* workloadapi_parseX509Bundles(const X509SVIDResponse *rep, 
-//                                             err_t *err);
+///Implemented in client.cc, not part of public API (Needs grpc Response class, from C++)
+// x509bundle_Set* workloadapi_parseX509Bundles(
+//     const X509SVIDResponse *rep, err_t *err);
 // x509bundle_Bundle* workloadapi_parseX509Bundle(string_t id,
 //                                             const byte *bundle_bytes,
 //                                             const size_t len,
 //                                             err_t *err);
-
-// workloadapi_X509Context* workloadapi_parseX509Context(X509SVIDResponse *resp, err_t *err);
-
-// x509svid_SVID** workloadapi_parseX509SVIDs(X509SVIDResponse *resp,
-//                                             bool firstOnly,
-//                                             err_t *err);
+// jwtsvid_SVID* workloadapi_parseJWTSVID(
+//     const JWTSVIDResponse *resp, jwtsvid_Params *params, err_t *err);
+// jwtbundle_Set* workloadapi_parseJWTBundles(
+//     const JWTBundlesResponse *resp, err_t *err);
 
 
 ///TODO: implement JWT later

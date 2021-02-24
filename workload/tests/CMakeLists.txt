@@ -35,41 +35,18 @@ SET(GCC_COVERAGE_LINK_FLAGS    "-lgcov")
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
 
-# add_executable(check_requestor "./check_requestor.cc" ${grpc_srcs} ${proto_srcs} ${grpc_mock})
-
-# target_link_libraries(check_requestor librequestor ${CHECK_LIBRARIES} 
-#   gtest
-#   gmock
-#   gmock_main
-#   OpenSSL::SSL
-#   libspiffeid
-#   libinternal
-#   uriparser
-#   libbundle
-#   jansson
-#   cjose
-#   subunit
-#   check_pic
-#   check
-#   rt
-#   m
-#   crypto
-#   pthread)
-
-# add_test(requestor-test check_requestor)
-
 add_executable(check_client "./check_client.cc" ${grpc_srcs} ${proto_srcs} ${grpc_mock})
 
 target_link_libraries(check_client ${CHECK_LIBRARIES} 
-  libclient
+  client
   gtest
   gmock
   gmock_main
   OpenSSL::SSL
-  libspiffeid
-  libinternal
+  spiffeid
+  internal
   uriparser
-  libbundle
+  bundle
   jansson
   cjose
   subunit
@@ -80,17 +57,17 @@ target_link_libraries(check_client ${CHECK_LIBRARIES}
   crypto
   pthread)
 
-add_test(client-test check_client)
+add_test(check_client check_client)
 
 add_executable(check_watcher "./check_watcher.c")
 
 target_link_libraries(check_watcher ${CHECK_LIBRARIES} 
-libclient
+client
  OpenSSL::SSL
-  libspiffeid
-  libinternal
+  spiffeid
+  internal
   uriparser
-  libbundle
+  bundle
   jansson
   cjose
   subunit
@@ -101,4 +78,4 @@ libclient
   crypto
   pthread)
 
-add_test(watcher-test check_watcher)
+add_test(check_watcher check_watcher)
