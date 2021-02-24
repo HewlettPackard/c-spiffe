@@ -21,7 +21,7 @@ typedef struct workloadapi_Client workloadapi_Client;
 typedef void (*workloadapi_ClientOption)(workloadapi_Client *, void *);
 typedef struct workloadapi_WatcherConfig {
     workloadapi_Client *client;
-    workloadapi_ClientOption *clientOptions;
+    workloadapi_ClientOption *client_options;
 } workloadapi_WatcherConfig;
 
 // typedef void(workloadapi_jwtBundleSetFunc_t)(jwtbundle_Set*);

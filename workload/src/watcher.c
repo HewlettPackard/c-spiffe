@@ -38,10 +38,10 @@ workloadapi_Watcher *workloadapi_newWatcher(
     if(config.client) {
         newW->client = config.client;
         newW->ownsClient = false;
-        if(config.clientOptions) {
-            for(int i = 0; i < arrlen(config.clientOptions); i++) {
+        if(config.client_options) {
+            for(int i = 0; i < arrlen(config.client_options); i++) {
                 workloadapi_Client_ApplyOption(config.client,
-                                               config.clientOptions[i]);
+                                               config.client_options[i]);
             }
         }
     } else {
@@ -51,10 +51,10 @@ workloadapi_Watcher *workloadapi_newWatcher(
             return NULL;
         }
         newW->ownsClient = true;
-        if(config.clientOptions) {
-            for(int i = 0; i < arrlen(config.clientOptions); i++) {
+        if(config.client_options) {
+            for(int i = 0; i < arrlen(config.client_options); i++) {
                 workloadapi_Client_ApplyOption(newW->client,
-                                               config.clientOptions[i]);
+                                               config.client_options[i]);
             }
         }
     }

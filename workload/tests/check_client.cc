@@ -493,7 +493,7 @@ START_TEST(test_workloadapi_Client_WatchX509Context)
     err = workloadapi_Client_Connect(client);
     workloadapi_WatcherConfig config;
     config.client = client;
-    config.clientOptions = NULL;
+    config.client_options = NULL;
 
     workloadapi_X509Context** ctxs = NULL;
     arrsetcap(ctxs,5);

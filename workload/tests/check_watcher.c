@@ -80,7 +80,7 @@ START_TEST(test_workloadapi_newWatcher_creates_client_if_null)
     // empty but valid watcher config
     workloadapi_WatcherConfig config;
     config.client = NULL; //client == NULL means create a new one.
-    config.clientOptions = NULL;
+    config.client_options = NULL;
     
     // error not set.
     err_t error = NO_ERROR;
@@ -115,7 +115,7 @@ START_TEST(test_workloadapi_newWatcher_uses_provided_client)
     // empty but valid watcher config
     workloadapi_WatcherConfig config;
     config.client = (void*) 1; //non-null already exists;
-    config.clientOptions = NULL;
+    config.client_options = NULL;
     
     // error not set.
     err_t error = NO_ERROR;
@@ -157,14 +157,14 @@ START_TEST(test_workloadapi_newWatcher_applies_Options)
 
     // empty but valid watcher config
     workloadapi_WatcherConfig config;
-    config.clientOptions = NULL;
+    config.client_options = NULL;
     
     // error not set.
     err_t error = NO_ERROR;
 
     config.client = workloadapi_NewClient(&error);
-    arrput(config.clientOptions,setAddress);
-    arrput(config.clientOptions,setHeader);
+    arrput(config.client_options,setAddress);
+    arrput(config.client_options,setHeader);
 
     //create watcher with null client.    
     workloadapi_Watcher* watcher = workloadapi_newWatcher(config,callback,&error);
@@ -216,14 +216,14 @@ START_TEST(test_workloadapi_Watcher_TimedWaitUntilUpdated_blocks);
 
     // empty but valid watcher config
     workloadapi_WatcherConfig config;
-    config.clientOptions = NULL;
+    config.client_options = NULL;
     
     // error not set.
     err_t error = NO_ERROR;
 
     config.client = workloadapi_NewClient(&error);
-    arrput(config.clientOptions,setAddress);
-    arrput(config.clientOptions,setHeader);
+    arrput(config.client_options,setAddress);
+    arrput(config.client_options,setHeader);
     
     workloadapi_Watcher* watcher = workloadapi_newWatcher(config,callback,&error);  
 
@@ -256,14 +256,14 @@ START_TEST(test_workloadapi_Watcher_WaitUntilUpdated_blocks);
 
     // empty but valid watcher config
     workloadapi_WatcherConfig config;
-    config.clientOptions = NULL;
+    config.client_options = NULL;
     
     // error not set.
     err_t error = NO_ERROR;
 
     config.client = workloadapi_NewClient(&error);
-    arrput(config.clientOptions,setAddress);
-    arrput(config.clientOptions,setHeader);
+    arrput(config.client_options,setAddress);
+    arrput(config.client_options,setHeader);
     
     workloadapi_Watcher* watcher = workloadapi_newWatcher(config,callback,&error);  
 
@@ -295,14 +295,14 @@ START_TEST(test_workloadapi_Watcher_Start_blocks);
 
     // empty but valid watcher config
     workloadapi_WatcherConfig config;
-    config.clientOptions = NULL;
+    config.client_options = NULL;
     
     // error not set.
     err_t error = NO_ERROR;
 
     config.client = NULL; // no client = create client
-    arrput(config.clientOptions,setAddress);
-    arrput(config.clientOptions,setHeader);
+    arrput(config.client_options,setAddress);
+    arrput(config.client_options,setHeader);
     
     workloadapi_Watcher* watcher = workloadapi_newWatcher(config,callback,&error);  
 
@@ -332,11 +332,11 @@ START_TEST(test_workloadapi_Watcher_Close);
     
     // empty but valid watcher config
     workloadapi_WatcherConfig config;
-    config.clientOptions = NULL;
+    config.client_options = NULL;
     config.client = NULL; // no client = create client
     
-    arrput(config.clientOptions,setAddress);
-    // arrput(config.clientOptions,setHeader);
+    arrput(config.client_options,setAddress);
+    // arrput(config.client_options,setHeader);
     // error not set.
     err_t error = NO_ERROR;
 
