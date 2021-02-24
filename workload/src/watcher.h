@@ -47,8 +47,8 @@ typedef struct workloadapi_Watcher {
     err_t close_error;
 
     // thread spun to wait on updates
-    thrd_t watcherThread;
-    int threadError;
+    thrd_t watcher_thread;
+    int thread_error;
 
     // function called with updated x509Context
     workloadapi_X509Callback x509callback;

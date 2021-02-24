@@ -31,7 +31,7 @@ workloadapi_Watcher *workloadapi_newWatcher(
     // newW->updated = false;
     // newW->close_error = NO_ERROR;
     // newW->update_error = NO_ERROR;
-    // newW->threadError = thrd_success;
+    // newW->thread_error = thrd_success;
 
     newW->closed = true;
 
@@ -97,11 +97,11 @@ err_t workloadapi_Watcher_Start(workloadapi_Watcher *watcher)
     }
     /// spin watcher thread out.
     int thread_error
-        = thrd_create(&(watcher->watcherThread),
+        = thrd_create(&(watcher->watcher_thread),
                       workloadapi_Watcher_X509backgroundFunc, watcher);
 
     if(thread_error != thrd_success) {
-        watcher->threadError = thread_error;
+        watcher->thread_error = thread_error;
         return ERROR2; // THREAD ERROR, see watcher->threadERROR for error
     }
     /// wait for update and check for errors.
@@ -138,7 +138,7 @@ err_t workloadapi_Watcher_Close(workloadapi_Watcher *watcher)
     }
     mtx_unlock(&(watcher->close_mutex));
     int join_return;
-    int thread_error = thrd_join(watcher->watcherThread, &join_return);
+    int thread_error = thrd_join(watcher->watcher_thread, &join_return);
     if(thread_error == thrd_success) {
         return (err_t) join_return;
     }
