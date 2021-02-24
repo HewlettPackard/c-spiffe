@@ -7,6 +7,7 @@
 #include "../../utils/src/util.h"
 #include "backoff.h"
 #include "watcher.h"
+#include "x509context.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -14,6 +15,8 @@ extern "C" {
 
 /// pointer to gRPC construct, can't use those types in the header
 typedef void *workloadapi_Stub; // api stub
+
+
 typedef struct workloadapi_Watcher workloadapi_Watcher;
 
 typedef struct workloadapi_Client {
