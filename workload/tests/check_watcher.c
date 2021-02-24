@@ -92,7 +92,7 @@ START_TEST(test_workloadapi_newWatcher_creates_client_if_null)
     ck_assert_ptr_ne(watcher,NULL);
     // a new client was created and watcher owns it.
     ck_assert_ptr_ne(watcher->client,NULL);
-    ck_assert_int_eq(watcher->ownsClient,true);
+    ck_assert_int_eq(watcher->owns_client,true);
 
     // There was no error.
     ck_assert_uint_eq(error,NO_ERROR);
@@ -128,7 +128,7 @@ START_TEST(test_workloadapi_newWatcher_uses_provided_client)
 
     // uses client provided, and doesn't own client.
     ck_assert_ptr_eq(watcher->client,(void*) 1);
-    ck_assert_int_eq(watcher->ownsClient,false);
+    ck_assert_int_eq(watcher->owns_client,false);
 
     // There was no error.
     ck_assert_uint_eq(error,NO_ERROR);
@@ -173,7 +173,7 @@ START_TEST(test_workloadapi_newWatcher_applies_Options)
     ck_assert_ptr_ne(watcher,NULL);
     // a new client was created and watcher owns it.
     ck_assert_ptr_eq(watcher->client,config.client);
-    ck_assert_int_eq(watcher->ownsClient,false);
+    ck_assert_int_eq(watcher->owns_client,false);
 
     ck_assert_ptr_ne(config.client->address,NULL);
     ck_assert_uint_eq(strlen(config.client->address),strlen("http://example.com"));

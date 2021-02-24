@@ -37,7 +37,7 @@ workloadapi_Watcher *workloadapi_newWatcher(
 
     if(config.client) {
         newW->client = config.client;
-        newW->ownsClient = false;
+        newW->owns_client = false;
         if(config.client_options) {
             for(int i = 0; i < arrlen(config.client_options); i++) {
                 workloadapi_Client_ApplyOption(config.client,
@@ -50,7 +50,7 @@ workloadapi_Watcher *workloadapi_newWatcher(
             free(newW);
             return NULL;
         }
-        newW->ownsClient = true;
+        newW->owns_client = true;
         if(config.client_options) {
             for(int i = 0; i < arrlen(config.client_options); i++) {
                 workloadapi_Client_ApplyOption(newW->client,
@@ -122,7 +122,7 @@ err_t workloadapi_Watcher_Close(workloadapi_Watcher *watcher)
     watcher->closed = true;
     err_t error = NO_ERROR;
     /// TODO: check and set watcher->closeError?
-    if(watcher->ownsClient) {
+    if(watcher->owns_client) {
 
         error = workloadapi_Client_Close(watcher->client);
         if(error != NO_ERROR) {
@@ -152,7 +152,7 @@ err_t workloadapi_Watcher_Free(/*context,*/ workloadapi_Watcher *watcher)
     mtx_destroy(&(watcher->closeMutex));
     cnd_destroy(&(watcher->updateCond));
     mtx_destroy(&(watcher->updateMutex));
-    if(watcher->ownsClient) {
+    if(watcher->owns_client) {
         /// TODO: call freeClient();
     }
     free(watcher);
