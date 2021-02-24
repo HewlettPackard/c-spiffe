@@ -20,7 +20,7 @@ int workloadapi_Watcher_X509backgroundFunc(void *_watcher)
 workloadapi_Watcher *workloadapi_newWatcher(
     workloadapi_WatcherConfig config,
     workloadapi_X509Callback
-        x509Callback /*, jwtBundleSetFunc_t* jwtBundleSetUpdateFunc*/,
+        x509callback /*, jwtBundleSetFunc_t* jwtBundleSetUpdateFunc*/,
     err_t *error)
 {
 
@@ -60,7 +60,7 @@ workloadapi_Watcher *workloadapi_newWatcher(
     }
 
     /// TODO: check if callback is valid?
-    newW->x509Callback = x509Callback;
+    newW->x509callback = x509callback;
 
     int thread_error = mtx_init(&(newW->closeMutex), mtx_plain);
     if(thread_error != thrd_success) {
@@ -163,8 +163,8 @@ err_t workloadapi_Watcher_Free(/*context,*/ workloadapi_Watcher *watcher)
 void workloadapi_Watcher_OnX509ContextUpdate(workloadapi_Watcher *watcher,
                                              workloadapi_X509Context *context)
 {
-    void *args = watcher->x509Callback.args;
-    watcher->x509Callback.func(context, args);
+    void *args = watcher->x509callback.args;
+    watcher->x509callback.func(context, args);
     workloadapi_Watcher_TriggerUpdated(watcher);
 }
 

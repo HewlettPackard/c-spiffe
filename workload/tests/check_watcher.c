@@ -33,7 +33,7 @@ START_TEST(test_workloadapi_Watcher_callback_is_called_on_update_once)
 
     //add callback to watcher.
     workloadapi_Watcher* watcher = calloc(1,sizeof *watcher);
-    watcher->x509Callback = callback;
+    watcher->x509callback = callback;
 
     //call update -> toModify = 10
     workloadapi_Watcher_OnX509ContextUpdate(watcher,NULL);
@@ -45,7 +45,7 @@ START_TEST(test_workloadapi_Watcher_callback_is_called_on_update_once)
     arrpush(args,(void*) 2);
     callback.func = inc_int_callback;
     callback.args = (void*) args;
-    watcher->x509Callback = callback;
+    watcher->x509callback = callback;
 
     //call update -> toModify += 2
     workloadapi_Watcher_OnX509ContextUpdate(watcher,NULL);
@@ -56,7 +56,7 @@ START_TEST(test_workloadapi_Watcher_callback_is_called_on_update_once)
     arrpush(args,(void*) 5);
     callback.func = inc_int_callback;
     callback.args = (void*) args;
-    watcher->x509Callback = callback;
+    watcher->x509callback = callback;
     
     //call update -> toModify += 5
     workloadapi_Watcher_OnX509ContextUpdate(watcher,NULL);
