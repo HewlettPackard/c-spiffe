@@ -10,7 +10,6 @@ if PARENT_PATH not in sys.path:
     sys.path.insert(0, PARENT_PATH)
 
 from hamcrest import assert_that, is_, is_not
-from OpenSSL import crypto
 
 
 @when(u'I fetch SVID')
