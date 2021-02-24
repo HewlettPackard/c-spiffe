@@ -30,7 +30,7 @@ workloadapi_Watcher *workloadapi_newWatcher(
     // set by calloc:
     // newW->updated = false;
     // newW->closeError = NO_ERROR;
-    // newW->updateError = NO_ERROR;
+    // newW->update_error = NO_ERROR;
     // newW->threadError = thrd_success;
 
     newW->closed = true;
@@ -109,7 +109,7 @@ err_t workloadapi_Watcher_Start(workloadapi_Watcher *watcher)
     if(error != NO_ERROR) {
         /// TODO: add error handling and destroy thread. error is already set
         /// so we just need to get our bearings and deallocate stuff;
-        watcher->updateError = error;
+        watcher->update_error = error;
         return ERROR3;
     }
     return error;

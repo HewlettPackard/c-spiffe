@@ -39,7 +39,7 @@ typedef struct workloadapi_Watcher {
     cnd_t update_cond;
     bool updated;
 
-    err_t updateError;
+    err_t update_error;
 
     // Close sync
     mtx_t closeMutex;
