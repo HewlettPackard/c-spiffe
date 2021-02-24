@@ -1,26 +1,65 @@
-#ifndef __INCLUDE_BUNDLE_X509BUNDLE_SOURCE_H__
-#define __INCLUDE_BUNDLE_X509BUNDLE_SOURCE_H__
+#ifndef INCLUDE_BUNDLE_X509BUNDLE_SOURCE_H
+#define INCLUDE_BUNDLE_X509BUNDLE_SOURCE_H
 
 #include "bundle.h"
 #include "set.h"
 
-typedef struct x509bundle_Source
+#ifdef __cplusplus
+extern "C"
 {
-    enum x509bundle_Source_Cardinality
-        {X509BUNDLE_BUNDLE, X509BUNDLE_SET} type;
-    union
-    {
+#endif
+
+/** Source represents a source of X.509 bundles keyed by trust domain. */
+typedef struct {
+    enum x509bundle_Source_Cardinality {
+        X509BUNDLE_BUNDLE,
+        X509BUNDLE_SET
+    } type;
+    union {
         x509bundle_Bundle *bundle;
         x509bundle_Set *set;
     } source;
 } x509bundle_Source;
 
-x509bundle_Bundle* x509bundle_Source_GetX509BundleForTrustDomain(
-                                    x509bundle_Source *s,
-                                    const spiffeid_TrustDomain td,
-                                    err_t *err);
-x509bundle_Source* x509bundle_SourceFromBundle(x509bundle_Bundle *b);
-x509bundle_Source* x509bundle_SourceFromSet(x509bundle_Set *s);
-void x509bundle_Source_Free(x509bundle_Source *s, bool alloc);
+/**
+ * Gets bundle for a given Trust Domain object.
+ *
+ * \param source [in] Source of X.509 bundles object pointer.
+ * \param td [in] Trust Domain object.
+ * \param err [out] Variable to get information in the event of error.
+ * \returns The bundle for the given Trust Domain if it exists,
+ * <tt>NULL</tt> otherwise.
+ */
+x509bundle_Bundle *x509bundle_Source_GetX509BundleForTrustDomain(
+    x509bundle_Source *source, const spiffeid_TrustDomain td, err_t *err);
+
+/**
+ * Creates a source of X.509 bundles from a X.509 bundle. Takes ownership
+ * of the object, so it will be freed when the source is freed.
+ *
+ * \param bundle [in] X.509 Bundle object pointer.
+ * \returns A source of X.509 bundles object pointer.
+ */
+x509bundle_Source *x509bundle_SourceFromBundle(x509bundle_Bundle *b);
+
+/**
+ * Creates a source of X.509 bundles from a set of X.509 bundles. Takes
+ * ownership of the object, so it will be freed when the source is freed.
+ *
+ * \param set [in] Set of X.509 bundles object pointer.
+ * \returns A source of X.509 bundles object pointer.
+ */
+x509bundle_Source *x509bundle_SourceFromSet(x509bundle_Set *set);
+
+/**
+ * Frees a source of X.509 bundles object.
+ *
+ * \param source [in] source of X.509 bundles object pointer.
+ */
+void x509bundle_Source_Free(x509bundle_Source *source);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
