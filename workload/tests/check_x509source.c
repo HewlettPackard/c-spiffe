@@ -133,7 +133,27 @@ START_TEST(test_workloadapi_X509Source_GetX509SVID_custom_picker);
 }
 END_TEST
 
+START_TEST(test_workloadapi_X509Source_applyX509Context);
+{
+    err_t err;
+    workloadapi_X509Source *tested = workloadapi_NewX509Source(NULL,&err);
+    
+    workloadapi_X509Context ctx;
+    ctx.bundles = (x509bundle_Set*) 1;
+    ctx.svids =(x509svid_SVID**) 2;
 
+    workloadapi_X509Source_applyX509Context(tested,&ctx);
+
+    ck_assert_ptr_eq(tested->bundles,(x509bundle_Set*)1);
+
+    ck_assert_ptr_eq(tested->svids,(x509svid_SVID**)2);
+
+    tested->bundles = NULL;
+    tested->svids = NULL;
+    workloadapi_X509Source_Free(tested);
+
+}
+END_TEST
 
 Suite *watcher_suite(void)
 {
@@ -144,6 +164,7 @@ Suite *watcher_suite(void)
     tcase_add_test(tc_core, test_workloadapi_NewX509Source_uses_config);
     tcase_add_test(tc_core, test_workloadapi_X509Source_GetX509SVID_default_picker);
     tcase_add_test(tc_core, test_workloadapi_X509Source_GetX509SVID_custom_picker);
+    tcase_add_test(tc_core, test_workloadapi_X509Source_applyX509Context);
 
     suite_add_tcase(s, tc_core);
 
