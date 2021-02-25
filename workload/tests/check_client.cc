@@ -599,13 +599,13 @@ Suite *client_suite(void)
     Suite *s = suite_create("client");
     TCase *tc_core = tcase_create("core");
 
-    // tcase_add_test(tc_core, test_workloadapi_parseX509Bundles);
-    // tcase_add_test(tc_core, test_workloadapi_parseX509Context);
-    // tcase_add_test(tc_core, test_workloadapi_NewClient);
-    // tcase_add_test(tc_core, test_workloadapi_Client_Connect_uses_stub);
-    // tcase_add_test(tc_core, test_workloadapi_Client_Close);
-    // tcase_add_test(tc_core, test_workloadapi_Client_FetchX509Context);
-    // tcase_add_test(tc_core, test_workloadapi_Client_WatchX509Context);
+    tcase_add_test(tc_core, test_workloadapi_parseX509Bundles);
+    tcase_add_test(tc_core, test_workloadapi_parseX509Context);
+    tcase_add_test(tc_core, test_workloadapi_NewClient);
+    tcase_add_test(tc_core, test_workloadapi_Client_Connect_uses_stub);
+    tcase_add_test(tc_core, test_workloadapi_Client_Close);
+    tcase_add_test(tc_core, test_workloadapi_Client_FetchX509Context);
+    tcase_add_test(tc_core, test_workloadapi_Client_WatchX509Context);
     tcase_add_test(tc_core, test_workloadapi_Client_FetchJWTSVID);
 
     suite_add_tcase(s, tc_core);
