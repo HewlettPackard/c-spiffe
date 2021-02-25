@@ -27,13 +27,9 @@ def step_impl(context):
     #List all process
     processes = os.popen('(ps aux | grep spire-server) > process.txt')
     processes_ids = os.popen('awk \'{ print $2 }\' process.txt ').read().split("\n")
-    for id in processes_ids:
-        try:
-            subprocess.run(["kill", id])
-            time.sleep(5)
-        except:
-            pass
+    subprocess.run(["kill", processes_ids[0]])
     os.popen('rm process.txt')
+    time.sleep(8)
     
 
 @when('The server is turned on')
@@ -41,4 +37,4 @@ def step_impl(context):
     path = ["spire-server"]
     command = ["run", "-config", "/opt/spire/conf/server/server.conf"]
     process = subprocess.Popen(path + command)
-    time.sleep(5)
+    time.sleep(8)
