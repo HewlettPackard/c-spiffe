@@ -629,10 +629,10 @@ jwtsvid_SVID *workloadapi_Client_FetchJWTSVID(workloadapi_Client *client,
     arrfree(id);
 
     // set audiences
-    if(params->audience)
-    {
+    if(params->audience) {
         req.add_audience(params->audience);
-        for(size_t i = 0, size = arrlenu(params->extra_audiences); i < size; ++i) {
+        for(size_t i = 0, size = arrlenu(params->extra_audiences); i < size;
+            ++i) {
             req.add_audience(params->extra_audiences[i]);
         }
     }
