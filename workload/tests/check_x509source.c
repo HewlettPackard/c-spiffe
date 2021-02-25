@@ -3,6 +3,54 @@
 #include "../../svid/x509svid/src/svid.h"
 #include <check.h>
 
+START_TEST(test_workloadapi_NewX509Source_creates_default_config);
+{
+    err_t err;
+    workloadapi_X509Source *tested = workloadapi_NewX509Source(NULL,&err);
+    
+    ck_assert_int_eq(err,NO_ERROR);
+    ck_assert(tested->closed);
+
+    ck_assert_ptr_ne(tested->config,NULL);
+    ck_assert_ptr_ne(tested->watcher,NULL);
+    ck_assert_ptr_ne(tested->watcher->client,NULL);
+    ck_assert_ptr_eq(tested->config->picker,x509svid_SVID_GetDefaultX509SVID);
+
+
+    ck_assert_ptr_eq(tested->svids,NULL);
+    ck_assert_ptr_eq(tested->bundles,NULL);
+
+    ck_assert_ptr_eq(tested->watcher->x509callback.args,tested);
+
+    workloadapi_X509Source_Free(tested);
+}
+END_TEST
+
+START_TEST(test_workloadapi_NewX509Source_uses_config);
+{
+    err_t err = NO_ERROR;
+
+    workloadapi_X509SourceConfig config;
+    config.picker = (x509svid_SVID *(*)(x509svid_SVID **)) 2;
+    config.watcher_config.client_options = NULL;
+    config.watcher_config.client = (workloadapi_Client* ) 1;
+
+    workloadapi_X509Source *tested = workloadapi_NewX509Source(&config,&err);
+
+    ck_assert_int_eq(err,NO_ERROR);
+    ck_assert_ptr_eq(tested->config,&config);
+    ck_assert_ptr_eq(tested->config->picker,(x509svid_SVID *(*)(x509svid_SVID **))2);    
+    ck_assert_ptr_ne(tested->watcher,NULL);
+    ck_assert_ptr_eq(tested->watcher->client,(workloadapi_Client*)1);
+    ck_assert(tested->closed);
+    
+    
+    ck_assert_ptr_eq(tested->svids,NULL);
+    ck_assert_ptr_eq(tested->bundles,NULL);
+    workloadapi_X509Source_Free(tested);
+
+}
+END_TEST
 
 START_TEST(test_workloadapi_X509Source_GetX509SVID_default_picker);
 {
@@ -92,6 +140,8 @@ Suite *watcher_suite(void)
     Suite *s = suite_create("x509source");
     TCase *tc_core = tcase_create("core");
     
+    tcase_add_test(tc_core, test_workloadapi_NewX509Source_creates_default_config);
+    tcase_add_test(tc_core, test_workloadapi_NewX509Source_uses_config);
     tcase_add_test(tc_core, test_workloadapi_X509Source_GetX509SVID_default_picker);
     tcase_add_test(tc_core, test_workloadapi_X509Source_GetX509SVID_custom_picker);
 
