@@ -29,13 +29,15 @@ workloadapi_NewX509Source(workloadapi_X509SourceConfig *config, err_t *err)
     if(!source->config->picker) {
         source->config->picker = x509svid_SVID_GetDefaultX509SVID;
     }
-    if(!source->config->watcher_config.client_options){
-        arrpush(source->config->watcher_config.client_options,workloadapi_Client_defaultOptions);
+    if(!source->config->watcher_config.client_options) {
+        arrpush(source->config->watcher_config.client_options,
+                workloadapi_Client_defaultOptions);
     }
     workloadapi_X509Callback cb
         = { .args = source,
             .func = workloadapi_x509Source_onX509ContextCallback };
-    source->watcher = workloadapi_newWatcher(source->config->watcher_config, cb, err);
+    source->watcher
+        = workloadapi_newWatcher(source->config->watcher_config, cb, err);
     if((*err)) {
         workloadapi_X509Source_Free(source);
         return NULL;
@@ -45,8 +47,9 @@ workloadapi_NewX509Source(workloadapi_X509SourceConfig *config, err_t *err)
 }
 
 // blocks
-err_t workloadapi_X509Source_Start(workloadapi_X509Source *source){
-    if(!source){
+err_t workloadapi_X509Source_Start(workloadapi_X509Source *source)
+{
+    if(!source) {
         return ERROR1;
     }
     mtx_lock(&(source->closed_mutex));
@@ -152,7 +155,7 @@ void workloadapi_X509Source_Free(workloadapi_X509Source *source)
         arrfree(source->svids);
         if(source->watcher)
             workloadapi_Watcher_Free(source->watcher);
-            
+
         mtx_unlock(&(source->mtx));
         free(source);
     }
