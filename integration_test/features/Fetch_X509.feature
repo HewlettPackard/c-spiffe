@@ -1,32 +1,32 @@
-@svid
+@fetch @X509
 Feature: Fetch X509
 
 
     @Sprint6 @X509
-    Scenario: TC_001 - Check that it is possible to fetch the SVID
+    Scenario: FX_001 - Check that it is possible to fetch the X509 SVID
         When I fetch SVID
         Then I check that the SVID is returned correctly
 
 
     @Sprint6 @X509
-    Scenario: TC_002 - Check that it is possible to fetch Bundle
-        When I fetch bundle
+    Scenario: FX_002 - Check that it is possible to fetch the X509 Bundle
+        When I fetch Bundle
         Then I check that the Bundle is returned correctly
 
 
     @Sprint6 @X509
-    Scenario: TC_003 - Check that it is not possible to fetch SVID with the sever down
-        When I down the server
+    Scenario: FX_003 - Check that it is not possible to fetch X509 SVID with the agent down
+        When The agent is turned off
         And  I fetch SVID
         Then I check that the SVID is not returned
         # Tear Down
-        When I up the server
+        When The agent is turned on
 
 
     @Sprint6 @X509
-    Scenario: TC_004 - Check that it is not possible to fetch Bundle with the sever down
-        When I down the server
-        And  I fetch bundle
+    Scenario: FX_004 - Check that it is not possible to fetch the X509 Bundle with the agent down
+        When The agent is turned off
+        And  I fetch Bundle
         Then I check that the Bundle is not returned
         # Tear Down
-        When I up the server
+        When The agent is turned on
