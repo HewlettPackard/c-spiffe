@@ -14,6 +14,8 @@ START_TEST(test_workloadapi_NewX509Source_creates_default_config);
     ck_assert_ptr_ne(tested->config, NULL);
     ck_assert_ptr_ne(tested->watcher, NULL);
     ck_assert_ptr_ne(tested->watcher->client, NULL);
+    ck_assert_ptr_ne(tested->config->watcher_config.client_options, NULL);
+    ck_assert_ptr_eq(tested->config->watcher_config.client_options[0], workloadapi_Client_defaultOptions);
     ck_assert_ptr_eq(tested->config->picker, x509svid_SVID_GetDefaultX509SVID);
 
     ck_assert_ptr_eq(tested->svids, NULL);
