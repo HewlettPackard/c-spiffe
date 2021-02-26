@@ -349,3 +349,11 @@ void x509svid_SVID_Free(x509svid_SVID *svid)
         free(svid);
     }
 }
+
+x509svid_SVID *x509svid_SVID_GetDefaultX509SVID(x509svid_SVID **svids)
+{
+    if(!svids) {
+        return NULL;
+    }
+    return svids[0];
+}
