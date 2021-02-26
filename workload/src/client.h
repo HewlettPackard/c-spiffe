@@ -83,7 +83,9 @@ x509svid_SVID *workloadapi_Client_FetchX509SVID(workloadapi_Client *client,
                                                 err_t *error);
 x509svid_SVID **workloadapi_Client_FetchX509SVIDs(workloadapi_Client *client,
                                                   err_t *error);
-
+jwtsvid_SVID *workloadapi_Client_FetchJWTSVID(workloadapi_Client *client,
+                                              jwtsvid_Params *params,
+                                              err_t *err);
 /// Implemented in client.cc, not part of public API (Needs grpc Response
 /// class, from C++)
 // x509bundle_Set* workloadapi_parseX509Bundles(
