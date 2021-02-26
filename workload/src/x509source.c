@@ -46,7 +46,7 @@ workloadapi_NewX509Source(workloadapi_X509SourceConfig *config, err_t *err)
     return source;
 }
 
-// blocks
+// blocks until first SVID update is received
 err_t workloadapi_X509Source_Start(workloadapi_X509Source *source)
 {
     if(!source) {
@@ -58,15 +58,6 @@ err_t workloadapi_X509Source_Start(workloadapi_X509Source *source)
     err_t err = workloadapi_Watcher_Start(
         source->watcher); // blocks until first update
     return err;
-}
-
-/// TODO: migrate to x509svid/
-x509svid_SVID *x509svid_SVID_GetDefaultX509SVID(x509svid_SVID **svids)
-{
-    if(!svids) {
-        return NULL;
-    }
-    return svids[0];
 }
 
 err_t workloadapi_X509Source_Close(workloadapi_X509Source *source)

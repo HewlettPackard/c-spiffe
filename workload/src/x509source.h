@@ -26,9 +26,6 @@ typedef struct {
     x509bundle_Set *bundles;
 } workloadapi_X509Source;
 
-/// TODO: migrate to x509svid/
-x509svid_SVID *x509svid_SVID_GetDefaultX509SVID(x509svid_SVID **svids);
-
 workloadapi_X509Source *
 workloadapi_NewX509Source(workloadapi_X509SourceConfig *config, err_t *err);
 void workloadapi_X509Source_Free(workloadapi_X509Source *source);
