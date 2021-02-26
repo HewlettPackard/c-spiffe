@@ -15,7 +15,8 @@ START_TEST(test_workloadapi_NewX509Source_creates_default_config);
     ck_assert_ptr_ne(tested->watcher, NULL);
     ck_assert_ptr_ne(tested->watcher->client, NULL);
     ck_assert_ptr_ne(tested->config->watcher_config.client_options, NULL);
-    ck_assert_ptr_eq(tested->config->watcher_config.client_options[0], workloadapi_Client_defaultOptions);
+    ck_assert_ptr_eq(tested->config->watcher_config.client_options[0],
+                     workloadapi_Client_defaultOptions);
     ck_assert_ptr_eq(tested->config->picker, x509svid_SVID_GetDefaultX509SVID);
 
     ck_assert_ptr_eq(tested->svids, NULL);
@@ -29,8 +30,9 @@ END_TEST
 
 x509svid_SVID *custom_picker(x509svid_SVID **svids) { return svids[1]; }
 
-void custom_option(workloadapi_Client* client, void* not_used){
-    workloadapi_Client_SetAddress(client,"unix:///var/example_agent");
+void custom_option(workloadapi_Client *client, void *not_used)
+{
+    workloadapi_Client_SetAddress(client, "unix:///var/example_agent");
 }
 
 START_TEST(test_workloadapi_NewX509Source_uses_config);
@@ -47,9 +49,10 @@ START_TEST(test_workloadapi_NewX509Source_uses_config);
 
     ck_assert_int_eq(err, NO_ERROR);
     ck_assert_ptr_eq(tested->config, &config);
-    ck_assert_ptr_eq(tested->config->picker,custom_picker);
+    ck_assert_ptr_eq(tested->config->picker, custom_picker);
     ck_assert_ptr_ne(tested->watcher, NULL);
-    ck_assert_str_eq(tested->watcher->client->address,"unix:///var/example_agent");
+    ck_assert_str_eq(tested->watcher->client->address,
+                     "unix:///var/example_agent");
     ck_assert(tested->closed);
 
     ck_assert_ptr_eq(tested->svids, NULL);
@@ -182,18 +185,16 @@ START_TEST(test_workloadapi_X509Source_Start_waits_and_sets_closed_false);
     struct timespec now;
     timespec_get(&now, TIME_UTC);
 
-    
     ck_assert_int_ge(now.tv_sec, then.tv_sec + 2);
     ck_assert_int_lt(now.tv_sec, then.tv_sec + 5);
 
-    ck_assert_int_eq(workloadapi_X509Source_checkClosed(tested),NO_ERROR);
+    ck_assert_int_eq(workloadapi_X509Source_checkClosed(tested), NO_ERROR);
 
     tested->bundles = NULL;
     tested->svids = NULL;
     workloadapi_X509Source_Free(tested);
 }
 END_TEST
-
 
 START_TEST(test_workloadapi_X509Source_Closes_watcher);
 {
@@ -209,16 +210,15 @@ START_TEST(test_workloadapi_X509Source_Closes_watcher);
     struct timespec now;
     timespec_get(&now, TIME_UTC);
 
-    
     ck_assert_int_ge(now.tv_sec, then.tv_sec + 2);
     ck_assert_int_lt(now.tv_sec, then.tv_sec + 5);
 
-    ck_assert_int_eq(workloadapi_X509Source_checkClosed(tested),NO_ERROR);
+    ck_assert_int_eq(workloadapi_X509Source_checkClosed(tested), NO_ERROR);
     ck_assert(!tested->watcher->closed);
 
     workloadapi_X509Source_Close(tested);
 
-    ck_assert_int_eq(workloadapi_X509Source_checkClosed(tested),ERROR1);
+    ck_assert_int_eq(workloadapi_X509Source_checkClosed(tested), ERROR1);
     ck_assert(tested->watcher->closed);
 
     tested->bundles = NULL;
@@ -240,7 +240,9 @@ Suite *watcher_suite(void)
     tcase_add_test(tc_core,
                    test_workloadapi_X509Source_GetX509SVID_custom_picker);
     tcase_add_test(tc_core, test_workloadapi_X509Source_applyX509Context);
-    tcase_add_test(tc_core, test_workloadapi_X509Source_Start_waits_and_sets_closed_false);
+    tcase_add_test(
+        tc_core,
+        test_workloadapi_X509Source_Start_waits_and_sets_closed_false);
     tcase_add_test(tc_core, test_workloadapi_X509Source_Closes_watcher);
 
     suite_add_tcase(s, tc_core);
