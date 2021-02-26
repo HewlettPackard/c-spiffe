@@ -1,26 +1,26 @@
+#include "../../../internal/cryptoutil/src/keys.h"
+#include "../../../internal/x509util/src/util.h"
+#include "../../../spiffeid/src/trustdomain.h"
+#include "../src/bundle.h"
+#include <check.h>
 #include <openssl/pem.h>
 #include <openssl/x509.h>
-#include <check.h>
-#include "../src/bundle.h"
-#include "../../../internal/x509util/src/util.h"
-#include "../../../internal/cryptoutil/src/keys.h"
-#include "../../../spiffeid/src/trustdomain.h"
 
 START_TEST(test_x509bundle_New)
 {
-    spiffeid_TrustDomain td = {"example.com"};
+    spiffeid_TrustDomain td = { "example.com" };
     x509bundle_Bundle *bundle_ptr = x509bundle_New(td);
-    
+
     ck_assert(bundle_ptr->auths == NULL);
     ck_assert(!strcmp(bundle_ptr->td.name, "example.com"));
 
-    x509bundle_Bundle_Free(bundle_ptr, true);
+    x509bundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
 
 START_TEST(test_x509bundle_Parse)
 {
-    spiffeid_TrustDomain td = {"example.com"};
+    spiffeid_TrustDomain td = { "example.com" };
     err_t err;
 
     FILE *f = fopen("./resources/certs.pem", "r");
@@ -32,34 +32,33 @@ START_TEST(test_x509bundle_Parse)
 
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_uint_eq(arrlenu(bundle_ptr->auths), 4);
-    for(size_t i = 0, size = arrlenu(bundle_ptr->auths); i < size; ++i)
-    {
+    for(size_t i = 0, size = arrlenu(bundle_ptr->auths); i < size; ++i) {
         const X509 *cert = bundle_ptr->auths[i];
         ck_assert(cert != NULL);
     }
     ck_assert(!strcmp(bundle_ptr->td.name, "example.com"));
 
-    x509bundle_Bundle_Free(bundle_ptr, true);
+    x509bundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
 
 START_TEST(test_x509bundle_Load)
 {
-    spiffeid_TrustDomain td = {"example.com"};
+    spiffeid_TrustDomain td = { "example.com" };
     err_t err;
 
-    x509bundle_Bundle *bundle_ptr = x509bundle_Load(td, "./resources/certs.pem", &err);
+    x509bundle_Bundle *bundle_ptr
+        = x509bundle_Load(td, "./resources/certs.pem", &err);
 
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_uint_eq(arrlenu(bundle_ptr->auths), 4);
-    for(size_t i = 0, size = arrlenu(bundle_ptr->auths); i < size; ++i)
-    {
+    for(size_t i = 0, size = arrlenu(bundle_ptr->auths); i < size; ++i) {
         const X509 *cert = bundle_ptr->auths[i];
         ck_assert(cert != NULL);
     }
     ck_assert(!strcmp(bundle_ptr->td.name, "example.com"));
 
-    x509bundle_Bundle_Free(bundle_ptr, true);
+    x509bundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
 
@@ -137,51 +136,49 @@ START_TEST(test_x509bundle_FromX509Authorities)
         "U2aPnxQpNXW7pWdBVSIBhSnptw==\n"
         "-----END CERTIFICATE-----"
     };
-    
+
     BIO *bio_mems[ITERS];
-    for(int i = 0; i < ITERS; ++i)
-    {
-        bio_mems[i] = BIO_new_mem_buf((void*) certs[i], -1);
+    for(int i = 0; i < ITERS; ++i) {
+        bio_mems[i] = BIO_new_mem_buf((void *) certs[i], -1);
     }
 
     X509 **x509_auths = NULL;
-    for(int i = 0; i < ITERS; ++i)
-    {
+    for(int i = 0; i < ITERS; ++i) {
         arrput(x509_auths, PEM_read_bio_X509(bio_mems[i], NULL, NULL, NULL));
     }
 
-    spiffeid_TrustDomain td = {"example.com"};
-    x509bundle_Bundle *bundle_ptr = x509bundle_FromX509Authorities(td, x509_auths);
+    spiffeid_TrustDomain td = { "example.com" };
+    x509bundle_Bundle *bundle_ptr
+        = x509bundle_FromX509Authorities(td, x509_auths);
 
     ck_assert(x509util_CertsEqual(x509_auths, bundle_ptr->auths));
     ck_assert(!strcmp(bundle_ptr->td.name, "example.com"));
 
-    for(int i = 0; i < ITERS; ++i)
-    {
+    for(int i = 0; i < ITERS; ++i) {
         BIO_free(bio_mems[i]);
         X509_free(x509_auths[i]);
     }
     arrfree(x509_auths);
-    x509bundle_Bundle_Free(bundle_ptr, true);
+    x509bundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
 
 START_TEST(test_x509bundle_Bundle_X509Authorities)
 {
-    spiffeid_TrustDomain td = {"example.com"};
+    spiffeid_TrustDomain td = { "example.com" };
     err_t err;
 
-    x509bundle_Bundle *bundle_ptr = x509bundle_Load(td, "./resources/certs.pem", &err);
+    x509bundle_Bundle *bundle_ptr
+        = x509bundle_Load(td, "./resources/certs.pem", &err);
     X509 **x509_auths = x509bundle_Bundle_X509Authorities(bundle_ptr);
 
     ck_assert(x509util_CertsEqual(x509_auths, bundle_ptr->auths));
 
-    for(size_t i = 0, size = arrlenu(x509_auths); i < size; ++i)
-    {
+    for(size_t i = 0, size = arrlenu(x509_auths); i < size; ++i) {
         X509_free(x509_auths[i]);
     }
     arrfree(x509_auths);
-    x509bundle_Bundle_Free(bundle_ptr, true);
+    x509bundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
 
@@ -259,34 +256,32 @@ START_TEST(test_x509bundle_Bundle_HasX509Authority)
         "U2aPnxQpNXW7pWdBVSIBhSnptw==\n"
         "-----END CERTIFICATE-----"
     };
-    
+
     BIO *bio_mems[ITERS];
-    for(int i = 0; i < ITERS; ++i)
-    {
-        bio_mems[i] = BIO_new_mem_buf((void*) certs[i], -1);
+    for(int i = 0; i < ITERS; ++i) {
+        bio_mems[i] = BIO_new_mem_buf((void *) certs[i], -1);
     }
 
     X509 **x509_auths = NULL;
-    for(int i = 0; i < ITERS; ++i)
-    {
+    for(int i = 0; i < ITERS; ++i) {
         arrput(x509_auths, PEM_read_bio_X509(bio_mems[i], NULL, NULL, NULL));
     }
 
-    spiffeid_TrustDomain td = {"example.com"};
-    x509bundle_Bundle *bundle_ptr = x509bundle_FromX509Authorities(td, x509_auths);
+    spiffeid_TrustDomain td = { "example.com" };
+    x509bundle_Bundle *bundle_ptr
+        = x509bundle_FromX509Authorities(td, x509_auths);
 
-    for(int i = 0; i < ITERS; ++i)
-    {
-        ck_assert(x509bundle_Bundle_HasX509Authority(bundle_ptr, x509_auths[i]));
+    for(int i = 0; i < ITERS; ++i) {
+        ck_assert(
+            x509bundle_Bundle_HasX509Authority(bundle_ptr, x509_auths[i]));
     }
 
-    for(int i = 0; i < ITERS; ++i)
-    {
+    for(int i = 0; i < ITERS; ++i) {
         BIO_free(bio_mems[i]);
         X509_free(x509_auths[i]);
     }
     arrfree(x509_auths);
-    x509bundle_Bundle_Free(bundle_ptr, true);
+    x509bundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
 
@@ -364,41 +359,37 @@ START_TEST(test_x509bundle_Bundle_AddX509Authority)
         "U2aPnxQpNXW7pWdBVSIBhSnptw==\n"
         "-----END CERTIFICATE-----"
     };
-    
+
     BIO *bio_mems[ITERS];
-    for(int i = 0; i < ITERS; ++i)
-    {
-        bio_mems[i] = BIO_new_mem_buf((void*) certs[i], -1);
+    for(int i = 0; i < ITERS; ++i) {
+        bio_mems[i] = BIO_new_mem_buf((void *) certs[i], -1);
     }
 
-
     X509 **x509_auths = NULL;
-    for(int i = 0; i < ITERS; ++i)
-    {
+    for(int i = 0; i < ITERS; ++i) {
         arrput(x509_auths, PEM_read_bio_X509(bio_mems[i], NULL, NULL, NULL));
     }
 
-    spiffeid_TrustDomain td = {"example.com"};
+    spiffeid_TrustDomain td = { "example.com" };
     x509bundle_Bundle *bundle_ptr = x509bundle_New(td);
 
-    for(int i = 0; i < ITERS; ++i)
-    {
-        ck_assert(!x509bundle_Bundle_HasX509Authority(bundle_ptr, x509_auths[i]));
+    for(int i = 0; i < ITERS; ++i) {
+        ck_assert(
+            !x509bundle_Bundle_HasX509Authority(bundle_ptr, x509_auths[i]));
     }
 
-    for(int i = 0; i < ITERS; ++i)
-    {
+    for(int i = 0; i < ITERS; ++i) {
         x509bundle_Bundle_AddX509Authority(bundle_ptr, x509_auths[i]);
-        ck_assert(x509bundle_Bundle_HasX509Authority(bundle_ptr, x509_auths[i]));
+        ck_assert(
+            x509bundle_Bundle_HasX509Authority(bundle_ptr, x509_auths[i]));
     }
-    
-    for(int i = 0; i < ITERS; ++i)
-    {
+
+    for(int i = 0; i < ITERS; ++i) {
         BIO_free(bio_mems[i]);
         X509_free(x509_auths[i]);
     }
     arrfree(x509_auths);
-    x509bundle_Bundle_Free(bundle_ptr, true);
+    x509bundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
 
@@ -476,44 +467,41 @@ START_TEST(test_x509bundle_Bundle_RemoveX509Authority)
         "U2aPnxQpNXW7pWdBVSIBhSnptw==\n"
         "-----END CERTIFICATE-----"
     };
-    
+
     BIO *bio_mems[ITERS];
-    for(int i = 0; i < ITERS; ++i)
-    {
-        bio_mems[i] = BIO_new_mem_buf((void*) certs[i], -1);
+    for(int i = 0; i < ITERS; ++i) {
+        bio_mems[i] = BIO_new_mem_buf((void *) certs[i], -1);
     }
 
     X509 **x509_auths = NULL;
-    for(int i = 0; i < ITERS; ++i)
-    {
+    for(int i = 0; i < ITERS; ++i) {
         arrput(x509_auths, PEM_read_bio_X509(bio_mems[i], NULL, NULL, NULL));
     }
 
-    spiffeid_TrustDomain td = {"example.com"};
-    x509bundle_Bundle *bundle_ptr = x509bundle_FromX509Authorities(td, x509_auths);
+    spiffeid_TrustDomain td = { "example.com" };
+    x509bundle_Bundle *bundle_ptr
+        = x509bundle_FromX509Authorities(td, x509_auths);
 
-    for(int i = 0; i < ITERS; ++i)
-    {
-        ck_assert(x509bundle_Bundle_HasX509Authority(bundle_ptr, x509_auths[i]));
+    for(int i = 0; i < ITERS; ++i) {
+        ck_assert(
+            x509bundle_Bundle_HasX509Authority(bundle_ptr, x509_auths[i]));
     }
 
-    for(int i = 0; i < ITERS; ++i)
-    {
+    for(int i = 0; i < ITERS; ++i) {
         x509bundle_Bundle_RemoveX509Authority(bundle_ptr, x509_auths[i]);
     }
 
-    for(int i = 0; i < ITERS; ++i)
-    {
-        ck_assert(!x509bundle_Bundle_HasX509Authority(bundle_ptr, x509_auths[i]));
+    for(int i = 0; i < ITERS; ++i) {
+        ck_assert(
+            !x509bundle_Bundle_HasX509Authority(bundle_ptr, x509_auths[i]));
     }
 
-    for(int i = 0; i < ITERS; ++i)
-    {
+    for(int i = 0; i < ITERS; ++i) {
         BIO_free(bio_mems[i]);
         X509_free(x509_auths[i]);
     }
     arrfree(x509_auths);
-    x509bundle_Bundle_Free(bundle_ptr, true);
+    x509bundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
 
@@ -593,40 +581,36 @@ START_TEST(test_x509bundle_Bundle_SetX509Authorities)
     };
 
     BIO *bio_mems[ITERS];
-    for(int i = 0; i < ITERS; ++i)
-    {
-        bio_mems[i] = BIO_new_mem_buf((void*) certs[i], -1);
+    for(int i = 0; i < ITERS; ++i) {
+        bio_mems[i] = BIO_new_mem_buf((void *) certs[i], -1);
     }
 
-
     X509 **x509_auths = NULL;
-    for(int i = 0; i < ITERS; ++i)
-    {
+    for(int i = 0; i < ITERS; ++i) {
         arrput(x509_auths, PEM_read_bio_X509(bio_mems[i], NULL, NULL, NULL));
     }
 
-    spiffeid_TrustDomain td = {"example.com"};
+    spiffeid_TrustDomain td = { "example.com" };
     x509bundle_Bundle *bundle_ptr = x509bundle_New(td);
 
-    for(int i = 0; i < ITERS; ++i)
-    {
-        ck_assert(!x509bundle_Bundle_HasX509Authority(bundle_ptr, x509_auths[i]));
+    for(int i = 0; i < ITERS; ++i) {
+        ck_assert(
+            !x509bundle_Bundle_HasX509Authority(bundle_ptr, x509_auths[i]));
     }
 
     x509bundle_Bundle_SetX509Authorities(bundle_ptr, x509_auths);
 
-    for(int i = 0; i < ITERS; ++i)
-    {
-        ck_assert(x509bundle_Bundle_HasX509Authority(bundle_ptr, x509_auths[i]));
+    for(int i = 0; i < ITERS; ++i) {
+        ck_assert(
+            x509bundle_Bundle_HasX509Authority(bundle_ptr, x509_auths[i]));
     }
-    
-    for(int i = 0; i < ITERS; ++i)
-    {
+
+    for(int i = 0; i < ITERS; ++i) {
         BIO_free(bio_mems[i]);
         X509_free(x509_auths[i]);
     }
     arrfree(x509_auths);
-    x509bundle_Bundle_Free(bundle_ptr, true);    
+    x509bundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
 
@@ -705,19 +689,17 @@ START_TEST(test_x509bundle_Bundle_Empty)
         "-----END CERTIFICATE-----"
     };
     BIO *bio_mems[ITERS];
-    
-    for(int i = 0; i < ITERS; ++i)
-    {
-        bio_mems[i] = BIO_new_mem_buf((void*) certs[i], -1);
+
+    for(int i = 0; i < ITERS; ++i) {
+        bio_mems[i] = BIO_new_mem_buf((void *) certs[i], -1);
     }
 
     X509 **x509_auths = NULL;
-    for(int i = 0; i < ITERS; ++i)
-    {
+    for(int i = 0; i < ITERS; ++i) {
         arrput(x509_auths, PEM_read_bio_X509(bio_mems[i], NULL, NULL, NULL));
     }
 
-    spiffeid_TrustDomain td = {"example.com"};
+    spiffeid_TrustDomain td = { "example.com" };
     x509bundle_Bundle *bundle_ptr = x509bundle_New(td);
 
     ck_assert(x509bundle_Bundle_Empty(bundle_ptr));
@@ -736,13 +718,12 @@ START_TEST(test_x509bundle_Bundle_Empty)
     x509bundle_Bundle_RemoveX509Authority(bundle_ptr, x509_auths[3]);
     ck_assert(x509bundle_Bundle_Empty(bundle_ptr));
 
-    for(int i = 0; i < ITERS; ++i)
-    {
+    for(int i = 0; i < ITERS; ++i) {
         BIO_free(bio_mems[i]);
         X509_free(x509_auths[i]);
     }
     arrfree(x509_auths);
-    x509bundle_Bundle_Free(bundle_ptr, true);
+    x509bundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
 
@@ -821,21 +802,19 @@ START_TEST(test_x509bundle_Bundle_Equal)
         "-----END CERTIFICATE-----"
     };
     BIO *bio_mems[ITERS];
-    
-    for(int i = 0; i < ITERS; ++i)
-    {
-        bio_mems[i] = BIO_new_mem_buf((void*) certs[i], -1);
+
+    for(int i = 0; i < ITERS; ++i) {
+        bio_mems[i] = BIO_new_mem_buf((void *) certs[i], -1);
     }
 
     X509 **x509_auths = NULL;
-    for(int i = 0; i < ITERS; ++i)
-    {
+    for(int i = 0; i < ITERS; ++i) {
         arrput(x509_auths, PEM_read_bio_X509(bio_mems[i], NULL, NULL, NULL));
     }
 
-    spiffeid_TrustDomain td1 = {"example1.com"};
-    spiffeid_TrustDomain td2 = {"example2.com"};
-    spiffeid_TrustDomain td3 = {"example1.com"};
+    spiffeid_TrustDomain td1 = { "example1.com" };
+    spiffeid_TrustDomain td2 = { "example2.com" };
+    spiffeid_TrustDomain td3 = { "example1.com" };
 
     x509bundle_Bundle *bundle_ptr1 = x509bundle_New(td1);
     x509bundle_Bundle *bundle_ptr2 = x509bundle_New(td2);
@@ -870,60 +849,61 @@ START_TEST(test_x509bundle_Bundle_Equal)
     ck_assert(!x509bundle_Bundle_Equal(bundle_ptr2, bundle_ptr1));
     ck_assert(!x509bundle_Bundle_Equal(bundle_ptr2, bundle_ptr3));
 
-    for(int i = 0; i < ITERS; ++i)
-    {
+    for(int i = 0; i < ITERS; ++i) {
         BIO_free(bio_mems[i]);
         X509_free(x509_auths[i]);
     }
     arrfree(x509_auths);
-    x509bundle_Bundle_Free(bundle_ptr1, true);
-    x509bundle_Bundle_Free(bundle_ptr2, true);
-    x509bundle_Bundle_Free(bundle_ptr3, true);
+    x509bundle_Bundle_Free(bundle_ptr1);
+    x509bundle_Bundle_Free(bundle_ptr2);
+    x509bundle_Bundle_Free(bundle_ptr3);
 }
 END_TEST
 
 START_TEST(test_x509bundle_Bundle_Clone)
 {
-    spiffeid_TrustDomain td = {"example.com"};
+    spiffeid_TrustDomain td = { "example.com" };
     err_t err;
 
-    x509bundle_Bundle *bundle_ptr1 = x509bundle_Load(td, "./resources/certs.pem", &err);
+    x509bundle_Bundle *bundle_ptr1
+        = x509bundle_Load(td, "./resources/certs.pem", &err);
     x509bundle_Bundle *bundle_ptr2 = x509bundle_Bundle_Clone(bundle_ptr1);
 
     ck_assert(x509bundle_Bundle_Equal(bundle_ptr1, bundle_ptr2));
 
-    x509bundle_Bundle_Free(bundle_ptr1, true);
-    x509bundle_Bundle_Free(bundle_ptr2, true);
+    x509bundle_Bundle_Free(bundle_ptr1);
+    x509bundle_Bundle_Free(bundle_ptr2);
 }
 END_TEST
 
 START_TEST(test_x509bundle_Bundle_GetX509BundleForTrustDomain)
 {
-    spiffeid_TrustDomain td1 = {"example.com"};
-    spiffeid_TrustDomain td2 = {"example2.com"};
+    spiffeid_TrustDomain td1 = { "example.com" };
+    spiffeid_TrustDomain td2 = { "example2.com" };
     err_t err;
 
-    x509bundle_Bundle *bundle_ptr = x509bundle_Load(td1, "./resources/certs.pem", &err);
-    
+    x509bundle_Bundle *bundle_ptr
+        = x509bundle_Load(td1, "./resources/certs.pem", &err);
+
     x509bundle_Bundle *td_bundle;
 
-    td_bundle = 
-        x509bundle_Bundle_GetX509BundleForTrustDomain(bundle_ptr, td1, &err);
-    
+    td_bundle
+        = x509bundle_Bundle_GetX509BundleForTrustDomain(bundle_ptr, td1, &err);
+
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert(td_bundle == bundle_ptr);
 
-    td_bundle = 
-        x509bundle_Bundle_GetX509BundleForTrustDomain(bundle_ptr, td2, &err);
+    td_bundle
+        = x509bundle_Bundle_GetX509BundleForTrustDomain(bundle_ptr, td2, &err);
 
     ck_assert_uint_ne(err, NO_ERROR);
     ck_assert(td_bundle == NULL);
 
-    x509bundle_Bundle_Free(bundle_ptr, true);
+    x509bundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
 
-Suite* bundle_suite(void)
+Suite *bundle_suite(void)
 {
     Suite *s = suite_create("bundle");
     TCase *tc_core = tcase_create("core");
@@ -940,7 +920,8 @@ Suite* bundle_suite(void)
     tcase_add_test(tc_core, test_x509bundle_Bundle_Empty);
     tcase_add_test(tc_core, test_x509bundle_Bundle_Equal);
     tcase_add_test(tc_core, test_x509bundle_Bundle_Clone);
-    tcase_add_test(tc_core, test_x509bundle_Bundle_GetX509BundleForTrustDomain);
+    tcase_add_test(tc_core,
+                   test_x509bundle_Bundle_GetX509BundleForTrustDomain);
 
     suite_add_tcase(s, tc_core);
 
@@ -954,8 +935,8 @@ int main(void)
 
     srunner_run_all(sr, CK_NORMAL);
     const int number_failed = srunner_ntests_failed(sr);
-    
+
     srunner_free(sr);
-    
+
     return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
