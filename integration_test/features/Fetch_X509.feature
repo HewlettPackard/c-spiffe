@@ -30,3 +30,21 @@ Feature: Fetch X509
         Then I check that the Bundle is not returned
         # Tear Down
         When The agent is turned on
+
+
+    @Sprint8 @X509
+    Scenario: FX_005 - Check that it is not possible to fetch X509 SVID with the server down
+        When The server is turned off
+        And  I fetch SVID
+        Then I check that the SVID is not returned
+        # Tear Down
+        When The server is turned on
+
+
+    @Sprint8 @X509
+    Scenario: FX_006 - Check that it is not possible to fetch the X509 Bundle with the server down
+        When The server is turned off
+        And  I fetch Bundle
+        Then I check that the Bundle is not returned
+        # Tear Down
+        When The server is turned on
