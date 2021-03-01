@@ -35,5 +35,5 @@ internal/x509util/tests/check_util.o
 internal/x509util/tests/util.o
 # Integration test files
 integration_test/data
-integration_test/*/__pycache__
+integration_test/**/__pycache__
 
