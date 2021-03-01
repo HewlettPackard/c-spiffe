@@ -53,9 +53,8 @@ def step_impl(context):
 
 @when('The agent is turned on')
 def step_impl(context):
-    path = ["spire-agent"]
-    command = ["run", "-joinToken", "$TOKEN", "-config", "/opt/spire/conf/agent/agent.conf"]
-    process = subprocess.Popen(path + command)
+    os.system("./grpc_generate_token.sh")
+    os.system("./grpc_connect_agent.sh")
     time.sleep(5)
 
 

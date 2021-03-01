@@ -48,3 +48,11 @@ Feature: Fetch X509
         Then I check that the Bundle is not returned
         # Tear Down
         When The server is turned on
+
+
+    @wip
+    Scenario: TC_00 - Turn server and agent on
+        When The server is turned on
+        And  I create server entries
+        And  The agent is turned on
+        # When The server is turned off
