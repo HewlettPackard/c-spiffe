@@ -104,6 +104,11 @@ err_t workloadapi_Watcher_Start(workloadapi_Watcher *watcher)
         watcher->thread_error = thread_error;
         return ERROR2; // THREAD ERROR, see watcher->threadERROR for error
     }
+    
+    mtx_lock(&(watcher->close_mutex));
+    watcher->closed = false;
+    mtx_unlock(&(watcher->close_mutex));
+
     /// wait for update and check for errors.
     error = workloadapi_Watcher_WaitUntilUpdated(watcher);
     if(error != NO_ERROR) {
@@ -112,6 +117,8 @@ err_t workloadapi_Watcher_Start(workloadapi_Watcher *watcher)
         watcher->update_error = error;
         return ERROR3;
     }
+
+
     return error;
 }
 
