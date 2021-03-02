@@ -26,22 +26,25 @@ typedef struct {
     x509bundle_Set *bundles;
 } workloadapi_X509Source;
 
-/// TODO: migrate to x509svid/
-x509svid_SVID *x509svid_SVID_GetDefaultX509SVID(x509svid_SVID **svids);
-
 workloadapi_X509Source *
 workloadapi_NewX509Source(workloadapi_X509SourceConfig *config, err_t *err);
+void workloadapi_X509Source_Free(workloadapi_X509Source *source);
+
+err_t workloadapi_X509Source_Start(workloadapi_X509Source *source);
 err_t workloadapi_X509Source_Close(workloadapi_X509Source *source);
-x509svid_SVID *
-workloadapi_X509Source_GetX509SVID(workloadapi_X509Source *source, err_t *err);
-x509bundle_Bundle *workloadapi_X509Source_GetX509BundleForTrustDomain(
-    workloadapi_X509Source *source, spiffeid_TrustDomain *td, err_t *err);
+
+err_t workloadapi_X509Source_checkClosed(workloadapi_X509Source *source);
+
 err_t workloadapi_X509Source_WaitUntilUpdated(workloadapi_X509Source *source);
-// void workloadapi_X509Source_Updated();
 void workloadapi_X509Source_applyX509Context(workloadapi_X509Source *source,
                                              workloadapi_X509Context *ctx);
-err_t workloadapi_X509Source_checkClosed(workloadapi_X509Source *source);
-void workloadapi_X509Source_Free(workloadapi_X509Source *source);
+
+x509svid_SVID *
+workloadapi_X509Source_GetX509SVID(workloadapi_X509Source *source, err_t *err);
+
+x509bundle_Bundle *workloadapi_X509Source_GetX509BundleForTrustDomain(
+    workloadapi_X509Source *source, spiffeid_TrustDomain *td, err_t *err);
+
 
 #ifdef __cplusplus
 }

@@ -7,7 +7,7 @@ void workloadapi_x509Source_onX509ContextCallback(
     workloadapi_X509Source *source = (workloadapi_X509Source *) args;
     workloadapi_X509Source_applyX509Context(source, x509cntx);
 }
-// blocks
+
 workloadapi_X509Source *
 workloadapi_NewX509Source(workloadapi_X509SourceConfig *config, err_t *err)
 {
@@ -20,7 +20,7 @@ workloadapi_NewX509Source(workloadapi_X509SourceConfig *config, err_t *err)
 
     workloadapi_X509Source *source
         = (workloadapi_X509Source *) malloc(sizeof *source);
-    source->closed = false;
+    source->closed = true;
     mtx_init(&(source->mtx), mtx_plain);
     mtx_init(&(source->closed_mutex), mtx_plain);
     source->svids = NULL;
@@ -29,31 +29,35 @@ workloadapi_NewX509Source(workloadapi_X509SourceConfig *config, err_t *err)
     if(!source->config->picker) {
         source->config->picker = x509svid_SVID_GetDefaultX509SVID;
     }
-
+    if(!source->config->watcher_config.client_options) {
+        arrpush(source->config->watcher_config.client_options,
+                workloadapi_Client_defaultOptions);
+    }
     workloadapi_X509Callback cb
         = { .args = source,
             .func = workloadapi_x509Source_onX509ContextCallback };
-    source->watcher = workloadapi_newWatcher(config->watcher_config, cb, err);
+    source->watcher
+        = workloadapi_newWatcher(source->config->watcher_config, cb, err);
     if((*err)) {
         workloadapi_X509Source_Free(source);
         return NULL;
     }
-    *err = workloadapi_Watcher_Start(
-        source->watcher); // blocks until first update
-    if((*err)) {
-        workloadapi_X509Source_Free(source);
-        return NULL;
-    }
+
     return source;
 }
 
-/// TODO: migrate to x509svid/
-x509svid_SVID *x509svid_SVID_GetDefaultX509SVID(x509svid_SVID **svids)
+// blocks until first SVID update is received
+err_t workloadapi_X509Source_Start(workloadapi_X509Source *source)
 {
-    if(!svids) {
-        return NULL;
+    if(!source) {
+        return ERROR1;
     }
-    return svids[0];
+    mtx_lock(&(source->closed_mutex));
+    source->closed = false;
+    mtx_unlock(&(source->closed_mutex));
+    err_t err = workloadapi_Watcher_Start(
+        source->watcher); // blocks until first update
+    return err;
 }
 
 err_t workloadapi_X509Source_Close(workloadapi_X509Source *source)
@@ -142,7 +146,7 @@ void workloadapi_X509Source_Free(workloadapi_X509Source *source)
         arrfree(source->svids);
         if(source->watcher)
             workloadapi_Watcher_Free(source->watcher);
-        free(source->config);
+
         mtx_unlock(&(source->mtx));
         free(source);
     }

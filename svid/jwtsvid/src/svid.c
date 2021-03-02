@@ -28,7 +28,8 @@ static jwtsvid_JWT *token_to_jwt(char *token, err_t *err)
             size_t header_str_len;
             cjose_base64url_decode(header, strlen(header), &header_str,
                                    &header_str_len, NULL);
-            const char *payload = strtok(NULL, dot);
+            char *payload = strtok(NULL, dot);
+            payload[-1] = '.';
 
             if(!empty_str(payload)) {
                 string_t payload_new = string_new(payload);
@@ -44,7 +45,10 @@ static jwtsvid_JWT *token_to_jwt(char *token, err_t *err)
                                          header_str_len, 0, NULL);
                 jwt->payload = json_loadb((const char *) payload_str,
                                           payload_str_len, 0, NULL);
-                jwt->signature = string_new(strtok(NULL, dot));
+
+                char *signature = strtok(NULL, dot);
+                signature[-1] = '.';
+                jwt->signature = string_new(signature);
                 free(header_str);
                 free(payload_str);
 
