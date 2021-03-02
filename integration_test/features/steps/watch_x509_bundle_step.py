@@ -24,17 +24,17 @@ def step_impl(context):
 
 @when('The server is turned off')
 def step_impl(context):
-    #List all process
-    processes = os.popen('(ps aux | grep spire-server) > process.txt')
-    processes_ids = os.popen('awk \'{ print $2 }\' process.txt ').read().split("\n")
-    subprocess.run(["kill", processes_ids[0]])
-    os.popen('rm process.txt')
-    time.sleep(8)
+    os.system("pkill spire-server")
+    time.sleep(5)
     
 
 @when('The server is turned on')
 def step_impl(context):
-    path = ["spire-server"]
-    command = ["run", "-config", "/opt/spire/conf/server/server.conf"]
-    process = subprocess.Popen(path + command)
-    time.sleep(8)
+    os.system("./grpc_start_server.sh")
+    time.sleep(5)
+
+
+@when('I create server entries')
+def step_impl(context):
+    os.system("./grpc_create_entries.sh")
+    time.sleep(1)
