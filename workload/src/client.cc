@@ -650,3 +650,64 @@ jwtsvid_SVID *workloadapi_Client_FetchJWTSVID(workloadapi_Client *client,
         return NULL;
     }
 }
+
+jwtbundle_Set *workloadapi_Client_FetchJWTBundles(workloadapi_Client *client,
+                                                  err_t *err)
+{
+    grpc::ClientContext ctx;
+
+    if(client->headers) {
+        for(int i = 0; i < arrlen(client->headers); i += 2)
+            ctx.AddMetadata(client->headers[i], client->headers[i + 1]);
+    }
+
+    JWTBundlesRequest req;
+    std::unique_ptr<grpc::ClientReaderInterface<JWTBundlesResponse>> c_reader
+        = ((SpiffeWorkloadAPI::StubInterface *) client->stub)
+              ->FetchJWTBundles(&ctx, req);
+
+    JWTBundlesResponse resp;
+    bool success = c_reader->Read(&resp);
+    if(success) {
+        // parse response
+        return workloadapi_parseJWTBundles(&resp, err);
+    } else {
+        // could not fetch jwt bundles
+        *err = ERROR1;
+        return NULL;
+    }
+}
+
+jwtsvid_SVID *workloadapi_Client_ValidateJWTSVID(workloadapi_Client *client,
+                                                 char *token, char *audience,
+                                                 err_t *err)
+{
+    grpc::ClientContext ctx;
+
+    if(client->headers) {
+        for(int i = 0; i < arrlen(client->headers); i += 2)
+            ctx.AddMetadata(client->headers[i], client->headers[i + 1]);
+    }
+
+    ValidateJWTSVIDRequest req;
+    req.set_svid(token);
+    req.set_audience(audience);
+
+    ValidateJWTSVIDResponse resp;
+    grpc::Status status = ((SpiffeWorkloadAPI::StubInterface *) client->stub)
+                              ->ValidateJWTSVID(&ctx, req, &resp);
+
+    if(status.ok()) {
+        // parse response
+        string_arr_t audiences = NULL;
+        arrput(audiences, audience);
+        jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, audiences, err);
+        arrfree(audiences);
+
+        return svid;
+    } else {
+        // could not validate jwt svid
+        *err = ERROR1;
+        return NULL;
+    }
+}
