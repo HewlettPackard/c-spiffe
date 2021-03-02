@@ -32,4 +32,4 @@ jobs:
 
       - name: Integration Test
         shell: bash
-        run: cd integration_test && behave
+        run: cd integration_test && behave --tags=-@wip
