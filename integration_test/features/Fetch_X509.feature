@@ -32,7 +32,7 @@ Feature: Fetch X509
         When The agent is turned on
 
 
-    @Sprint8 @X509
+    @Sprint8 @X509 @wip
     Scenario: FX_005 - Check that it is not possible to fetch X509 SVID with the server down
         When The server is turned off
         And  I fetch SVID
@@ -41,7 +41,7 @@ Feature: Fetch X509
         When The server is turned on
 
 
-    @Sprint8 @X509
+    @Sprint8 @X509 @wip
     Scenario: FX_006 - Check that it is not possible to fetch the X509 Bundle with the server down
         When The server is turned off
         And  I fetch Bundle
@@ -49,10 +49,3 @@ Feature: Fetch X509
         # Tear Down
         When The server is turned on
 
-
-    @wip
-    Scenario: TC_00 - Turn server and agent on
-        When The server is turned on
-        And  I create server entries
-        And  The agent is turned on
-        # When The server is turned off

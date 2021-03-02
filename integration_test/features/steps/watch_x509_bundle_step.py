@@ -24,19 +24,8 @@ def step_impl(context):
 
 @when('The server is turned off')
 def step_impl(context):
-    #List all process
-    os.system("(ps aux | grep spire-server) > process.txt")
-    processes_ids = os.system("awk \'{ $2 }\' process.txt")
-    
-    print(str(processes_ids))
-    os.system("kill " + processes_ids[0])
-    os.system("rm process.txt")
-
-    # processes = os.popen('(ps aux | grep spire-server) > process.txt')
-    # processes_ids = os.popen('awk \'{ print $2 }\' process.txt ').read().split("\n")
-    # subprocess.run(["kill", processes_ids[0]])
-    # os.popen('rm process.txt')
-    time.sleep(8)
+    os.system("pkill spire-server")
+    time.sleep(5)
     
 
 @when('The server is turned on')

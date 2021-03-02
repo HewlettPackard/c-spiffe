@@ -40,20 +40,14 @@ def step_impl(context):
 
 @when('The agent is turned off')
 def step_impl(context):
-    #List all process
-    processes = os.popen('ps aux | grep spire-agent')
-    result = processes.read()
-    result = result.splitlines()[0]
-    process_id_1 = result[12:-125]
-    process_id_2 = result[12:-155]
-    down_process = subprocess.run(["kill", process_id_1])
-    down_process = subprocess.run(["kill", process_id_2])
+    os.system("pkill spire-agent")
     time.sleep(5)
 
 
 @when('The agent is turned on')
 def step_impl(context):
     os.system("./grpc_generate_token.sh")
+    time.sleep(5)
     os.system("./grpc_connect_agent.sh")
     time.sleep(5)
 
