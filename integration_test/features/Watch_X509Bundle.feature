@@ -2,11 +2,11 @@
 Feature: Watch X509 Bundle
 
 
-    Background: Setup to rotate bundle
-        Given I set the server to rotate the Bundle up to "15s"
+    # Background: Setup to rotate bundle
+    #     Given I set the server to rotate the Bundle up to "15s"
 
 
-    @Sprint7 @X509
+    @Sprint7 @X509 @ariana
     Scenario: WXB_001 - Check that when rotating the bundle it remains correct and is updated
         When  I fetch Bundle
         Then  I check that the Bundle is returned correctly
