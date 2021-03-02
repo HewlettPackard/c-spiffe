@@ -602,7 +602,7 @@ START_TEST(test_workloadapi_Client_WatchX509Context)
     config.client_options = NULL;
 
     workloadapi_X509Context **ctxs = NULL;
-    arrsetcap(ctxs, 5);
+    // arrsetcap(ctxs, 5);
     workloadapi_X509Callback callback;
     callback.args = &ctxs;
     callback.func = callback_Watch_context_test;
@@ -621,25 +621,48 @@ START_TEST(test_workloadapi_Client_WatchX509Context)
     ck_assert_ptr_ne(ctxs[0], NULL);
     ck_assert_ptr_ne(ctxs[0]->svids, NULL);
     ck_assert_int_eq(arrlen(ctxs[0]->svids), 1);
+    
+    x509bundle_Set_Free(ctxs[0]->bundles);
+    x509svid_SVID_Free(ctxs[0]->svids[0]);
+    arrpop(ctxs[0]->svids);
+    free(ctxs[0]);
 
     ck_assert_ptr_ne(ctxs[1], NULL);
     ck_assert_ptr_ne(ctxs[1]->svids, NULL);
     ck_assert_int_eq(arrlen(ctxs[1]->svids), 2);
+    
+    x509bundle_Set_Free(ctxs[1]->bundles);
+    x509svid_SVID_Free(ctxs[1]->svids[0]);
+    x509svid_SVID_Free(ctxs[1]->svids[1]);
+    arrpop(ctxs[1]->svids);
+    free(ctxs[1]);
 
     ck_assert_ptr_ne(ctxs[2], NULL);
     ck_assert_ptr_ne(ctxs[2]->svids, NULL);
     ck_assert_int_eq(arrlen(ctxs[2]->svids), 1);
+    
+    x509bundle_Set_Free(ctxs[2]->bundles);
+    x509svid_SVID_Free(ctxs[2]->svids[0]);
+    arrpop(ctxs[2]->svids);
+    arrpop(ctxs[2]->svids);
+    free(ctxs[2]);
 
     ck_assert_ptr_ne(ctxs[3], NULL);
     ck_assert_ptr_ne(ctxs[3]->svids, NULL);
     ck_assert_int_eq(arrlen(ctxs[3]->svids), 2);
+    
+    x509bundle_Set_Free(ctxs[3]->bundles);
+    x509svid_SVID_Free(ctxs[3]->svids[0]);
+    x509svid_SVID_Free(ctxs[3]->svids[1]);
+    arrpop(ctxs[3]->svids);
+    free(ctxs[3]);
 
-    // free(ctx);
+    arrpop(ctxs);
+    arrpop(ctxs);
+    arrpop(ctxs);
+    arrpop(ctxs);
 
-    // ck_assert_ptr_ne(ctx->bundles,NULL);
-    // ck_assert_str_eq(ctx->svids[0]->id.td.name,"example.org");
     delete stub;
-    // free(ctx);
 }
 END_TEST
 

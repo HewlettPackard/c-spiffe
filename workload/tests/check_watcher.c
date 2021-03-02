@@ -320,6 +320,8 @@ START_TEST(test_workloadapi_Watcher_Start_blocks);
     thrd_t thread;
     thrd_create(&thread, waitAndUpdate, watcher);
     error = workloadapi_Watcher_Start(watcher);
+
+    ck_assert(!watcher->closed);
     struct timespec now;
     timespec_get(&now, TIME_UTC);
 
@@ -362,7 +364,10 @@ START_TEST(test_workloadapi_Watcher_Close);
     timespec_get(&then, TIME_UTC);
     thrd_t thread;
     thrd_create(&thread, waitAndUpdate, watcher); // unblocks thread
+    
     error = workloadapi_Watcher_Start(watcher);
+    ck_assert(!watcher->closed);
+
     struct timespec now;
     timespec_get(&now, TIME_UTC);
 

@@ -109,6 +109,14 @@ bool x509svid_keyMatches(EVP_PKEY *priv_key, EVP_PKEY *pub_key,
  */
 void x509svid_SVID_Free(x509svid_SVID *svid);
 
+/**
+ * Returns the default SVID from a list of SVIDS.
+ *
+ * \param svids [in] -SVID object pointer array.
+ * \returns First SVID object pointer in array.
+ */
+x509svid_SVID *x509svid_SVID_GetDefaultX509SVID(x509svid_SVID **svids);
+
 #ifdef __cplusplus
 }
 #endif
