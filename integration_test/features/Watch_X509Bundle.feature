@@ -7,6 +7,15 @@ Feature: Watch X509 Bundle
 
 
     @Sprint7 @X509
+    Scenario: WXB_001 - Check that when rotating the bundle it remains correct and is updated
+        When  I fetch Bundle
+        Then  I check that the Bundle is returned correctly
+        When  I store the Bundle
+        And   I fetch Bundle
+        Then  The Bundle was updated
+
+
+    @Sprint7 @X509
     Scenario: TC_001 - Check that when rotating the bundle it remains correct and is updated
         When  I fetch bundle
         Then  I check that the Bundle is returned correctly
@@ -24,3 +33,19 @@ Feature: Watch X509 Bundle
         And   I up the server
         And   I fetch bundle
         Then  The Bundle was updated
+<<<<<<< HEAD
+=======
+
+
+    @Sprint7 @X509
+    Scenario: WXB_004 - Check the behavior when executing the watch bundle with the agent turned off
+        When  I fetch Bundle
+        Then  I check that the Bundle is returned correctly
+        When  I store the Bundle
+        And   The agent is turned off
+        And   I fetch Bundle
+        Then  I check that the Bundle is not returned
+        When  The agent is turned on
+        And   I fetch Bundle
+        Then  The Bundle was updated
+>>>>>>> claning the code
