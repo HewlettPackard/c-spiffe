@@ -183,6 +183,25 @@ void workloadapi_Watcher_OnX509ContextWatchError(workloadapi_Watcher *watcher,
     /// INFO: go-spiffe does nothing.
 }
 
+// Function called by Client when new x509 response arrives
+void workloadapi_Watcher_OnJWTBundlesUpdate(workloadapi_Watcher *watcher,
+                                             jwtbundle_Set *set)
+{
+    void *args = watcher->jwt_callback.args;
+    watcher->jwt_callback.func(set, args);
+    workloadapi_Watcher_TriggerUpdated(watcher);
+}
+
+// Called by Client when an error occurs
+void workloadapi_Watcher_OnJWTBundlesWatchError(workloadapi_Watcher *watcher,
+                                                 err_t error)
+{
+    /// TODO: catch/recover/exit from watch error
+    /// INFO: go-spiffe does nothing.
+}
+
+
+
 err_t workloadapi_Watcher_WaitUntilUpdated(workloadapi_Watcher *watcher)
 {
     return workloadapi_Watcher_TimedWaitUntilUpdated(watcher, NULL);
