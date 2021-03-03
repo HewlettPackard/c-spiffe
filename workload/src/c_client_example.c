@@ -1,12 +1,16 @@
 #include "client.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-enum { X509_SVID, JWT_SVID };
-#define SVID_TYPE X509_SVID
-
-int main(void)
+int main(int argc, char **argv)
 {
+    if(argc < 2) {
+        printf("Too few arguments!\nUsage:\n\t./c_client "
+               "svid_type=jwt\n\t./c_client svid_type=x509\n");
+        exit(-1);
+    }
+
     err_t error = NO_ERROR;
     workloadapi_Client *client = workloadapi_NewClient(&error);
     if(error != NO_ERROR) {
@@ -18,7 +22,7 @@ int main(void)
         printf("conn error! %d\n", (int) error);
     }
 
-    if(SVID_TYPE == X509_SVID) {
+    if(strcmp(argv[1], "svid_type=x509") == 0) {
         x509svid_SVID *svid = workloadapi_Client_FetchX509SVID(client, &error);
         if(error != NO_ERROR) {
             printf("fetch error! %d\n", (int) error);
@@ -30,14 +34,16 @@ int main(void)
             printf("Trust Domain: %s\n", svid->id.td.name);
             printf("Cert(s) Address: %p\n", svid->certs);
             printf("Key Address: %p\n", svid->private_key);
+
+            x509svid_SVID_Free(svid);
         }
-        x509svid_SVID_Free(svid);
-    } else if(SVID_TYPE == JWT_SVID) {
-        jwtsvid_Params params = { .audience = NULL,
-                                  .extra_audiences = NULL,
-                                  .subject = { .td = NULL, .path = NULL } };
+    } else if(strcmp(argv[1], "svid_type=jwt") == 0) {
+        spiffeid_ID id = { .td = string_new("example.com"),
+                           .path = string_new("/workload1") };
+        jwtsvid_Params params
+            = { .audience = NULL, .extra_audiences = NULL, .subject = id };
         jwtsvid_SVID *svid
-            = workloadapi_Client_FetchJWTSVID(client, NULL, &error);
+            = workloadapi_Client_FetchJWTSVID(client, &params, &error);
         if(error != NO_ERROR) {
             printf("fetch error! %d\n", (int) error);
         }
@@ -54,8 +60,11 @@ int main(void)
                 printf("key: %s, value: %s\n", svid->claims[i].key, value);
                 free(value);
             }
+            jwtsvid_SVID_Free(svid);
         }
-        jwtsvid_SVID_Free(svid);
+        spiffeid_ID_Free(&id);
+    } else {
+        printf("Invalid argument!\n");
     }
 
     error = workloadapi_Client_Close(client);
