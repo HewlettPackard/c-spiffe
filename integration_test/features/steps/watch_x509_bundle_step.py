@@ -8,7 +8,7 @@ from utils import update_server_conf
 
 @given('I set the server to rotate the Bundle up to "{time}"')
 def step_impl(context, time):
-    update_server_conf("../infra/spire-server/server.conf", "default_svid_ttl", time)
+    update_server_conf(context.server_conf, "default_svid_ttl", time)
 
 
 @when('I store the Bundle')
@@ -33,8 +33,3 @@ def step_impl(context):
     os.system("./grpc_start_server.sh")
     time.sleep(5)
 
-
-@when('I create server entries')
-def step_impl(context):
-    os.system("./grpc_create_entries.sh")
-    time.sleep(1)
