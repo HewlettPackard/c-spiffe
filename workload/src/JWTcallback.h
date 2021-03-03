@@ -9,7 +9,8 @@ extern "C"{
 #endif
 
 /** type for callback function. will be set by JWTSource. */
-typedef void(*workloadapi_jwtBundleSetFunc_t)(jwtbundle_Set*);
+typedef void(*workloadapi_jwtBundleSetFunc_t)(jwtbundle_Set*,
+                                              void *);
 
 typedef struct {
     void *args;
