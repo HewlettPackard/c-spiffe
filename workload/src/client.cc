@@ -515,9 +515,12 @@ workloadapi_Client_FetchX509Context(workloadapi_Client *client, err_t *error)
         if(*error != NO_ERROR) {
             return NULL;
         }
+        return ret;
+    } else {
+        // could not fetch x509 context
+        *error = ERROR1;
+        return NULL;
     }
-
-    return ret; // no response -> no bundle
 }
 
 x509bundle_Set *workloadapi_Client_FetchX509Bundles(workloadapi_Client *client,
@@ -544,9 +547,12 @@ x509bundle_Set *workloadapi_Client_FetchX509Bundles(workloadapi_Client *client,
         if(*err != NO_ERROR) {
             return NULL;
         }
+        return ret_set;
+    } else {
+        //could not fetch x509 bundles
+        *err = ERROR1;
+        return NULL;
     }
-
-    return ret_set; // no response -> no bundle
 }
 
 x509svid_SVID **workloadapi_Client_FetchX509SVIDs(workloadapi_Client *client,
@@ -573,9 +579,12 @@ x509svid_SVID **workloadapi_Client_FetchX509SVIDs(workloadapi_Client *client,
         if(*err != NO_ERROR) {
             return NULL;
         }
+        return ret_svids;
+    } else {
+        // could not parse x509 svids
+        *err = ERROR1;
+        return NULL;
     }
-
-    return ret_svids; // no response -> no bundle
 }
 
 x509svid_SVID *workloadapi_Client_FetchX509SVID(workloadapi_Client *client,
@@ -602,12 +611,17 @@ x509svid_SVID *workloadapi_Client_FetchX509SVID(workloadapi_Client *client,
         if(*err != NO_ERROR) {
             return NULL;
         }
+        if(arrlen(svids) == 0) {
+            return NULL; // Should never happen
+        }
+        x509svid_SVID *ret_svid = svids[0];
+        arrfree(svids);  // free outer array
+        return ret_svid; // no response -> no bundle
+    } else {
+        // could not fetch x509 svid;
+        *err = ERROR1;
+        return NULL;
     }
-    if(arrlen(svids) == 0)
-        return NULL; // Should never happen
-    x509svid_SVID *ret_svid = svids[0];
-    arrfree(svids);  // free outer array
-    return ret_svid; // no response -> no bundle
 }
 
 jwtsvid_SVID *workloadapi_Client_FetchJWTSVID(workloadapi_Client *client,
