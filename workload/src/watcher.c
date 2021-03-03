@@ -16,6 +16,19 @@ int workloadapi_Watcher_X509backgroundFunc(void *_watcher)
     return (int) error;
 }
 
+// Function that will run on thread spun for watcher
+int workloadapi_Watcher_JWTbackgroundFunc(void *_watcher)
+{
+    workloadapi_Watcher *watcher = (workloadapi_Watcher *) _watcher;
+
+    err_t error = NO_ERROR;
+    // TODO: CHECK ERROR AND RETRY
+    do {
+        error = workloadapi_Client_WatchJWTContext(watcher->client, watcher);
+    } while(error != ERROR5); // error5 == client closed
+    return (int) error;
+}
+
 // new watcher, creates client if not provided.
 workloadapi_Watcher *workloadapi_newWatcher(
     workloadapi_WatcherConfig config,
