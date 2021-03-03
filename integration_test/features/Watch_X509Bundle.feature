@@ -2,8 +2,8 @@
 Feature: Watch X509 Bundle
 
 
-    # Background: Setup to rotate bundle
-    #     Given I set the server to rotate the Bundle up to "15s"
+    Background: Setup to rotate bundle
+        Given I set the server to rotate the Bundle up to "15s"
 
 
     @Sprint7 @X509 @ariana
