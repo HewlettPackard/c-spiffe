@@ -713,10 +713,10 @@ jwtsvid_SVID *workloadapi_Client_ValidateJWTSVID(workloadapi_Client *client,
 
     if(status.ok()) {
         // parse response
-        string_arr_t audiences = NULL;
-        arrput(audiences, audience);
-        jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, audiences, err);
-        arrfree(audiences);
+        string_arr_t audiences_array = NULL;
+        arrput(audiences_array, audience);
+        jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, audiences_array, err);
+        arrfree(audiences_array);
 
         return svid;
     } else {
