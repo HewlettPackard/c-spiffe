@@ -24,17 +24,16 @@ int workloadapi_Watcher_JWTbackgroundFunc(void *_watcher)
     err_t error = NO_ERROR;
     // TODO: CHECK ERROR AND RETRY
     do {
-        error = workloadapi_Client_WatchJWTContext(watcher->client, watcher);
+        error = workloadapi_Client_WatchJWTBundles(watcher->client, watcher);
     } while(error != ERROR5); // error5 == client closed
     return (int) error;
 }
 
 // new watcher, creates client if not provided.
-workloadapi_Watcher *workloadapi_newWatcher(
-    workloadapi_WatcherConfig config,
-    workloadapi_X509Callback
-        x509callback /*, jwtBundleSetFunc_t* jwtBundleSetUpdateFunc*/,
-    err_t *error)
+workloadapi_Watcher *
+workloadapi_newWatcher(workloadapi_WatcherConfig config,
+                       workloadapi_X509Callback x509callback,
+                       workloadapi_JWTCallback jwt_callback, err_t *error)
 {
 
     workloadapi_Watcher *newW
@@ -72,24 +71,21 @@ workloadapi_Watcher *workloadapi_newWatcher(
         }
     }
 
-    /// TODO: check if callback is valid?
     newW->x509callback = x509callback;
+    newW->jwt_callback = jwt_callback;
 
     int thread_error = mtx_init(&(newW->close_mutex), mtx_plain);
     if(thread_error != thrd_success) {
-        /// TODO: return thread error?
         *error = ERROR2;
         return NULL;
     }
     thread_error = mtx_init(&(newW->update_mutex), mtx_plain);
     if(thread_error != thrd_success) {
-        /// TODO: return thread error?
         *error = ERROR2;
         return NULL;
     }
     thread_error = cnd_init(&(newW->update_cond));
     if(thread_error != thrd_success) {
-        /// TODO: return thread error?
         *error = ERROR2;
         return NULL;
     }
@@ -104,25 +100,43 @@ err_t workloadapi_Watcher_Start(workloadapi_Watcher *watcher)
     if(!watcher) {
         return ERROR1; /// NULL WATCHER;
     }
+    /// check if at least one callback is configured
+    if((!watcher->jwt_callback.func) && (!watcher->x509callback.func)) {
+        return ERROR5;
+    }
+
     error = workloadapi_Client_Connect(watcher->client);
     if(error != NO_ERROR) {
         return error;
     }
     /// spin watcher thread out.
-    int thread_error
-        = thrd_create(&(watcher->watcher_thread),
-                      workloadapi_Watcher_X509backgroundFunc, watcher);
 
-    if(thread_error != thrd_success) {
-        watcher->thread_error = thread_error;
-        return ERROR2; // THREAD ERROR, see watcher->threadERROR for error
+    if(watcher->x509callback.func) {
+        int thread_error
+            = thrd_create(&(watcher->watcher_thread),
+                          workloadapi_Watcher_X509backgroundFunc, watcher);
+
+        if(thread_error != thrd_success) {
+            watcher->thread_error = thread_error;
+            return ERROR2; // THREAD ERROR, see watcher->threadERROR for error
+        }
     }
-    
+
+    if(watcher->jwt_callback.func) {
+        int thread_error
+            = thrd_create(&(watcher->watcher_thread),
+                          workloadapi_Watcher_JWTbackgroundFunc, watcher);
+
+        if(thread_error != thrd_success) {
+            watcher->thread_error = thread_error;
+            return ERROR2; // THREAD ERROR, see watcher->threadERROR for error
+        }
+    }
+
     mtx_lock(&(watcher->close_mutex));
     watcher->closed = false;
     mtx_unlock(&(watcher->close_mutex));
 
-    /// wait for update and check for errors.
     error = workloadapi_Watcher_WaitUntilUpdated(watcher);
     if(error != NO_ERROR) {
         /// TODO: add error handling and destroy thread. error is already set
@@ -130,7 +144,6 @@ err_t workloadapi_Watcher_Start(workloadapi_Watcher *watcher)
         watcher->update_error = error;
         return ERROR3;
     }
-
 
     return error;
 }
@@ -198,7 +211,7 @@ void workloadapi_Watcher_OnX509ContextWatchError(workloadapi_Watcher *watcher,
 
 // Function called by Client when new x509 response arrives
 void workloadapi_Watcher_OnJWTBundlesUpdate(workloadapi_Watcher *watcher,
-                                             jwtbundle_Set *set)
+                                            jwtbundle_Set *set)
 {
     void *args = watcher->jwt_callback.args;
     watcher->jwt_callback.func(set, args);
@@ -207,13 +220,11 @@ void workloadapi_Watcher_OnJWTBundlesUpdate(workloadapi_Watcher *watcher,
 
 // Called by Client when an error occurs
 void workloadapi_Watcher_OnJWTBundlesWatchError(workloadapi_Watcher *watcher,
-                                                 err_t error)
+                                                err_t error)
 {
     /// TODO: catch/recover/exit from watch error
     /// INFO: go-spiffe does nothing.
 }
-
-
 
 err_t workloadapi_Watcher_WaitUntilUpdated(workloadapi_Watcher *watcher)
 {
