@@ -32,4 +32,3 @@ def step_impl(context):
 def step_impl(context):
     os.system("./grpc_start_server.sh")
     time.sleep(5)
-

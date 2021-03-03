@@ -2,8 +2,6 @@ import os
 import sys
 import string
 
-from os import chdir
-from common.constants import Paths
 from pathlib2 import Path
 
 

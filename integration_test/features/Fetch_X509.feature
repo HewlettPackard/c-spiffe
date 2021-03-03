@@ -48,4 +48,3 @@ Feature: Fetch X509
         Then I check that the Bundle is returned correctly
         # Tear Down
         When The server is turned on
-
