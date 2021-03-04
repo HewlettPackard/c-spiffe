@@ -6,11 +6,6 @@
 #include "../../svid/x509svid/src/svid.h"
 #include "client.h"
 #include "x509context.h"
-#include "JWTcallback.h"
-
-#include "../../bundle/jwtbundle/src/bundle.h"
-#include "../../bundle/jwtbundle/src/set.h"
-
 #include <threads.h>
 #include <time.h>
 
@@ -24,9 +19,6 @@ typedef struct {
     workloadapi_Client *client;
     workloadapi_ClientOption *client_options;
 } workloadapi_WatcherConfig;
-
-// typedef void(workloadapi_jwtBundleSetFunc_t)(jwtbundle_Set*);
-// eg.:
 
 typedef struct workloadapi_Watcher {
     /** Workload API client */
