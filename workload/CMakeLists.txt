@@ -60,6 +60,7 @@ set(LIB_SOURCE
 
 set(LIB_WATCHER
   src/watcher.c
+  src/jwt_watcher.c
 )
 
 set(LIB_BACKOFF
