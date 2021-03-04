@@ -160,7 +160,7 @@ err_t workloadapi_JWTWatcher_Free(/*context,*/ workloadapi_JWTWatcher *watcher)
 }
 
 // Function called by Client when new x509 response arrives
-void workloadapi_JWTWatcher_OnJWTBundlesUpdate(workloadapi_JWTWatcher *watcher,
+void workloadapi_JWTWatcher_OnJwtBundlesUpdate(workloadapi_JWTWatcher *watcher,
                                             jwtbundle_Set *set)
 {
     void *args = watcher->jwt_callback.args;
@@ -169,7 +169,7 @@ void workloadapi_JWTWatcher_OnJWTBundlesUpdate(workloadapi_JWTWatcher *watcher,
 }
 
 // Called by Client when an error occurs
-void workloadapi_JWTWatcher_OnJWTBundlesWatchError(workloadapi_JWTWatcher *watcher,
+void workloadapi_JWTWatcher_OnJwtBundlesWatchError(workloadapi_JWTWatcher *watcher,
                                                 err_t error)
 {
     /// TODO: catch/recover/exit from watch error
