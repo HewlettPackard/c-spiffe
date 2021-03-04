@@ -80,6 +80,27 @@ client
 
 add_test(check_watcher check_watcher)
 
+add_executable(check_jwt_watcher "./check_jwt_watcher.c")
+
+target_link_libraries(check_jwt_watcher ${CHECK_LIBRARIES} 
+client
+ OpenSSL::SSL
+  spiffeid
+  internal
+  uriparser
+  bundle
+  jansson
+  cjose
+  subunit
+  check_pic
+  check
+  rt
+  m
+  crypto
+  pthread)
+
+add_test(check_jwt_watcher check_jwt_watcher)
+
 add_executable(check_x509source "./check_x509source.c")
 
 target_link_libraries(check_x509source ${CHECK_LIBRARIES} 
