@@ -57,9 +57,6 @@ if (ENABLE_TESTS)
     find_package(GTest REQUIRED)
     enable_testing()
 
-    #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage -g -O0")
-    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -g -O0")
-
     ### Todo: improve this
     add_subdirectory(${PROJECT_SOURCE_DIR}/spiffeid/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/internal/cryptoutil/tests)
