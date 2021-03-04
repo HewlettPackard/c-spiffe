@@ -54,16 +54,12 @@ typedef struct workloadapi_Watcher {
     /** function called with updated x509Context */
     workloadapi_X509Callback x509callback;
 
-    // function called with updated JWTBundleSet
-    workloadapi_JWTCallback jwt_callback;
-
 } workloadapi_Watcher;
 
 /** creates and sets up a new watcher, doesn't dial client yet. */
 workloadapi_Watcher *workloadapi_newWatcher(
     workloadapi_WatcherConfig config,
     workloadapi_X509Callback x509callback,
-    workloadapi_JWTCallback jwt_callback,
     err_t *error);
 
 /** starts watcher thread and blocks until updated. dials client if needed. */
@@ -83,12 +79,6 @@ void workloadapi_Watcher_OnX509ContextUpdate(workloadapi_Watcher *watcher,
 void workloadapi_Watcher_OnX509ContextWatchError(workloadapi_Watcher *watcher,
                                                  err_t error);
 
-// Function called by Client when new JWT response arrives
-void workloadapi_Watcher_OnJwtBundlesUpdate(workloadapi_Watcher *watcher,
-                                            jwtbundle_Set *context);
-/** Called by Client when an JWT error occurs and the watcher must be made aware */
-void workloadapi_Watcher_OnJwtBundlesWatchError(workloadapi_Watcher *watcher,
-                                                err_t error);
 
 /** Blocks until an update is received. */
 err_t workloadapi_Watcher_WaitUntilUpdated(workloadapi_Watcher *watcher);
