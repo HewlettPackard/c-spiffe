@@ -47,7 +47,7 @@ typedef struct workloadapi_JWTWatcher {
 
 /** creates and sets up a new watcher, doesn't dial client yet. */
 workloadapi_JWTWatcher *
-workloadapi_newWatcher(workloadapi_JWTWatcherConfig config,
+workloadapi_newJWTWatcher(workloadapi_JWTWatcherConfig config,
                         workloadapi_X509Callback x509callback,
                         workloadapi_JWTCallback jwt_callback, err_t *error);
 

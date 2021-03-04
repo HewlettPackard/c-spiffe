@@ -16,7 +16,7 @@ int workloadapi_JWTWatcher_JWTbackgroundFunc(void *_watcher)
 
 // new watcher, creates client if not provided.
 workloadapi_JWTWatcher *
-workloadapi_newWatcher(workloadapi_JWTWatcherConfig config,
+workloadapi_newJWTWatcher(workloadapi_JWTWatcherConfig config,
                        workloadapi_JWTCallback jwt_callback, err_t *error)
 {
 
@@ -157,23 +157,6 @@ err_t workloadapi_JWTWatcher_Free(/*context,*/ workloadapi_JWTWatcher *watcher)
     }
     free(watcher);
     return NO_ERROR;
-}
-
-// Function called by Client when new x509 response arrives
-void workloadapi_JWTWatcher_OnX509ContextUpdate(workloadapi_JWTWatcher *watcher,
-                                             workloadapi_X509Context *context)
-{
-    void *args = watcher->x509callback.args;
-    watcher->x509callback.func(context, args);
-    workloadapi_JWTWatcher_TriggerUpdated(watcher);
-}
-
-// Called by Client when an error occurs
-void workloadapi_JWTWatcher_OnX509ContextWatchError(workloadapi_JWTWatcher *watcher,
-                                                 err_t error)
-{
-    /// TODO: catch/recover/exit from watch error
-    /// INFO: go-spiffe does nothing.
 }
 
 // Function called by Client when new x509 response arrives
