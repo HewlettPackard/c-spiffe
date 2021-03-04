@@ -1,5 +1,5 @@
-#ifndef INCLUDE_WORKLOAD_JWTCALLBACK_H
-#define INCLUDE_WORKLOAD_JWTCALLBACK_H
+#ifndef INCLUDE_WORKLOAD_JWT_CALLBACK_H
+#define INCLUDE_WORKLOAD_JWT_CALLBACK_H
 
 #include "../../bundle/jwtbundle/src/set.h"
 #include "../../svid/jwtsvid/src/svid.h"
@@ -21,4 +21,4 @@ typedef struct {
 }
 #endif
 
-#endif // INCLUDE_WORKLOAD_JWTCALLBACK_H
+#endif // INCLUDE_WORKLOAD_JWT_CALLBACK_H

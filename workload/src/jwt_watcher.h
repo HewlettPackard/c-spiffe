@@ -1,9 +1,9 @@
-#ifndef INCLUDE_WORKLOAD_JWTWATCHER_H
-#define INCLUDE_WORKLOAD_JWTWATCHER_H
+#ifndef INCLUDE_WORKLOAD_JWT_WATCHER_H
+#define INCLUDE_WORKLOAD_JWT_WATCHER_H
 
 #include "client.h"
 
-#include "JWTcallback.h"
+#include "jwt_callback.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -48,7 +48,6 @@ typedef struct workloadapi_JWTWatcher {
 /** creates and sets up a new watcher, doesn't dial client yet. */
 workloadapi_JWTWatcher *
 workloadapi_newJWTWatcher(workloadapi_JWTWatcherConfig config,
-                        workloadapi_X509Callback x509callback,
                         workloadapi_JWTCallback jwt_callback, err_t *error);
 
 /** starts watcher thread and blocks until updated. dials client if needed.
@@ -85,4 +84,4 @@ workloadapi_JWTWatcher_TriggerUpdated(workloadapi_JWTWatcher *watcher);
 }
 #endif
 
-#endif // INCLUDE_WORKLOAD_JWTWATCHER_H
+#endif // INCLUDE_WORKLOAD_JWT_WATCHER_H
