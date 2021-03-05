@@ -7,9 +7,9 @@ int workloadapi_JWTWatcher_JWTbackgroundFunc(void *_watcher)
     workloadapi_JWTWatcher *watcher = (workloadapi_JWTWatcher *) _watcher;
 
     err_t error = NO_ERROR;
-    // TODO: CHECK ERROR AND RETRY
     do {
-        //error = workloadapi_Client_WatchJWTBundles(watcher->client, watcher);
+        // TODO: CHECK ERROR AND RETRY
+        error = workloadapi_Client_WatchJWTBundles(watcher->client, watcher);
     } while(error != ERROR5); // error5 == client closed
     return (int) error;
 }
@@ -160,7 +160,7 @@ err_t workloadapi_JWTWatcher_Free(/*context,*/ workloadapi_JWTWatcher *watcher)
 }
 
 // Function called by Client when new x509 response arrives
-void workloadapi_JWTWatcher_OnJwtBundlesUpdate(workloadapi_JWTWatcher *watcher,
+void workloadapi_JWTWatcher_OnJWTBundlesUpdate(workloadapi_JWTWatcher *watcher,
                                             jwtbundle_Set *set)
 {
     void *args = watcher->jwt_callback.args;
@@ -169,7 +169,7 @@ void workloadapi_JWTWatcher_OnJwtBundlesUpdate(workloadapi_JWTWatcher *watcher,
 }
 
 // Called by Client when an error occurs
-void workloadapi_JWTWatcher_OnJwtBundlesWatchError(workloadapi_JWTWatcher *watcher,
+void workloadapi_JWTWatcher_OnJWTBundlesWatchError(workloadapi_JWTWatcher *watcher,
                                                 err_t error)
 {
     /// TODO: catch/recover/exit from watch error

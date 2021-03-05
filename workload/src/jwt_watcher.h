@@ -64,11 +64,11 @@ err_t workloadapi_JWTWatcher_Free(workloadapi_JWTWatcher *watcher);
 
 // Function called by Client when new JWT response arrives
 void
-workloadapi_JWTWatcher_OnJwtBundlesUpdate(workloadapi_JWTWatcher *watcher,
+workloadapi_JWTWatcher_OnJWTBundlesUpdate(workloadapi_JWTWatcher *watcher,
                                             jwtbundle_Set *context);
 /** Called by Client when an JWT error occurs and the watcher must be made
  * aware */
-void workloadapi_JWTWatcher_OnJwtBundlesWatchError(
+void workloadapi_JWTWatcher_OnJWTBundlesWatchError(
     workloadapi_JWTWatcher *watcher, err_t error);
 
 /** Blocks until an update is received. */
