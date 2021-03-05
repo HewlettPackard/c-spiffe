@@ -275,15 +275,26 @@ err_t workloadapi_Client_Close(workloadapi_Client *client)
 err_t workloadapi_Client_SetAddress(workloadapi_Client *client,
                                     const char *address)
 {
+    err_t error = NO_ERROR;
     if(!client) {
         return ERROR1;
     }
+    // validate address
+    UriUriA uri;
+    const char *err_pos;
+    if(uriParseSingleUriA(&uri, address, &err_pos) != URI_SUCCESS) {
+        return ERROR2;
+    }
+
     if(client->address) {
         util_string_t_Free(client->address);
         client->address = NULL;
     }
-    /// TODO: validate address as URI
+
     client->address = string_new(address);
+    if(!client->address) {
+        return ERROR3;
+    }
     return NO_ERROR;
 }
 
@@ -361,9 +372,6 @@ void workloadapi_Client_defaultOptions(workloadapi_Client *client,
                                    workloadapi_Client_setDefaultAddressOption);
     workloadapi_Client_ApplyOption(client,
                                    workloadapi_Client_setDefaultHeaderOption);
-
-    /// TODO: logger?
-    /// TODO: dialOptions?
 }
 
 err_t workloadapi_Client_WatchX509Context(workloadapi_Client *client,
@@ -405,8 +413,6 @@ err_t workloadapi_Client_watchX509Context(workloadapi_Client *client,
         return ERROR2;
     }
 
-    /// TODO: Logger?
-
     grpc::ClientContext ctx;
 
     if(client->headers) {
@@ -434,7 +440,6 @@ err_t workloadapi_Client_watchX509Context(workloadapi_Client *client,
                 return ERROR1;
             }
             if(status.error_code() == grpc::StatusCode::INVALID_ARGUMENT) {
-                /// TODO: Logger
                 return ERROR3;
             }
             return ERROR4; // no more messages.
@@ -444,7 +449,6 @@ err_t workloadapi_Client_watchX509Context(workloadapi_Client *client,
         workloadapi_X509Context *x509context
             = workloadapi_parseX509Context(&response, &err);
         if(err != NO_ERROR) {
-            /// TODO: log parse error
             workloadapi_Watcher_OnX509ContextWatchError(watcher, err);
         } else {
             workloadapi_Watcher_OnX509ContextUpdate(watcher, x509context);
@@ -462,11 +466,9 @@ err_t workloadapi_Client_HandleWatchError(workloadapi_Client *client,
         return error;
     }
     if(error == grpc::StatusCode::INVALID_ARGUMENT) {
-        /// TODO: Logger
         return error;
     }
 
-    /// TODO: Log
     struct timespec retryAfter = workloadapi_Backoff_NextTime(backoff);
 
     mtx_lock(&(client->closed_mutex));
@@ -679,7 +681,6 @@ err_t workloadapi_Client_watchJWTBundles(workloadapi_Client *client,
     if(!client || !watcher || !backoff) {
         return ERROR2;
     }
-    /// TODO: Logger?
     grpc::ClientContext ctx;
     if(client->headers) {
         for(int i = 0; i < arrlen(client->headers); i += 2)
@@ -699,7 +700,6 @@ err_t workloadapi_Client_watchJWTBundles(workloadapi_Client *client,
                 return ERROR1;
             }
             if(status.error_code() == grpc::StatusCode::INVALID_ARGUMENT) {
-                /// TODO: Logger
                 return ERROR3;
             }
             return ERROR4; // no more messages.
@@ -708,7 +708,6 @@ err_t workloadapi_Client_watchJWTBundles(workloadapi_Client *client,
         err_t err = NO_ERROR;
         jwtbundle_Set *set = workloadapi_parseJWTBundles(&resp, &err);
         if(err != NO_ERROR) {
-            /// TODO: log parse error
             workloadapi_JWTWatcher_OnJWTBundlesWatchError(watcher, err);
         } else {
             workloadapi_JWTWatcher_OnJWTBundlesUpdate(watcher, set);
