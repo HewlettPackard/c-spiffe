@@ -75,7 +75,7 @@ void workloadapi_JWTWatcher_OnJWTBundlesWatchError(
 err_t
 workloadapi_JWTWatcher_WaitUntilUpdated(workloadapi_JWTWatcher *watcher);
 err_t workloadapi_JWTWatcher_TimedWaitUntilUpdated(
-    workloadapi_JWTWatcher *watcher, struct timespec *timer);
+    workloadapi_JWTWatcher *watcher, const struct timespec *timer);
 /** Broadcasts an update to all waiting. */
 err_t
 workloadapi_JWTWatcher_TriggerUpdated(workloadapi_JWTWatcher *watcher);

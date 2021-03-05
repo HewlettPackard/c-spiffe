@@ -75,7 +75,7 @@ void workloadapi_Watcher_OnX509ContextWatchError(workloadapi_Watcher *watcher,
 /** Blocks until an update is received. */
 err_t workloadapi_Watcher_WaitUntilUpdated(workloadapi_Watcher *watcher);
 err_t workloadapi_Watcher_TimedWaitUntilUpdated(workloadapi_Watcher *watcher,
-                                                struct timespec *timer);
+                                                const struct timespec *timer);
 /** Broadcasts an update to all waiting. */
 err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher *watcher);
 

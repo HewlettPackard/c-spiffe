@@ -177,7 +177,7 @@ err_t workloadapi_Watcher_WaitUntilUpdated(workloadapi_Watcher *watcher)
 }
 
 err_t workloadapi_Watcher_TimedWaitUntilUpdated(workloadapi_Watcher *watcher,
-                                                struct timespec *timer)
+                                                const struct timespec *timer)
 {
     mtx_lock(&watcher->update_mutex);
     if(watcher->updated) {
@@ -208,21 +208,21 @@ err_t workloadapi_Watcher_TimedWaitUntilUpdated(workloadapi_Watcher *watcher,
 err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher *watcher)
 {
     err_t error = NO_ERROR;
-    if(error = mtx_lock(&(watcher->update_mutex))) {
+    if(error = (err_t) mtx_lock(&(watcher->update_mutex))) {
         return error; // lock error
     }
     watcher->updated = true;
-    if(error = cnd_broadcast(&(watcher->update_cond))) {
+    if(error = (err_t) cnd_broadcast(&(watcher->update_cond))) {
         // save broadcast error, so if we also error on unlock
         // we have a way to check it
         watcher->thread_error = error;
     }
-    if(error = mtx_unlock(&(watcher->update_mutex))) {
+    if(error = (err_t) mtx_unlock(&(watcher->update_mutex))) {
         // if unlock
         return error;
     }
     if(!error) {
-        return watcher->thread_error;
+        return (err_t) watcher->thread_error;
     }
     return error;
 }
