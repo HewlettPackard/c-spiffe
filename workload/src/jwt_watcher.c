@@ -8,7 +8,6 @@ int workloadapi_JWTWatcher_JWTbackgroundFunc(void *_watcher)
 
     err_t error = NO_ERROR;
     do {
-        // TODO: CHECK ERROR AND RETRY
         error = workloadapi_Client_WatchJWTBundles(watcher->client, watcher);
     } while(error != ERROR5); // error5 == client closed
     return (int) error;
@@ -17,7 +16,7 @@ int workloadapi_JWTWatcher_JWTbackgroundFunc(void *_watcher)
 // new watcher, creates client if not provided.
 workloadapi_JWTWatcher *
 workloadapi_newJWTWatcher(workloadapi_JWTWatcherConfig config,
-                       workloadapi_JWTCallback jwt_callback, err_t *error)
+                          workloadapi_JWTCallback jwt_callback, err_t *error)
 {
 
     workloadapi_JWTWatcher *newW
@@ -121,7 +120,6 @@ err_t workloadapi_JWTWatcher_Close(workloadapi_JWTWatcher *watcher)
     mtx_lock(&(watcher->close_mutex));
     watcher->closed = true;
     err_t error = NO_ERROR;
-    /// TODO: check and set watcher->close_error?
     if(watcher->owns_client) {
 
         error = workloadapi_Client_Close(watcher->client);
@@ -130,10 +128,6 @@ err_t workloadapi_JWTWatcher_Close(workloadapi_JWTWatcher *watcher)
             watcher->close_error = error;
             mtx_unlock(&(watcher->close_mutex));
             return error;
-        }
-        error = workloadapi_Client_Free(watcher->client);
-        if(error != NO_ERROR) {
-            // shouldn't reach here.
         }
     }
     mtx_unlock(&(watcher->close_mutex));
@@ -153,7 +147,7 @@ err_t workloadapi_JWTWatcher_Free(/*context,*/ workloadapi_JWTWatcher *watcher)
     cnd_destroy(&(watcher->update_cond));
     mtx_destroy(&(watcher->update_mutex));
     if(watcher->owns_client) {
-        /// TODO: call freeClient();
+        workloadapi_Client_Free(watcher->client);
     }
     free(watcher);
     return NO_ERROR;
@@ -161,7 +155,7 @@ err_t workloadapi_JWTWatcher_Free(/*context,*/ workloadapi_JWTWatcher *watcher)
 
 // Function called by Client when new x509 response arrives
 void workloadapi_JWTWatcher_OnJWTBundlesUpdate(workloadapi_JWTWatcher *watcher,
-                                            jwtbundle_Set *set)
+                                               jwtbundle_Set *set)
 {
     void *args = watcher->jwt_callback.args;
     watcher->jwt_callback.func(set, args);
@@ -169,10 +163,10 @@ void workloadapi_JWTWatcher_OnJWTBundlesUpdate(workloadapi_JWTWatcher *watcher,
 }
 
 // Called by Client when an error occurs
-void workloadapi_JWTWatcher_OnJWTBundlesWatchError(workloadapi_JWTWatcher *watcher,
-                                                err_t error)
+void workloadapi_JWTWatcher_OnJWTBundlesWatchError(
+    workloadapi_JWTWatcher *watcher, err_t error)
 {
-    /// TODO: catch/recover/exit from watch error
+    /// catch/recover/exit from watch error
     /// INFO: go-spiffe does nothing.
 }
 
@@ -181,8 +175,8 @@ err_t workloadapi_JWTWatcher_WaitUntilUpdated(workloadapi_JWTWatcher *watcher)
     return workloadapi_JWTWatcher_TimedWaitUntilUpdated(watcher, NULL);
 }
 
-err_t workloadapi_JWTWatcher_TimedWaitUntilUpdated(workloadapi_JWTWatcher *watcher,
-                                                struct timespec *timer)
+err_t workloadapi_JWTWatcher_TimedWaitUntilUpdated(
+    workloadapi_JWTWatcher *watcher, struct timespec *timer)
 {
     mtx_lock(&watcher->update_mutex);
     if(watcher->updated) {
@@ -212,7 +206,6 @@ err_t workloadapi_JWTWatcher_TimedWaitUntilUpdated(workloadapi_JWTWatcher *watch
 
 err_t workloadapi_JWTWatcher_TriggerUpdated(workloadapi_JWTWatcher *watcher)
 {
-
     mtx_lock(&(watcher->update_mutex));
 
     watcher->updated = true;

@@ -104,7 +104,7 @@ err_t workloadapi_Watcher_Start(workloadapi_Watcher *watcher)
         watcher->thread_error = thread_error;
         return ERROR2; // THREAD ERROR, see watcher->threadERROR for error
     }
-    
+
     mtx_lock(&(watcher->close_mutex));
     watcher->closed = false;
     mtx_unlock(&(watcher->close_mutex));
@@ -117,7 +117,6 @@ err_t workloadapi_Watcher_Start(workloadapi_Watcher *watcher)
         watcher->update_error = error;
         return ERROR3;
     }
-
 
     return error;
 }
@@ -138,10 +137,10 @@ err_t workloadapi_Watcher_Close(workloadapi_Watcher *watcher)
             mtx_unlock(&(watcher->close_mutex));
             return error;
         }
-        error = workloadapi_Client_Free(watcher->client);
-        if(error != NO_ERROR) {
-            // shouldn't reach here.
-        }
+        // error = workloadapi_Client_Free(watcher->client);
+        // if(error != NO_ERROR) {
+        //     // shouldn't reach here.
+        // }
     }
     mtx_unlock(&(watcher->close_mutex));
     int join_return;
@@ -152,15 +151,14 @@ err_t workloadapi_Watcher_Close(workloadapi_Watcher *watcher)
     return ERROR2;
 }
 
-// drops connection to WorkloadAPI (if owns client) MUST ALREADY BE CLOSED.
+// Free's Watcher (if owns client) MUST ALREADY BE CLOSED.
 err_t workloadapi_Watcher_Free(/*context,*/ workloadapi_Watcher *watcher)
 {
-    /// TODO: free watcher
     mtx_destroy(&(watcher->close_mutex));
     cnd_destroy(&(watcher->update_cond));
     mtx_destroy(&(watcher->update_mutex));
     if(watcher->owns_client) {
-        /// TODO: call freeClient();
+        workloadapi_Client_Free(watcher->client);
     }
     free(watcher);
     return NO_ERROR;
@@ -179,7 +177,7 @@ void workloadapi_Watcher_OnX509ContextUpdate(workloadapi_Watcher *watcher,
 void workloadapi_Watcher_OnX509ContextWatchError(workloadapi_Watcher *watcher,
                                                  err_t error)
 {
-    /// TODO: catch/recover/exit from watch error
+    /// catch/recover/exit from watch error
     /// INFO: go-spiffe does nothing.
 }
 
@@ -219,7 +217,6 @@ err_t workloadapi_Watcher_TimedWaitUntilUpdated(workloadapi_Watcher *watcher,
 
 err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher *watcher)
 {
-
     mtx_lock(&(watcher->update_mutex));
 
     watcher->updated = true;
