@@ -9,7 +9,6 @@ int workloadapi_Watcher_X509backgroundFunc(void *_watcher)
     workloadapi_Watcher *watcher = (workloadapi_Watcher *) _watcher;
 
     err_t error = NO_ERROR;
-    // TODO: CHECK ERROR AND RETRY
     do {
         error = workloadapi_Client_WatchX509Context(watcher->client, watcher);
     } while(error != ERROR5); // error5 == client closed
@@ -20,7 +19,7 @@ int workloadapi_Watcher_X509backgroundFunc(void *_watcher)
 workloadapi_Watcher *workloadapi_newWatcher(
     workloadapi_WatcherConfig config,
     workloadapi_X509Callback
-        x509callback /*, jwtBundleSetFunc_t* jwtBundleSetUpdateFunc*/,
+        x509callback,
     err_t *error)
 {
 
@@ -39,7 +38,7 @@ workloadapi_Watcher *workloadapi_newWatcher(
         newW->client = config.client;
         newW->owns_client = false;
         if(config.client_options) {
-            for(int i = 0; i < arrlen(config.client_options); i++) {
+            for(size_t i = 0, size = arrlenu(config.client_options); i < size; ++i) {
                 workloadapi_Client_ApplyOption(config.client,
                                                config.client_options[i]);
             }
@@ -52,31 +51,27 @@ workloadapi_Watcher *workloadapi_newWatcher(
         }
         newW->owns_client = true;
         if(config.client_options) {
-            for(int i = 0; i < arrlen(config.client_options); i++) {
+            for(size_t i = 0, size = arrlenu(config.client_options); i < size; ++i) {
                 workloadapi_Client_ApplyOption(newW->client,
                                                config.client_options[i]);
             }
         }
     }
 
-    /// TODO: check if callback is valid?
     newW->x509callback = x509callback;
 
     int thread_error = mtx_init(&(newW->close_mutex), mtx_plain);
     if(thread_error != thrd_success) {
-        /// TODO: return thread error?
         *error = ERROR2;
         return NULL;
     }
     thread_error = mtx_init(&(newW->update_mutex), mtx_plain);
     if(thread_error != thrd_success) {
-        /// TODO: return thread error?
         *error = ERROR2;
         return NULL;
     }
     thread_error = cnd_init(&(newW->update_cond));
     if(thread_error != thrd_success) {
-        /// TODO: return thread error?
         *error = ERROR2;
         return NULL;
     }
@@ -127,7 +122,6 @@ err_t workloadapi_Watcher_Close(workloadapi_Watcher *watcher)
     mtx_lock(&(watcher->close_mutex));
     watcher->closed = true;
     err_t error = NO_ERROR;
-    /// TODO: check and set watcher->close_error?
     if(watcher->owns_client) {
 
         error = workloadapi_Client_Close(watcher->client);
@@ -137,10 +131,6 @@ err_t workloadapi_Watcher_Close(workloadapi_Watcher *watcher)
             mtx_unlock(&(watcher->close_mutex));
             return error;
         }
-        // error = workloadapi_Client_Free(watcher->client);
-        // if(error != NO_ERROR) {
-        //     // shouldn't reach here.
-        // }
     }
     mtx_unlock(&(watcher->close_mutex));
     int join_return;

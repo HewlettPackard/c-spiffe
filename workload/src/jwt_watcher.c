@@ -34,7 +34,7 @@ workloadapi_newJWTWatcher(workloadapi_JWTWatcherConfig config,
         newW->client = config.client;
         newW->owns_client = false;
         if(config.client_options) {
-            for(int i = 0; i < arrlen(config.client_options); i++) {
+            for(size_t i = 0, size = arrlenu(config.client_options); i < size; ++i) {
                 workloadapi_Client_ApplyOption(config.client,
                                                config.client_options[i]);
             }
@@ -47,7 +47,7 @@ workloadapi_newJWTWatcher(workloadapi_JWTWatcherConfig config,
         }
         newW->owns_client = true;
         if(config.client_options) {
-            for(int i = 0; i < arrlen(config.client_options); i++) {
+            for(size_t i = 0, size = arrlenu(config.client_options); i < size; ++i) {
                 workloadapi_Client_ApplyOption(newW->client,
                                                config.client_options[i]);
             }
@@ -139,10 +139,9 @@ err_t workloadapi_JWTWatcher_Close(workloadapi_JWTWatcher *watcher)
     return ERROR2;
 }
 
-// drops connection to WorkloadAPI (if owns client) MUST ALREADY BE CLOSED.
+// Free's JWTWatcher (MUST ALREADY BE CLOSED)
 err_t workloadapi_JWTWatcher_Free(/*context,*/ workloadapi_JWTWatcher *watcher)
 {
-    /// TODO: free watcher
     mtx_destroy(&(watcher->close_mutex));
     cnd_destroy(&(watcher->update_cond));
     mtx_destroy(&(watcher->update_mutex));
@@ -153,7 +152,7 @@ err_t workloadapi_JWTWatcher_Free(/*context,*/ workloadapi_JWTWatcher *watcher)
     return NO_ERROR;
 }
 
-// Function called by Client when new x509 response arrives
+// Function called by Client when new JWT response arrives
 void workloadapi_JWTWatcher_OnJWTBundlesUpdate(workloadapi_JWTWatcher *watcher,
                                                jwtbundle_Set *set)
 {
