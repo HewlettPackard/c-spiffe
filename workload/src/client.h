@@ -108,18 +108,6 @@ jwtsvid_SVID *workloadapi_Client_FetchJWTSVID(workloadapi_Client *client,
 // jwtbundle_Set* workloadapi_parseJWTBundles(
 //     const JWTBundlesResponse *resp, err_t *err);
 
-/// TODO: implement JWT later
-/// type JWTBundleWatcher interface
-/// func parseJWTSVIDBundles(resp *workload.JWTBundlesResponse)
-/// (*jwtbundle.Set, error) func (c *Client) FetchJWTSVID(ctx
-/// context.Context, params jwtsvid.Params) (*jwtsvid.SVID, error) func (c
-/// *Client) FetchJWTBundles(ctx context.Context) (*jwtbundle.Set, error)
-/// func (c *Client) WatchJWTBundles(ctx context.Context, watcher
-/// JWTBundleWatcher) error func (c *Client) ValidateJWTSVID(ctx
-/// context.Context, token, audience string) (*jwtsvid.SVID, error) func (c
-/// *Client) watchJWTBundles(ctx context.Context, watcher JWTBundleWatcher,
-/// backoff *backoff) error
-
 #ifdef __cplusplus
 }
 #endif
