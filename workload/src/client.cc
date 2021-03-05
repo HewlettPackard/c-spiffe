@@ -381,10 +381,10 @@ err_t workloadapi_Client_WatchX509Context(workloadapi_Client *client,
             = workloadapi_Client_watchX509Context(client, watcher, &backoff);
         workloadapi_Watcher_OnX509ContextWatchError(watcher, err);
         err = workloadapi_Client_HandleWatchError(client, err, &backoff);
-        // TODO: check error and reuse backoff if not cancelled
         if(err == grpc::CANCELLED || err == grpc::INVALID_ARGUMENT) {
             return err;
         } else if(err != NO_ERROR) {
+            // TODO: check error and reuse backoff if not cancelled
             return err;
         }
     }
@@ -648,5 +648,71 @@ jwtsvid_SVID *workloadapi_Client_FetchJWTSVID(workloadapi_Client *client,
         // could not fetch jwt svid
         *err = ERROR1;
         return NULL;
+    }
+}
+
+err_t workloadapi_Client_WatchJWTBundles(workloadapi_Client *client,
+                                         workloadapi_JWTWatcher *watcher)
+{
+    if(!client)
+        return ERROR1;
+    if(!watcher)
+        return ERROR2;
+    workloadapi_Backoff backoff = workloadapi_NewBackoff({ 1, 0 }, { 30, 0 });
+    while(true) {
+        err_t err
+            = workloadapi_Client_watchJWTBundles(client, watcher, &backoff);
+        workloadapi_JWTWatcher_OnJWTBundlesWatchError(watcher, err);
+        err = workloadapi_Client_HandleWatchError(client, err, &backoff);
+        // TODO: check error and reuse backoff if not cancelled
+        if(err == grpc::CANCELLED || err == grpc::INVALID_ARGUMENT) {
+            return err;
+        } else if(err != NO_ERROR) {
+            return err;
+        }
+    }
+}
+err_t workloadapi_Client_watchJWTBundles(workloadapi_Client *client,
+                                         workloadapi_JWTWatcher *watcher,
+                                         workloadapi_Backoff *backoff)
+{
+    if(!client || !watcher || !backoff) {
+        return ERROR2;
+    }
+    /// TODO: Logger?
+    grpc::ClientContext ctx;
+    if(client->headers) {
+        for(int i = 0; i < arrlen(client->headers); i += 2)
+            ctx.AddMetadata(client->headers[i], client->headers[i + 1]);
+    }
+    JWTBundlesRequest req;
+    JWTBundlesResponse resp;
+    // unique_ptr gets freed after it goes out of scope
+    std::unique_ptr<grpc::ClientReaderInterface<JWTBundlesResponse>> c_reader
+        = ((SpiffeWorkloadAPI::StubInterface *) client->stub)
+              ->FetchJWTBundles(&ctx, req); // get response reader
+    while(true) {
+        bool ok = c_reader->Read(&resp);
+        if(!ok) {
+            auto status = c_reader->Finish();
+            if(status.error_code() == grpc::StatusCode::CANCELLED) {
+                return ERROR1;
+            }
+            if(status.error_code() == grpc::StatusCode::INVALID_ARGUMENT) {
+                /// TODO: Logger
+                return ERROR3;
+            }
+            return ERROR4; // no more messages.
+        }
+        workloadapi_Backoff_Reset(backoff);
+        err_t err = NO_ERROR;
+        jwtbundle_Set *set = workloadapi_parseJWTBundles(&resp, &err);
+        if(err != NO_ERROR) {
+            /// TODO: log parse error
+            workloadapi_JWTWatcher_OnJWTBundlesWatchError(watcher, err);
+        } else {
+            workloadapi_JWTWatcher_OnJWTBundlesUpdate(watcher, set);
+            jwtbundle_Set_Free(set);
+        }
     }
 }

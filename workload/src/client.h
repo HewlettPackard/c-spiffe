@@ -7,6 +7,7 @@
 #include "../../utils/src/util.h"
 #include "backoff.h"
 #include "watcher.h"
+#include "jwt_watcher.h"
 #include "x509context.h"
 
 #ifdef __cplusplus
@@ -18,6 +19,7 @@ extern "C"
 typedef void *workloadapi_Stub; // api stub
 
 typedef struct workloadapi_Watcher workloadapi_Watcher;
+typedef struct workloadapi_JWTWatcher workloadapi_JWTWatcher;
 
 typedef struct workloadapi_Client {
     workloadapi_Stub stub;
@@ -74,6 +76,13 @@ err_t workloadapi_Client_watchX509Context(
 err_t workloadapi_Client_HandleWatchError(workloadapi_Client *client,
                                           err_t error,
                                           workloadapi_Backoff *backoff);
+
+err_t workloadapi_Client_watchJWTBundles(workloadapi_Client *client,
+                                         workloadapi_JWTWatcher *watcher,
+                                         workloadapi_Backoff *backoff);
+
+err_t workloadapi_Client_WatchJWTBundles(workloadapi_Client *client,
+                                         workloadapi_JWTWatcher *watcher);
 
 workloadapi_X509Context *
 workloadapi_Client_FetchX509Context(workloadapi_Client *client, err_t *error);
