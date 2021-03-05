@@ -1,13 +1,13 @@
-#include "../src/jwt_watcher.h"
 #include "../src/jwt_callback.h"
+#include "../src/jwt_watcher.h"
 #include <check.h>
 
 // callback that sets an int to a value, and ignores the context.
 void set_int_callback(jwtbundle_Set *bundle_set, void *_args)
 {
     void **args = (void **) _args;
-    int val = (int) arrpop(args);
-    int *var = (int *) arrpop(args);
+    long int val = (long int) arrpop(args);
+    long int *var = (long int *) arrpop(args);
     *var = val;
 }
 
@@ -15,15 +15,15 @@ void set_int_callback(jwtbundle_Set *bundle_set, void *_args)
 void inc_int_callback(jwtbundle_Set *bundle_set, void *_args)
 {
     void **args = (void **) _args;
-    int val = (int) arrpop(args);
-    int *var = (int *) arrpop(args);
+    long int val = (long int) arrpop(args);
+    long int *var = (long int *) arrpop(args);
     *var = *(var) + val;
 }
 
 START_TEST(test_workloadapi_JWTWatcher_callback_is_called_on_update_once)
 {
     // variable to check callback
-    int toModify = 0;
+    long int toModify = 0;
     void **args = NULL;
 
     arrpush(args, (void *) &toModify);
@@ -35,7 +35,8 @@ START_TEST(test_workloadapi_JWTWatcher_callback_is_called_on_update_once)
     callback.args = (void *) args;
 
     // add callback to watcher.
-    workloadapi_JWTWatcher *watcher = (workloadapi_JWTWatcher*) calloc(1, sizeof *watcher);
+    workloadapi_JWTWatcher *watcher
+        = (workloadapi_JWTWatcher *) calloc(1, sizeof *watcher);
     watcher->jwt_callback = callback;
 
     // call update -> toModify = 10
@@ -97,8 +98,6 @@ START_TEST(test_workloadapi_newJWTWatcher_creates_client_if_null)
 
     // There was no error.
     ck_assert_uint_eq(error, NO_ERROR);
-
-    /// TODO: check if client is valid by...?
 
     // free allocated watcher.
     workloadapi_JWTWatcher_Free(watcher);
@@ -202,9 +201,7 @@ END_TEST
 int waitAndUpdate(void *args)
 {
     struct timespec now = { 3, 0 };
-    printf("sleeping\n");
     thrd_sleep(&now, NULL);
-    printf("awake\n");
     workloadapi_JWTWatcher_TriggerUpdated((workloadapi_JWTWatcher *) args);
     return 0;
 }
@@ -324,8 +321,10 @@ START_TEST(test_workloadapi_JWTWatcher_Start_blocks);
     ck_assert_int_ge(now.tv_sec, then.tv_sec + 2);
     ck_assert_int_lt(now.tv_sec, then.tv_sec + 5);
 
+    // close watcher
+    error = workloadapi_JWTWatcher_Close(watcher);
+
     // free allocated watcher.
-    workloadapi_Client_Free(config.client);
     workloadapi_JWTWatcher_Free(watcher);
 }
 END_TEST
@@ -360,7 +359,7 @@ START_TEST(test_workloadapi_JWTWatcher_Close);
     timespec_get(&then, TIME_UTC);
     thrd_t thread;
     thrd_create(&thread, waitAndUpdate, watcher); // unblocks thread
-    
+
     error = workloadapi_JWTWatcher_Start(watcher);
     ck_assert(!watcher->closed);
 
@@ -382,17 +381,20 @@ END_TEST
 
 Suite *watcher_suite(void)
 {
-    Suite *s = suite_create("watcher");
+    Suite *s = suite_create("jwt_watcher");
     TCase *tc_core = tcase_create("core");
-    tcase_add_test(tc_core,
-                   test_workloadapi_JWTWatcher_callback_is_called_on_update_once);
+    tcase_add_test(
+        tc_core,
+        test_workloadapi_JWTWatcher_callback_is_called_on_update_once);
     tcase_add_test(tc_core,
                    test_workloadapi_newJWTWatcher_creates_client_if_null);
-    tcase_add_test(tc_core, test_workloadapi_newJWTWatcher_uses_provided_client);
+    tcase_add_test(tc_core,
+                   test_workloadapi_newJWTWatcher_uses_provided_client);
     tcase_add_test(tc_core, test_workloadapi_newJWTWatcher_applies_Options);
     tcase_add_test(tc_core,
                    test_workloadapi_JWTWatcher_TimedWaitUntilUpdated_blocks);
-    tcase_add_test(tc_core, test_workloadapi_JWTWatcher_WaitUntilUpdated_blocks);
+    tcase_add_test(tc_core,
+                   test_workloadapi_JWTWatcher_WaitUntilUpdated_blocks);
     tcase_add_test(tc_core, test_workloadapi_JWTWatcher_Start_blocks);
     tcase_add_test(tc_core, test_workloadapi_JWTWatcher_Close);
 

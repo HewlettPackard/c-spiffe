@@ -5,8 +5,8 @@
 void set_int_callback(workloadapi_X509Context *context, void *_args)
 {
     void **args = (void **) _args;
-    int val = (int) arrpop(args);
-    int *var = (int *) arrpop(args);
+    long int val = (long int) arrpop(args);
+    long int *var = (long int *) arrpop(args);
     *var = val;
 }
 
@@ -14,15 +14,15 @@ void set_int_callback(workloadapi_X509Context *context, void *_args)
 void inc_int_callback(workloadapi_X509Context *context, void *_args)
 {
     void **args = (void **) _args;
-    int val = (int) arrpop(args);
-    int *var = (int *) arrpop(args);
+    long int val = (long int) arrpop(args);
+    long int *var = (long int *) arrpop(args);
     *var = *(var) + val;
 }
 
 START_TEST(test_workloadapi_Watcher_callback_is_called_on_update_once)
 {
     // variable to check callback
-    int toModify = 0;
+    long int toModify = 0;
     void **args = NULL;
 
     arrpush(args, (void *) &toModify);
@@ -34,7 +34,8 @@ START_TEST(test_workloadapi_Watcher_callback_is_called_on_update_once)
     callback.args = (void *) args;
 
     // add callback to watcher.
-    workloadapi_Watcher *watcher = calloc(1, sizeof *watcher);
+    workloadapi_Watcher *watcher
+        = (workloadapi_Watcher *) calloc(1, sizeof *watcher);
     watcher->x509callback = callback;
 
     // call update -> toModify = 10
@@ -97,8 +98,6 @@ START_TEST(test_workloadapi_newWatcher_creates_client_if_null)
     // There was no error.
     ck_assert_uint_eq(error, NO_ERROR);
 
-    /// TODO: check if client is valid by...?
-
     // free allocated watcher.
     workloadapi_Watcher_Free(watcher);
 }
@@ -132,8 +131,6 @@ START_TEST(test_workloadapi_newWatcher_uses_provided_client)
 
     // There was no error.
     ck_assert_uint_eq(error, NO_ERROR);
-
-    /// TODO: check if client is valid by...?
 
     // free allocated watcher.
     error = workloadapi_Watcher_Free(watcher);
@@ -203,12 +200,7 @@ END_TEST
 int waitAndUpdate(void *args)
 {
     struct timespec now = { 3, 0 };
-    // now.tv_nsec +=5000000000; //+.5 seconds
-    // now.tv_sec += now.tv_nsec/10000000000;
-    // now.tv_nsec = now.tv_nsec%10000000000;
-    printf("sleeping\n");
     thrd_sleep(&now, NULL);
-    printf("awake\n");
     workloadapi_Watcher_TriggerUpdated((workloadapi_Watcher *) args);
     return 0;
 }
@@ -328,8 +320,10 @@ START_TEST(test_workloadapi_Watcher_Start_blocks);
     ck_assert_int_ge(now.tv_sec, then.tv_sec + 2);
     ck_assert_int_lt(now.tv_sec, then.tv_sec + 5);
 
+    // close watcher
+    error = workloadapi_Watcher_Close(watcher);
     // free allocated watcher.
-    workloadapi_Client_Free(config.client);
+
     workloadapi_Watcher_Free(watcher);
 }
 END_TEST
@@ -347,7 +341,7 @@ START_TEST(test_workloadapi_Watcher_Close);
     config.client = NULL; // no client = create client
 
     arrput(config.client_options, setAddress);
-    // arrput(config.client_options,setHeader);
+
     // error not set.
     err_t error = NO_ERROR;
 
@@ -364,7 +358,7 @@ START_TEST(test_workloadapi_Watcher_Close);
     timespec_get(&then, TIME_UTC);
     thrd_t thread;
     thrd_create(&thread, waitAndUpdate, watcher); // unblocks thread
-    
+
     error = workloadapi_Watcher_Start(watcher);
     ck_assert(!watcher->closed);
 
