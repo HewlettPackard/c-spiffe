@@ -217,7 +217,6 @@ END_TEST
 
 ACTION(set_single_SVID_response)
 {
-
     const int ITERS = 4;
 
     FILE *fed_certs_file = fopen("./resources/certs.pem", "r");
@@ -265,6 +264,23 @@ ACTION(set_single_SVID_response)
     pout = der_bytes;
     i2d_PrivateKey(pkey, &pout);
     new_svid->set_x509_svid_key(der_bytes, pout - der_bytes);
+}
+
+ACTION(set_JWTBundle_response)
+{
+    JWTBundlesResponse *resp = arg0;
+
+    FILE *f = fopen("./resources/jwk_keys.json", "r");
+    ck_assert_ptr_ne(f, NULL);
+
+    string_t str = FILE_to_string(f);
+    fclose(f);
+
+    auto *bundles = resp->mutable_bundles();
+    (*bundles)["key0"] = str;
+    (*bundles)["key1"] = str;
+
+    arrfree(str);
 }
 
 START_TEST(test_workloadapi_Client_Close)
@@ -359,6 +375,39 @@ START_TEST(test_workloadapi_Client_FetchX509Context)
     ck_assert_str_eq(ctx->svids[0]->id.td.name, "example.org");
     delete stub;
     free(ctx);
+}
+END_TEST
+
+START_TEST(test_workloadapi_Client_FetchJWTBundles)
+{
+    // normal constructor test
+    const char *addr = "unix:///tmp/agent.sock";
+    err_t err = NO_ERROR;
+    workloadapi_Client *client = workloadapi_NewClient(&err);
+    auto cr = new grpc::testing::MockClientReader<JWTBundlesResponse>();
+
+    MockSpiffeWorkloadAPIStub *stub = new MockSpiffeWorkloadAPIStub();
+    workloadapi_Client_SetStub(client, stub);
+    workloadapi_Client_setDefaultAddressOption(client, NULL);
+    workloadapi_Client_setDefaultHeaderOption(client, NULL);
+
+    err = workloadapi_Client_Connect(client);
+
+    ck_assert_ptr_eq(client->stub, stub);
+
+    EXPECT_CALL(*stub, FetchJWTBundlesRaw(_, _)).WillOnce(Return(cr));
+    EXPECT_CALL(*cr, Read(_))
+        .WillOnce(DoAll(WithArg<0>(set_JWTBundle_response()), Return(true)));
+
+    jwtbundle_Set *set = workloadapi_Client_FetchJWTBundles(client, &err);
+    workloadapi_Client_Close(client);
+    workloadapi_Client_Free(client);
+
+    ck_assert_ptr_ne(set, NULL);
+    ck_assert_uint_eq(jwtbundle_Set_Len(set), 2);
+
+    delete stub;
+    jwtbundle_Set_Free(set);
 }
 END_TEST
 
@@ -628,6 +677,7 @@ Suite *client_suite(void)
     tcase_add_test(tc_core, test_workloadapi_Client_Connect_uses_stub);
     tcase_add_test(tc_core, test_workloadapi_Client_Close);
     tcase_add_test(tc_core, test_workloadapi_Client_FetchX509Context);
+    tcase_add_test(tc_core, test_workloadapi_Client_FetchJWTBundles);
     tcase_add_test(tc_core, test_workloadapi_Client_WatchX509Context);
     tcase_add_test(tc_core, test_workloadapi_Client_FetchJWTSVID);
 
