@@ -1,9 +1,9 @@
-#ifndef INCLUDE_WORKLOAD_JWT_WATCHER_H
-#define INCLUDE_WORKLOAD_JWT_WATCHER_H
+#ifndef INCLUDE_WORKLOAD_JWTWATCHER_H
+#define INCLUDE_WORKLOAD_JWTWATCHER_H
 
 #include "client.h"
 
-#include "jwt_callback.h"
+#include "jwtcallback.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -84,4 +84,4 @@ workloadapi_JWTWatcher_TriggerUpdated(workloadapi_JWTWatcher *watcher);
 }
 #endif
 
-#endif // INCLUDE_WORKLOAD_JWT_WATCHER_H
+#endif // INCLUDE_WORKLOAD_JWTWATCHER_H

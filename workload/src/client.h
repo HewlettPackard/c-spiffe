@@ -7,7 +7,7 @@
 #include "../../utils/src/util.h"
 #include "backoff.h"
 #include "watcher.h"
-#include "jwt_watcher.h"
+#include "jwtwatcher.h"
 #include "x509context.h"
 
 #ifdef __cplusplus

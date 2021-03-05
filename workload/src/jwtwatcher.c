@@ -1,4 +1,4 @@
-#include "jwt_watcher.h"
+#include "jwtwatcher.h"
 #include "client.h"
 
 // Function that will run on thread spun for watcher

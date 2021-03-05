@@ -80,9 +80,9 @@ client
 
 add_test(check_watcher check_watcher)
 
-add_executable(check_jwt_watcher "./check_jwt_watcher.c")
+add_executable(check_jwtwatcher "./check_jwtwatcher.c")
 
-target_link_libraries(check_jwt_watcher ${CHECK_LIBRARIES} 
+target_link_libraries(check_jwtwatcher ${CHECK_LIBRARIES} 
 client
  OpenSSL::SSL
   spiffeid
@@ -99,7 +99,7 @@ client
   crypto
   pthread)
 
-add_test(check_jwt_watcher check_jwt_watcher)
+add_test(check_jwtwatcher check_jwtwatcher)
 
 add_executable(check_x509source "./check_x509source.c")
 
