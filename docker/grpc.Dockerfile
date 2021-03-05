@@ -35,7 +35,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	libjansson-dev \
         libcjose-dev \
         libgtest-dev \
-        libgmock-dev
+        libgmock-dev \
+        python3-pip
+RUN pip3 install behave PyHamcrest pathlib2
 RUN apt-get clean
 
 # gRPC
@@ -48,6 +50,14 @@ RUN mkdir -p /tmp/grpc/cmake/build
 RUN cd /tmp/grpc/cmake/build && cmake -DgRPC_INSTALL=ON -DgRPC_BUILD_TESTS=ON ../..
 RUN sed -i '7,13d' /tmp/grpc/third_party/benchmark/test/cxx03_test.cc 
 RUN cd /tmp/grpc/cmake/build && make -j${NUM_JOBS} && make install
+
+# Install Spire Server
+ARG SPIRE_VERSION=0.12.0
+ARG SPIRE_RELEASE=https://github.com/spiffe/spire/releases/download/v${SPIRE_VERSION}/spire-${SPIRE_VERSION}-linux-x86_64-glibc.tar.gz
+ARG SPIRE_DIR=/opt/spire
+
+RUN curl --silent --location $SPIRE_RELEASE | tar -xzf -
+RUN mv spire-${SPIRE_VERSION} ${SPIRE_DIR}
 
 RUN ln -s /opt/spire/bin/spire-server /usr/bin/spire-server
 RUN ln -s /opt/spire/bin/spire-agent /usr/bin/spire-agent
