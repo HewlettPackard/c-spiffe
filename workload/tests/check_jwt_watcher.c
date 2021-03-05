@@ -39,7 +39,7 @@ START_TEST(test_workloadapi_JWTWatcher_callback_is_called_on_update_once)
     watcher->jwt_callback = callback;
 
     // call update -> toModify = 10
-    workloadapi_JWTWatcher_OnJwtBundlesUpdate(watcher, NULL);
+    workloadapi_JWTWatcher_OnJWTBundlesUpdate(watcher, NULL);
     arrfree(args);
     ck_assert_int_eq(toModify, 10);
 
@@ -50,7 +50,7 @@ START_TEST(test_workloadapi_JWTWatcher_callback_is_called_on_update_once)
     watcher->jwt_callback = callback;
 
     // call update -> toModify += 2
-    workloadapi_JWTWatcher_OnJwtBundlesUpdate(watcher, NULL);
+    workloadapi_JWTWatcher_OnJWTBundlesUpdate(watcher, NULL);
     ck_assert_int_eq(toModify, 12);
     arrfree(args);
 
@@ -61,7 +61,7 @@ START_TEST(test_workloadapi_JWTWatcher_callback_is_called_on_update_once)
     watcher->jwt_callback = callback;
 
     // call update -> toModify += 5
-    workloadapi_JWTWatcher_OnJwtBundlesUpdate(watcher, NULL);
+    workloadapi_JWTWatcher_OnJWTBundlesUpdate(watcher, NULL);
     ck_assert_int_eq(toModify, 17);
     arrfree(args);
     free(watcher);
@@ -202,9 +202,6 @@ END_TEST
 int waitAndUpdate(void *args)
 {
     struct timespec now = { 3, 0 };
-    // now.tv_nsec +=5000000000; //+.5 seconds
-    // now.tv_sec += now.tv_nsec/10000000000;
-    // now.tv_nsec = now.tv_nsec%10000000000;
     printf("sleeping\n");
     thrd_sleep(&now, NULL);
     printf("awake\n");
@@ -396,8 +393,8 @@ Suite *watcher_suite(void)
     tcase_add_test(tc_core,
                    test_workloadapi_JWTWatcher_TimedWaitUntilUpdated_blocks);
     tcase_add_test(tc_core, test_workloadapi_JWTWatcher_WaitUntilUpdated_blocks);
-    // tcase_add_test(tc_core, test_workloadapi_JWTWatcher_Start_blocks);
-    // tcase_add_test(tc_core, test_workloadapi_JWTWatcher_Close);
+    tcase_add_test(tc_core, test_workloadapi_JWTWatcher_Start_blocks);
+    tcase_add_test(tc_core, test_workloadapi_JWTWatcher_Close);
 
     suite_add_tcase(s, tc_core);
 
