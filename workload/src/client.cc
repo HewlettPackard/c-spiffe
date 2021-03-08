@@ -275,15 +275,26 @@ err_t workloadapi_Client_Close(workloadapi_Client *client)
 err_t workloadapi_Client_SetAddress(workloadapi_Client *client,
                                     const char *address)
 {
+    err_t error = NO_ERROR;
     if(!client) {
         return ERROR1;
     }
+    // validate address
+    UriUriA uri;
+    const char *err_pos;
+    if(uriParseSingleUriA(&uri, address, &err_pos) != URI_SUCCESS) {
+        return ERROR2;
+    }
+
     if(client->address) {
         util_string_t_Free(client->address);
         client->address = NULL;
     }
-    /// TODO: validate address as URI
+
     client->address = string_new(address);
+    if(!client->address) {
+        return ERROR3;
+    }
     return NO_ERROR;
 }
 
@@ -361,9 +372,6 @@ void workloadapi_Client_defaultOptions(workloadapi_Client *client,
                                    workloadapi_Client_setDefaultAddressOption);
     workloadapi_Client_ApplyOption(client,
                                    workloadapi_Client_setDefaultHeaderOption);
-
-    /// TODO: logger?
-    /// TODO: dialOptions?
 }
 
 err_t workloadapi_Client_WatchX509Context(workloadapi_Client *client,
@@ -381,10 +389,10 @@ err_t workloadapi_Client_WatchX509Context(workloadapi_Client *client,
             = workloadapi_Client_watchX509Context(client, watcher, &backoff);
         workloadapi_Watcher_OnX509ContextWatchError(watcher, err);
         err = workloadapi_Client_HandleWatchError(client, err, &backoff);
-        // TODO: check error and reuse backoff if not cancelled
         if(err == grpc::CANCELLED || err == grpc::INVALID_ARGUMENT) {
             return err;
         } else if(err != NO_ERROR) {
+            // TODO: check error and reuse backoff if not cancelled
             return err;
         }
     }
@@ -404,8 +412,6 @@ err_t workloadapi_Client_watchX509Context(workloadapi_Client *client,
     if(!backoff) {
         return ERROR2;
     }
-
-    /// TODO: Logger?
 
     grpc::ClientContext ctx;
 
@@ -434,7 +440,6 @@ err_t workloadapi_Client_watchX509Context(workloadapi_Client *client,
                 return ERROR1;
             }
             if(status.error_code() == grpc::StatusCode::INVALID_ARGUMENT) {
-                /// TODO: Logger
                 return ERROR3;
             }
             return ERROR4; // no more messages.
@@ -444,7 +449,6 @@ err_t workloadapi_Client_watchX509Context(workloadapi_Client *client,
         workloadapi_X509Context *x509context
             = workloadapi_parseX509Context(&response, &err);
         if(err != NO_ERROR) {
-            /// TODO: log parse error
             workloadapi_Watcher_OnX509ContextWatchError(watcher, err);
         } else {
             workloadapi_Watcher_OnX509ContextUpdate(watcher, x509context);
@@ -462,11 +466,9 @@ err_t workloadapi_Client_HandleWatchError(workloadapi_Client *client,
         return error;
     }
     if(error == grpc::StatusCode::INVALID_ARGUMENT) {
-        /// TODO: Logger
         return error;
     }
 
-    /// TODO: Log
     struct timespec retryAfter = workloadapi_Backoff_NextTime(backoff);
 
     mtx_lock(&(client->closed_mutex));
@@ -698,11 +700,6 @@ jwtsvid_SVID *workloadapi_Client_ValidateJWTSVID(workloadapi_Client *client,
 {
     grpc::ClientContext ctx;
 
-    if(client->headers) {
-        for(int i = 0; i < arrlen(client->headers); i += 2)
-            ctx.AddMetadata(client->headers[i], client->headers[i + 1]);
-    }
-
     ValidateJWTSVIDRequest req;
     req.set_svid(token);
     req.set_audience(audience);
@@ -723,5 +720,69 @@ jwtsvid_SVID *workloadapi_Client_ValidateJWTSVID(workloadapi_Client *client,
         // could not validate jwt svid
         *err = ERROR1;
         return NULL;
+    }
+}
+
+err_t workloadapi_Client_WatchJWTBundles(workloadapi_Client *client,
+                                         workloadapi_JWTWatcher *watcher)
+{
+    if(!client)
+        return ERROR1;
+    if(!watcher)
+        return ERROR2;
+    workloadapi_Backoff backoff = workloadapi_NewBackoff({ 1, 0 }, { 30, 0 });
+    while(true) {
+        err_t err
+            = workloadapi_Client_watchJWTBundles(client, watcher, &backoff);
+        workloadapi_JWTWatcher_OnJWTBundlesWatchError(watcher, err);
+        err = workloadapi_Client_HandleWatchError(client, err, &backoff);
+        // TODO: check error and reuse backoff if not cancelled
+        if(err == grpc::CANCELLED || err == grpc::INVALID_ARGUMENT) {
+            return err;
+        } else if(err != NO_ERROR) {
+            return err;
+        }
+    }
+}
+
+err_t workloadapi_Client_watchJWTBundles(workloadapi_Client *client,
+                                         workloadapi_JWTWatcher *watcher,
+                                         workloadapi_Backoff *backoff)
+{
+    if(!client || !watcher || !backoff) {
+        return ERROR2;
+    }
+    grpc::ClientContext ctx;
+    if(client->headers) {
+        for(int i = 0; i < arrlen(client->headers); i += 2)
+            ctx.AddMetadata(client->headers[i], client->headers[i + 1]);
+    }
+    JWTBundlesRequest req;
+    JWTBundlesResponse resp;
+    // unique_ptr gets freed after it goes out of scope
+    std::unique_ptr<grpc::ClientReaderInterface<JWTBundlesResponse>> c_reader
+        = ((SpiffeWorkloadAPI::StubInterface *) client->stub)
+              ->FetchJWTBundles(&ctx, req); // get response reader
+    while(true) {
+        bool ok = c_reader->Read(&resp);
+        if(!ok) {
+            auto status = c_reader->Finish();
+            if(status.error_code() == grpc::StatusCode::CANCELLED) {
+                return ERROR1;
+            }
+            if(status.error_code() == grpc::StatusCode::INVALID_ARGUMENT) {
+                return ERROR3;
+            }
+            return ERROR4; // no more messages.
+        }
+        workloadapi_Backoff_Reset(backoff);
+        err_t err = NO_ERROR;
+        jwtbundle_Set *set = workloadapi_parseJWTBundles(&resp, &err);
+        if(err != NO_ERROR) {
+            workloadapi_JWTWatcher_OnJWTBundlesWatchError(watcher, err);
+        } else {
+            workloadapi_JWTWatcher_OnJWTBundlesUpdate(watcher, set);
+            jwtbundle_Set_Free(set);
+        }
     }
 }

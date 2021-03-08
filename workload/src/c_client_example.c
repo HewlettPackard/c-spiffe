@@ -40,14 +40,15 @@ int main(int argc, char **argv)
     } else if(strcmp(argv[1], "svid_type=jwt") == 0) {
         spiffeid_ID id = { .td = string_new("example.com"),
                            .path = string_new("/workload1") };
+        string_t audience = string_new("audience1");
         jwtsvid_Params params
-            = { .audience = NULL, .extra_audiences = NULL, .subject = id };
+            = { .audience = audience, .extra_audiences = NULL, .subject = id };
         jwtsvid_SVID *svid
             = workloadapi_Client_FetchJWTSVID(client, &params, &error);
         if(error != NO_ERROR) {
             printf("fetch error! %d\n", (int) error);
         }
-        printf("Address : %p\n", svid);
+        printf("Address: %p\n", svid);
 
         if(svid) {
             printf("SVID Path: %s\n", svid->id.path);
@@ -63,6 +64,7 @@ int main(int argc, char **argv)
             jwtsvid_SVID_Free(svid);
         }
         spiffeid_ID_Free(&id);
+        arrfree(audience);
     } else {
         printf("Invalid argument!\n");
     }

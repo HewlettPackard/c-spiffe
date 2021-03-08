@@ -238,8 +238,7 @@ ACTION(set_single_SVID_response)
     auto new_bundle = arg0->mutable_federated_bundles();
     (*new_bundle)["spiffe://federated.com"] = std::string(
         (char *) bundle_der_bytes, bundle_pout - bundle_der_bytes);
-    /// TODO: add files to resources/
-    // set certificates and private key
+    
     FILE *certs_file
         = fopen("./resources/good-leaf-and-intermediate.pem", "r");
     FILE *pkey_file = fopen("./resources/key-pkcs8-ecdsa.pem", "r");
@@ -510,8 +509,7 @@ ACTION(set_double_SVID_response)
     auto new_bundle = arg0->mutable_federated_bundles();
     (*new_bundle)["spiffe://example3.com"] = std::string(
         (char *) bundle_der_bytes, bundle_pout - bundle_der_bytes);
-    /// TODO: add files to resources/
-    // set certificates and private key
+    
     FILE *certs_file
         = fopen("./resources/good-leaf-and-intermediate.pem", "r");
     FILE *pkey_file = fopen("./resources/key-pkcs8-ecdsa.pem", "r");
