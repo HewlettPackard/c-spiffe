@@ -30,6 +30,10 @@ jobs:
         shell: bash
         run: cd build && make test
 
+      - name: Coverage Test
+        shell: bash
+        run: cd build && make gcov && make lcov
+
       - name: Integration Test
         shell: bash
         run: cd integration_test && behave --tags=-@wip
