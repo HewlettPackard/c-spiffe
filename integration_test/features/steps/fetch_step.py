@@ -34,16 +34,18 @@ def step_impl(context):
     assert_that(context.svid, is_("(nil)"))
 
 
-@when('I fetch Bundle')
-def step_impl(context):
-    c_client_bin = os.popen("../build/workload/c_client_bundle")
-    result = c_client_bin.read()
-    result = result.splitlines()[0]
-    context.bundle = result.replace("Address : ", "")
+@when('I fetch "{profile}" Bundle')
+def step_impl(context, profile):
+    c_client_bin = os.popen("../build/workload/c_client_bundle bundle_type=%s" % profile.lower())
+    context.result = c_client_bin.read()
 
 
 @then('I check that the Bundle is returned correctly')
 def step_impl(context):
+    assert_that(context.result.find("error"), is_(-1), "There was an error")
+    assert_that(context.result.find("Address : "), is_not(-1), "There is no Address")
+    result = context.result.splitlines()
+    context.bundle = result[0].split(" ")[-1]
     assert_that(context.bundle, is_not("(nil)"))
 
 
@@ -63,4 +65,8 @@ def step_impl(context):
 
 @then('I check that the Bundle is not returned')
 def step_impl(context):
+    assert_that(context.result.find("error"), is_not(-1), "There was no error")
+    assert_that(context.result.find("Address : "), is_not(-1), "There is no Address")
+    result = context.result.splitlines()
+    context.bundle = result[1].split(" ")[-1]
     assert_that(context.bundle, is_("(nil)"))
