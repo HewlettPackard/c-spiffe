@@ -6,10 +6,6 @@
 #include "../../svid/x509svid/src/svid.h"
 #include "client.h"
 #include "x509context.h"
-
-#include "../../bundle/jwtbundle/src/bundle.h"
-#include "../../bundle/jwtbundle/src/set.h"
-
 #include <threads.h>
 #include <time.h>
 
@@ -23,9 +19,6 @@ typedef struct {
     workloadapi_Client *client;
     workloadapi_ClientOption *client_options;
 } workloadapi_WatcherConfig;
-
-// typedef void(workloadapi_jwtBundleSetFunc_t)(jwtbundle_Set*);
-// eg.:
 
 typedef struct workloadapi_Watcher {
     /** Workload API client */
@@ -53,16 +46,12 @@ typedef struct workloadapi_Watcher {
     /** function called with updated x509Context */
     workloadapi_X509Callback x509callback;
 
-    // function called with updated JWTBundleSet
-    // jwtBundleSetFunc_t* jwtBundleSetUpdateFunc;
-
 } workloadapi_Watcher;
 
 /** creates and sets up a new watcher, doesn't dial client yet. */
 workloadapi_Watcher *workloadapi_newWatcher(
     workloadapi_WatcherConfig config,
-    workloadapi_X509Callback
-        x509callback /*, jwtBundleSetFunc_t* jwtBundleSetUpdateFunc*/,
+    workloadapi_X509Callback x509callback,
     err_t *error);
 
 /** starts watcher thread and blocks until updated. dials client if needed. */
@@ -78,20 +67,15 @@ err_t workloadapi_Watcher_Free(workloadapi_Watcher *watcher);
 void workloadapi_Watcher_OnX509ContextUpdate(workloadapi_Watcher *watcher,
                                              workloadapi_X509Context *context);
 
-/** Called by Client when an error occurs and the watcher must be made aware */
+/** Called by Client when an x509 error occurs and the watcher must be made aware */
 void workloadapi_Watcher_OnX509ContextWatchError(workloadapi_Watcher *watcher,
                                                  err_t error);
 
-// Function called by Client when new JWT response arrives
-// void workloadapi_Watcher_OnJwtBundlesUpdate(workloadapi_Watcher*
-// watcher, jwtbundle_Set* context);
-// void workloadapi_Watcher_OnJwtBundlesWatchError(workloadapi_Watcher*
-// watcher, err_t error);
 
 /** Blocks until an update is received. */
 err_t workloadapi_Watcher_WaitUntilUpdated(workloadapi_Watcher *watcher);
 err_t workloadapi_Watcher_TimedWaitUntilUpdated(workloadapi_Watcher *watcher,
-                                                struct timespec *timer);
+                                                const struct timespec *timer);
 /** Broadcasts an update to all waiting. */
 err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher *watcher);
 

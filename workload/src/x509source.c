@@ -16,8 +16,6 @@ workloadapi_NewX509Source(workloadapi_X509SourceConfig *config, err_t *err)
         memset(config, 0, sizeof *config);
     }
 
-    /// TODO: add X509SourceOption to set config
-
     workloadapi_X509Source *source
         = (workloadapi_X509Source *) malloc(sizeof *source);
     source->closed = true;
