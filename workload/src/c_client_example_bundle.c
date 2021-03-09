@@ -27,7 +27,7 @@ int main(int argc, char **argv)
         if(error != NO_ERROR) {
             printf("fetch error! %d\n", (int) error);
         }
-        printf("Address : %p\n", set);
+        printf("Address: %p\n", set);
 
         if(set) {
             printf("Bundles map Address: %p\n", set->bundles);
@@ -44,7 +44,7 @@ int main(int argc, char **argv)
         if(error != NO_ERROR) {
             printf("fetch error! %d\n", (int) error);
         }
-        printf("Address : %p\n", set);
+        printf("Address: %p\n", set);
 
         if(set) {
             printf("Bundles map Address: %p\n", set->bundles);
