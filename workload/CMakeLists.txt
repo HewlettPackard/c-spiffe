@@ -110,9 +110,14 @@ set(C_CLIENT
 add_executable(c_client "${C_CLIENT}")
 target_link_libraries(c_client source client backoff)
 
-
 set(C_CLIENT_BUNDLE
     src/c_client_example_bundle.c
 )
 add_executable(c_client_bundle "${C_CLIENT_BUNDLE}")
 target_link_libraries(c_client_bundle client)
+
+set(WATCH_JWT_BUNDLES
+    src/watch_jwt_bundles.c
+)
+add_executable(example_watch_jwt_bundles "${WATCH_JWT_BUNDLES}")
+target_link_libraries(example_watch_jwt_bundles client)
