@@ -102,13 +102,13 @@ set(CPP_CLIENT
     src/cpp_client_example.cc
 )
 add_executable(cpp_client "${CPP_CLIENT}")
-target_link_libraries(cpp_client source client backoff)
+target_link_libraries(cpp_client source )
 
 set(C_CLIENT
     src/c_client_example.c
 )
 add_executable(c_client "${C_CLIENT}")
-target_link_libraries(c_client source client backoff)
+target_link_libraries(c_client source )
 
 set(C_CLIENT_BUNDLE
     src/c_client_example_bundle.c
