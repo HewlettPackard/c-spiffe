@@ -1,4 +1,4 @@
-@fetch @JWT @wip
+@fetch @JWT
 Feature: Fetch JWT
 
 
