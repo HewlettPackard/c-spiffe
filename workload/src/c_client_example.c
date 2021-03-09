@@ -27,7 +27,7 @@ int main(int argc, char **argv)
         if(error != NO_ERROR) {
             printf("fetch error! %d\n", (int) error);
         }
-        printf("Address : %p\n", svid);
+        printf("Address: %p\n", svid);
 
         if(svid) {
             printf("SVID Path: %s\n", svid->id.path);
