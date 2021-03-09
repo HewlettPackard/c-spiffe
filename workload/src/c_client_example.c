@@ -38,9 +38,10 @@ int main(int argc, char **argv)
             x509svid_SVID_Free(svid);
         }
     } else if(strcmp(argv[1], "svid_type=jwt") == 0) {
-        spiffeid_ID id = { .td = string_new("example.com"),
-                           .path = string_new("/workload1") };
-        string_t audience = string_new("spiffe://example.com/audience1");
+        // spiffeid_ID id = { .td = string_new("example.org"),
+        //                    .path = string_new("/workload1") };
+        spiffeid_ID id = { NULL, NULL };
+        string_t audience = string_new("spiffe://example.org/audience1");
         jwtsvid_Params params
             = { .audience = audience, .extra_audiences = NULL, .subject = id };
         jwtsvid_SVID *svid

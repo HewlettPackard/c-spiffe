@@ -646,10 +646,12 @@ jwtsvid_SVID *workloadapi_Client_FetchJWTSVID(workloadapi_Client *client,
     JWTSVIDRequest req;
 
     // set spiffe id
-    string_t id = spiffeid_ID_String(params->subject);
-    req.set_spiffe_id(id);
-    arrfree(id);
-
+    if(!spiffeid_ID_IsZero(params->subject)) {
+        string_t id = spiffeid_ID_String(params->subject);
+        req.set_spiffe_id(id);
+        arrfree(id);
+    }
+    
     // set audiences
     if(params->audience) {
         req.add_audience(params->audience);
