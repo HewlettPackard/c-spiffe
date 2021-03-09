@@ -136,13 +136,19 @@ jwtsvid_SVID *workloadapi_parseJWTSVID(const JWTSVIDResponse *resp,
             params->audience = NULL;
         }
 
-        auto id = resp->svids()[0];
-        string_t token = string_new(id.svid().c_str());
-        jwtsvid_SVID *svid
-            = jwtsvid_ParseInsecure(token, params->extra_audiences, err);
-        arrfree(token);
+        if(resp->svids_size() > 0) {
+            auto id = resp->svids(0);
+            string_t token = string_new(id.svid().c_str());
+            jwtsvid_SVID *svid
+                = jwtsvid_ParseInsecure(token, params->extra_audiences, err);
+            arrfree(token);
 
-        return svid;
+            return svid;
+        } else {
+            //no SVID returned
+            *err = ERROR2;
+            return NULL;
+        }        
     }
     // null pointer error
     *err = ERROR1;
