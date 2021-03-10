@@ -6,8 +6,8 @@
 #include "../../svid/x509svid/src/svid.h"
 #include "../../utils/src/util.h"
 #include "backoff.h"
-#include "watcher.h"
 #include "jwtwatcher.h"
+#include "watcher.h"
 #include "x509context.h"
 
 #ifdef __cplusplus
@@ -16,14 +16,14 @@ extern "C"
 #endif
 
 /** pointer to gRPC construct, can't use those types in the header */
-typedef void *workloadapi_Stub; // api stub
+typedef void *workloadapi_Stub;    // api stub
 typedef void *workloadapi_Context; // gRPC context with cancel utils
 
 typedef struct workloadapi_Watcher workloadapi_Watcher;
 typedef struct workloadapi_JWTWatcher workloadapi_JWTWatcher;
 
 typedef struct workloadapi_Client {
-    workloadapi_Context* context_list;
+    workloadapi_Context *context_list;
     workloadapi_Stub stub;
     bool owns_stub;
     string_arr_t headers;
@@ -39,7 +39,8 @@ err_t workloadapi_Client_Free(workloadapi_Client *client);
 err_t workloadapi_Client_Connect(workloadapi_Client *client);
 err_t workloadapi_Client_Close(workloadapi_Client *client);
 
-/** ClientOptions are functions, that will modify the client, with an optional argument. */
+/** ClientOptions are functions, that will modify the client, with an
+ * optional argument. */
 typedef void (*workloadapi_ClientOption)(workloadapi_Client *, void *);
 
 err_t workloadapi_Client_SetAddress(workloadapi_Client *client,
