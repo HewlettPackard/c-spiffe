@@ -6,8 +6,8 @@ project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C CXX)
 #set(CMAKE_CXX_STANDARD 14)
 #set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
-find_package(OpenSSL REQUIRED)
-find_package(GTest REQUIRED)
+# find_package(OpenSSL REQUIRED)
+# find_package(GTest REQUIRED)
 set (proto_name ${TARGET_NAME})
 
 
