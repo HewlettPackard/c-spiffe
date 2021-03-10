@@ -410,7 +410,6 @@ START_TEST(test_workloadapi_Client_FetchJWTBundles)
 }
 END_TEST
 
-
 const char token1[]
     = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZ"
       "lZi1hODM5LTZmZjE2MDI3YWY3OCJ9."

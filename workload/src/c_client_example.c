@@ -71,7 +71,6 @@ int main(int argc, char **argv)
         printf("Usage:\n\t./c_client "
                "svid_type=jwt\n\t./c_client svid_type=x509\n");
         exit(-1);
-
     }
 
     error = workloadapi_Client_Close(client);

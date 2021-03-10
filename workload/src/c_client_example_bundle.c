@@ -57,11 +57,9 @@ int main(int argc, char **argv)
         }
     } else {
         printf("Invalid argument!\n");
-
         printf("Usage:\n\t./c_client_bundle "
                "bundle_type=jwt\n\t./c_client_bundle bundle_type=x509\n");
         exit(-1);
-
     }
 
     error = workloadapi_Client_Close(client);
