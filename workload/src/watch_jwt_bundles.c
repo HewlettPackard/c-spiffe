@@ -35,27 +35,28 @@ int main(int argc, char const *argv[])
     workloadapi_JWTWatcher* watcher = workloadapi_newJWTWatcher(config,cb,&error);
 
     if(error){
-        printf("erro %d new\n",error);
+        printf("error %d on newJWTWatcher()\n",error);
     }
-    printf("press Enter to stop\n");
+    printf("press Enter to stop.\n");
     error = workloadapi_JWTWatcher_Start(watcher);
 
     if(error){
-        printf("erro %d start\n",error);
+        printf("error %d on JWTWatcher_Start()\n",error);
     }
     char ch;
     scanf("%c",&ch);
-
+    
+    printf("Stopping.\n");
+    
     error = workloadapi_JWTWatcher_Close(watcher);
     if(error){
-        printf("error %d close\n",error);
+        printf("error %d on JWTWatcher_Close()\n",error);
     }
-    printf("close client?\n");
     error = workloadapi_JWTWatcher_Free(watcher);
     if(error){
-        printf("error %d free\n",error);
+        printf("error %d on JWTWatcher_Free()\n",error);
     }
-printf("close client?\n");
+    
     arrfree(config.client_options);
 
     return 0;
