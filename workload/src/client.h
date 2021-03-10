@@ -17,11 +17,13 @@ extern "C"
 
 /** pointer to gRPC construct, can't use those types in the header */
 typedef void *workloadapi_Stub; // api stub
+typedef void *workloadapi_Context; // gRPC context with cancel utils
 
 typedef struct workloadapi_Watcher workloadapi_Watcher;
 typedef struct workloadapi_JWTWatcher workloadapi_JWTWatcher;
 
 typedef struct workloadapi_Client {
+    workloadapi_Context* context_list;
     workloadapi_Stub stub;
     bool owns_stub;
     string_arr_t headers;

@@ -189,6 +189,7 @@ workloadapi_Client *workloadapi_NewClient(err_t *error)
     client->stub = NULL;
     client->address = NULL;
     client->headers = NULL;
+    client->context_list = NULL;
     mtx_init(&(client->closed_mutex), mtx_plain);
     cnd_init(&(client->closed_cond));
     mtx_lock(&(client->closed_mutex));
@@ -264,6 +265,12 @@ err_t workloadapi_Client_Close(workloadapi_Client *client)
         delete((SpiffeWorkloadAPI::Stub *) client->stub);
         client->owns_stub = false;
     }
+    for (size_t i = 0, length = arrlen(client->context_list); i < length; i++)
+    {
+        ((grpc::ClientContext*) client->context_list[i])->TryCancel();
+    }
+    arrfree(client->context_list);
+    
     client->stub = NULL;
     cnd_broadcast(&(client->closed_cond));
     mtx_unlock(&(client->closed_mutex));
@@ -483,7 +490,7 @@ err_t workloadapi_Client_HandleWatchError(workloadapi_Client *client,
             return NO_ERROR;
         } else if(wait_ret == thrd_success) { // signaled by closeClient
             mtx_unlock(&(client->closed_mutex));
-            return ERROR5;
+            return ERROR1; // ERROR1 == client closing
         } else {
             mtx_unlock(&(client->closed_mutex));
             return ERROR6;
@@ -681,17 +688,18 @@ err_t workloadapi_Client_watchJWTBundles(workloadapi_Client *client,
     if(!client || !watcher || !backoff) {
         return ERROR2;
     }
-    grpc::ClientContext ctx;
+    grpc::ClientContext* ctx = new grpc::ClientContext();
     if(client->headers) {
         for(int i = 0; i < arrlen(client->headers); i += 2)
-            ctx.AddMetadata(client->headers[i], client->headers[i + 1]);
+            ctx->AddMetadata(client->headers[i], client->headers[i + 1]);
     }
     JWTBundlesRequest req;
     JWTBundlesResponse resp;
     // unique_ptr gets freed after it goes out of scope
     std::unique_ptr<grpc::ClientReaderInterface<JWTBundlesResponse>> c_reader
         = ((SpiffeWorkloadAPI::StubInterface *) client->stub)
-              ->FetchJWTBundles(&ctx, req); // get response reader
+              ->FetchJWTBundles(ctx, req); // get response reader
+    arrput(client->context_list,(void*) ctx);
     while(true) {
         bool ok = c_reader->Read(&resp);
         if(!ok) {
