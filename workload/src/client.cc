@@ -136,13 +136,19 @@ jwtsvid_SVID *workloadapi_parseJWTSVID(const JWTSVIDResponse *resp,
             params->audience = NULL;
         }
 
-        auto id = resp->svids()[0];
-        string_t token = string_new(id.svid().c_str());
-        jwtsvid_SVID *svid
-            = jwtsvid_ParseInsecure(token, params->extra_audiences, err);
-        arrfree(token);
+        if(resp->svids_size() > 0) {
+            auto id = resp->svids(0);
+            string_t token = string_new(id.svid().c_str());
+            jwtsvid_SVID *svid
+                = jwtsvid_ParseInsecure(token, params->extra_audiences, err);
+            arrfree(token);
 
-        return svid;
+            return svid;
+        } else {
+            //no SVID returned
+            *err = ERROR2;
+            return NULL;
+        }        
     }
     // null pointer error
     *err = ERROR1;
@@ -517,9 +523,12 @@ workloadapi_Client_FetchX509Context(workloadapi_Client *client, err_t *error)
         if(*error != NO_ERROR) {
             return NULL;
         }
+        return ret;
+    } else {
+        // could not fetch x509 context
+        *error = ERROR1;
+        return NULL;
     }
-
-    return ret; // no response -> no bundle
 }
 
 x509bundle_Set *workloadapi_Client_FetchX509Bundles(workloadapi_Client *client,
@@ -546,9 +555,12 @@ x509bundle_Set *workloadapi_Client_FetchX509Bundles(workloadapi_Client *client,
         if(*err != NO_ERROR) {
             return NULL;
         }
+        return ret_set;
+    } else {
+        //could not fetch x509 bundles
+        *err = ERROR1;
+        return NULL;
     }
-
-    return ret_set; // no response -> no bundle
 }
 
 x509svid_SVID **workloadapi_Client_FetchX509SVIDs(workloadapi_Client *client,
@@ -575,9 +587,12 @@ x509svid_SVID **workloadapi_Client_FetchX509SVIDs(workloadapi_Client *client,
         if(*err != NO_ERROR) {
             return NULL;
         }
+        return ret_svids;
+    } else {
+        // could not parse x509 svids
+        *err = ERROR1;
+        return NULL;
     }
-
-    return ret_svids; // no response -> no bundle
 }
 
 x509svid_SVID *workloadapi_Client_FetchX509SVID(workloadapi_Client *client,
@@ -604,12 +619,17 @@ x509svid_SVID *workloadapi_Client_FetchX509SVID(workloadapi_Client *client,
         if(*err != NO_ERROR) {
             return NULL;
         }
+        if(arrlen(svids) == 0) {
+            return NULL; // Should never happen
+        }
+        x509svid_SVID *ret_svid = svids[0];
+        arrfree(svids);  // free outer array
+        return ret_svid; // no response -> no bundle
+    } else {
+        // could not fetch x509 svid;
+        *err = ERROR1;
+        return NULL;
     }
-    if(arrlen(svids) == 0)
-        return NULL; // Should never happen
-    x509svid_SVID *ret_svid = svids[0];
-    arrfree(svids);  // free outer array
-    return ret_svid; // no response -> no bundle
 }
 
 jwtsvid_SVID *workloadapi_Client_FetchJWTSVID(workloadapi_Client *client,
@@ -626,10 +646,12 @@ jwtsvid_SVID *workloadapi_Client_FetchJWTSVID(workloadapi_Client *client,
     JWTSVIDRequest req;
 
     // set spiffe id
-    string_t id = spiffeid_ID_String(params->subject);
-    req.set_spiffe_id(id);
-    arrfree(id);
-
+    if(!spiffeid_ID_IsZero(params->subject)) {
+        string_t id = spiffeid_ID_String(params->subject);
+        req.set_spiffe_id(id);
+        arrfree(id);
+    }
+    
     // set audiences
     if(params->audience) {
         req.add_audience(params->audience);
@@ -648,6 +670,62 @@ jwtsvid_SVID *workloadapi_Client_FetchJWTSVID(workloadapi_Client *client,
         return workloadapi_parseJWTSVID(&resp, params, err);
     } else {
         // could not fetch jwt svid
+        *err = ERROR1;
+        return NULL;
+    }
+}
+
+jwtbundle_Set *workloadapi_Client_FetchJWTBundles(workloadapi_Client *client,
+                                                  err_t *err)
+{
+    grpc::ClientContext ctx;
+
+    if(client->headers) {
+        for(int i = 0; i < arrlen(client->headers); i += 2)
+            ctx.AddMetadata(client->headers[i], client->headers[i + 1]);
+    }
+
+    JWTBundlesRequest req;
+    std::unique_ptr<grpc::ClientReaderInterface<JWTBundlesResponse>> c_reader
+        = ((SpiffeWorkloadAPI::StubInterface *) client->stub)
+              ->FetchJWTBundles(&ctx, req);
+
+    JWTBundlesResponse resp;
+    bool success = c_reader->Read(&resp);
+    if(success) {
+        // parse response
+        return workloadapi_parseJWTBundles(&resp, err);
+    } else {
+        // could not fetch jwt bundles
+        *err = ERROR1;
+        return NULL;
+    }
+}
+
+jwtsvid_SVID *workloadapi_Client_ValidateJWTSVID(workloadapi_Client *client,
+                                                 char *token, char *audience,
+                                                 err_t *err)
+{
+    grpc::ClientContext ctx;
+
+    ValidateJWTSVIDRequest req;
+    req.set_svid(token);
+    req.set_audience(audience);
+
+    ValidateJWTSVIDResponse resp;
+    grpc::Status status = ((SpiffeWorkloadAPI::StubInterface *) client->stub)
+                              ->ValidateJWTSVID(&ctx, req, &resp);
+
+    if(status.ok()) {
+        // parse response
+        string_arr_t audiences_array = NULL;
+        arrput(audiences_array, audience);
+        jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, audiences_array, err);
+        arrfree(audiences_array);
+
+        return svid;
+    } else {
+        // could not validate jwt svid
         *err = ERROR1;
         return NULL;
     }
@@ -674,6 +752,7 @@ err_t workloadapi_Client_WatchJWTBundles(workloadapi_Client *client,
         }
     }
 }
+
 err_t workloadapi_Client_watchJWTBundles(workloadapi_Client *client,
                                          workloadapi_JWTWatcher *watcher,
                                          workloadapi_Backoff *backoff)

@@ -37,33 +37,34 @@ err_t workloadapi_Client_Free(workloadapi_Client *client);
 err_t workloadapi_Client_Connect(workloadapi_Client *client);
 err_t workloadapi_Client_Close(workloadapi_Client *client);
 
-/** ClientOptions are functions, that will modify the client, with an optional argument. */
+/** ClientOptions are functions, that will modify the client, with an
+ * optional argument. */
 typedef void (*workloadapi_ClientOption)(workloadapi_Client *, void *);
 
 err_t workloadapi_Client_SetAddress(workloadapi_Client *client,
                                     const char *address);
-err_t workloadapi_Client_AddHeader(workloadapi_Client *client, const char *key,
-                                   const char *value);
-err_t workloadapi_Client_SetHeader(workloadapi_Client *client, const char *key,
-                                   const char *value);
+err_t workloadapi_Client_AddHeader(workloadapi_Client *client,
+                                    const char *key, const char *value);
+err_t workloadapi_Client_SetHeader(workloadapi_Client *client,
+                                    const char *key, const char *value);
 err_t workloadapi_Client_ClearHeaders(workloadapi_Client *client);
 err_t workloadapi_Client_SetStub(workloadapi_Client *client,
-                                 workloadapi_Stub stub);
+                                    workloadapi_Stub stub);
 
 void workloadapi_Client_ApplyOption(workloadapi_Client *client,
                                     workloadapi_ClientOption option);
 void workloadapi_Client_ApplyOptionWithArg(workloadapi_Client *client,
-                                           workloadapi_ClientOption option,
-                                           void *arg);
+                                            workloadapi_ClientOption option,
+                                            void *arg);
 
 void workloadapi_Client_setDefaultAddressOption(workloadapi_Client *client,
                                                 void *not_used);
 void workloadapi_Client_setDefaultHeaderOption(workloadapi_Client *client,
-                                               void *not_used);
+                                                void *not_used);
 
 /** default options for client. must set all attributes */
 void workloadapi_Client_defaultOptions(workloadapi_Client *client,
-                                       void *not_used);
+                                        void *not_used);
 
 err_t workloadapi_Client_WatchX509Context(
     workloadapi_Client *client,
@@ -74,8 +75,8 @@ err_t workloadapi_Client_watchX509Context(
     workloadapi_Backoff *backoff); // used internally
 
 err_t workloadapi_Client_HandleWatchError(workloadapi_Client *client,
-                                          err_t error,
-                                          workloadapi_Backoff *backoff);
+                                            err_t error,
+                                            workloadapi_Backoff *backoff);
 
 err_t workloadapi_Client_watchJWTBundles(workloadapi_Client *client,
                                          workloadapi_JWTWatcher *watcher,
@@ -85,16 +86,24 @@ err_t workloadapi_Client_WatchJWTBundles(workloadapi_Client *client,
                                          workloadapi_JWTWatcher *watcher);
 
 workloadapi_X509Context *
-workloadapi_Client_FetchX509Context(workloadapi_Client *client, err_t *error);
-x509bundle_Set *workloadapi_Client_FetchX509Bundles(workloadapi_Client *client,
-                                                    err_t *error);
+workloadapi_Client_FetchX509Context(workloadapi_Client *client,
+                                    err_t *error);
+x509bundle_Set *
+workloadapi_Client_FetchX509Bundles(workloadapi_Client *client,
+                                    err_t *error);
 x509svid_SVID *workloadapi_Client_FetchX509SVID(workloadapi_Client *client,
                                                 err_t *error);
-x509svid_SVID **workloadapi_Client_FetchX509SVIDs(workloadapi_Client *client,
-                                                  err_t *error);
+x509svid_SVID **
+workloadapi_Client_FetchX509SVIDs(workloadapi_Client *client,
+                                    err_t *error);
 jwtsvid_SVID *workloadapi_Client_FetchJWTSVID(workloadapi_Client *client,
-                                              jwtsvid_Params *params,
-                                              err_t *err);
+                                                jwtsvid_Params *params,
+                                                err_t *err);
+jwtbundle_Set *
+workloadapi_Client_FetchJWTBundles(workloadapi_Client *client, err_t *err);
+jwtsvid_SVID *
+workloadapi_Client_ValidateJWTSVID(workloadapi_Client *client, char *token,
+                                    char *audience, err_t *err);
 /// Implemented in client.cc, not part of public API (Needs grpc Response
 /// class, from C++)
 // x509bundle_Set* workloadapi_parseX509Bundles(
