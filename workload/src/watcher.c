@@ -11,16 +11,15 @@ int workloadapi_Watcher_X509backgroundFunc(void *_watcher)
     err_t error = NO_ERROR;
     do {
         error = workloadapi_Client_WatchX509Context(watcher->client, watcher);
-    } while(error != ERROR5); // error5 == client closed
+    } while(error != ERROR3 && error != ERROR1); // error1 == client closed,
+                                                 // error3 == INVALID_ARGUMENT
     return (int) error;
 }
 
 // new watcher, creates client if not provided.
-workloadapi_Watcher *workloadapi_newWatcher(
-    workloadapi_WatcherConfig config,
-    workloadapi_X509Callback
-        x509callback,
-    err_t *error)
+workloadapi_Watcher *
+workloadapi_newWatcher(workloadapi_WatcherConfig config,
+                       workloadapi_X509Callback x509callback, err_t *error)
 {
 
     workloadapi_Watcher *newW
@@ -38,7 +37,8 @@ workloadapi_Watcher *workloadapi_newWatcher(
         newW->client = config.client;
         newW->owns_client = false;
         if(config.client_options) {
-            for(size_t i = 0, size = arrlenu(config.client_options); i < size; ++i) {
+            for(size_t i = 0, size = arrlenu(config.client_options); i < size;
+                ++i) {
                 workloadapi_Client_ApplyOption(config.client,
                                                config.client_options[i]);
             }
@@ -51,7 +51,8 @@ workloadapi_Watcher *workloadapi_newWatcher(
         }
         newW->owns_client = true;
         if(config.client_options) {
-            for(size_t i = 0, size = arrlenu(config.client_options); i < size; ++i) {
+            for(size_t i = 0, size = arrlenu(config.client_options); i < size;
+                ++i) {
                 workloadapi_Client_ApplyOption(newW->client,
                                                config.client_options[i]);
             }
