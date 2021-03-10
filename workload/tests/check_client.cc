@@ -238,7 +238,7 @@ ACTION(set_single_SVID_response)
     auto new_bundle = arg0->mutable_federated_bundles();
     (*new_bundle)["spiffe://federated.com"] = std::string(
         (char *) bundle_der_bytes, bundle_pout - bundle_der_bytes);
-    
+
     FILE *certs_file
         = fopen("./resources/good-leaf-and-intermediate.pem", "r");
     FILE *pkey_file = fopen("./resources/key-pkcs8-ecdsa.pem", "r");
@@ -410,7 +410,8 @@ START_TEST(test_workloadapi_Client_FetchJWTBundles)
 }
 END_TEST
 
-const char token[]
+
+const char token1[]
     = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZ"
       "lZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
       "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9"
@@ -428,7 +429,7 @@ ACTION(set_JWTSVID_response)
     JWTSVIDResponse *resp = arg1;
     auto svid = resp->add_svids();
     svid->set_spiffe_id(req.spiffe_id());
-    svid->set_svid(token);
+    svid->set_svid(token1);
 }
 
 START_TEST(test_workloadapi_Client_FetchJWTSVID)
@@ -476,12 +477,76 @@ START_TEST(test_workloadapi_Client_FetchJWTSVID)
     ck_assert_ptr_ne(svid->id.td.name, NULL);
     ck_assert_str_eq(svid->id.td.name, "example.com");
     ck_assert_ptr_ne(svid->token, NULL);
-    ck_assert_str_eq(svid->token, token);
+    ck_assert_str_eq(svid->token, token1);
 
     delete stub;
     arrfree(params.audience);
     util_string_arr_t_Free(params.extra_audiences);
     spiffeid_ID_Free(&(params.subject));
+    jwtsvid_SVID_Free(svid);
+}
+END_TEST
+
+const char token2[]
+    = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZlZi1"
+      "hODM5LTZmZjE2MDI3YWY3OCJ9."
+      "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJhdWQiOiJzcGlmZmU"
+      "6Ly9leGFtcGxlLm9yZy9hdWRpZW5jZTEiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MT"
+      "YyMzkwMjIsImV4cCI6MTYyMDAwMDAwMH0.fU-XY-AwR_BjKkvR3yafygceTB1AUP3xsp_"
+      "6KLn2MZBlA-LPalbayXZxYasR_t7Fc6cRHtYpNof4341BxgFPuzXIM_"
+      "3kPw5Bno9ij4M5hKr7vvpuDfB2Bhl6UzPWI_"
+      "BJQWB18wc7L2L7kUVdWCavEU8Jv6JwVPsyQufruMHCbBOpJRaL-"
+      "4YEPOWLUOLlJxMgHNfnAdXy15GTODDO3Y5DlC_BjTcMdYB6aS_"
+      "8QiFplVjwJ0YvKalj7wB2hdlSYdB8C9exWqQn9xUZhTK_IJ_Yc1DQG9LhKMEjVls0Lwnv3-"
+      "eb7o58PTneMGYjTwsD4Ladf3L94izRK0FCfINfwvL2TA";
+
+START_TEST(test_workloadapi_Client_ValidateJWTSVID)
+{
+    // normal constructor test
+    const char *addr = "unix:///tmp/agent.sock";
+    err_t err = NO_ERROR;
+    workloadapi_Client *client = workloadapi_NewClient(&err);
+
+    MockSpiffeWorkloadAPIStub *stub = new MockSpiffeWorkloadAPIStub();
+    workloadapi_Client_SetStub(client, stub);
+    workloadapi_Client_setDefaultAddressOption(client, NULL);
+    workloadapi_Client_setDefaultHeaderOption(client, NULL);
+
+    err = workloadapi_Client_Connect(client);
+
+    ck_assert_ptr_eq(client->stub, stub);
+
+    EXPECT_CALL(*stub, ValidateJWTSVID(_, _, _))
+        .WillOnce(Return(grpc::Status::OK));
+
+    string_t my_token = string_new(token2);
+    char audience[] = "spiffe://example.org/audience1";
+    jwtsvid_SVID *svid
+        = workloadapi_Client_ValidateJWTSVID(client, my_token, audience, &err);
+    arrfree(my_token);
+
+    workloadapi_Client_Close(client);
+    workloadapi_Client_Free(client);
+
+    ck_assert_ptr_ne(svid, NULL);
+    ck_assert_ptr_ne(svid->claims, NULL);
+    ck_assert_ptr_ne(svid->audience, NULL);
+    ck_assert_uint_eq(arrlenu(svid->audience), 1);
+    ck_assert_uint_eq(shlenu(svid->claims), 5);
+    ck_assert_int_ge(shgeti(svid->claims, "sub"), 0);
+    ck_assert_int_ge(shgeti(svid->claims, "aud"), 0);
+    ck_assert_int_ge(shgeti(svid->claims, "name"), 0);
+    ck_assert_int_ge(shgeti(svid->claims, "iat"), 0);
+    ck_assert_int_ge(shgeti(svid->claims, "exp"), 0);
+    ck_assert_int_eq(svid->expiry, 1620000000);
+    ck_assert_ptr_ne(svid->id.path, NULL);
+    ck_assert_str_eq(svid->id.path, "/workload1");
+    ck_assert_ptr_ne(svid->id.td.name, NULL);
+    ck_assert_str_eq(svid->id.td.name, "example.com");
+    ck_assert_ptr_ne(svid->token, NULL);
+    ck_assert_str_eq(svid->token, token2);
+
+    delete stub;
     jwtsvid_SVID_Free(svid);
 }
 END_TEST
@@ -509,7 +574,7 @@ ACTION(set_double_SVID_response)
     auto new_bundle = arg0->mutable_federated_bundles();
     (*new_bundle)["spiffe://example3.com"] = std::string(
         (char *) bundle_der_bytes, bundle_pout - bundle_der_bytes);
-    
+
     FILE *certs_file
         = fopen("./resources/good-leaf-and-intermediate.pem", "r");
     FILE *pkey_file = fopen("./resources/key-pkcs8-ecdsa.pem", "r");
@@ -619,7 +684,7 @@ START_TEST(test_workloadapi_Client_WatchX509Context)
     ck_assert_ptr_ne(ctxs[0], NULL);
     ck_assert_ptr_ne(ctxs[0]->svids, NULL);
     ck_assert_int_eq(arrlen(ctxs[0]->svids), 1);
-    
+
     x509bundle_Set_Free(ctxs[0]->bundles);
     x509svid_SVID_Free(ctxs[0]->svids[0]);
     arrpop(ctxs[0]->svids);
@@ -628,7 +693,7 @@ START_TEST(test_workloadapi_Client_WatchX509Context)
     ck_assert_ptr_ne(ctxs[1], NULL);
     ck_assert_ptr_ne(ctxs[1]->svids, NULL);
     ck_assert_int_eq(arrlen(ctxs[1]->svids), 2);
-    
+
     x509bundle_Set_Free(ctxs[1]->bundles);
     x509svid_SVID_Free(ctxs[1]->svids[0]);
     x509svid_SVID_Free(ctxs[1]->svids[1]);
@@ -638,7 +703,7 @@ START_TEST(test_workloadapi_Client_WatchX509Context)
     ck_assert_ptr_ne(ctxs[2], NULL);
     ck_assert_ptr_ne(ctxs[2]->svids, NULL);
     ck_assert_int_eq(arrlen(ctxs[2]->svids), 1);
-    
+
     x509bundle_Set_Free(ctxs[2]->bundles);
     x509svid_SVID_Free(ctxs[2]->svids[0]);
     arrpop(ctxs[2]->svids);
@@ -648,7 +713,7 @@ START_TEST(test_workloadapi_Client_WatchX509Context)
     ck_assert_ptr_ne(ctxs[3], NULL);
     ck_assert_ptr_ne(ctxs[3]->svids, NULL);
     ck_assert_int_eq(arrlen(ctxs[3]->svids), 2);
-    
+
     x509bundle_Set_Free(ctxs[3]->bundles);
     x509svid_SVID_Free(ctxs[3]->svids[0]);
     x509svid_SVID_Free(ctxs[3]->svids[1]);
@@ -678,6 +743,7 @@ Suite *client_suite(void)
     tcase_add_test(tc_core, test_workloadapi_Client_FetchJWTBundles);
     tcase_add_test(tc_core, test_workloadapi_Client_WatchX509Context);
     tcase_add_test(tc_core, test_workloadapi_Client_FetchJWTSVID);
+    tcase_add_test(tc_core, test_workloadapi_Client_ValidateJWTSVID);
 
     suite_add_tcase(s, tc_core);
 
