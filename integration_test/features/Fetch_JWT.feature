@@ -48,3 +48,4 @@ Feature: Fetch JWT
         Then I check that the Bundle is not returned
         # Tear Down
         When The agent is turned on
+
