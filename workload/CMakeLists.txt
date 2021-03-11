@@ -116,3 +116,9 @@ set(C_CLIENT_BUNDLE
 )
 add_executable(c_client_bundle "${C_CLIENT_BUNDLE}")
 target_link_libraries(c_client_bundle client)
+
+set(C_CLIENT_VALIDATE
+    src/c_client_example_validate.c
+)
+add_executable(c_client_validate "${C_CLIENT_VALIDATE}")
+target_link_libraries(c_client_validate client)

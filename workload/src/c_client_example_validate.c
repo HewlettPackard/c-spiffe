@@ -5,9 +5,9 @@
 
 int main(int argc, char **argv)
 {
-    if(argc < 2) {
-        printf("Too few arguments!\nUsage:\n\t./c_client "
-               "svid_type=jwt\n\t./c_client svid_type=x509\n");
+    if(argc < 3) {
+        printf("Too few arguments!\nUsage:\n\t./c_client_example_validade "
+               "<filepath> <audience>\n");
         exit(-1);
     }
 
@@ -22,30 +22,12 @@ int main(int argc, char **argv)
         printf("conn error! %d\n", (int) error);
     }
 
-    if(strcmp(argv[1], "svid_type=x509") == 0) {
-        x509svid_SVID *svid = workloadapi_Client_FetchX509SVID(client, &error);
-        if(error != NO_ERROR) {
-            printf("fetch error! %d\n", (int) error);
-        }
-        printf("Address: %p\n", svid);
+    FILE *f = fopen(argv[1], "r");
 
-        if(svid) {
-            printf("SVID Path: %s\n", svid->id.path);
-            printf("Trust Domain: %s\n", svid->id.td.name);
-            printf("Cert(s) Address: %p\n", svid->certs);
-            printf("Key Address: %p\n", svid->private_key);
-
-            x509svid_SVID_Free(svid);
-        }
-    } else if(strcmp(argv[1], "svid_type=jwt") == 0) {
-        // spiffeid_ID id = { .td = string_new("example.org"),
-        //                    .path = string_new("/workload1") };
-        spiffeid_ID id = { NULL, NULL };
-        string_t audience = string_new("spiffe://example.org/audience1");
-        jwtsvid_Params params
-            = { .audience = audience, .extra_audiences = NULL, .subject = id };
-        jwtsvid_SVID *svid
-            = workloadapi_Client_FetchJWTSVID(client, &params, &error);
+    if(f) {
+        string_t token = FILE_to_string(f);
+        string_t audience = string_new(argv[2]);
+        jwtsvid_SVID *svid = workloadapi_Client_ValidateJWTSVID(client, token, audience, &error);
         if(error != NO_ERROR) {
             printf("fetch error! %d\n", (int) error);
         }
@@ -64,15 +46,10 @@ int main(int argc, char **argv)
             }
             jwtsvid_SVID_Free(svid);
         }
-        spiffeid_ID_Free(&id);
+        arrfree(token);
         arrfree(audience);
     } else {
-        printf("Invalid argument!\n");
-
-        printf("Usage:\n\t./c_client "
-               "svid_type=jwt\n\t./c_client svid_type=x509\n");
-        exit(-1);
-
+        printf("Invalid file path!\n");
     }
 
     error = workloadapi_Client_Close(client);

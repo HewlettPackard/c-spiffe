@@ -63,10 +63,12 @@ int main(int argc, char **argv)
         spiffeid_ID_Free(&id);
     } else {
         std::cout << "Invalid argument!" << std::endl;
+
         std::cout << "Usage:\n"
                   << "\t./cpp_client svid_type=jwt\n"
                   << "\t./cpp_client svid_type=x509\n";
         exit(-1);
+
     }
 
     error = workloadapi_Client_Close(client);
