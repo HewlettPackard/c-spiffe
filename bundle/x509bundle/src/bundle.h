@@ -7,8 +7,7 @@
 #include <threads.h>
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /** Bundle is a collection of trusted X.509 authorities for a trust domain.
@@ -41,8 +40,7 @@ x509bundle_Bundle *x509bundle_New(const spiffeid_TrustDomain td);
  * x509bundle_Bundle_Free function.
  */
 x509bundle_Bundle *
-x509bundle_FromX509Authorities(const spiffeid_TrustDomain td,
-                                X509 **auths);
+x509bundle_FromX509Authorities(const spiffeid_TrustDomain td, X509 **auths);
 
 /**
  * Loads a bundle from a file on disk. The file must contain PEM-encoded
@@ -55,7 +53,7 @@ x509bundle_FromX509Authorities(const spiffeid_TrustDomain td,
  * x509bundle_Bundle_Free function.
  */
 x509bundle_Bundle *x509bundle_Load(const spiffeid_TrustDomain td,
-                                    const char *path, err_t *err);
+                                   const char *path, err_t *err);
 
 /**
  * Decodes a bundle from bytes. The contents must be PEM-encoded
@@ -67,8 +65,7 @@ x509bundle_Bundle *x509bundle_Load(const spiffeid_TrustDomain td,
  * x509bundle_Bundle_Free function.
  */
 x509bundle_Bundle *x509bundle_Parse(const spiffeid_TrustDomain td,
-                                    const string_t bundle_bytes,
-                                    err_t *err);
+                                    const string_t bundle_bytes, err_t *err);
 
 /**
  * Gets the Trust Domain that the bundle belongs to.
@@ -97,8 +94,7 @@ X509 **x509bundle_Bundle_X509Authorities(x509bundle_Bundle *bundle);
  * \param bundle [in] X.509 Bundle object pointer.
  * \param auth [in] X.509 certificate pointer.
  */
-void x509bundle_Bundle_AddX509Authority(x509bundle_Bundle *bundle,
-                                        X509 *auth);
+void x509bundle_Bundle_AddX509Authority(x509bundle_Bundle *bundle, X509 *auth);
 
 /**
  * Removes an X.509 authority to the bundle. If the authority already does
@@ -109,7 +105,7 @@ void x509bundle_Bundle_AddX509Authority(x509bundle_Bundle *bundle,
  * \param auth [in] X.509 certificate pointer.
  */
 void x509bundle_Bundle_RemoveX509Authority(x509bundle_Bundle *bundle,
-                                            X509 *auth);
+                                           X509 *auth);
 
 /**
  * Checks if an X.509 authority belongs to the bundle.
@@ -119,8 +115,7 @@ void x509bundle_Bundle_RemoveX509Authority(x509bundle_Bundle *bundle,
  * \returns <tt>true</tt> if the authority is a member of the bundle,
  * <tt>false</tt> otherwise.
  */
-bool x509bundle_Bundle_HasX509Authority(x509bundle_Bundle *bundle,
-                                        X509 *auth);
+bool x509bundle_Bundle_HasX509Authority(x509bundle_Bundle *bundle, X509 *auth);
 
 /**
  * Sets the X.509 Authorities in the bundle.
@@ -130,7 +125,7 @@ bool x509bundle_Bundle_HasX509Authority(x509bundle_Bundle *bundle,
  * ownership of auths, so it must be freed when it is no longer used.
  */
 void x509bundle_Bundle_SetX509Authorities(x509bundle_Bundle *bundle,
-                                            X509 **auths);
+                                          X509 **auths);
 
 /**
  * Checks if a bundle is empty X.509 authority belongs to the bundle.
@@ -149,7 +144,7 @@ bool x509bundle_Bundle_Empty(x509bundle_Bundle *bundle);
  * <tt>false</tt> otherwise.
  */
 bool x509bundle_Bundle_Equal(const x509bundle_Bundle *bundle1,
-                                const x509bundle_Bundle *bundle2);
+                             const x509bundle_Bundle *bundle2);
 
 /**
  * Copies the content of a bundle.

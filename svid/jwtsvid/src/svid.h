@@ -8,8 +8,7 @@
 #include <time.h>
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 typedef struct map_string_claim {
@@ -55,8 +54,7 @@ typedef struct jwtsvid_SVID {
 
 /** Validates the token and returns the claims. */
 typedef map_string_claim *(*token_validator_t)(jwtsvid_JWT *,
-                                                spiffeid_TrustDomain,
-                                                err_t *);
+                                               spiffeid_TrustDomain, err_t *);
 
 /**
  * Parses and validates a JWT-SVID token and returns the JWT-SVID. The
@@ -69,9 +67,8 @@ typedef map_string_claim *(*token_validator_t)(jwtsvid_JWT *,
  * \returns Parsed JWT-SVID object pointer. Must be freed using
  * jwtsvid_SVID_Free function.
  */
-jwtsvid_SVID *jwtsvid_ParseAndValidate(char *token,
-                                        jwtbundle_Source *bundles,
-                                        string_arr_t audience, err_t *err);
+jwtsvid_SVID *jwtsvid_ParseAndValidate(char *token, jwtbundle_Source *bundles,
+                                       string_arr_t audience, err_t *err);
 
 /**
  * Parses and validates a JWT-SVID token and returns the JWT-SVID. The

@@ -45,7 +45,6 @@ workloadapi_X509Source_GetX509SVID(workloadapi_X509Source *source, err_t *err);
 x509bundle_Bundle *workloadapi_X509Source_GetX509BundleForTrustDomain(
     workloadapi_X509Source *source, spiffeid_TrustDomain *td, err_t *err);
 
-
 #ifdef __cplusplus
 }
 #endif
