@@ -121,3 +121,9 @@ set(WATCH_JWT_BUNDLES
 )
 add_executable(example_watch_jwt_bundles "${WATCH_JWT_BUNDLES}")
 target_link_libraries(example_watch_jwt_bundles client)
+
+set(C_CLIENT_VALIDATE
+    src/c_client_example_validate.c
+)
+add_executable(c_client_validate "${C_CLIENT_VALIDATE}")
+target_link_libraries(c_client_validate client)
