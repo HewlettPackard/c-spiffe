@@ -1,8 +1,7 @@
 import os
-import subprocess
 import time
 
-from hamcrest import assert_that, is_, is_not
+from hamcrest import assert_that, is_not
 from utils import update_server_conf
 
 

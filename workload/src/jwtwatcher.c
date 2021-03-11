@@ -9,7 +9,8 @@ int workloadapi_JWTWatcher_JWTbackgroundFunc(void *_watcher)
     err_t error = NO_ERROR;
     do {
         error = workloadapi_Client_WatchJWTBundles(watcher->client, watcher);
-    } while(error != ERROR5); // error5 == client closed
+    } while(error != ERROR3 && error != ERROR1); // error1 == client closed,
+                                                 // error3 == INVALID_ARGUMENT
     return (int) error;
 }
 
@@ -34,7 +35,8 @@ workloadapi_newJWTWatcher(workloadapi_JWTWatcherConfig config,
         newW->client = config.client;
         newW->owns_client = false;
         if(config.client_options) {
-            for(size_t i = 0, size = arrlenu(config.client_options); i < size; ++i) {
+            for(size_t i = 0, size = arrlenu(config.client_options); i < size;
+                ++i) {
                 workloadapi_Client_ApplyOption(config.client,
                                                config.client_options[i]);
             }
@@ -47,7 +49,8 @@ workloadapi_newJWTWatcher(workloadapi_JWTWatcherConfig config,
         }
         newW->owns_client = true;
         if(config.client_options) {
-            for(size_t i = 0, size = arrlenu(config.client_options); i < size; ++i) {
+            for(size_t i = 0, size = arrlenu(config.client_options); i < size;
+                ++i) {
                 workloadapi_Client_ApplyOption(newW->client,
                                                config.client_options[i]);
             }
@@ -88,15 +91,13 @@ err_t workloadapi_JWTWatcher_Start(workloadapi_JWTWatcher *watcher)
     }
     /// spin watcher thread out.
 
-    if(watcher->jwt_callback.func) {
-        int thread_error
-            = thrd_create(&(watcher->watcher_thread),
-                          workloadapi_JWTWatcher_JWTbackgroundFunc, watcher);
+    int thread_error
+        = thrd_create(&(watcher->watcher_thread),
+                      workloadapi_JWTWatcher_JWTbackgroundFunc, watcher);
 
-        if(thread_error != thrd_success) {
-            watcher->thread_error = thread_error;
-            return ERROR2; // THREAD ERROR, see watcher->threadERROR for error
-        }
+    if(thread_error != thrd_success) {
+        watcher->thread_error = thread_error;
+        return ERROR2; // THREAD ERROR, see watcher->threadERROR for error
     }
 
     mtx_lock(&(watcher->close_mutex));
