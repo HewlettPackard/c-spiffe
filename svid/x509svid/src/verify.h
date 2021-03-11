@@ -8,8 +8,7 @@
 #include <openssl/x509v3.h>
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
@@ -23,8 +22,7 @@ extern "C"
  * information in the event of error. \returns stb array of possible chains
  * as stb arrays of X.509 certificate object pointers.
  */
-X509 ***x509svid_ParseAndVerify(byte **raw_certs,
-                                x509bundle_Source *bundles,
+X509 ***x509svid_ParseAndVerify(byte **raw_certs, x509bundle_Source *bundles,
                                 spiffeid_ID *id, err_t *err);
 
 /**
@@ -38,8 +36,8 @@ X509 ***x509svid_ParseAndVerify(byte **raw_certs,
  * information in the event of error. \returns stb array of possible chains
  * as stb arrays of X.509 certificate object pointers.
  */
-X509 ***x509svid_Verify(X509 **certs, x509bundle_Source *b,
-                        spiffeid_ID *id, err_t *err);
+X509 ***x509svid_Verify(X509 **certs, x509bundle_Source *b, spiffeid_ID *id,
+                        err_t *err);
 
 /**
  * Extracts the SPIFFE ID from the URI SAN of the provided certificate. It

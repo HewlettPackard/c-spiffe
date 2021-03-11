@@ -1,19 +1,13 @@
-#include <openssl/pem.h>
-#include <check.h>
 #include "../src/verify.h"
+#include <check.h>
+#include <openssl/pem.h>
 
-START_TEST(test_x509svid_ParseAndVerify)
-{
-
-}
+START_TEST(test_x509svid_ParseAndVerify) {}
 END_TEST
-        
-START_TEST(test_x509svid_Verify)
-{
 
-}
+START_TEST(test_x509svid_Verify) {}
 END_TEST
-        
+
 START_TEST(test_x509svid_IDFromCert)
 {
     FILE *f = fopen("./resources/good-leaf-only.pem", "r");
@@ -43,7 +37,7 @@ START_TEST(test_x509svid_IDFromCert)
 }
 END_TEST
 
-Suite* verify_suite(void)
+Suite *verify_suite(void)
 {
     Suite *s = suite_create("verify");
     TCase *tc_core = tcase_create("core");
@@ -64,8 +58,8 @@ int main(void)
 
     srunner_run_all(sr, CK_NORMAL);
     const int number_failed = srunner_ntests_failed(sr);
-    
+
     srunner_free(sr);
-    
+
     return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
