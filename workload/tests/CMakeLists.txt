@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.13)
 set(TARGET_NAME "workload_test")
 project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C CXX)
 
-file(COPY ../tests/resources/ DESTINATION ${PROJECT_BINARY_DIR}/workload/tests/resources/)
+file(COPY ./resources/ DESTINATION ${PROJECT_BINARY_DIR}/resources/)
 
 # Include generated *.pb.h files
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
