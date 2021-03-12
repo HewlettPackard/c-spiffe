@@ -30,6 +30,14 @@ jobs:
         shell: bash
         run: cd build && make test
 
+      - name: Coverage Test
+        shell: bash
+        run: cd build && make gcov && make lcov && lcov --list Coverage/lcov.info
+
       - name: Integration Test
         shell: bash
         run: cd integration_test && behave --tags=-@wip
+
+      - name: Test coverage codecov
+        shell: bash
+        run: bash <(curl -s https://codecov.io/bash) 

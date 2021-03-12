@@ -120,6 +120,7 @@ error = workloadapi_Client_Close(client);
 error = workloadapi_Client_Free(client);
 ```
 
+=
 ### Compiling
 Always compile with make.
 
@@ -127,4 +128,14 @@ Run examples:
 ``` bash
 ./c_client_validate token1.txt spiffe://example.org/audience1
 ./c_client_validate token2 spiffe://www.spiffe.org/aud1/path1
+
+./c_client svid_type=x509
+./c_client svid_type=jwt
+./cpp_client svid_type=x509
+./cpp_client svid_type=jwt
+./c_client_bundle bundle_type=x509
+./c_client_bundle bundle_type=jwt
+./c_client_validate token1.txt spiffe://example.org/audience1
+./c_client_validate token2 spiffe://www.spiffe.org/aud1/path1
+
 ```
