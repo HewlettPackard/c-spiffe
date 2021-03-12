@@ -1,0 +1,25 @@
+codecov:
+  require_ci_to_pass: yes
+  notify:
+    wait_for_ci: yes
+
+coverage:
+  precision: 2      # Number of decimal places, between 0 and 5
+  round: down       # up, down, or nearest
+  range: "60...90"  # First number represents red, and second represents green
+                    # (default is 70..100)
+  status:
+    project:
+      default:
+        threshold: 2%
+    patch:
+      default:
+        target: 50%
+
+comment:
+  layout: "diff"
+
+coverage:
+  ignore: 
+    #- "test"  # ignore folders and all its contents
+    - "*/tests/*"    # ignore folders and all its contents
