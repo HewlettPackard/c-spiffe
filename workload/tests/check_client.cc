@@ -9,9 +9,9 @@
 
 #include "../../svid/x509svid/src/svid.h"
 #include "../src/client.h"
-#include "workload.grpc.pb.h"
-#include "workload.pb.h"
-#include "workload_mock.grpc.pb.h"
+#include "../workload.grpc.pb.h"
+#include "../workload.pb.h"
+#include "../workload_mock.grpc.pb.h"
 #include <check.h>
 #include <gmock/gmock.h>
 #include <grpc/grpc.h>
