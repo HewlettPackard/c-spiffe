@@ -38,8 +38,8 @@ endif()
 find_package(OpenSSL REQUIRED)
 
 # Enable Coverage Tests
-set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fprofile-arcs -ftest-coverage")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fprofile-arcs -ftest-coverage -g -O0")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage -g -O0")
 
 # Set modules list
 set(modules bundle internal spiffeid svid workload)
@@ -51,15 +51,6 @@ endforeach()
 
 # Enable tests
 option(ENABLE_TESTS "Enable unit testing" ON)
-
-# Check libraries
-###############################################################################
-# Generate "config.h" from "cmake/config.h.cmake"
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.h.in
-  ${CMAKE_CURRENT_BINARY_DIR}/config.h)
-include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
-add_definitions(-DHAVE_CONFIG_H)
-set(CONFIG_HEADER ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 if (ENABLE_TESTS)
     find_package(Check REQUIRED)
@@ -99,26 +90,35 @@ if (ENABLE_TESTS)
     )
 
     add_custom_command(TARGET gcov POST_BUILD
-      COMMAND find ${CMAKE_BINARY_DIR} -type f -name *.c.o -exec ${GCOV} {} "\;"
-      COMMAND echo "Coverage reports generated."
+      COMMAND find .. -type f -name check_*.c.o -exec ${GCOV} {} "\;"
+      COMMAND echo "Command gcov - Coverage reports generated."
       COMMAND echo "You can find them on ${CMAKE_BINARY_DIR}/Coverage"
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Coverage
-      COMMENT "Coverage Reports Generated"
+      COMMENT "Command gcov - Coverage Reports Generated"
     )
 
     add_custom_target(lcov
-      COMMAND mkdir -p Coverage
+      COMMAND mkdir -p Coverage/Reports
       DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/Testing
+      COMMAND echo "Command lcov - Coverage reports generated."
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
 
     add_custom_command(TARGET lcov POST_BUILD
-      COMMAND ${LCOV} --directory .. --capture --output-file lcov.info
-      COMMAND ${GENHTML} -o . lcov.info
-      COMMAND echo "Coverage reports generated."
-      COMMAND echo "You can find them on ${CMAKE_BINARY_DIR}/Coverage"
+      COMMAND find .. -type f -name check_*.gcda -exec rm -r {} "\;"
+      COMMAND find .. -type f -name check_*.gcno -exec rm -r {} "\;"
+
+      COMMAND find .. -type f -name *pb.cc.gcda -exec rm -r {} "\;"
+      COMMAND find .. -type f -name *pb.cc.gcno -exec rm -r {} "\;"
+
+      COMMAND ${LCOV} --directory .. --capture -o lcov.info
+      COMMAND ${LCOV} --remove lcov.info -o lcov.info '/usr/*' '*/build/workload/*'
+      COMMAND echo "lcov.info generated."
+      COMMAND ${GENHTML} lcov.info --output-directory ${CMAKE_BINARY_DIR}/Coverage/Reports 
+      COMMAND echo "Command lcov - Coverage reports generated."
+      COMMAND echo "You can find them on ${CMAKE_BINARY_DIR}/Coverage/Reports"
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Coverage
-      COMMENT "Coverage Reports Generated"
+      COMMENT "Command lcov - Coverage Reports Generated"
     )
 
     # Add 'Coverage' folder into clean target

@@ -6,8 +6,8 @@ project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C CXX)
 #set(CMAKE_CXX_STANDARD 14)
 #set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
-find_package(OpenSSL REQUIRED)
-find_package(GTest REQUIRED)
+# find_package(OpenSSL REQUIRED)
+# find_package(GTest REQUIRED)
 set (proto_name ${TARGET_NAME})
 
 
@@ -102,17 +102,28 @@ set(CPP_CLIENT
     src/cpp_client_example.cc
 )
 add_executable(cpp_client "${CPP_CLIENT}")
-target_link_libraries(cpp_client source client backoff)
+target_link_libraries(cpp_client source )
 
 set(C_CLIENT
     src/c_client_example.c
 )
 add_executable(c_client "${C_CLIENT}")
-target_link_libraries(c_client source client backoff)
-
+target_link_libraries(c_client source )
 
 set(C_CLIENT_BUNDLE
     src/c_client_example_bundle.c
 )
 add_executable(c_client_bundle "${C_CLIENT_BUNDLE}")
 target_link_libraries(c_client_bundle client)
+
+set(WATCH_JWT_BUNDLES
+    src/watch_jwt_bundles.c
+)
+add_executable(example_watch_jwt_bundles "${WATCH_JWT_BUNDLES}")
+target_link_libraries(example_watch_jwt_bundles client)
+
+set(C_CLIENT_VALIDATE
+    src/c_client_example_validate.c
+)
+add_executable(c_client_validate "${C_CLIENT_VALIDATE}")
+target_link_libraries(c_client_validate client)
