@@ -11,10 +11,16 @@ coverage:
   status:
     project:
       default:
-        threshold: 2%
-    patch:
-      default:
-        target: 50%
+        # basic
+        target: auto
+        threshold: 0%
+        base: auto
+      # advanced settings
+        branches: 
+          - bugfix-codecov
+        if_ci_failed: error #success, failure, error, ignore
+        informational: false
+        only_pulls: false
 
 comment:
   layout: "diff"
