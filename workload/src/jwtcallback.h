@@ -5,12 +5,11 @@
 #include "../../svid/jwtsvid/src/svid.h"
 
 #ifdef __cplusplus
-extern "C"{
+extern "C" {
 #endif
 
 /** type for callback function. will be set by JWTSource. */
-typedef void(*workloadapi_jwtBundleSetFunc_t)(jwtbundle_Set*,
-                                              void *);
+typedef void (*workloadapi_jwtBundleSetFunc_t)(jwtbundle_Set *, void *);
 
 typedef struct {
     void *args;

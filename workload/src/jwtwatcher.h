@@ -6,8 +6,7 @@
 #include "jwtcallback.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 typedef struct workloadapi_Client workloadapi_Client;
@@ -48,7 +47,7 @@ typedef struct workloadapi_JWTWatcher {
 /** creates and sets up a new watcher, doesn't dial client yet. */
 workloadapi_JWTWatcher *
 workloadapi_newJWTWatcher(workloadapi_JWTWatcherConfig config,
-                        workloadapi_JWTCallback jwt_callback, err_t *error);
+                          workloadapi_JWTCallback jwt_callback, err_t *error);
 
 /** starts watcher thread and blocks until updated. dials client if needed.
  */
@@ -63,22 +62,19 @@ err_t workloadapi_JWTWatcher_Close(workloadapi_JWTWatcher *watcher);
 err_t workloadapi_JWTWatcher_Free(workloadapi_JWTWatcher *watcher);
 
 // Function called by Client when new JWT response arrives
-void
-workloadapi_JWTWatcher_OnJWTBundlesUpdate(workloadapi_JWTWatcher *watcher,
-                                            jwtbundle_Set *context);
+void workloadapi_JWTWatcher_OnJWTBundlesUpdate(workloadapi_JWTWatcher *watcher,
+                                               jwtbundle_Set *context);
 /** Called by Client when an JWT error occurs and the watcher must be made
  * aware */
 void workloadapi_JWTWatcher_OnJWTBundlesWatchError(
     workloadapi_JWTWatcher *watcher, err_t error);
 
 /** Blocks until an update is received. */
-err_t
-workloadapi_JWTWatcher_WaitUntilUpdated(workloadapi_JWTWatcher *watcher);
+err_t workloadapi_JWTWatcher_WaitUntilUpdated(workloadapi_JWTWatcher *watcher);
 err_t workloadapi_JWTWatcher_TimedWaitUntilUpdated(
     workloadapi_JWTWatcher *watcher, const struct timespec *timer);
 /** Broadcasts an update to all waiting. */
-err_t
-workloadapi_JWTWatcher_TriggerUpdated(workloadapi_JWTWatcher *watcher);
+err_t workloadapi_JWTWatcher_TriggerUpdated(workloadapi_JWTWatcher *watcher);
 
 #ifdef __cplusplus
 }

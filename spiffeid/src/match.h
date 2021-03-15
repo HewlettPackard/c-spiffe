@@ -5,15 +5,10 @@
 #include "id.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
-enum enum_match_err_t {
-    MATCH_OK,
-    MATCH_UNEXPECTED_ID,
-    MATCH_UNEXPECTED_TD
-};
+enum enum_match_err_t { MATCH_OK, MATCH_UNEXPECTED_ID, MATCH_UNEXPECTED_TD };
 typedef enum enum_match_err_t match_err_t;
 
 enum enum_match_t { MATCH_ANY, MATCH_ONEOF, MATCH_MEMBEROF };
@@ -39,7 +34,7 @@ typedef struct {
  * not match the Trust Domain in the matcher.
  */
 match_err_t spiffeid_ApplyMatcher(const spiffeid_Matcher *matcher,
-                                    const spiffeid_ID id);
+                                  const spiffeid_ID id);
 
 /**
  *

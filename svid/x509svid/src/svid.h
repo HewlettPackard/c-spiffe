@@ -10,8 +10,7 @@
 #include <openssl/x509.h>
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /** X509-SVID object */
@@ -37,7 +36,7 @@ typedef struct x509svid_SVID {
  * x509svid_SVID_Free function.
  */
 x509svid_SVID *x509svid_Load(const char *certfile, const char *keyfile,
-                                err_t *err);
+                             err_t *err);
 
 /**
  * Parses the X509-SVID from PEM blocks containing certificate and key
@@ -51,7 +50,7 @@ x509svid_SVID *x509svid_Load(const char *certfile, const char *keyfile,
  * x509svid_SVID_Free function.
  */
 x509svid_SVID *x509svid_Parse(const byte *certbytes, const byte *keybytes,
-                                err_t *err);
+                              err_t *err);
 
 /**
  * ParseRaw parses the X509-SVID from certificate and key bytes. The
@@ -67,10 +66,9 @@ x509svid_SVID *x509svid_Parse(const byte *certbytes, const byte *keybytes,
  * \returns Parsed X509-SVID object pointer. Must be freed using
  * x509svid_SVID_Free function.
  */
-x509svid_SVID *x509svid_ParseRaw(const byte *certbytes,
-                                    const size_t certlen,
-                                    const byte *keybytes, const size_t keylen,
-                                    err_t *err);
+x509svid_SVID *x509svid_ParseRaw(const byte *certbytes, const size_t certlen,
+                                 const byte *keybytes, const size_t keylen,
+                                 err_t *err);
 
 /**
  * Marshals the X509-SVID and returns PEM encoded blocks for the SVID and
@@ -98,9 +96,8 @@ void x509svid_validateSigningCertificates(X509 **certs, err_t *err);
 void x509svid_validateKeyUsage(X509 *cert, err_t *err);
 x509svid_SVID *x509svid_SVID_GetX509SVID(x509svid_SVID *svid, err_t *err);
 EVP_PKEY *x509svid_validatePrivateKey(EVP_PKEY *priv_key, X509 *cert,
-                                        err_t *err);
-bool x509svid_keyMatches(EVP_PKEY *priv_key, EVP_PKEY *pub_key,
-                            err_t *err);
+                                      err_t *err);
+bool x509svid_keyMatches(EVP_PKEY *priv_key, EVP_PKEY *pub_key, err_t *err);
 
 /**
  * Frees a X509-SVID object.
