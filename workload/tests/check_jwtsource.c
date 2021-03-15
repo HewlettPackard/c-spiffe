@@ -37,15 +37,15 @@ START_TEST(test_workloadapi_NewJWTSource_uses_config);
 {
     err_t err = NO_ERROR;
 
-    workloadapi_JWTSourceConfig config;
-    config.watcher_config.client_options = NULL;
-    arrpush(config.watcher_config.client_options, custom_option);
-    config.watcher_config.client = NULL;
+    workloadapi_JWTSourceConfig *config = (workloadapi_JWTSourceConfig*) calloc(1,sizeof(*config));
+    config->watcher_config.client_options = NULL;
+    arrpush(config->watcher_config.client_options, custom_option);
+    config->watcher_config.client = NULL;
 
-    workloadapi_JWTSource *tested = workloadapi_NewJWTSource(&config, &err);
+    workloadapi_JWTSource *tested = workloadapi_NewJWTSource(config, &err);
 
     ck_assert_int_eq(err, NO_ERROR);
-    ck_assert_ptr_eq(tested->config, &config);
+    ck_assert_ptr_eq(tested->config, config);
     ck_assert_ptr_ne(tested->watcher, NULL);
     ck_assert_str_eq(tested->watcher->client->address,
                      "unix:///var/example_agent");
