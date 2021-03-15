@@ -64,7 +64,7 @@ err_t workloadapi_JWTSource_Close(workloadapi_JWTSource *source)
 }
 
 jwtsvid_SVID *
-workloadapi_JWTSource_GetJWTSVID(workloadapi_JWTSource *source,jwtsvid_Params* params, err_t *err)
+workloadapi_JWTSource_GetJWTSVID(workloadapi_JWTSource *source, jwtsvid_Params* params, err_t *err)
 {
     *err = workloadapi_JWTSource_checkClosed(source);
     if(!(*err)) {

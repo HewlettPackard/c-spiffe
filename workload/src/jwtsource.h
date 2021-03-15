@@ -39,7 +39,7 @@ void workloadapi_JWTSource_applyJWTBundle_Set(workloadapi_JWTSource *source,
                                              jwtbundle_Set *set);
 
 jwtsvid_SVID *
-workloadapi_JWTSource_GetJWTSVID(workloadapi_JWTSource *source, err_t *err);
+workloadapi_JWTSource_GetJWTSVID(workloadapi_JWTSource *source, jwtsvid_Params* params, err_t *err);
 
 jwtbundle_Bundle *workloadapi_JWTSource_GetJWTBundleForTrustDomain(
     workloadapi_JWTSource *source, spiffeid_TrustDomain *td, err_t *err);
