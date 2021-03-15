@@ -190,6 +190,8 @@ START_TEST(test_workloadapi_X509Source_Start_waits_and_sets_closed_false);
 
     ck_assert_int_eq(workloadapi_X509Source_checkClosed(tested), NO_ERROR);
 
+    workloadapi_X509Source_Close(tested);
+
     tested->bundles = NULL;
     tested->svids = NULL;
     workloadapi_X509Source_Free(tested);

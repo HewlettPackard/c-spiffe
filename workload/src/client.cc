@@ -136,13 +136,19 @@ jwtsvid_SVID *workloadapi_parseJWTSVID(const JWTSVIDResponse *resp,
             params->audience = NULL;
         }
 
-        auto id = resp->svids()[0];
-        string_t token = string_new(id.svid().c_str());
-        jwtsvid_SVID *svid
-            = jwtsvid_ParseInsecure(token, params->extra_audiences, err);
-        arrfree(token);
+        if(resp->svids_size() > 0) {
+            auto id = resp->svids(0);
+            string_t token = string_new(id.svid().c_str());
+            jwtsvid_SVID *svid
+                = jwtsvid_ParseInsecure(token, params->extra_audiences, err);
+            arrfree(token);
 
-        return svid;
+            return svid;
+        } else {
+            //no SVID returned
+            *err = ERROR2;
+            return NULL;
+        }        
     }
     // null pointer error
     *err = ERROR1;
@@ -189,6 +195,7 @@ workloadapi_Client *workloadapi_NewClient(err_t *error)
     client->stub = NULL;
     client->address = NULL;
     client->headers = NULL;
+    client->context_list = NULL;
     mtx_init(&(client->closed_mutex), mtx_plain);
     cnd_init(&(client->closed_cond));
     mtx_lock(&(client->closed_mutex));
@@ -264,6 +271,11 @@ err_t workloadapi_Client_Close(workloadapi_Client *client)
         delete((SpiffeWorkloadAPI::Stub *) client->stub);
         client->owns_stub = false;
     }
+    for(size_t i = 0, size = arrlenu(client->context_list); i < size; i++) {
+        ((grpc::ClientContext *) client->context_list[i])->TryCancel();
+    }
+    arrfree(client->context_list);
+
     client->stub = NULL;
     cnd_broadcast(&(client->closed_cond));
     mtx_unlock(&(client->closed_mutex));
@@ -275,15 +287,26 @@ err_t workloadapi_Client_Close(workloadapi_Client *client)
 err_t workloadapi_Client_SetAddress(workloadapi_Client *client,
                                     const char *address)
 {
+    err_t error = NO_ERROR;
     if(!client) {
         return ERROR1;
     }
+    // validate address
+    UriUriA uri;
+    const char *err_pos;
+    if(uriParseSingleUriA(&uri, address, &err_pos) != URI_SUCCESS) {
+        return ERROR2;
+    }
+
     if(client->address) {
         util_string_t_Free(client->address);
         client->address = NULL;
     }
-    /// TODO: validate address as URI
+
     client->address = string_new(address);
+    if(!client->address) {
+        return ERROR3;
+    }
     return NO_ERROR;
 }
 
@@ -361,9 +384,6 @@ void workloadapi_Client_defaultOptions(workloadapi_Client *client,
                                    workloadapi_Client_setDefaultAddressOption);
     workloadapi_Client_ApplyOption(client,
                                    workloadapi_Client_setDefaultHeaderOption);
-
-    /// TODO: logger?
-    /// TODO: dialOptions?
 }
 
 err_t workloadapi_Client_WatchX509Context(workloadapi_Client *client,
@@ -381,10 +401,10 @@ err_t workloadapi_Client_WatchX509Context(workloadapi_Client *client,
             = workloadapi_Client_watchX509Context(client, watcher, &backoff);
         workloadapi_Watcher_OnX509ContextWatchError(watcher, err);
         err = workloadapi_Client_HandleWatchError(client, err, &backoff);
-        // TODO: check error and reuse backoff if not cancelled
         if(err == grpc::CANCELLED || err == grpc::INVALID_ARGUMENT) {
             return err;
         } else if(err != NO_ERROR) {
+            // TODO: check error and reuse backoff if not cancelled
             return err;
         }
     }
@@ -405,13 +425,11 @@ err_t workloadapi_Client_watchX509Context(workloadapi_Client *client,
         return ERROR2;
     }
 
-    /// TODO: Logger?
-
-    grpc::ClientContext ctx;
+    grpc::ClientContext *ctx = new grpc::ClientContext();
 
     if(client->headers) {
         for(int i = 0; i < arrlen(client->headers); i += 2)
-            ctx.AddMetadata(client->headers[i], client->headers[i + 1]);
+            ctx->AddMetadata(client->headers[i], client->headers[i + 1]);
     }
 
     X509SVIDRequest req = X509SVIDRequest(); // empty request
@@ -420,7 +438,8 @@ err_t workloadapi_Client_watchX509Context(workloadapi_Client *client,
     // unique_ptr gets freed after it goes out of scope
     std::unique_ptr<grpc::ClientReaderInterface<X509SVIDResponse>> c_reader
         = ((SpiffeWorkloadAPI::StubInterface *) client->stub)
-              ->FetchX509SVID(&ctx, req); // get response reader
+              ->FetchX509SVID(ctx, req); // get response reader
+    arrput(client->context_list, (void *) ctx);
     while(true) {
 
         response.clear_svids();
@@ -434,7 +453,6 @@ err_t workloadapi_Client_watchX509Context(workloadapi_Client *client,
                 return ERROR1;
             }
             if(status.error_code() == grpc::StatusCode::INVALID_ARGUMENT) {
-                /// TODO: Logger
                 return ERROR3;
             }
             return ERROR4; // no more messages.
@@ -444,7 +462,6 @@ err_t workloadapi_Client_watchX509Context(workloadapi_Client *client,
         workloadapi_X509Context *x509context
             = workloadapi_parseX509Context(&response, &err);
         if(err != NO_ERROR) {
-            /// TODO: log parse error
             workloadapi_Watcher_OnX509ContextWatchError(watcher, err);
         } else {
             workloadapi_Watcher_OnX509ContextUpdate(watcher, x509context);
@@ -462,11 +479,9 @@ err_t workloadapi_Client_HandleWatchError(workloadapi_Client *client,
         return error;
     }
     if(error == grpc::StatusCode::INVALID_ARGUMENT) {
-        /// TODO: Logger
         return error;
     }
 
-    /// TODO: Log
     struct timespec retryAfter = workloadapi_Backoff_NextTime(backoff);
 
     mtx_lock(&(client->closed_mutex));
@@ -481,7 +496,7 @@ err_t workloadapi_Client_HandleWatchError(workloadapi_Client *client,
             return NO_ERROR;
         } else if(wait_ret == thrd_success) { // signaled by closeClient
             mtx_unlock(&(client->closed_mutex));
-            return ERROR5;
+            return ERROR1; // ERROR1 == client closing
         } else {
             mtx_unlock(&(client->closed_mutex));
             return ERROR6;
@@ -493,11 +508,11 @@ err_t workloadapi_Client_HandleWatchError(workloadapi_Client *client,
 workloadapi_X509Context *
 workloadapi_Client_FetchX509Context(workloadapi_Client *client, err_t *error)
 {
-    grpc::ClientContext ctx;
+    grpc::ClientContext *ctx = new grpc::ClientContext();
 
     if(client->headers) {
         for(int i = 0; i < arrlen(client->headers); i += 2)
-            ctx.AddMetadata(client->headers[i], client->headers[i + 1]);
+            ctx->AddMetadata(client->headers[i], client->headers[i + 1]);
     }
 
     X509SVIDRequest req = X509SVIDRequest(); // empty request
@@ -505,8 +520,8 @@ workloadapi_Client_FetchX509Context(workloadapi_Client *client, err_t *error)
 
     std::unique_ptr<grpc::ClientReaderInterface<X509SVIDResponse>> c_reader
         = ((SpiffeWorkloadAPI::StubInterface *) client->stub)
-              ->FetchX509SVID(&ctx, req); // get response reader
-
+              ->FetchX509SVID(ctx, req); // get response reader
+    arrput(client->context_list, (void *) ctx);
     bool success = c_reader->Read(&response);
     workloadapi_X509Context *ret = NULL;
 
@@ -515,19 +530,22 @@ workloadapi_Client_FetchX509Context(workloadapi_Client *client, err_t *error)
         if(*error != NO_ERROR) {
             return NULL;
         }
+        return ret;
+    } else {
+        // could not fetch x509 context
+        *error = ERROR1;
+        return NULL;
     }
-
-    return ret; // no response -> no bundle
 }
 
 x509bundle_Set *workloadapi_Client_FetchX509Bundles(workloadapi_Client *client,
                                                     err_t *err)
 {
-    grpc::ClientContext ctx;
+    grpc::ClientContext *ctx = new grpc::ClientContext();
 
     if(client->headers) {
         for(int i = 0; i < arrlen(client->headers); i += 2)
-            ctx.AddMetadata(client->headers[i], client->headers[i + 1]);
+            ctx->AddMetadata(client->headers[i], client->headers[i + 1]);
     }
 
     X509SVIDRequest req = X509SVIDRequest(); // empty request
@@ -535,8 +553,8 @@ x509bundle_Set *workloadapi_Client_FetchX509Bundles(workloadapi_Client *client,
 
     std::unique_ptr<grpc::ClientReaderInterface<X509SVIDResponse>> c_reader
         = ((SpiffeWorkloadAPI::StubInterface *) client->stub)
-              ->FetchX509SVID(&ctx, req); // get response reader
-
+              ->FetchX509SVID(ctx, req); // get response reader
+    arrput(client->context_list, (void *) ctx);
     bool success = c_reader->Read(&response);
     x509bundle_Set *ret_set = NULL;
     if(success) {
@@ -544,19 +562,22 @@ x509bundle_Set *workloadapi_Client_FetchX509Bundles(workloadapi_Client *client,
         if(*err != NO_ERROR) {
             return NULL;
         }
+        return ret_set;
+    } else {
+        //could not fetch x509 bundles
+        *err = ERROR1;
+        return NULL;
     }
-
-    return ret_set; // no response -> no bundle
 }
 
 x509svid_SVID **workloadapi_Client_FetchX509SVIDs(workloadapi_Client *client,
                                                   err_t *err)
 {
-    grpc::ClientContext ctx;
+    grpc::ClientContext *ctx = new grpc::ClientContext();
 
     if(client->headers) {
         for(int i = 0; i < arrlen(client->headers); i += 2)
-            ctx.AddMetadata(client->headers[i], client->headers[i + 1]);
+            ctx->AddMetadata(client->headers[i], client->headers[i + 1]);
     }
 
     X509SVIDRequest req = X509SVIDRequest(); // empty request
@@ -564,8 +585,8 @@ x509svid_SVID **workloadapi_Client_FetchX509SVIDs(workloadapi_Client *client,
 
     std::unique_ptr<grpc::ClientReaderInterface<X509SVIDResponse>> c_reader
         = ((SpiffeWorkloadAPI::StubInterface *) client->stub)
-              ->FetchX509SVID(&ctx, req); // get response reader
-
+              ->FetchX509SVID(ctx, req); // get response reader
+    arrput(client->context_list, (void *) ctx);
     bool success = c_reader->Read(&response);
     x509svid_SVID **ret_svids = NULL;
     if(success) {
@@ -573,19 +594,22 @@ x509svid_SVID **workloadapi_Client_FetchX509SVIDs(workloadapi_Client *client,
         if(*err != NO_ERROR) {
             return NULL;
         }
+        return ret_svids;
+    } else {
+        // could not parse x509 svids
+        *err = ERROR1;
+        return NULL;
     }
-
-    return ret_svids; // no response -> no bundle
 }
 
 x509svid_SVID *workloadapi_Client_FetchX509SVID(workloadapi_Client *client,
                                                 err_t *err)
 {
-    grpc::ClientContext ctx;
+    grpc::ClientContext *ctx = new grpc::ClientContext();
 
     if(client->headers) {
         for(int i = 0; i < arrlen(client->headers); i += 2)
-            ctx.AddMetadata(client->headers[i], client->headers[i + 1]);
+            ctx->AddMetadata(client->headers[i], client->headers[i + 1]);
     }
 
     X509SVIDRequest req = X509SVIDRequest(); // empty request
@@ -593,8 +617,8 @@ x509svid_SVID *workloadapi_Client_FetchX509SVID(workloadapi_Client *client,
 
     std::unique_ptr<grpc::ClientReaderInterface<X509SVIDResponse>> c_reader
         = ((SpiffeWorkloadAPI::StubInterface *) client->stub)
-              ->FetchX509SVID(&ctx, req); // get response reader
-
+              ->FetchX509SVID(ctx, req); // get response reader
+    arrput(client->context_list, (void *) ctx);
     bool success = c_reader->Read(&response);
     x509svid_SVID **svids = NULL;
     if(success) {
@@ -602,32 +626,43 @@ x509svid_SVID *workloadapi_Client_FetchX509SVID(workloadapi_Client *client,
         if(*err != NO_ERROR) {
             return NULL;
         }
+        if(arrlen(svids) == 0) {
+            return NULL; // Should never happen
+        }
+        x509svid_SVID *ret_svid = svids[0];
+
+        for(size_t i = 1, size = arrlenu(svids); i < size; ++i) {
+            x509svid_SVID_Free(svids[i]);
+        }
+        arrfree(svids);  // free outer array
+        return ret_svid; // no response -> no bundle
+    } else {
+        // could not fetch x509 svid;
+        *err = ERROR1;
+        return NULL;
     }
-    if(arrlen(svids) == 0)
-        return NULL; // Should never happen
-    x509svid_SVID *ret_svid = svids[0];
-    arrfree(svids);  // free outer array
-    return ret_svid; // no response -> no bundle
 }
 
 jwtsvid_SVID *workloadapi_Client_FetchJWTSVID(workloadapi_Client *client,
                                               jwtsvid_Params *params,
                                               err_t *err)
 {
-    grpc::ClientContext ctx;
+    grpc::ClientContext *ctx = new grpc::ClientContext();
 
     if(client->headers) {
         for(int i = 0; i < arrlen(client->headers); i += 2)
-            ctx.AddMetadata(client->headers[i], client->headers[i + 1]);
+            ctx->AddMetadata(client->headers[i], client->headers[i + 1]);
     }
 
     JWTSVIDRequest req;
 
     // set spiffe id
-    string_t id = spiffeid_ID_String(params->subject);
-    req.set_spiffe_id(id);
-    arrfree(id);
-
+    if(!spiffeid_ID_IsZero(params->subject)) {
+        string_t id = spiffeid_ID_String(params->subject);
+        req.set_spiffe_id(id);
+        arrfree(id);
+    }
+    
     // set audiences
     if(params->audience) {
         req.add_audience(params->audience);
@@ -639,7 +674,7 @@ jwtsvid_SVID *workloadapi_Client_FetchJWTSVID(workloadapi_Client *client,
 
     JWTSVIDResponse resp;
     grpc::Status status = ((SpiffeWorkloadAPI::StubInterface *) client->stub)
-                              ->FetchJWTSVID(&ctx, req, &resp);
+                              ->FetchJWTSVID(ctx, req, &resp);
 
     if(status.ok()) {
         // parse response
@@ -648,5 +683,126 @@ jwtsvid_SVID *workloadapi_Client_FetchJWTSVID(workloadapi_Client *client,
         // could not fetch jwt svid
         *err = ERROR1;
         return NULL;
+    }
+}
+
+jwtbundle_Set *workloadapi_Client_FetchJWTBundles(workloadapi_Client *client,
+                                                  err_t *err)
+{
+    grpc::ClientContext ctx;
+
+    if(client->headers) {
+        for(int i = 0; i < arrlen(client->headers); i += 2)
+            ctx.AddMetadata(client->headers[i], client->headers[i + 1]);
+    }
+
+    JWTBundlesRequest req;
+    std::unique_ptr<grpc::ClientReaderInterface<JWTBundlesResponse>> c_reader
+        = ((SpiffeWorkloadAPI::StubInterface *) client->stub)
+              ->FetchJWTBundles(&ctx, req);
+
+    JWTBundlesResponse resp;
+    bool success = c_reader->Read(&resp);
+    if(success) {
+        // parse response
+        return workloadapi_parseJWTBundles(&resp, err);
+    } else {
+        // could not fetch jwt bundles
+        *err = ERROR1;
+        return NULL;
+    }
+}
+
+jwtsvid_SVID *workloadapi_Client_ValidateJWTSVID(workloadapi_Client *client,
+                                                 char *token, char *audience,
+                                                 err_t *err)
+{
+    grpc::ClientContext ctx;
+
+    ValidateJWTSVIDRequest req;
+    req.set_svid(token);
+    req.set_audience(audience);
+
+    ValidateJWTSVIDResponse resp;
+    grpc::Status status = ((SpiffeWorkloadAPI::StubInterface *) client->stub)
+                              ->ValidateJWTSVID(&ctx, req, &resp);
+
+    if(status.ok()) {
+        // parse response
+        string_arr_t audiences_array = NULL;
+        arrput(audiences_array, audience);
+        jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, audiences_array, err);
+        arrfree(audiences_array);
+
+        return svid;
+    } else {
+        // could not validate jwt svid
+        *err = ERROR1;
+        return NULL;
+    }
+}
+
+err_t workloadapi_Client_WatchJWTBundles(workloadapi_Client *client,
+                                         workloadapi_JWTWatcher *watcher)
+{
+    if(!client)
+        return ERROR1;
+    if(!watcher)
+        return ERROR2;
+    workloadapi_Backoff backoff = workloadapi_NewBackoff({ 1, 0 }, { 30, 0 });
+    while(true) {
+        err_t err
+            = workloadapi_Client_watchJWTBundles(client, watcher, &backoff);
+        workloadapi_JWTWatcher_OnJWTBundlesWatchError(watcher, err);
+        err = workloadapi_Client_HandleWatchError(client, err, &backoff);
+        // TODO: check error and reuse backoff if not cancelled
+        if(err == grpc::CANCELLED || err == grpc::INVALID_ARGUMENT) {
+            return err;
+        } else if(err != NO_ERROR) {
+            return err;
+        }
+    }
+}
+
+err_t workloadapi_Client_watchJWTBundles(workloadapi_Client *client,
+                                         workloadapi_JWTWatcher *watcher,
+                                         workloadapi_Backoff *backoff)
+{
+    if(!client || !watcher || !backoff) {
+        return ERROR2;
+    }
+    grpc::ClientContext *ctx = new grpc::ClientContext();
+    if(client->headers) {
+        for(int i = 0; i < arrlen(client->headers); i += 2)
+            ctx->AddMetadata(client->headers[i], client->headers[i + 1]);
+    }
+    JWTBundlesRequest req;
+    JWTBundlesResponse resp;
+    // unique_ptr gets freed after it goes out of scope
+    std::unique_ptr<grpc::ClientReaderInterface<JWTBundlesResponse>> c_reader
+        = ((SpiffeWorkloadAPI::StubInterface *) client->stub)
+              ->FetchJWTBundles(ctx, req); // get response reader
+    arrput(client->context_list, (void *) ctx);
+    while(true) {
+        bool ok = c_reader->Read(&resp);
+        if(!ok) {
+            auto status = c_reader->Finish();
+            if(status.error_code() == grpc::StatusCode::CANCELLED) {
+                return ERROR1;
+            }
+            if(status.error_code() == grpc::StatusCode::INVALID_ARGUMENT) {
+                return ERROR3;
+            }
+            return ERROR4; // no more messages.
+        }
+        workloadapi_Backoff_Reset(backoff);
+        err_t err = NO_ERROR;
+        jwtbundle_Set *set = workloadapi_parseJWTBundles(&resp, &err);
+        if(err != NO_ERROR) {
+            workloadapi_JWTWatcher_OnJWTBundlesWatchError(watcher, err);
+        } else {
+            workloadapi_JWTWatcher_OnJWTBundlesUpdate(watcher, set);
+            jwtbundle_Set_Free(set);
+        }
     }
 }

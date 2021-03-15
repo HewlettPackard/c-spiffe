@@ -1,6 +1,5 @@
 import os
 import sys
-import string
 
 from pathlib2 import Path
 
