@@ -6,8 +6,7 @@
 #include <openssl/x509.h>
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 typedef struct map_string_int_arr {

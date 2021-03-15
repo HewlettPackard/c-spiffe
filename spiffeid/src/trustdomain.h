@@ -5,8 +5,7 @@
 #include "id.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
@@ -19,8 +18,7 @@ extern "C"
  * \param err [out] Variable to get information in the event of error.
  * \returns A Trust Domain object constructed with the parameter.
  */
-spiffeid_TrustDomain spiffeid_TrustDomainFromString(string_t str,
-                                                    err_t *err);
+spiffeid_TrustDomain spiffeid_TrustDomainFromString(string_t str, err_t *err);
 
 /**
  * Gets a Trust Domain object from an URI object. The URI must be a valid
@@ -32,7 +30,7 @@ spiffeid_TrustDomain spiffeid_TrustDomainFromString(string_t str,
  * \returns A Trust Domain object constructed with the parameter.
  */
 spiffeid_TrustDomain spiffeid_TrustDomainFromURI(const UriUriA *uri,
-                                                    err_t *err);
+                                                 err_t *err);
 
 /**
  * Gets the string representation of a Trust Domain object.
@@ -71,7 +69,7 @@ string_t spiffeid_TrustDomain_IDString(const spiffeid_TrustDomain td);
  * using spiffeid_ID_Free function.
  */
 spiffeid_ID spiffeid_TrustDomain_NewID(const spiffeid_TrustDomain td,
-                                        const char *path);
+                                       const char *path);
 
 /**
  * Checks whether Trust Domain object has empty fields.
@@ -92,7 +90,7 @@ bool spiffeid_TrustDomain_IsZero(const spiffeid_TrustDomain td);
  * value ig td1 > td2.
  */
 int spiffeid_TrustDomain_Compare(const spiffeid_TrustDomain td1,
-                                    const spiffeid_TrustDomain td2);
+                                 const spiffeid_TrustDomain td2);
 
 /**
  * Frees a Trust Domain object.

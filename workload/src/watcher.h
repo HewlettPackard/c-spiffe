@@ -49,28 +49,29 @@ typedef struct workloadapi_Watcher {
 } workloadapi_Watcher;
 
 /** creates and sets up a new watcher, doesn't dial client yet. */
-workloadapi_Watcher *workloadapi_newWatcher(
-    workloadapi_WatcherConfig config,
-    workloadapi_X509Callback x509callback,
-    err_t *error);
+workloadapi_Watcher *
+workloadapi_newWatcher(workloadapi_WatcherConfig config,
+                       workloadapi_X509Callback x509callback, err_t *error);
 
 /** starts watcher thread and blocks until updated. dials client if needed. */
 err_t workloadapi_Watcher_Start(workloadapi_Watcher *watcher);
 
-/** drops connection to WorkloadAPI, and kills client (if watcher owns client) */
+/** drops connection to WorkloadAPI, and kills client (if watcher owns client)
+ */
 err_t workloadapi_Watcher_Close(workloadapi_Watcher *watcher);
 
-/** frees watcher object. should be closed first. also frees client, if owned. */
+/** frees watcher object. should be closed first. also frees client, if owned.
+ */
 err_t workloadapi_Watcher_Free(workloadapi_Watcher *watcher);
 
 /** Function called by Client when new x509 response arrives. */
 void workloadapi_Watcher_OnX509ContextUpdate(workloadapi_Watcher *watcher,
                                              workloadapi_X509Context *context);
 
-/** Called by Client when an x509 error occurs and the watcher must be made aware */
+/** Called by Client when an x509 error occurs and the watcher must be made
+ * aware */
 void workloadapi_Watcher_OnX509ContextWatchError(workloadapi_Watcher *watcher,
                                                  err_t error);
-
 
 /** Blocks until an update is received. */
 err_t workloadapi_Watcher_WaitUntilUpdated(workloadapi_Watcher *watcher);

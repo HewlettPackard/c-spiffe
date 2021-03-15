@@ -8,8 +8,7 @@
 #include <openssl/x509v3.h>
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
