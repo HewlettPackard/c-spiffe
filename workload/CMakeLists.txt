@@ -56,6 +56,7 @@ crypto)
 
 set(LIB_SOURCE
   src/x509source.c
+  src/jwtsource.c
 )
 
 set(LIB_WATCHER
