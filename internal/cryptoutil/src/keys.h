@@ -4,8 +4,7 @@
 #include <openssl/evp.h>
 #include <stdbool.h>
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
@@ -36,8 +35,7 @@ bool cryptoutil_RSAPublicKeyEqual(RSA *key1, RSA *key2);
  * \returns <tt>true</tt> if both public key are equal, <tt>false</tt>
  * otherwise.
  */
-bool cryptoutil_ECDSAPublicKeyEqual(const EC_KEY *key1,
-                                    const EC_KEY *key2);
+bool cryptoutil_ECDSAPublicKeyEqual(const EC_KEY *key1, const EC_KEY *key2);
 #ifdef __cplusplus
 }
 #endif

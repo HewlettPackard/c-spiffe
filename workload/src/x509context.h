@@ -5,7 +5,7 @@
 #include "../../svid/x509svid/src/svid.h"
 
 #ifdef __cplusplus
-extern "C"{
+extern "C" {
 #endif
 
 typedef struct {

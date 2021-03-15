@@ -5,8 +5,7 @@
 #include "set.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /** Source represents a source of X.509 bundles keyed by trust domain. */

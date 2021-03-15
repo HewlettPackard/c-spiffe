@@ -68,7 +68,6 @@ int main(int argc, char **argv)
                   << "\t./cpp_client svid_type=jwt\n"
                   << "\t./cpp_client svid_type=x509\n";
         exit(-1);
-
     }
 
     error = workloadapi_Client_Close(client);

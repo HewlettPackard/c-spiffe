@@ -8,8 +8,7 @@
 #include <openssl/x509v3.h>
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
@@ -42,7 +41,7 @@ bool x509util_CertsEqual(X509 **certs1, X509 **certs2);
  * iterations over the array using X509_free and then arrfree.
  */
 X509 **x509util_ParseCertificates(const byte *bytes, const size_t len,
-                                    err_t *err);
+                                  err_t *err);
 
 /**
  * Parse a private key in raw format.
@@ -54,7 +53,7 @@ X509 **x509util_ParseCertificates(const byte *bytes, const size_t len,
  * EVP_PKEY_free.
  */
 EVP_PKEY *x509util_ParsePrivateKey(const byte *bytes, const size_t len,
-                                    err_t *err);
+                                   err_t *err);
 
 /**
  * New certificate pool.
