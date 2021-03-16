@@ -6,8 +6,7 @@
 #include <uriparser/Uri.h>
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /** An instance of a Trust Domain object. */
@@ -57,7 +56,7 @@ spiffeid_ID spiffeid_ID_New(string_t td_str, const string_arr_t segments,
  * function.
  */
 string_t spiffeid_Join(string_t td_str, const string_arr_t segments,
-                        err_t *err);
+                       err_t *err);
 
 /**
  * Creates a SPIFFE ID object from a SPIFFE ID string representation;
@@ -99,8 +98,7 @@ spiffeid_TrustDomain spiffeid_ID_TrustDomain(const spiffeid_ID id);
  * \returns <tt>true</tt> if the ID is a member of the Trust Domain.
  * <tt>false</tt> otherwise.
  */
-bool spiffeid_ID_MemberOf(const spiffeid_ID id,
-                            const spiffeid_TrustDomain td);
+bool spiffeid_ID_MemberOf(const spiffeid_ID id, const spiffeid_TrustDomain td);
 
 /**
  * Gets the path from a SPIFFE ID object.

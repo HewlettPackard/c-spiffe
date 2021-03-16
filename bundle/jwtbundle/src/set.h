@@ -6,8 +6,7 @@
 #include <stdlib.h>
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 typedef struct {
@@ -69,8 +68,7 @@ bool jwtbundle_Set_Has(jwtbundle_Set *s, const spiffeid_TrustDomain td);
  * Trust Domain if it exists, <tt>NULL</tt> otherwise.
  */
 jwtbundle_Bundle *jwtbundle_Set_Get(jwtbundle_Set *s,
-                                    const spiffeid_TrustDomain td,
-                                    bool *suc);
+                                    const spiffeid_TrustDomain td, bool *suc);
 
 /**
  * Gets the JWT bundles in the set.

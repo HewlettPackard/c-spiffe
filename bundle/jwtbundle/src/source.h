@@ -5,16 +5,12 @@
 #include "set.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /** Source represents a source of JWT bundles keyed by trust domain. */
 typedef struct {
-    enum jwtbundle_Source_Cardinality {
-        JWTBUNDLE_BUNDLE,
-        JWTBUNDLE_SET
-    } type;
+    enum jwtbundle_Source_Cardinality { JWTBUNDLE_BUNDLE, JWTBUNDLE_SET } type;
     union {
         jwtbundle_Bundle *bundle;
         jwtbundle_Set *set;
