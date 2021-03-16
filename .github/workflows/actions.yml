@@ -36,11 +36,11 @@ jobs:
 
       - name: Lines Coverage Verify
         shell: bash
-        run: cd build && target=60.9;lines=`awk '{print substr($1, 8, 4)}' coverage | tail -1`;if { echo $lines; echo $target ; } | sort -hu -c 2>/dev/null; then echo "This coverage is less than threshold"; exit 1; fi
+        run: cd build && target=99.9;lines=`awk '{print substr($1, 8, 4)}' coverage | tail -1`;if { echo $lines; echo $target ; } | sort -hu -c 2>/dev/null; then echo "This coverage is less than threshold"; exit 1; fi
 
       - name: Functions Coverage Verify
         shell: bash
-        run: cd build && target=60.9;functions=`awk '{print substr($2, 6, 4)}' coverage | tail -1`;if { echo $functions; echo $target ; } | sort -hu -c 2>/dev/null; then echo "This coverage is less than threshold"; exit 1; fi
+        run: cd build && target=99.9;functions=`awk '{print substr($2, 6, 4)}' coverage | tail -1`;if { echo $functions; echo $target ; } | sort -hu -c 2>/dev/null; then echo "This coverage is less than threshold"; exit 1; fi
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
