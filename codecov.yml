@@ -2,34 +2,17 @@ codecov:
   require_ci_to_pass: yes
 
 coverage:
-<<<<<<< HEAD
   precision: 2      # Number of decimal places, between 0 and 5
   round: down       # up, down, or nearest
   range: "60...90"  # First number represents red, and second represents green
                     # (default is 70..100)
-=======
-  precision: 2
-  round: down
-  range: "70...100"
->>>>>>> 950dd9a... Added step to verify coverage
   status:
     project:
       default:
         # basic
         target: auto
         threshold: 0%
-        base: auto 
-        flags: 
-          - unit
-        paths: 
-          - "src"
-       # advanced settings
-        branches: 
-<<<<<<< HEAD
-          - bugfix-codecov
-=======
-          - master
->>>>>>> 950dd9a... Added step to verify coverage
+        base: auto
         if_ci_failed: error #success, failure, error, ignore
         informational: false
         only_pulls: false
