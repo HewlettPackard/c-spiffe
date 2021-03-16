@@ -78,8 +78,12 @@ jwtbundle_Bundle *workloadapi_JWTSource_GetJWTBundleForTrustDomain(
 {
     *err = workloadapi_JWTSource_checkClosed(source);
     if(!(*err)) {
-        return jwtbundle_Set_GetJWTBundleForTrustDomain(source->bundles, *td,
-                                                          err);
+        jwtbundle_Bundle *bundle = jwtbundle_Set_GetJWTBundleForTrustDomain(
+            source->bundles, *td, err);
+        if(*err == ERROR1) {
+            *err = ERROR2;
+        }
+        return bundle;
     }
     return NULL;
 }
