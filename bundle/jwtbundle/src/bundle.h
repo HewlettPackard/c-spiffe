@@ -5,8 +5,7 @@
 #include <threads.h>
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /** Bundle is a collection of trusted JWT authorities for a trust domain.
@@ -38,9 +37,8 @@ jwtbundle_Bundle *jwtbundle_New(const spiffeid_TrustDomain td);
  * New JWT Bundle object. Must be freed with jwtbundle_Bundle_Free
  * function.
  */
-jwtbundle_Bundle *
-jwtbundle_FromJWTAuthorities(const spiffeid_TrustDomain td,
-                                map_string_EVP_PKEY *auths);
+jwtbundle_Bundle *jwtbundle_FromJWTAuthorities(const spiffeid_TrustDomain td,
+                                               map_string_EVP_PKEY *auths);
 
 /**
  * Loads a bundle from a file on disk.
@@ -52,7 +50,7 @@ jwtbundle_FromJWTAuthorities(const spiffeid_TrustDomain td,
  * function.
  */
 jwtbundle_Bundle *jwtbundle_Load(const spiffeid_TrustDomain td,
-                                    const char *path, err_t *err);
+                                 const char *path, err_t *err);
 
 /**
  * Decodes a bundle from bytes.
@@ -63,7 +61,7 @@ jwtbundle_Bundle *jwtbundle_Load(const spiffeid_TrustDomain td,
  * function.
  */
 jwtbundle_Bundle *jwtbundle_Parse(const spiffeid_TrustDomain td,
-                                    const char *bundle_bytes, err_t *err);
+                                  const char *bundle_bytes, err_t *err);
 
 /**
  * Gets the Trust Domain that the bundle belongs to.
@@ -72,8 +70,7 @@ jwtbundle_Bundle *jwtbundle_Parse(const spiffeid_TrustDomain td,
  * \returns Trust Domain object. Must NOT be modified of freed directly.
  * The object will be freed once the JWT Bundle object is freed.
  */
-spiffeid_TrustDomain
-jwtbundle_Bundle_TrustDomain(const jwtbundle_Bundle *b);
+spiffeid_TrustDomain jwtbundle_Bundle_TrustDomain(const jwtbundle_Bundle *b);
 
 /**
  * Gets the JWT authorities in the bundle.
@@ -99,7 +96,7 @@ EVP_PKEY *jwtbundle_Bundle_FindJWTAuthority(jwtbundle_Bundle *bundle,
  * <tt>false</tt> otherwise.
  */
 bool jwtbundle_Bundle_HasJWTAuthority(jwtbundle_Bundle *bundle,
-                                        const char *keyID);
+                                      const char *keyID);
 
 /**
  * Adds a JWT authority to the bundle. If the authority already exists
@@ -109,7 +106,7 @@ bool jwtbundle_Bundle_HasJWTAuthority(jwtbundle_Bundle *bundle,
  * \param auth [in] JWT certificate pointer.
  */
 err_t jwtbundle_Bundle_AddJWTAuthority(jwtbundle_Bundle *bundle,
-                                        const char *keyID, EVP_PKEY *pkey);
+                                       const char *keyID, EVP_PKEY *pkey);
 
 /**
  * Removes a JWT authority to the bundle. If the authority already does
@@ -120,7 +117,7 @@ err_t jwtbundle_Bundle_AddJWTAuthority(jwtbundle_Bundle *bundle,
  * \param auth [in] JWT certificate pointer.
  */
 void jwtbundle_Bundle_RemoveJWTAuthority(jwtbundle_Bundle *bundle,
-                                            const char *keyID);
+                                         const char *keyID);
 
 /**
  * Sets the JWT Authorities in the bundle.

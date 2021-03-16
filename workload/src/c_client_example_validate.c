@@ -27,7 +27,8 @@ int main(int argc, char **argv)
     if(f) {
         string_t token = FILE_to_string(f);
         string_t audience = string_new(argv[2]);
-        jwtsvid_SVID *svid = workloadapi_Client_ValidateJWTSVID(client, token, audience, &error);
+        jwtsvid_SVID *svid = workloadapi_Client_ValidateJWTSVID(
+            client, token, audience, &error);
         if(error != NO_ERROR) {
             printf("fetch error! %d\n", (int) error);
         }

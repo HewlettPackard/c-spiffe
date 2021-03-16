@@ -7,8 +7,7 @@
 #include <string.h>
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /** string_t is an stb allocated string. Treat it as a regular string, but

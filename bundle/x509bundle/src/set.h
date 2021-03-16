@@ -5,8 +5,7 @@
 #include <stdlib.h>
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 typedef struct {
@@ -46,8 +45,7 @@ void x509bundle_Set_Add(x509bundle_Set *set, x509bundle_Bundle *bundle);
  * \param set [in] Set of X.509 bundles object pointer.
  * \param td [in] Trust Domain object.
  */
-void x509bundle_Set_Remove(x509bundle_Set *set,
-                            const spiffeid_TrustDomain td);
+void x509bundle_Set_Remove(x509bundle_Set *set, const spiffeid_TrustDomain td);
 
 /**
  * Checks if a bundle belongs to the set.
@@ -57,8 +55,7 @@ void x509bundle_Set_Remove(x509bundle_Set *set,
  * \returns <tt>true</tt> if there is a bundle for the given Trust Domain,
  * <tt>false</tt> otherwise.
  */
-bool x509bundle_Set_Has(x509bundle_Set *set,
-                        const spiffeid_TrustDomain td);
+bool x509bundle_Set_Has(x509bundle_Set *set, const spiffeid_TrustDomain td);
 
 /**
  * Gets an X.509 bundle from the set for a given Trust Domain.
@@ -70,8 +67,8 @@ bool x509bundle_Set_Has(x509bundle_Set *set,
  * Trust Domain if it exists, <tt>NULL</tt> otherwise.
  */
 x509bundle_Bundle *x509bundle_Set_Get(x509bundle_Set *set,
-                                        const spiffeid_TrustDomain td,
-                                        bool *suc);
+                                      const spiffeid_TrustDomain td,
+                                      bool *suc);
 
 /**
  * Gets the X.509 bundles in the set.

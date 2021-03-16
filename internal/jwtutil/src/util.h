@@ -5,8 +5,7 @@
 #include <stdbool.h>
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
@@ -27,7 +26,7 @@ map_string_EVP_PKEY *jwtutil_CopyJWTAuthorities(map_string_EVP_PKEY *hash);
  * keys, <tt>false</tt> otherwise.
  */
 bool jwtutil_JWTAuthoritiesEqual(map_string_EVP_PKEY *hash1,
-                                map_string_EVP_PKEY *hash2);
+                                 map_string_EVP_PKEY *hash2);
 
 #ifdef __cplusplus
 }
