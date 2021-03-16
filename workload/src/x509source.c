@@ -94,10 +94,13 @@ x509bundle_Bundle *workloadapi_X509Source_GetX509BundleForTrustDomain(
 {
     *err = workloadapi_X509Source_checkClosed(source);
     if(!(*err)) {
-        return x509bundle_Set_GetX509BundleForTrustDomain(source->bundles, *td,
-                                                          err);
+        x509bundle_Bundle *bundle = x509bundle_Set_GetX509BundleForTrustDomain(
+            source->bundles, *td, err);
+        if(*err == ERROR1) {
+            *err = ERROR2;
+        }
+        return bundle;
     }
-
     return NULL;
 }
 
