@@ -1,31 +1,48 @@
 codecov:
   require_ci_to_pass: yes
-  notify:
-    wait_for_ci: yes
 
 coverage:
+<<<<<<< HEAD
   precision: 2      # Number of decimal places, between 0 and 5
   round: down       # up, down, or nearest
   range: "60...90"  # First number represents red, and second represents green
                     # (default is 70..100)
+=======
+  precision: 2
+  round: down
+  range: "70...100"
+>>>>>>> 950dd9a... Added step to verify coverage
   status:
     project:
       default:
         # basic
-        target: 80%
+        target: auto
         threshold: 0%
-        base: auto
-      # advanced settings
+        base: auto 
+        flags: 
+          - unit
+        paths: 
+          - "src"
+       # advanced settings
         branches: 
+<<<<<<< HEAD
           - bugfix-codecov
+=======
+          - master
+>>>>>>> 950dd9a... Added step to verify coverage
         if_ci_failed: error #success, failure, error, ignore
         informational: false
         only_pulls: false
 
-comment:
-  layout: "diff"
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
 
-coverage:
-  ignore: 
-    #- "test"  # ignore folders and all its contents
-    - "*/tests/*"    # ignore folders and all its contents
+comment:
+  layout: "reach,diff,flags,files,footer"
+  behavior: default
+  require_changes: no
