@@ -138,6 +138,46 @@ START_TEST(test_workloadapi_JWTSource_Closes_watcher);
 }
 END_TEST
 
+START_TEST(test_workloadapi_JWTSource_GetJWTSVID_fails_if_closed);
+{
+    err_t err;
+    workloadapi_JWTSource *tested =  workloadapi_NewJWTSource(NULL, &err);
+    jwtsvid_SVID* svid = workloadapi_JWTSource_GetJWTSVID(tested,NULL,&err);
+
+    ck_assert_ptr_eq(svid,NULL);
+    ck_assert_int_eq(err,ERROR1);
+
+    workloadapi_JWTSource_Free(tested);
+}
+END_TEST
+
+START_TEST(test_workloadapi_JWTSource_GetJWTBundleForTrustDomain);
+{
+    err_t err;
+    workloadapi_JWTSource *tested =  workloadapi_NewJWTSource(NULL, &err);
+    string_t td_url = string_new("example.org");
+    spiffeid_TrustDomain td = spiffeid_TrustDomainFromString(td_url,&err);
+
+    jwtbundle_Bundle* bundle = workloadapi_JWTSource_GetJWTBundleForTrustDomain(tested,&td,&err);
+
+    ck_assert_ptr_eq(bundle,NULL);
+    ck_assert_int_eq(err,ERROR1); //source closed
+
+    tested->closed = false;
+    tested->bundles = jwtbundle_NewSet(0);
+    bundle = workloadapi_JWTSource_GetJWTBundleForTrustDomain(tested,&td,&err);
+
+    ck_assert_ptr_eq(bundle,NULL);
+    ck_assert_int_eq(err,ERROR2); //trust domain not available
+
+    jwtbundle_Set_Free(tested->bundles);
+    tested->bundles = NULL;
+    tested->closed = true;
+    workloadapi_JWTSource_Free(tested);
+}
+END_TEST
+
+
 Suite *watcher_suite(void)
 {
     Suite *s = suite_create("jwtsource");
@@ -150,6 +190,10 @@ Suite *watcher_suite(void)
     tcase_add_test(
         tc_core, test_workloadapi_JWTSource_Start_waits_and_sets_closed_false);
     tcase_add_test(tc_core, test_workloadapi_JWTSource_Closes_watcher);
+    tcase_add_test(tc_core, test_workloadapi_JWTSource_GetJWTSVID_fails_if_closed
+);
+    tcase_add_test(tc_core, test_workloadapi_JWTSource_GetJWTBundleForTrustDomain
+);
 
     suite_add_tcase(s, tc_core);
 
