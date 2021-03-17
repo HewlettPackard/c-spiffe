@@ -34,13 +34,9 @@ jobs:
         shell: bash
         run: cd build && make gcov && make lcov && lcov --list Coverage/lcov.info > coverage
 
-      - name: Lines Coverage Verify
+      - name: Integration Test
         shell: bash
-        run: cd build && target=60.9;lines=`awk '{print substr($1, 8, 4)}' coverage | tail -1`;if { echo $lines; echo $target ; } | sort -hu -c 2>/dev/null; then echo "This coverage is less than threshold"; exit 1; fi
-
-      - name: Functions Coverage Verify
-        shell: bash
-        run: cd build && target=60.9;functions=`awk '{print substr($2, 6, 4)}' coverage | tail -1`;if { echo $functions; echo $target ; } | sort -hu -c 2>/dev/null; then echo "This coverage is less than threshold"; exit 1; fi
+        run: cd integration_test && behave --tags=-@wip
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
@@ -49,6 +45,12 @@ jobs:
           verbose: true
           file: build/Coverage/lcov.info
 
-      - name: Integration Test
+      - name: Lines Coverage Verify
         shell: bash
-        run: cd integration_test && behave --tags=-@wip
+        run: cd build && target=60.9;lines=`awk '{print substr($1, 8, 4)}' coverage | tail -1`;if { echo $lines; echo $target ; } | sort -hu -c 2>/dev/null; then echo "This coverage is less than threshold"; exit 1; fi
+
+      - name: Functions Coverage Verify
+        shell: bash
+        run: cd build && target=60.9;functions=`awk '{print substr($2, 6, 4)}' coverage | tail -1`;if { echo $functions; echo $target ; } | sort -hu -c 2>/dev/null; then echo "This coverage is less than threshold"; exit 1; fi
+
+
