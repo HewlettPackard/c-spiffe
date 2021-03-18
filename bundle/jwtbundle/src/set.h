@@ -49,6 +49,15 @@ void jwtbundle_Set_Add(jwtbundle_Set *s, jwtbundle_Bundle *bundle);
 void jwtbundle_Set_Remove(jwtbundle_Set *s, const spiffeid_TrustDomain td);
 
 /**
+ * Copies the content of a bundle set.
+ *
+ * \param set [in] JWT Bundle Set object pointer.
+ * \returns a copy of the set. Must be freed using jwtbundle_Set_Free
+ * function.
+ */
+jwtbundle_Set *jwtbundle_Set_Clone(jwtbundle_Set *set);
+
+/**
  * Checks if a bundle belongs to the set.
  *
  * \param set [in] Set of JWT bundles object pointer.
