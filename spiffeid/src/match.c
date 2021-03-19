@@ -1,4 +1,4 @@
-#include "match.h"
+#include "spiffeid/src/match.h"
 
 match_err_t spiffeid_ApplyMatcher(const spiffeid_Matcher *matcher,
                                   const spiffeid_ID id)
