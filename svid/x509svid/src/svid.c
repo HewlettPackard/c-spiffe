@@ -1,5 +1,5 @@
-#include "svid.h"
-#include "verify.h"
+#include "svid/x509svid/src/svid.h"
+#include "svid/x509svid/src/verify.h"
 #include <openssl/bn.h>
 
 x509svid_SVID *x509svid_Load(const char *certfile, const char *keyfile,

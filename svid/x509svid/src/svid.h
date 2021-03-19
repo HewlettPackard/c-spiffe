@@ -1,9 +1,9 @@
 #ifndef INCLUDE_SVID_X509SVID_SVID_H
 #define INCLUDE_SVID_X509SVID_SVID_H
 
-#include "../../../internal/pemutil/src/pem.h"
-#include "../../../internal/x509util/src/util.h"
-#include "../../../spiffeid/src/id.h"
+#include "internal/pemutil/src/pem.h"
+#include "internal/x509util/src/util.h"
+#include "spiffeid/src/id.h"
 #include <openssl/ecdsa.h>
 #include <openssl/evp.h>
 #include <openssl/rsa.h>

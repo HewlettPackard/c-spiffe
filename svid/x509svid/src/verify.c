@@ -1,5 +1,5 @@
-#include "verify.h"
-#include "../../../internal/x509util/src/util.h"
+#include "svid/x509svid/src/verify.h"
+#include "internal/x509util/src/util.h"
 #include <openssl/pem.h>
 
 // maps a certificate on certificate chains
