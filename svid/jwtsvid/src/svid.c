@@ -1,5 +1,5 @@
-#include "svid.h"
-#include "../../../bundle/jwtbundle/src/source.h"
+#include "svid/jwtsvid/src/svid.h"
+#include "bundle/jwtbundle/src/source.h"
 #include <cjose/cjose.h>
 
 // one minute leeway
