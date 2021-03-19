@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BUNDLE_X509BUNDLE_SOURCE_H
 #define INCLUDE_BUNDLE_X509BUNDLE_SOURCE_H
 
+#include "../../../workload/src/x509source.h"
 #include "bundle.h"
 #include "set.h"
 
@@ -12,11 +13,13 @@ extern "C" {
 typedef struct {
     enum x509bundle_Source_Cardinality {
         X509BUNDLE_BUNDLE,
-        X509BUNDLE_SET
+        X509BUNDLE_SET,
+        WORKLOADAPI_X509SOURCE
     } type;
     union {
         x509bundle_Bundle *bundle;
         x509bundle_Set *set;
+        workloadapi_X509Source *source;
     } source;
 } x509bundle_Source;
 
@@ -49,6 +52,8 @@ x509bundle_Source *x509bundle_SourceFromBundle(x509bundle_Bundle *b);
  * \returns A source of X.509 bundles object pointer.
  */
 x509bundle_Source *x509bundle_SourceFromSet(x509bundle_Set *set);
+
+x509bundle_Source *x509bundle_SourceFromSource(workloadapi_X509Source *source);
 
 /**
  * Frees a source of X.509 bundles object.
