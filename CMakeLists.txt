@@ -41,6 +41,9 @@ find_package(OpenSSL REQUIRED)
 set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fprofile-arcs -ftest-coverage -g -O0")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage -g -O0")
 
+# Add folders for headers
+include_directories(${PROJECT_SOURCE_DIR})
+
 # Set modules list
 set(modules bundle internal spiffeid svid workload)
 
