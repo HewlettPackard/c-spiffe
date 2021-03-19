@@ -1,4 +1,4 @@
-#include "intenal/jwtutil/src/util.h"
+#include "internal/jwtutil/src/util.h"
 #include <check.h>
 #include <openssl/pem.h>
 
