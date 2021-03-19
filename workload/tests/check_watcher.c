@@ -1,4 +1,4 @@
-#include "../src/watcher.h"
+#include "workload/src/watcher.h"
 #include <check.h>
 
 // callback that sets an int to a value, and ignores the context.
