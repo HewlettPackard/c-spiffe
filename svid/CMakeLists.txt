@@ -12,3 +12,8 @@ ${PROJECT_SOURCE_DIR}/jwtsvid/src/svid.c
 ${PROJECT_SOURCE_DIR}/../utils/src/util.c)
 
 add_library(${TARGET_NAME} SHARED ${LIB_SVID})
+
+install(
+    TARGETS              "${TARGET_NAME}"
+    LIBRARY DESTINATION  "${CMAKE_INSTALL_LIBDIR}"
+)

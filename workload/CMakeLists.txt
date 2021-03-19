@@ -99,6 +99,13 @@ ${OWN_LIBS}
 ${EXT_LIBS}
 )
 
+
+install(
+    TARGETS              "backoff" "client" "source"
+    LIBRARY DESTINATION  "${CMAKE_INSTALL_LIBDIR}"
+)
+
+
 set(CPP_CLIENT
     src/cpp_client_example.cc
 )

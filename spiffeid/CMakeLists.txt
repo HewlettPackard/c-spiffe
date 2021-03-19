@@ -14,3 +14,8 @@ ${PROJECT_SOURCE_DIR}/../utils/src/util.c
 )
 
 add_library(${TARGET_NAME} SHARED ${LIB_SPIFFEID})
+
+install(
+    TARGETS              "${TARGET_NAME}"
+    LIBRARY DESTINATION  "${CMAKE_INSTALL_LIBDIR}"
+)

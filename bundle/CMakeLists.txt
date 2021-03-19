@@ -17,3 +17,8 @@ ${PROJECT_SOURCE_DIR}/x509bundle/src/source.c
 )
 
 add_library(${TARGET_NAME} SHARED ${LIB_BUNDLE})
+
+install(
+    TARGETS              "${TARGET_NAME}"
+    LIBRARY DESTINATION  "${CMAKE_INSTALL_LIBDIR}"
+)
