@@ -1,7 +1,24 @@
 FROM ubuntu:focal
 
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends ca-certificates git curl tar gzip vim unzip wget
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        software-properties-common \
+        autoconf \
+        automake \
+        libtool \
+        pkg-config \
+        ca-certificates \
+        git \
+        curl \
+        tar \
+        gzip \
+        vim \
+        unzip \
+        wget
+
+RUN apt-get clean
 
 # Install Spire Agent
 ARG SPIRE_VERSION=0.12.0
@@ -9,12 +26,16 @@ ARG SPIRE_RELEASE=https://github.com/spiffe/spire/releases/download/v${SPIRE_VER
 ARG SPIRE_DIR=/opt/spire
 
 ARG C_SPIFFE_DIR=/mnt/c-spiffe
-ARG BRANCH=master
 
 RUN curl --silent --location $SPIRE_RELEASE | tar -xzf -
 RUN mv spire-${SPIRE_VERSION} ${SPIRE_DIR}
 
-RUN cd /mnt && git clone -b ${BRANCH} https://github.com/HewlettPackard/c-spiffe.git
+RUN ln -s /opt/spire/bin/spire-server /usr/bin/spire-server
+RUN ln -s /opt/spire/bin/spire-agent /usr/bin/spire-agent
+
+# Todo: Improve
+ARG BRANCH=test-container
+RUN cd /mnt && git clone -b ${BRANCH} https://github.com/willallves/c-spiffe.git
 RUN mkdir -p ${C_SPIFFE_DIR}/build/
 
 # Configure Spire

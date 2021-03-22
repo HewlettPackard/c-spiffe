@@ -1,5 +1,4 @@
 FROM spire-agent
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends software-properties-common python3 python3-pip
