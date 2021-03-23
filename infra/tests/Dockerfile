@@ -5,9 +5,6 @@ RUN apt-get update \
 
 ARG TEST_DIR=/mnt/c-spiffe
 
-# Create user for test
-RUN useradd tests -u 1002
-
 WORKDIR ${TEST_DIR}/integration_test
 
 # failed to build : ADD failed: forbidden path outside the build context:
@@ -22,3 +19,9 @@ COPY run-behave-tests.sh .
 RUN chmod +x get-entries.sh
 RUN chmod +x get-entries.py
 RUN chmod +x run-behave-tests.sh
+
+# Create user for test workloads
+RUN useradd tests -u 1002
+
+# We can added any user for tests but must be sudo
+#USER tests

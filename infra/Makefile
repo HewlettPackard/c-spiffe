@@ -15,7 +15,7 @@ create-entries:
 	docker-compose exec spire-server ./create-entries.sh
 
 generate-token:
-	docker-compose exec spire-server spire-server token generate -spiffeID spiffe://example.org/$(SERVICE)
+	docker-compose exec spire-server spire-server token generate -spiffeID spiffe://example.org/host
 
 join-token:
 	docker-compose exec $(SERVICE) spire-agent run -joinToken $(TOKEN) -config /opt/spire/conf/agent/agent.conf
