@@ -79,6 +79,8 @@ static string_t ec_sig_to_as1n(const uint8_t *sig, size_t len, unsigned deg,
                                bool *suc)
 {
     const unsigned bn_len = (deg + 7) / 8;
+    string_t ret_sig = NULL;
+    *suc = false;
     if(2 * bn_len == len) {
         // get left side from signature
         BIGNUM *bn_r = BN_bin2bn(sig, bn_len, NULL);
@@ -93,21 +95,18 @@ static string_t ec_sig_to_as1n(const uint8_t *sig, size_t len, unsigned deg,
         int sig_len = i2d_ECDSA_SIG(ec_sig, NULL);
 
         if(sig_len > 0) {
-            string_t ret_sig = NULL;
             arrsetlen(ret_sig, sig_len);
             unsigned char *p_out = (unsigned char *) ret_sig;
 
             // convert EC signature to DER format
             i2d_ECDSA_SIG(ec_sig, &p_out);
             *suc = true;
-            return ret_sig;
         }
 
         ECDSA_SIG_free(ec_sig);
     }
 
-    *suc = false;
-    return NULL;
+    return ret_sig;
 }
 
 static err_t validate_jwt(jwtsvid_JWT *jwt, EVP_PKEY *pkey)
