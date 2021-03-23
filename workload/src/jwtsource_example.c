@@ -2,23 +2,28 @@
 #include <threads.h>
 #include <time.h>
 
-void print_function(jwtbundle_Set *set, void *not_used)
+void print_function(workloadapi_JWTSource *source, void *not_used)
 {
     BIO *out;
     out = BIO_new_fd(fileno(stdout), BIO_NOCLOSE);
-
+    jwtbundle_Set *set = jwtbundle_Set_Clone(source->bundles);
+    printf("Bundles: [\n");
     for(uint32_t i = 0, size = jwtbundle_Set_Len(set); i < size; ++i) {
-        printf("TD name: %s\n", set->bundles[i].value->td.name);
+        printf(" TD: %s: [\n", set->bundles[i].value->td.name);
 
-        for(size_t j = 0, size2 = hmlenu(set->bundles[i].value->auths);
+        for(size_t j = 0, size2 = shlenu(set->bundles[i].value->auths);
             j < size2; ++j) {
-            printf(" kID: %s\n", set->bundles[i].value->auths[j].key);
-            EVP_PKEY_print_params(out, set->bundles[i].value->auths[j].value,
-                                  2, NULL);
-            EVP_PKEY_print_public(out, set->bundles[i].value->auths[j].value,
-                                  2, NULL);
+            printf("  kID: %s\n", set->bundles[i].value->auths[j].key);
+            printf("   pkey *p: %p\n", set->bundles[i].value->auths[j].value);
+            ///TODO: print keys after it's fixed
+            // EVP_PKEY_print_public(out,
+            // set->bundles[i].value->auths[j].value,
+            //                       3, NULL);
         }
+        printf(" ]\n");
     }
+    printf("]\n");
+    jwtbundle_Set_Free(set);
     BIO_free(out);
 }
 
@@ -27,29 +32,60 @@ int print_forever(void *args)
     workloadapi_JWTSource *source = (workloadapi_JWTSource *) args;
     struct timespec tp = { 1, 0 };
     err_t err = NO_ERROR;
-    jwtsvid_Params *params = (jwtsvid_Params *) calloc(1, sizeof *params);
-    while(!workloadapi_JWTSource_checkClosed(source)) {
-        jwtsvid_SVID *svid
-            = workloadapi_JWTSource_GetJWTSVID(source, params, &err);
-        print_function(source->bundles, NULL);
-        if(svid) {
-            printf("Token:%s\nExpiry:%s\nerr?:%d\n", svid->token,
-                   ctime(&svid->expiry), err);
-            thrd_sleep(&tp, NULL);
-            for(size_t i = 0, size = arrlenu(svid->audience); i < size; ++i) {
-                jwtsvid_SVID *svid2 = workloadapi_Client_ValidateJWTSVID(
-                    source->watcher->client, svid->token, svid->audience[i],
-                    &err);
-                printf("Token:%s\nAudience:%s\n,err?:%d\n", svid->token,
-                       svid->audience[i], err);
 
-                if(svid2) {
-                    printf("Token2:%s\nExpiry:%s\n", svid2->token,
-                           ctime(&svid2->expiry));
-                }
+    while(!workloadapi_JWTSource_checkClosed(source)) {
+        spiffeid_ID id = { NULL, NULL };
+        string_t audience = string_new("example.org");
+        jwtsvid_Params params
+            = { .audience = audience, .extra_audiences = NULL, .subject = id };
+        jwtsvid_SVID *svid
+            = workloadapi_JWTSource_GetJWTSVID(source, &params, &err);
+        if(svid) {
+            printf("SVID Path: %s\n", svid->id.path);
+            printf("Trust Domain: %s\n", svid->id.td.name);
+            printf("Token: %s\n", svid->token);
+            printf("Expiry:%s", ctime(&svid->expiry));
+            printf("Claims: [\n");
+
+            for(size_t j = 0, size = shlenu(svid->claims); j < size; ++j) {
+                char *value
+                    = json_dumps(svid->claims[j].value, JSON_ENCODE_ANY);
+                printf(" '%s':'%s'\n", svid->claims[j].key, value);
+                free(value);
             }
+            printf("]\n");
+            print_function(source, NULL);
+            jwtbundle_Source *src = jwtbundle_SourceFromSet(
+                jwtbundle_Set_Clone(source->bundles));
+            jwtsvid_SVID *svid2 = jwtsvid_ParseAndValidate(
+                svid->token, src, svid->audience, &err);
+
+            if(svid2) {
+                printf("  Validated SVID: \n");
+                printf("   SVID Path: %s\n", svid2->id.path);
+                printf("   Trust Domain: %s\n", svid2->id.td.name);
+                printf("   Token: %s\n", svid2->token);
+                printf("   Expiry:%s", ctime(&svid->expiry));
+                printf("   Claims: [\n");
+                for(size_t j = 0, size = shlenu(svid2->claims); j < size;
+                    ++j) {
+                    char *value
+                        = json_dumps(svid2->claims[j].value, JSON_ENCODE_ANY);
+                    printf("    key: %s, value: %s\n", svid2->claims[j].key,
+                           value);
+                    free(value);
+                }
+                printf("   ]\n");
+                jwtsvid_SVID_Free(svid2);
+            } else {
+                printf("  COULDN'T VALIDATE SVID!\n");
+            }
+
+            jwtsvid_SVID_Free(svid);
+            jwtbundle_Source_Free(src);
+            thrd_sleep(&tp, NULL);
         } else {
-            break;
+            printf(" COULDN'T FETCH SVID!\n");
         }
     }
     return 0;
@@ -63,6 +99,7 @@ int main()
     if(err) {
         /// TODO: ERRO
     }
+    printf("\n\n\nPress ENTER to stop.\n\n\n");
 
     err = workloadapi_JWTSource_Start(source);
 
@@ -71,9 +108,15 @@ int main()
     }
     thrd_t thread;
     thrd_create(&thread, print_forever, source);
-    printf("\n\n\nPress ENTER to continue.\n\n\n");
+
+    char ch;
+    scanf("%c", &ch);
+
+    printf("Stopping.\n");
+
     err = workloadapi_JWTSource_Close(source);
 
     thrd_join(thread, NULL);
+    workloadapi_JWTSource_Free(source);
     return 0;
 }
