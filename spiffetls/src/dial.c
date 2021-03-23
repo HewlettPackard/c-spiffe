@@ -29,9 +29,9 @@ int spiffetls_DialWithMode(SSL_CTX *ctx, in_port_t port, in_addr_t addr,
         spiffetls_DialOption_apply(options[i], &opt);
     }
 
-    SSL *tls_config = opt.base_TLS_conf ? opt.base_TLS_conf : NULL;
+    SSL_CTX *tls_config = opt.base_TLS_conf ? opt.base_TLS_conf : NULL;
     if(tls_config)
-        SSL_up_ref(tls_config);
+        SSL_CTX_up_ref(tls_config);
 
     switch(mode->mode) {
     case TLS_CLIENT_MODE:
@@ -57,7 +57,8 @@ int spiffetls_DialWithMode(SSL_CTX *ctx, in_port_t port, in_addr_t addr,
     const struct sockaddr_in address
         = { .sin_family = AF_INET, .sin_addr.s_addr = addr, .sin_port = port };
     const int sockfd = socket(/*IPv4*/ AF_INET, /*TCP*/ SOCK_STREAM, /*IP*/ 0);
-    if(bind(sockfd, (const struct sockaddr *) &address, sizeof address) < 0) {
+    if(connect(sockfd, (const struct sockaddr *) &address, sizeof address)
+       < 0) {
         // could not bind socket to address
         *err = ERROR3;
         goto error;

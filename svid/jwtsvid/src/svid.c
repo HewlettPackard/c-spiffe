@@ -1,6 +1,8 @@
 #include "svid.h"
 #include "../../../bundle/jwtbundle/src/source.h"
 #include <cjose/cjose.h>
+#include <openssl/ec.h>
+#include <openssl/ecdsa.h>
 
 // one minute leeway
 const time_t DEFAULT_LEEWAY = 60L;
@@ -73,6 +75,41 @@ static jwtsvid_JWT *token_to_jwt(char *token, err_t *err)
     return NULL;
 }
 
+static string_t ec_sig_to_as1n(const uint8_t *sig, size_t len, unsigned deg,
+                               bool *suc)
+{
+    const unsigned bn_len = (deg + 7) / 8;
+    if(2 * bn_len == len) {
+        // get left side from signature
+        BIGNUM *bn_r = BN_bin2bn(sig, bn_len, NULL);
+        // get right side from signature
+        BIGNUM *bn_s = BN_bin2bn(sig + bn_len, bn_len, NULL);
+
+        // create a EC signature from EC point
+        ECDSA_SIG *ec_sig = ECDSA_SIG_new();
+        ECDSA_SIG_set0(ec_sig, bn_r, bn_s);
+
+        // get length to reserve on string
+        int sig_len = i2d_ECDSA_SIG(ec_sig, NULL);
+
+        if(sig_len > 0) {
+            string_t ret_sig = NULL;
+            arrsetlen(ret_sig, sig_len);
+            unsigned char *p_out = (unsigned char *) ret_sig;
+
+            // convert EC signature to DER format
+            i2d_ECDSA_SIG(ec_sig, &p_out);
+            *suc = true;
+            return ret_sig;
+        }
+
+        ECDSA_SIG_free(ec_sig);
+    }
+
+    *suc = false;
+    return NULL;
+}
+
 static err_t validate_jwt(jwtsvid_JWT *jwt, EVP_PKEY *pkey)
 {
     if(jwt) {
@@ -126,8 +163,28 @@ static err_t validate_jwt(jwtsvid_JWT *jwt, EVP_PKEY *pkey)
                     return ERROR4;
                 }
 
-                ret = EVP_DigestVerifyFinal(
-                    ctx, (const unsigned char *) buffer, buffer_size);
+                const int key_type = EVP_PKEY_base_id(pkey);
+
+                if(key_type == EVP_PKEY_RSA) {
+                    ret = EVP_DigestVerifyFinal(
+                        ctx, (const unsigned char *) buffer, buffer_size);
+                } else if(key_type == EVP_PKEY_EC) {
+                    EC_KEY *ec_key = EVP_PKEY_get1_EC_KEY(pkey);
+                    const int deg
+                        = EC_GROUP_get_degree(EC_KEY_get0_group(ec_key));
+                    EC_KEY_free(ec_key);
+
+                    bool suc;
+                    string_t sig
+                        = ec_sig_to_as1n(buffer, buffer_size, deg, &suc);
+                    if(suc && sig) {
+                        ret = EVP_DigestVerifyFinal(
+                            ctx, (const unsigned char *) sig, arrlenu(sig));
+                        arrfree(sig);
+                    } else {
+                        ret = 0;
+                    }
+                }
 
                 EVP_MD_CTX_free(ctx);
                 arrfree(md);

@@ -7,7 +7,7 @@
 // tlsoptions  []tlsconfig.Option
 
 typedef struct {
-    SSL *base_TLS_conf;
+    SSL_CTX *base_TLS_conf;
     int dialer_fd;
     // SSL_CTX *TLS_options;
 } spiffetls_dialConfig;
