@@ -1,0 +1,11 @@
+#####
+# Docker compose YAML file
+#
+# For documentation see: https://docs.docker.com/compose/yml/
+#####
+
+version: '3'
+services:
+  tests:
+    volumes:
+      - ../integration_test/:/tmp/
