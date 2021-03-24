@@ -15,7 +15,7 @@ void print_function(workloadapi_JWTSource *source, void *not_used)
             j < size2; ++j) {
             printf("  kID: %s\n", set->bundles[i].value->auths[j].key);
             printf("   pkey *p: %p\n", set->bundles[i].value->auths[j].value);
-            ///TODO: print keys after it's fixed
+            ///BUG: EVP_PKEY_get0_EC_KEY returns ref_count inside next line, makes print SIGSEV out.
             // EVP_PKEY_print_public(out,
             // set->bundles[i].value->auths[j].value,
             //                       3, NULL);
