@@ -58,20 +58,51 @@ set(LIB_SOURCE
   src/x509source.c
   src/jwtsource.c
 )
+set(HEADERS_SOURCE
+  src/x509source.h
+)
+install(
+    FILES ${HEADERS_SOURCE}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/src"
+)
 
 set(LIB_WATCHER
   src/watcher.c
   src/jwtwatcher.c
 )
+set(HEADERS_WATCHER
+  src/watcher.h
+  src/jwtwatcher.h
+)
+install(
+    FILES ${HEADERS_WATCHER}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/src"
+)
 
 set(LIB_BACKOFF
   src/backoff.c
+)
+set(HEADERS_BACKOFF
+  src/backoff.h
+)
+install(
+    FILES ${HEADERS_BACKOFF}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/src"
 )
 
 set(LIB_CLIENT
   src/client.cc
   ${proto_srcs}
   ${grpc_srcs}
+)
+set(HEADERS_CLIENT
+  src/client.h
+  ${proto_hdrs}
+  ${grpc_hdrs}
+)
+install(
+    FILES ${HEADERS_CLIENT}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/src"
 )
 
 add_library(backoff SHARED ${LIB_BACKOFF})
