@@ -2,7 +2,7 @@
 #include <threads.h>
 #include <time.h>
 
-void print_function(workloadapi_JWTSource *source, void *not_used)
+void print_bundles(workloadapi_JWTSource *source, void *not_used)
 {
     BIO *out;
     out = BIO_new_fd(fileno(stdout), BIO_NOCLOSE);
@@ -14,11 +14,8 @@ void print_function(workloadapi_JWTSource *source, void *not_used)
         for(size_t j = 0, size2 = shlenu(set->bundles[i].value->auths);
             j < size2; ++j) {
             printf("  kID: %s\n", set->bundles[i].value->auths[j].key);
-            printf("   pkey *p: %p\n", set->bundles[i].value->auths[j].value);
-            ///BUG: EVP_PKEY_get0_EC_KEY returns ref_count inside next line, makes print SIGSEV out.
-            // EVP_PKEY_print_public(out,
-            // set->bundles[i].value->auths[j].value,
-            //                       3, NULL);
+            EVP_PKEY_print_public(out, set->bundles[i].value->auths[j].value,
+                                  3, NULL);
         }
         printf(" ]\n");
     }
@@ -30,31 +27,37 @@ void print_function(workloadapi_JWTSource *source, void *not_used)
 int print_forever(void *args)
 {
     workloadapi_JWTSource *source = (workloadapi_JWTSource *) args;
-    struct timespec tp = { 1, 0 };
     err_t err = NO_ERROR;
 
     while(!workloadapi_JWTSource_checkClosed(source)) {
         spiffeid_ID id = { NULL, NULL };
         string_t audience = string_new("example.org");
-        jwtsvid_Params params
-            = { .audience = audience, .extra_audiences = NULL, .subject = id };
+        string_arr_t extra = NULL;
+        string_t audience2 = string_new("example2.org");
+        arrput(extra, audience2);
+        string_t audience3 = string_new("example3.org");
+        arrput(extra, audience3);
+        jwtsvid_Params params = { .audience = audience,
+                                  .extra_audiences = extra,
+                                  .subject = id };
         jwtsvid_SVID *svid
             = workloadapi_JWTSource_GetJWTSVID(source, &params, &err);
         if(svid) {
-            printf("SVID Path: %s\n", svid->id.path);
-            printf("Trust Domain: %s\n", svid->id.td.name);
-            printf("Token: %s\n", svid->token);
-            printf("Expiry:%s", ctime(&svid->expiry));
-            printf("Claims: [\n");
+            printf("SVID: %s%s\n", svid->id.td.name, svid->id.path);
+            printf(" Path: %s\n", svid->id.path);
+            printf(" Trust Domain: %s\n", svid->id.td.name);
+            printf(" Token: %s\n", svid->token);
+            printf(" Expiry:%s", ctime(&svid->expiry));
+            printf(" Claims: [\n");
 
             for(size_t j = 0, size = shlenu(svid->claims); j < size; ++j) {
                 char *value
                     = json_dumps(svid->claims[j].value, JSON_ENCODE_ANY);
-                printf(" '%s':'%s'\n", svid->claims[j].key, value);
+                printf("  '%s':'%s'\n", svid->claims[j].key, value);
                 free(value);
             }
-            printf("]\n");
-            print_function(source, NULL);
+            printf(" ]\n");
+            print_bundles(source, NULL);
             jwtbundle_Source *src = jwtbundle_SourceFromSet(
                 jwtbundle_Set_Clone(source->bundles));
             jwtsvid_SVID *svid2 = jwtsvid_ParseAndValidate(
@@ -83,6 +86,8 @@ int print_forever(void *args)
 
             jwtsvid_SVID_Free(svid);
             jwtbundle_Source_Free(src);
+            printf("\n\n\nPress ENTER to stop.\n\n\n");
+            struct timespec tp = { 5, 0 }; // 5 seconds
             thrd_sleep(&tp, NULL);
         } else {
             printf(" COULDN'T FETCH SVID!\n");
