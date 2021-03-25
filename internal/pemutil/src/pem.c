@@ -159,37 +159,52 @@ EVP_PKEY *pemutil_ParsePrivateKey(const byte *bytes, err_t *err)
     return pkey;
 }
 
-/**
- * TODO: check if it is better to copy pem_bytes
- * data to a stb array
- */
-byte *pemutil_EncodePrivateKey(EVP_PKEY *pkey, int *bytes_len, err_t *err)
+byte *pemutil_EncodePrivateKey(EVP_PKEY *pkey, err_t *err)
 {
-    // array of raw bytes
+    // stb array of raw bytes
     byte *pem_bytes = NULL;
-    int len = i2d_PrivateKey(pkey, &pem_bytes);
+    const int len = i2d_PrivateKey(pkey, NULL);
 
     *err = NO_ERROR;
 
-    if(len >= 0)
-        *bytes_len = len;
-    // error while reading
-    else
-        *err = ERROR2;
+    if(len >= 0) {
+        arrsetlen(pem_bytes, len);
+        byte *tmp = pem_bytes;
 
+        i2d_PrivateKey(pkey, &tmp);
+    } else {
+        // error while reading
+        *err = ERROR1;
+    }
+    
     return pem_bytes;
 }
 
-byte **pemutil_EncodeCertificates(X509 **certs)
+byte **pemutil_EncodeCertificates(X509 **certs, err_t *err)
 {
     byte **pem_bytes_arr = NULL;
-    byte *pem_bytes = NULL;
+    *err = NO_ERROR;
 
     for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
-        i2d_X509(certs[i], &pem_bytes);
+        const int len = i2d_X509(certs[i], NULL);
 
-        if(pem_bytes)
+        if(len >= 0) {
+            byte *pem_bytes = NULL;
+            arrsetlen(pem_bytes, len);
+            byte *tmp = pem_bytes;
+
+            i2d_X509(certs[i], &tmp);
             arrput(pem_bytes_arr, pem_bytes);
+        } else {
+            // could not encode one certificate
+            *err = ERROR1;
+            // freeing all stb array alocated so far
+            for(size_t i = 0, size = arrlenu(pem_bytes_arr); i < size; ++i) {
+                arrfree(pem_bytes_arr[i]);
+            }
+            arrfree(pem_bytes_arr);
+            break;
+        }
     }
 
     return pem_bytes_arr;

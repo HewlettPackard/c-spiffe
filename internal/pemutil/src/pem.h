@@ -35,22 +35,22 @@ EVP_PKEY *pemutil_ParsePrivateKey(const byte *bytes, err_t *err);
  * Encodes a private key in DER format.
  *
  * \param pkey [in] private key object pointer.
- * \param byles_len [out] length of the encoded object in bytes.
- * \param err [out] Variable to get information in the event of error.
+ 
  * \returns Encoded private key array of bytes if successful, <tt>NULL</tt>
- * otherwise.
+ * otherwise. Must be freed using arrfree function.
  */
-byte *pemutil_EncodePrivateKey(EVP_PKEY *pkey, int *bytes_len, err_t *err);
+byte *pemutil_EncodePrivateKey(EVP_PKEY *pkey, err_t *err);
 
 /**
  * Encodes a stb array of X.509 certificates in DER format.
  *
  * \param certs [in] stb array ox X.509 certificate object pointers.
+ * \param err [out] Variable to get information in the event of error.
  * \returns Encoded stb array of stb arrays of bytes if successful,
  * <tt>NULL</tt> otherwise. Must be freed iterating on the array using
  * arrfree, and then arrfree on the outer stb array.
  */
-byte **pemutil_EncodeCertificates(X509 **certs);
+byte **pemutil_EncodeCertificates(X509 **certs, err_t *err);
 
 #ifdef __cplusplus
 }

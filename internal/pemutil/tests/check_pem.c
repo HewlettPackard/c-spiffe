@@ -238,9 +238,11 @@ START_TEST(test_pemutil_EncodeCertificates)
         arrput(certs, PEM_read_bio_X509(bio_mems[i], NULL, NULL, NULL));
     }
 
-    byte **bytes_arr = pemutil_EncodeCertificates(certs);
+    err_t err;
+    byte **bytes_arr = pemutil_EncodeCertificates(certs, &err);
 
-    ck_assert(bytes_arr != NULL);
+    ck_assert_uint_eq(err, NO_ERROR);
+    ck_assert_ptr_ne(bytes_arr, NULL);
     ck_assert_uint_eq(arrlenu(bytes_arr), 2);
     for(size_t i = 0, size = arrlenu(bytes_arr); i < size; ++i) {
         ck_assert_uint_gt(arrlenu(bytes_arr[i]), 0);
@@ -280,12 +282,11 @@ START_TEST(test_pemutil_EncodePrivateKey)
     EVP_PKEY *evp_privkey = PEM_read_bio_PrivateKey(bio_mem, NULL, NULL, NULL);
 
     err_t err;
-    int len;
-    byte *encoded_bytes = pemutil_EncodePrivateKey(evp_privkey, &len, &err);
+    byte *encoded_bytes = pemutil_EncodePrivateKey(evp_privkey, &err);
 
     ck_assert_int_eq(err, NO_ERROR);
-    ck_assert_int_gt(len, 0);
     ck_assert(encoded_bytes != NULL);
+    ck_assert_uint_gt(arrlenu(encoded_bytes), 0);
 
     BIO_free(bio_mem);
     EVP_PKEY_free(evp_privkey);
