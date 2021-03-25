@@ -7,7 +7,7 @@
 typedef struct tlsconfig_Authorizer {
     spiffeid_Matcher *matcher;
     // list of arrays of pointers to X509 certificates
-    X509 ***certifiedChains;
+    X509 ***certified_chains;
 } tlsconfig_Authorizer;
 
 tlsconfig_Authorizer *tlsconfig_AuthourizeAny(void);
