@@ -1,14 +1,13 @@
 #include "authorizer.h"
 
-match_t tlsconfig_ApplyAuthorizer(tlsconfig_Authorizer *authorizer,
-                                  const spiffeid_ID id,
-                                  const X509 ***certified)
+match_err_t tlsconfig_ApplyAuthorizer(tlsconfig_Authorizer *authorizer,
+                                      const spiffeid_ID id, X509 ***certified)
 {
     authorizer->certified_chains = certified;
     return spiffeid_ApplyMatcher(authorizer->matcher, id);
 }
 
-tlsconfig_Authorizer *tlsconfig_AuthourizeAny()
+tlsconfig_Authorizer *tlsconfig_AuthorizeAny()
 {
     tlsconfig_Authorizer *authorizer = malloc(sizeof *authorizer);
 
@@ -18,7 +17,7 @@ tlsconfig_Authorizer *tlsconfig_AuthourizeAny()
     return authorizer;
 }
 
-tlsconfig_Authorizer *tlsconfig_AuthourizeID(const spiffeid_ID id)
+tlsconfig_Authorizer *tlsconfig_AuthorizeID(const spiffeid_ID id)
 {
     tlsconfig_Authorizer *authorizer = malloc(sizeof *authorizer);
 
@@ -28,7 +27,7 @@ tlsconfig_Authorizer *tlsconfig_AuthourizeID(const spiffeid_ID id)
     return authorizer;
 }
 
-tlsconfig_Authorizer *tlsconfig_AuthourizeOneOf(int n_args, ...)
+tlsconfig_Authorizer *tlsconfig_AuthorizeOneOf(int n_args, ...)
 {
     va_list args;
     va_start(args, n_args);
@@ -42,7 +41,7 @@ tlsconfig_Authorizer *tlsconfig_AuthourizeOneOf(int n_args, ...)
 }
 
 tlsconfig_Authorizer *
-tlsconfig_AuthourizeMemberOf(const spiffeid_TrustDomain td)
+tlsconfig_AuthorizeMemberOf(const spiffeid_TrustDomain td)
 {
     tlsconfig_Authorizer *authorizer = malloc(sizeof *authorizer);
 
@@ -50,4 +49,16 @@ tlsconfig_AuthourizeMemberOf(const spiffeid_TrustDomain td)
     authorizer->matcher = spiffeid_MatchMemberOf(td);
 
     return authorizer;
+}
+
+void tlsconfig_Authorizer_Free(tlsconfig_Authorizer *authorizer)
+{
+    if(authorizer) {
+        spiffeid_Matcher_Free(authorizer->matcher);
+
+        /* authorizer does not own the certified chain. There is no need to
+         * free it here */
+
+        free(authorizer);
+    }
 }

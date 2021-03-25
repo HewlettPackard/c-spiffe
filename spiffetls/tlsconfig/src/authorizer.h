@@ -10,13 +10,15 @@ typedef struct tlsconfig_Authorizer {
     X509 ***certified_chains;
 } tlsconfig_Authorizer;
 
-tlsconfig_Authorizer *tlsconfig_AuthourizeAny(void);
-tlsconfig_Authorizer *tlsconfig_AuthourizeID(const spiffeid_ID id);
-tlsconfig_Authorizer *tlsconfig_AuthourizeOneOf(int n_args, ...);
+tlsconfig_Authorizer *tlsconfig_AuthorizeAny(void);
+tlsconfig_Authorizer *tlsconfig_AuthorizeID(const spiffeid_ID id);
+tlsconfig_Authorizer *tlsconfig_AuthorizeOneOf(int n_args, ...);
 tlsconfig_Authorizer *
-tlsconfig_AuthourizeMemberOf(const spiffeid_TrustDomain td);
+tlsconfig_AuthorizeMemberOf(const spiffeid_TrustDomain td);
 
-match_t tlsconfig_ApplyAuthorizer(tlsconfig_Authorizer *authorizer,
-                                  const spiffeid_ID id, const X509 ***certs);
+match_err_t tlsconfig_ApplyAuthorizer(tlsconfig_Authorizer *authorizer,
+                                      const spiffeid_ID id, X509 ***certs);
+
+void tlsconfig_Authorizer_Free(tlsconfig_Authorizer *authorizer);
 
 #endif
