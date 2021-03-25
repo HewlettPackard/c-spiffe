@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #define STB_DS_IMPLEMENTATION
-#include "../src/svid.h"
+#include "svid/jwtsvid/src/svid.h"
 
 /*
 Each test named 'test_jwtsvid_<function name>' tests

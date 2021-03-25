@@ -1,9 +1,9 @@
 
-#include "client.h"
-#include "../../bundle/x509bundle/src/bundle.h"
-#include "../../bundle/x509bundle/src/set.h"
-#include "../../internal/x509util/src/util.h"
-#include "../../svid/x509svid/src/svid.h"
+#include "workload/src/client.h"
+#include "bundle/x509bundle/src/bundle.h"
+#include "bundle/x509bundle/src/set.h"
+#include "internal/x509util/src/util.h"
+#include "svid/x509svid/src/svid.h"
 #include "workload.grpc.pb.h"
 #include "workload.pb.h"
 #include <grpc/grpc.h>

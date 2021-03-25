@@ -1,4 +1,4 @@
-#include "../src/util.h"
+#include "internal/x509util/src/util.h"
 #include <check.h>
 #include <openssl/evp.h>
 #include <openssl/pem.h>
