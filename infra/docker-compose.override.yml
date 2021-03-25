@@ -6,6 +6,6 @@
 
 version: '3'
 services:
+  spire-server:
+  workload:
   tests:
-    volumes:
-      - ../integration_test/:/tmp/

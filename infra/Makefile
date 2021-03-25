@@ -24,4 +24,6 @@ clean:
 	docker-compose down
 
 integrations-tests:
+	docker-compose exec tests ./build-c-spiffe.sh
 	docker-compose exec tests ./run-behave-tests.sh
+	docker-compose down

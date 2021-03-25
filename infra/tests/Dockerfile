@@ -15,10 +15,12 @@ RUN pip3 install -r requirements.txt
 COPY get-entries.sh .
 COPY get-entries.py .
 COPY run-behave-tests.sh .
+COPY build-c-spiffe.sh .
 
 RUN chmod +x get-entries.sh
 RUN chmod +x get-entries.py
 RUN chmod +x run-behave-tests.sh
+RUN chmod +x build-c-spiffe.sh
 
 # Create user for test workloads
 RUN useradd tests -u 1002
