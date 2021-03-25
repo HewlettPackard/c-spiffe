@@ -13,11 +13,12 @@ ${PROJECT_SOURCE_DIR}/../utils/src/util.c)
 
 add_library(${TARGET_NAME} SHARED ${LIB_SVID})
 
+# Install lib:
 install(
     TARGETS              "${TARGET_NAME}"
     LIBRARY DESTINATION  "${CMAKE_INSTALL_LIBDIR}"
 )
-# Headers:
+# Install Headers:
 set(HEADERS_X509SVID 
 ${PROJECT_SOURCE_DIR}/x509svid/src/svid.h
 ${PROJECT_SOURCE_DIR}/x509svid/src/verify.h
@@ -28,6 +29,7 @@ install(
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/x509svid/src"
 )
 
+# Install Headers:
 set(HEADERS_JWTSVID
 ${PROJECT_SOURCE_DIR}/jwtsvid/src/svid.h
 )

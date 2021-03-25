@@ -18,12 +18,13 @@ ${PROJECT_SOURCE_DIR}/x509bundle/src/source.c
 
 add_library(${TARGET_NAME} SHARED ${LIB_BUNDLE})
 
+# Install lib:
 install(
     TARGETS              "${TARGET_NAME}"
     LIBRARY DESTINATION  "${CMAKE_INSTALL_LIBDIR}"
 )
 
-# Headers:
+# Install Headers:
 set(HEADERS_BUNDLE_JWT
 ${PROJECT_SOURCE_DIR}/jwtbundle/src/bundle.h
 ${PROJECT_SOURCE_DIR}/jwtbundle/src/set.h
@@ -34,6 +35,8 @@ install(
     FILES ${HEADERS_BUNDLE_JWT}
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/jwtbundle/src"
 )
+
+# Install Headers:
 set(HEADERS_BUNDLE_SPIFFE
 ${PROJECT_SOURCE_DIR}/spiffebundle/src/bundle.h
 ${PROJECT_SOURCE_DIR}/spiffebundle/src/set.h
@@ -43,6 +46,8 @@ install(
     FILES ${HEADERS_BUNDLE_SPIFFE}
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/spiffebundle/src"
 )
+
+# Install Headers:
 set(HEADERS_BUNDLE_X509
 ${PROJECT_SOURCE_DIR}/x509bundle/src/bundle.h
 ${PROJECT_SOURCE_DIR}/x509bundle/src/set.h

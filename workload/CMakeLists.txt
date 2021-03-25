@@ -58,9 +58,12 @@ set(LIB_SOURCE
   src/x509source.c
   src/jwtsource.c
 )
+
+# Install Headers:
 set(HEADERS_SOURCE
   src/x509source.h
 )
+#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_SOURCE}
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/src"
@@ -70,10 +73,13 @@ set(LIB_WATCHER
   src/watcher.c
   src/jwtwatcher.c
 )
+
+# Install Headers:
 set(HEADERS_WATCHER
   src/watcher.h
   src/jwtwatcher.h
 )
+#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_WATCHER}
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/src"
@@ -82,9 +88,12 @@ install(
 set(LIB_BACKOFF
   src/backoff.c
 )
+
+# Install Headers:
 set(HEADERS_BACKOFF
   src/backoff.h
 )
+#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_BACKOFF}
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/src"
@@ -95,11 +104,13 @@ set(LIB_CLIENT
   ${proto_srcs}
   ${grpc_srcs}
 )
+# Install Headers:
 set(HEADERS_CLIENT
   src/client.h
   ${proto_hdrs}
   ${grpc_hdrs}
 )
+#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_CLIENT}
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/src"
@@ -130,12 +141,11 @@ ${OWN_LIBS}
 ${EXT_LIBS}
 )
 
-
+# Install lib:
 install(
     TARGETS              "backoff" "client" "source"
     LIBRARY DESTINATION  "${CMAKE_INSTALL_LIBDIR}"
 )
-
 
 set(CPP_CLIENT
     src/cpp_client_example.cc
