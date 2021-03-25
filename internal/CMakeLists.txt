@@ -65,10 +65,11 @@ install(
 # Install Headers:
 set(HEADERS_UTIL
 ${PROJECT_SOURCE_DIR}/../utils/src/util.h
+${PROJECT_SOURCE_DIR}/../utils/src/stb_ds.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_UTIL}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/util/src"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/utils/src"
 )
 

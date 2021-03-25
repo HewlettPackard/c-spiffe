@@ -77,6 +77,8 @@ set(LIB_WATCHER
 # Install Headers:
 set(HEADERS_WATCHER
   src/watcher.h
+  src/x509context.h
+  src/jwtcallback.h
   src/jwtwatcher.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
