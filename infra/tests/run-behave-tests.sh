@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-behave
+behave --tags=-@wip

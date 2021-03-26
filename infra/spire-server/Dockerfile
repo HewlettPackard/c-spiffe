@@ -1,5 +1,7 @@
 FROM ubuntu:focal
 
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 RUN apt-get update \
   && apt-get install -y --no-install-recommends ca-certificates curl tar gzip
 
@@ -10,6 +12,9 @@ ARG SPIRE_DIR=/opt/spire
 
 RUN curl --silent --location $SPIRE_RELEASE | tar -xzf -
 RUN mv spire-${SPIRE_VERSION} ${SPIRE_DIR}
+
+RUN ln -s /opt/spire/bin/spire-server /usr/bin/spire-server
+RUN ln -s /opt/spire/bin/spire-agent /usr/bin/spire-agent
 
 # Configure Spire
 WORKDIR ${SPIRE_DIR}
