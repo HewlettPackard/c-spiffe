@@ -124,7 +124,7 @@ int main()
 
     err = workloadapi_JWTSource_Close(source);
     
-    if(err) {
+    if(err != 1) { //error 1 == client closed properly
         printf("ERROR %d\n",err);
         return err;
     }
