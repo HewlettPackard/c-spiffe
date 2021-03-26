@@ -1,4 +1,4 @@
-#include "../src/svid.h"
+#include "svid/x509svid/src/svid.h"
 #include <check.h>
 
 START_TEST(test_x509svid_Load)

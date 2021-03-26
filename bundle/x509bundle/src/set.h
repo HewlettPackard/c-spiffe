@@ -1,7 +1,7 @@
 #ifndef INCLUDE_BUNDLE_X509BUNDLE_SET_H
 #define INCLUDE_BUNDLE_X509BUNDLE_SET_H
 
-#include "bundle.h"
+#include "bundle/x509bundle/src/bundle.h"
 #include <stdlib.h>
 
 #ifdef __cplusplus

@@ -1,14 +1,14 @@
 #ifndef INCLUDE_WORKLOAD_CLIENT_H
 #define INCLUDE_WORKLOAD_CLIENT_H
 
-#include "../../bundle/x509bundle/src/set.h"
-#include "../../svid/jwtsvid/src/svid.h"
-#include "../../svid/x509svid/src/svid.h"
-#include "../../utils/src/util.h"
-#include "backoff.h"
-#include "jwtwatcher.h"
-#include "watcher.h"
-#include "x509context.h"
+#include "bundle/x509bundle/src/set.h"
+#include "svid/jwtsvid/src/svid.h"
+#include "svid/x509svid/src/svid.h"
+#include "utils/src/util.h"
+#include "workload/src/backoff.h"
+#include "workload/src/jwtwatcher.h"
+#include "workload/src/watcher.h"
+#include "workload/src/x509context.h"
 
 #ifdef __cplusplus
 extern "C" {

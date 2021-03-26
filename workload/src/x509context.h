@@ -1,8 +1,8 @@
 #ifndef INCLUDE_WORKLOAD_X509CONTEXT_H
 #define INCLUDE_WORKLOAD_X509CONTEXT_H
 
-#include "../../bundle/x509bundle/src/set.h"
-#include "../../svid/x509svid/src/svid.h"
+#include "bundle/x509bundle/src/set.h"
+#include "svid/x509svid/src/svid.h"
 
 #ifdef __cplusplus
 extern "C" {
