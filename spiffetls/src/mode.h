@@ -43,20 +43,22 @@ spiffetls_TLSClientWithSource(tlsconfig_Authorizer *authorizer,
 spiffetls_DialMode *
 spiffetls_TLSClientWithRawConfig(tlsconfig_Authorizer *authorizer,
                                  x509bundle_Source *bundle);
-spiffetls_DialMode *spiffetls_TLSClient(tlsconfig_Authorizer *authorizer);
+spiffetls_DialMode *spiffetls_MTLSClient(tlsconfig_Authorizer *authorizer);
 spiffetls_DialMode *
 spiffetls_MTLSClientWithSource(tlsconfig_Authorizer *authorizer,
                                workloadapi_X509Source *source);
 spiffetls_DialMode *
 spiffetls_MTLSClientWithRawConfig(tlsconfig_Authorizer *authorizer,
                                   x509bundle_Source *bundle,
-                                  x509svid_SVID *svid);
+                                  x509svid_Source *svid);
 spiffetls_DialMode *spiffetls_MTLSWebClient(x509util_CertPool *roots);
 spiffetls_DialMode *
 spiffetls_MTLSWebClientWithSource(x509util_CertPool *roots,
                                   workloadapi_X509Source *source);
 spiffetls_DialMode *
 spiffetls_MTLSWebClientWithRawConfig(x509util_CertPool *roots,
-                                     x509svid_SVID *svid);
+                                     x509svid_Source *svid);
+
+void spiffetls_DialMode_Free(spiffetls_DialMode *mode);
 
 #endif // INCLUDE_SPIFFETLS_MODE_H

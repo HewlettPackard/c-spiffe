@@ -63,7 +63,7 @@ spiffetls_MTLSClientWithSource(tlsconfig_Authorizer *authorizer,
 spiffetls_DialMode *
 spiffetls_MTLSClientWithRawConfig(tlsconfig_Authorizer *authorizer,
                                   x509bundle_Source *bundle,
-                                  x509svid_SVID *svid)
+                                  x509svid_Source *svid)
 {
     spiffetls_DialMode *mode = malloc(sizeof *mode);
     memset(mode, 0, sizeof *mode);
@@ -101,7 +101,7 @@ spiffetls_MTLSWebClientWithSource(x509util_CertPool *roots,
 
 spiffetls_DialMode *
 spiffetls_MTLSWebClientWithRawConfig(x509util_CertPool *roots,
-                                     x509svid_SVID *svid)
+                                     x509svid_Source *svid)
 {
     spiffetls_DialMode *mode = malloc(sizeof *mode);
     memset(mode, 0, sizeof *mode);
@@ -111,4 +111,12 @@ spiffetls_MTLSWebClientWithRawConfig(x509util_CertPool *roots,
     mode->svid = svid;
 
     return mode;
+}
+
+void spiffetls_DialMode_Free(spiffetls_DialMode *mode)
+{
+    if(mode) {
+        /// TODO: check is is needed to free member variables
+        free(mode);
+    }
 }
