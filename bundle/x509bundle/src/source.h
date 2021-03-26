@@ -3,6 +3,7 @@
 
 #include "bundle/x509bundle/src/bundle.h"
 #include "bundle/x509bundle/src/set.h"
+#include "workload/src/x509source.h"
 
 #ifdef __cplusplus
 extern "C" {
