@@ -1,6 +1,6 @@
-#include "../../svid/x509svid/src/svid.h"
-#include "../src/watcher.h"
-#include "../src/x509source.h"
+#include "svid/x509svid/src/svid.h"
+#include "workload/src/watcher.h"
+#include "workload/src/x509source.h"
 #include <check.h>
 
 START_TEST(test_workloadapi_NewX509Source_creates_default_config);
@@ -229,6 +229,32 @@ START_TEST(test_workloadapi_X509Source_Closes_watcher);
 }
 END_TEST
 
+START_TEST(test_workloadapi_X509Source_GetX509BundleForTrustDomain);
+{
+    err_t err;
+    workloadapi_X509Source *tested =  workloadapi_NewX509Source(NULL, &err);
+    string_t td_url = string_new("example.org");
+    spiffeid_TrustDomain td = spiffeid_TrustDomainFromString(td_url,&err);
+
+    x509bundle_Bundle* bundle = workloadapi_X509Source_GetX509BundleForTrustDomain(tested,&td,&err);
+
+    ck_assert_ptr_eq(bundle,NULL);
+    ck_assert_int_eq(err,ERROR1); //source closed
+
+    tested->closed = false;
+    tested->bundles = x509bundle_NewSet(0);
+    bundle = workloadapi_X509Source_GetX509BundleForTrustDomain(tested,&td,&err);
+
+    ck_assert_ptr_eq(bundle,NULL);
+    ck_assert_int_eq(err,ERROR2); //trust domain not available
+    
+    x509bundle_Set_Free(tested->bundles);
+    tested->bundles = NULL;
+    tested->closed = true;
+    workloadapi_X509Source_Free(tested);
+}
+END_TEST
+
 Suite *watcher_suite(void)
 {
     Suite *s = suite_create("x509source");
@@ -246,7 +272,8 @@ Suite *watcher_suite(void)
         tc_core,
         test_workloadapi_X509Source_Start_waits_and_sets_closed_false);
     tcase_add_test(tc_core, test_workloadapi_X509Source_Closes_watcher);
-
+    tcase_add_test(tc_core, test_workloadapi_X509Source_GetX509BundleForTrustDomain);
+    
     suite_add_tcase(s, tc_core);
 
     return s;

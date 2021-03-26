@@ -1,9 +1,9 @@
 #ifndef INCLUDE_SVID_JWTSVID_SVID_H
 #define INCLUDE_SVID_JWTSVID_SVID_H
 
-#include "../../../bundle/jwtbundle/src/source.h"
-#include "../../../spiffeid/src/id.h"
-#include "../../../utils/src/util.h"
+#include "bundle/jwtbundle/src/source.h"
+#include "spiffeid/src/id.h"
+#include "utils/src/util.h"
 #include <jansson.h>
 #include <time.h>
 

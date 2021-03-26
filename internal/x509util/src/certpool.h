@@ -1,8 +1,8 @@
 #ifndef INCLUDE_INTERNAL_X509UTIL_CERTPOOL_H
 #define INCLUDE_INTERNAL_X509UTIL_CERTPOOL_H
 
-#include "../../../utils/src/stb_ds.h"
-#include "../../../utils/src/util.h"
+#include "utils/src/stb_ds.h"
+#include "utils/src/util.h"
 #include <openssl/x509.h>
 
 #ifdef __cplusplus

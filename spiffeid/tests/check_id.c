@@ -1,4 +1,4 @@
-#include "../src/id.h"
+#include "spiffeid/src/id.h"
 #include <check.h>
 
 START_TEST(test_join)

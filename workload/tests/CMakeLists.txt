@@ -38,3 +38,10 @@ target_link_libraries(check_x509source ${CHECK_LIBRARIES}
   source)
 
 add_test(check_x509source check_x509source)
+
+add_executable(check_jwtsource "./check_jwtsource.c")
+
+target_link_libraries(check_jwtsource ${CHECK_LIBRARIES}
+  source)
+
+add_test(check_jwtsource check_jwtsource)

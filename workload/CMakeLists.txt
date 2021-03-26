@@ -56,6 +56,18 @@ crypto)
 
 set(LIB_SOURCE
   src/x509source.c
+  src/jwtsource.c
+)
+
+# Install Headers:
+set(HEADERS_SOURCE
+  src/x509source.h
+  src/jwtsource.h
+)
+#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+install(
+    FILES ${HEADERS_SOURCE}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/src"
 )
 
 set(LIB_WATCHER
@@ -63,14 +75,48 @@ set(LIB_WATCHER
   src/jwtwatcher.c
 )
 
+# Install Headers:
+set(HEADERS_WATCHER
+  src/watcher.h
+  src/x509context.h
+  src/jwtcallback.h
+  src/jwtwatcher.h
+)
+#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+install(
+    FILES ${HEADERS_WATCHER}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/src"
+)
+
 set(LIB_BACKOFF
   src/backoff.c
+)
+
+# Install Headers:
+set(HEADERS_BACKOFF
+  src/backoff.h
+)
+#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+install(
+    FILES ${HEADERS_BACKOFF}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/src"
 )
 
 set(LIB_CLIENT
   src/client.cc
   ${proto_srcs}
   ${grpc_srcs}
+)
+# Install Headers:
+set(HEADERS_CLIENT
+  src/client.h
+  ${proto_hdrs}
+  ${grpc_hdrs}
+)
+#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+install(
+    FILES ${HEADERS_CLIENT}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/src"
 )
 
 add_library(backoff SHARED ${LIB_BACKOFF})
@@ -96,6 +142,12 @@ target_link_libraries(source
 client
 ${OWN_LIBS}
 ${EXT_LIBS}
+)
+
+# Install lib:
+install(
+    TARGETS              "backoff" "client" "source"
+    LIBRARY DESTINATION  "${CMAKE_INSTALL_LIBDIR}"
 )
 
 set(CPP_CLIENT

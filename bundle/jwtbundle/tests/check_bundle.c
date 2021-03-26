@@ -1,7 +1,7 @@
-#include "../../../internal/cryptoutil/src/keys.h"
-#include "../../../internal/jwtutil/src/util.h"
-#include "../../../spiffeid/src/trustdomain.h"
-#include "../src/bundle.h"
+#include "internal/cryptoutil/src/keys.h"
+#include "internal/jwtutil/src/util.h"
+#include "spiffeid/src/trustdomain.h"
+#include "bundle/jwtbundle/src/bundle.h"
 #include <check.h>
 #include <openssl/pem.h>
 
