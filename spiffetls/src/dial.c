@@ -2,12 +2,37 @@
 #include "mode.h"
 #include "option.h"
 #include <arpa/inet.h>
-#include <openssl/ssl.h>
+
 #include <sys/socket.h>
 
-int spiffetls_DialWithMode(SSL_CTX *ctx, in_port_t port, in_addr_t addr,
-                           spiffetls_DialMode *mode,
-                           spiffetls_DialOption *options, err_t *err)
+static int createSocket(in_addr_t addr, in_port_t port)
+{
+    struct sockaddr_in address = { .sin_family = AF_INET,
+                                   .sin_addr.s_addr = htonl(addr),
+                                   .sin_port = htons(port) };
+    memset(&address.sin_zero, 0, sizeof address.sin_zero);
+
+    const int sockfd = socket(/*IPv4*/ AF_INET, /*TCP*/ SOCK_STREAM, /*IP*/ 0);
+    if(connect(sockfd, (const struct sockaddr *) &address, sizeof address) < 0
+       || sockfd < 0) {
+        // could not create socket
+        /// TODO: handle error
+    }
+
+    return sockfd;
+}
+
+static SSL_CTX *createTLSContext()
+{
+    const SSL_METHOD *method = TLS_method();
+    SSL_CTX *ctx = SSL_CTX_new(method);
+
+    return ctx;
+}
+
+SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
+                            spiffetls_DialMode *mode,
+                            spiffetls_dialConfig *config, err_t *err)
 {
     if(!mode->unneeded_source) {
         workloadapi_X509Source *source = mode->source;
@@ -24,48 +49,44 @@ int spiffetls_DialWithMode(SSL_CTX *ctx, in_port_t port, in_addr_t addr,
         mode->svid = x509svid_SourceFromSource(source);
     }
 
-    spiffetls_dialConfig opt = { NULL, 0 };
-    for(size_t i = 0, size = arrlenu(options); i < size; ++i) {
-        spiffetls_DialOption_apply(options[i], &opt);
-    }
-
-    SSL_CTX *tls_config = opt.base_TLS_conf ? opt.base_TLS_conf : NULL;
-    if(tls_config)
-        SSL_CTX_up_ref(tls_config);
+    SSL_CTX *tls_config
+        = config->base_TLS_conf ? config->base_TLS_conf : createTLSContext();
 
     switch(mode->mode) {
     case TLS_CLIENT_MODE:
         /// TODO: set config
+        // HookTLSClientConfig
         break;
     case MTLS_CLIENT_MODE:
         /// TODO: set config
+        // HookMTLSClientConfig
         break;
     case MTLS_WEBCLIENT_MODE:
         /// TODO: set config
+        // HookMTLSWebClientConfig
         break;
     default:
+        // unknown mode
         *err = ERROR1;
         goto error;
     }
 
-    if(opt.dialer_fd) {
-        /// TODO: dial with dialer
-    } else {
-        /// TODO: just dial
-    }
+    SSL *conn = SSL_new(tls_config);
 
-    const struct sockaddr_in address
-        = { .sin_family = AF_INET, .sin_addr.s_addr = addr, .sin_port = port };
-    const int sockfd = socket(/*IPv4*/ AF_INET, /*TCP*/ SOCK_STREAM, /*IP*/ 0);
-    if(connect(sockfd, (const struct sockaddr *) &address, sizeof address)
-       < 0) {
-        // could not bind socket to address
-        *err = ERROR3;
+    const int sockfd
+        = config->dialer_fd > 0 ? config->dialer_fd : createSocket(addr, port);
+
+    SSL_set_fd(conn, sockfd);
+    SSL_set_connect_state(conn);
+    if(SSL_connect(conn) != 1) {
+        // could not build a SSL session
+        *err = ERROR2;
         goto error;
     }
 
-    return sockfd;
+    // successful handshake
+    return conn;
 
 error:
-    return 0;
+    return NULL;
 }
