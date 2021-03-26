@@ -102,15 +102,18 @@ int main()
     workloadapi_JWTSource *source = workloadapi_NewJWTSource(NULL, &err);
 
     if(err) {
-        /// TODO: ERRO
+        printf("ERROR %d\n",err);
+        return err;
     }
     printf("\n\n\nPress ENTER to stop.\n\n\n");
 
     err = workloadapi_JWTSource_Start(source);
 
     if(err) {
-        /// TODO: ERRO
+        printf("ERROR %d\n",err);
+        return err;
     }
+
     thrd_t thread;
     thrd_create(&thread, print_forever, source);
 
@@ -120,7 +123,12 @@ int main()
     printf("Stopping.\n");
 
     err = workloadapi_JWTSource_Close(source);
-
+    
+    if(err) {
+        printf("ERROR %d\n",err);
+        return err;
+    }
+    
     thrd_join(thread, NULL);
     workloadapi_JWTSource_Free(source);
     return 0;
