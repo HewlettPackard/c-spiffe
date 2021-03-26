@@ -62,6 +62,7 @@ set(LIB_SOURCE
 # Install Headers:
 set(HEADERS_SOURCE
   src/x509source.h
+  src/jwtsource.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
