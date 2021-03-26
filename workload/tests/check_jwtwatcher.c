@@ -1,5 +1,5 @@
-#include "../src/jwtcallback.h"
-#include "../src/jwtwatcher.h"
+#include "workload/src/jwtcallback.h"
+#include "workload/src/jwtwatcher.h"
 #include <check.h>
 
 // callback that sets an int to a value, and ignores the context.

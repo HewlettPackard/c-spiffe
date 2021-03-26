@@ -1,9 +1,8 @@
 #ifndef INCLUDE_BUNDLE_X509BUNDLE_SOURCE_H
 #define INCLUDE_BUNDLE_X509BUNDLE_SOURCE_H
 
-#include "../../../workload/src/x509source.h"
-#include "bundle.h"
-#include "set.h"
+#include "bundle/x509bundle/src/bundle.h"
+#include "bundle/x509bundle/src/set.h"
 
 #ifdef __cplusplus
 extern "C" {

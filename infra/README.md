@@ -62,22 +62,21 @@ On a console run:
 ```
 $ make create-entries
 
-+ ./bin/spire-server entry create -parentID spiffe://example.org/host -spiffeID spiffe://example.org/workload -selector unix:uid:1001 -ttl 3600
-Entry ID         : 9c11bab7-4fd9-4df2-809f-6ba880411ee8
-SPIFFE ID        : spiffe://example.org/workload
-Parent ID        : spiffe://example.org/host
-Revision         : 0
-TTL              : 3600
-Selector         : unix:uid:1001
-
-+ ./bin/spire-server entry create -parentID spiffe://example.org/host -spiffeID spiffe://example.org/tests -selector unix:uid:1002 -ttl 3600
-Entry ID         : 287c99bc-083a-43c6-b17c-3fc11416b18e
++ spire-server entry create -parentID spiffe://example.org/host -spiffeID spiffe://example.org/tests -selector unix:uid:1002 -ttl 3600
+Entry ID         : df1cffc6-bd56-449e-b107-581c1d186e32
 SPIFFE ID        : spiffe://example.org/tests
 Parent ID        : spiffe://example.org/host
 Revision         : 0
 TTL              : 3600
 Selector         : unix:uid:1002
 
++ spire-server entry create -parentID spiffe://example.org/host -spiffeID spiffe://example.org/tests -selector unix:user:root
+Entry ID         : 80eb326c-052d-46b1-a733-fffb811fe86d
+SPIFFE ID        : spiffe://example.org/tests
+Parent ID        : spiffe://example.org/host
+Revision         : 0
+TTL              : default
+Selector         : unix:user:root
 
 ```
 
@@ -87,7 +86,7 @@ Selector         : unix:uid:1002
 
 On the console run:
 ```
-$ make generate-token SERVICE=tests
+$ make generate-token
 
 Token: 7a7389ac-c841-4c8f-b08b-3cd96b6d9d28
 ```

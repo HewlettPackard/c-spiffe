@@ -1,5 +1,5 @@
-#include "x509source.h"
-#include "watcher.h"
+#include "workload/src/x509source.h"
+#include "workload/src/watcher.h"
 
 void workloadapi_x509Source_onX509ContextCallback(
     workloadapi_X509Context *x509cntx, void *args)
@@ -94,10 +94,13 @@ x509bundle_Bundle *workloadapi_X509Source_GetX509BundleForTrustDomain(
 {
     *err = workloadapi_X509Source_checkClosed(source);
     if(!(*err)) {
-        return x509bundle_Set_GetX509BundleForTrustDomain(source->bundles, *td,
-                                                          err);
+        x509bundle_Bundle *bundle = x509bundle_Set_GetX509BundleForTrustDomain(
+            source->bundles, *td, err);
+        if(*err == ERROR1) {
+            *err = ERROR2;
+        }
+        return bundle;
     }
-
     return NULL;
 }
 

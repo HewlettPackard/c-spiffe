@@ -1,4 +1,11 @@
-#include "workload/src/client.h"
+/* To compile
+ *
+ * gcc test_install.c -o test_install -lclient -lsvid -linternal -lspiffeid -ljansson
+ * ./test_install svid_type=jwt or ./test_install svid_type=x509
+ * 
+ */
+
+#include <workload/src/client.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

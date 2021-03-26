@@ -1,5 +1,5 @@
-#include "verify.h"
-#include "../../../internal/x509util/src/util.h"
+#include "svid/x509svid/src/verify.h"
+#include "internal/x509util/src/util.h"
 #include <openssl/pem.h>
 
 static void X509_STORE_add_stb_array(X509_STORE *store, X509 **x509_stb_array)

@@ -1,10 +1,10 @@
 #ifndef INCLUDE_BUNDLE_SPIFFEBUNDLE_BUNDLE_H
 #define INCLUDE_BUNDLE_SPIFFEBUNDLE_BUNDLE_H
 
-#include "../../../spiffeid/src/trustdomain.h"
-#include "../../../utils/src/util.h"
-#include "../../jwtbundle/src/bundle.h"
-#include "../../x509bundle/src/bundle.h"
+#include "spiffeid/src/trustdomain.h"
+#include "utils/src/util.h"
+#include "bundle/jwtbundle/src/bundle.h"
+#include "bundle/x509bundle/src/bundle.h"
 #include <openssl/x509.h>
 #include <threads.h>
 #include <time.h>
