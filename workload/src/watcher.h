@@ -1,11 +1,11 @@
 #ifndef INCLUDE_WORKLOAD_WATCHER_H
 #define INCLUDE_WORKLOAD_WATCHER_H
 
-#include "../../bundle/x509bundle/src/bundle.h"
-#include "../../bundle/x509bundle/src/set.h"
-#include "../../svid/x509svid/src/svid.h"
-#include "client.h"
-#include "x509context.h"
+#include "bundle/x509bundle/src/bundle.h"
+#include "bundle/x509bundle/src/set.h"
+#include "svid/x509svid/src/svid.h"
+#include "workload/src/client.h"
+#include "workload/src/x509context.h"
 #include <threads.h>
 #include <time.h>
 

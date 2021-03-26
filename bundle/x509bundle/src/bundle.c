@@ -1,5 +1,5 @@
-#include "bundle.h"
-#include "../../../internal/x509util/src/util.h"
+#include "bundle/x509bundle/src/bundle.h"
+#include "internal/x509util/src/util.h"
 #include <openssl/pem.h>
 
 x509bundle_Bundle *x509bundle_New(const spiffeid_TrustDomain td)

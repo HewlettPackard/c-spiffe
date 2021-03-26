@@ -1,7 +1,7 @@
 #ifndef INCLUDE_UTILS_UTIL_H
 #define INCLUDE_UTILS_UTIL_H
 
-#include "stb_ds.h"
+#include "utils/src/stb_ds.h"
 #include <openssl/evp.h>
 #include <stdbool.h>
 #include <string.h>

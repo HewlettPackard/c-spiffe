@@ -1,4 +1,4 @@
-#include "../src/util.h"
+#include "utils/src/util.h"
 #include <check.h>
 #include <stdlib.h>
 

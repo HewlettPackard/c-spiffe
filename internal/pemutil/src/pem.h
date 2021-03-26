@@ -1,7 +1,7 @@
 #ifndef INCLUDE_INTERNAL_PEMUTIL_PEM_H
 #define INCLUDE_INTERNAL_PEMUTIL_PEM_H
 
-#include "../../../utils/src/util.h"
+#include "utils/src/util.h"
 #include <openssl/evp.h>
 #include <openssl/pem.h>
 #include <openssl/x509.h>

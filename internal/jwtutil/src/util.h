@@ -1,7 +1,7 @@
 #ifndef INCLUDE_INTERNAL_JWTUTIL_UTIL_H
 #define INCLUDE_INTERNAL_JWTUTIL_UTIL_H
 
-#include "../../../utils/src/util.h"
+#include "utils/src/util.h"
 #include <stdbool.h>
 
 #ifdef __cplusplus

@@ -8,19 +8,6 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # Install package dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        build-essential \
-        software-properties-common \
-        autoconf \
-        automake \
-        libtool \
-        pkg-config \
-        ca-certificates \
-        wget \
-        git \
-        curl \
-        tar \
-        gzip \
-        vim \
         gdb \
         valgrind \
         cmake \
