@@ -5,7 +5,7 @@
 #include "svid.h"
 
 typedef struct {
-    enum { X509SVID_SVID, WORKLOADAPI_X509SOURCE } type;
+    enum { X509SVID_SVID, WORKLOADAPI_X509SOURCE_SVID } type;
     union {
         x509svid_SVID *svid;
         workloadapi_X509Source *source;
