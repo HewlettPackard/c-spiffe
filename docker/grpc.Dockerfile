@@ -37,8 +37,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libgtest-dev \
         libgmock-dev \
         python3-pip \
-        checkinstall \
-        zlib1g-dev
+        checkinstall
 RUN pip3 install behave PyHamcrest pathlib2
 RUN apt-get clean
 
@@ -69,11 +68,6 @@ ARG OPENSSL_VERSION=1.1.1k
 ARG OPENSSL_RELEASE=https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
 ARG OPENSSL_DIR=/opt/
 
-
-RUN mv /usr/bin/openssl /usr/bin/openssl.old
 RUN curl --silent --location $OPENSSL_RELEASE | tar -xzf -
 RUN mv openssl-${OPENSSL_VERSION} ${OPENSSL_DIR}
-RUN cd /opt/openssl-${OPENSSL_VERSION} && ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared -lcrypto && make && make test && make install
-RUN touch /etc/ld.so.conf.d/openssl-${OPENSSL_VERSION}.conf && echo "/usr/local/ssl/lib" >> /etc/ld.so.conf.d/openssl-${OPENSSL_VERSION}.conf
-RUN ln -s /usr/local/ssl/bin/openssl /usr/bin/openssl
-RUN ldconfig -v
+RUN cd /opt/openssl-${OPENSSL_VERSION} && ./config --prefix=/usr/local --openssldir=/usr/local shared -lcrypto && make && make test && make install
