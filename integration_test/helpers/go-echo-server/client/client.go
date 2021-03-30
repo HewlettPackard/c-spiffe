@@ -14,7 +14,7 @@ const (
 )
 
 func main() {
-	cert, err := tls.LoadX509KeyPair("../../certs/client.pem", "../../certs/client.key")
+	cert, err := tls.LoadX509KeyPair("../certs/client.pem", "../certs/client.key")
 	if err != nil {
 		log.Fatalf("server: loadkeys: %s", err)
 	}
