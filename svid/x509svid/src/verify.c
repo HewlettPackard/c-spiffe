@@ -44,7 +44,6 @@ static X509 ***verifyX509(X509 *leaf, X509 **roots, X509 **inters, err_t *err)
 
         sk_X509_pop_free(certs_stack, X509_free);
 
-        X509 ***chains = NULL;
         arrput(chains, certs_chain);
 
         *err = NO_ERROR;
@@ -85,6 +84,44 @@ X509 ***x509svid_ParseAndVerify(byte **raw_certs, x509bundle_Source *source,
     }
 
     return x509svid_Verify(certs, source, id, err);
+}
+
+bool x509svid_Verify_cb(X509_STORE_CTX *store_ctx, x509bundle_Source *source,
+                        spiffeid_ID *id)
+{
+    memset(id, 0, sizeof *id);
+
+    if(store_ctx && source) {
+        // get spiffe id from leaf
+        X509 *leaf_cert = X509_STORE_CTX_get0_cert(store_ctx);
+        err_t err;
+        spiffeid_ID leaf_id = x509svid_IDFromCert(leaf_cert, &err);
+        memcpy(id, &leaf_id, sizeof *id);
+
+        if(!err) {
+            // get bundle from trust domain and then get authorities
+            err_t err;
+            x509bundle_Bundle *bundle
+                = x509bundle_Source_GetX509BundleForTrustDomain(
+                    source, spiffeid_ID_TrustDomain(leaf_id), &err);
+
+            if(!err && bundle) {
+                // get root certificates and add them to local store
+                X509 **roots = x509bundle_Bundle_X509Authorities(bundle);
+                X509_STORE *store = X509_STORE_CTX_get0_store(store_ctx);
+                for(size_t i = 0, size = arrlenu(roots); i < size; ++i) {
+                    X509_STORE_add_cert(store, roots[i]);
+                }
+
+                // verify if there is a valid certificate chain in store_ctx
+                const int ret = X509_verify_cert(store_ctx);
+
+                return ret == 1;
+            }
+        }
+    }
+
+    return false;
 }
 
 X509 ***x509svid_Verify(X509 **certs, x509bundle_Source *source,
@@ -166,8 +203,8 @@ spiffeid_ID x509svid_IDFromCert(X509 *cert, err_t *err)
 
         if(san_name_num == 1) {
             const GENERAL_NAME *name = sk_GENERAL_NAME_value(san_names, 0);
-            string_t uri_name
-                = string_new((char *) name->d.uniformResourceIdentifier->data);
+            string_t uri_name = string_new(
+                (const char *) name->d.uniformResourceIdentifier->data);
 
             id = spiffeid_FromString(uri_name, err);
         } else if(san_name_num == 0) {
@@ -179,9 +216,10 @@ spiffeid_ID x509svid_IDFromCert(X509 *cert, err_t *err)
         }
 
         sk_GENERAL_NAME_pop_free(san_names, GENERAL_NAME_free);
-    } else
+    } else {
         // null certificate
         *err = ERROR3;
+    }
 
     return id;
 }

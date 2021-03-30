@@ -43,6 +43,14 @@ X509 ***x509svid_Verify(X509 **certs, x509bundle_Source *bundles,
                         spiffeid_ID *id, err_t *err);
 
 /**
+ * ...
+ *
+ *
+ */
+bool x509svid_Verify_cb(X509_STORE_CTX *store_ctx, x509bundle_Source *source,
+                        spiffeid_ID *id);
+
+/**
  * Extracts the SPIFFE ID from the URI SAN of the provided certificate. It
  * will return an an error if the certificate does not have exactly one URI
  * SAN with a well-formed SPIFFE ID.
