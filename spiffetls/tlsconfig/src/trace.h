@@ -1,7 +1,7 @@
 #ifndef INCLUDE_SPIFFETLS_TLSCONFIG_TRACE_H
 #define INCLUDE_SPIFFETLS_TLSCONFIG_TRACE_H
 
-#include "../../../utils/src/util.h"
+#include "utils/src/util.h"
 #include <openssl/ssl.h>
 #include <openssl/x509.h>
 
