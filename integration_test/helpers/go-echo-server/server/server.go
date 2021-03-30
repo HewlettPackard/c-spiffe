@@ -16,7 +16,11 @@ const (
 )
 
 func main() {
+<<<<<<< HEAD
 	cert, err := tls.LoadX509KeyPair("../certs/server.pem", "../certs/server.key")
+=======
+	cert, err := tls.LoadX509KeyPair("../../certs/server.pem", "../../certs/server.key")
+>>>>>>> change server.go to use tls and create a client
 	if err != nil {
 		log.Fatalf("server: loadkeys: %s", err)
 	}
@@ -26,7 +30,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("server: listen: %s", err)
 	}
+<<<<<<< HEAD
 	log.Print("server: listening on port ", CONN_PORT)
+=======
+	log.Print("server: listening")
+>>>>>>> change server.go to use tls and create a client
 	for {
 		conn, err := listener.Accept()
 		if err != nil {

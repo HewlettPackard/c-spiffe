@@ -8,13 +8,21 @@ import (
 )
 
 const (
+<<<<<<< HEAD
 	CONN_HOST = "infra_workload_1"
+=======
+	CONN_HOST = "0.0.0.0"
+>>>>>>> change server.go to use tls and create a client
 	CONN_PORT = "8000"
 	CONN_TYPE = "tcp"
 )
 
 func main() {
+<<<<<<< HEAD
 	cert, err := tls.LoadX509KeyPair("../certs/client.pem", "../certs/client.key")
+=======
+	cert, err := tls.LoadX509KeyPair("../../certs/client.pem", "../../certs/client.key")
+>>>>>>> change server.go to use tls and create a client
 	if err != nil {
 		log.Fatalf("server: loadkeys: %s", err)
 	}
@@ -40,6 +48,7 @@ func main() {
 
 	reply := make([]byte, 100)
 	n, err = conn.Read(reply)
+<<<<<<< HEAD
 	if err != nil {
 		if err != io.EOF {
 			log.Printf("client: read: %s", err)
@@ -48,5 +57,8 @@ func main() {
 
 	log.Printf("client: received %q (%d bytes)\n", string(reply[:n]), n)
 
+=======
+	log.Printf("client: received %q (%d bytes)", string(reply[:n]), n)
+>>>>>>> change server.go to use tls and create a client
 	log.Print("client: exiting")
 }
