@@ -1,12 +1,12 @@
 #ifndef INCLUDE_SPIFFETLS_MODE_H
 #define INCLUDE_SPIFFETLS_MODE_H
 
-#include "../../bundle/x509bundle/src/source.h"
-#include "../../internal/x509util/src/certpool.h"
-#include "../../svid/x509svid/src/source.h"
-#include "../../svid/x509svid/src/svid.h"
-#include "../../workload/src/x509source.h"
-#include "../tlsconfig/src/authorizer.h"
+#include "bundle/x509bundle/src/source.h"
+#include "internal/x509util/src/certpool.h"
+#include "svid/x509svid/src/source.h"
+#include "svid/x509svid/src/svid.h"
+#include "workload/src/x509source.h"
+#include "spiffetls/tlsconfig/src/authorizer.h"
 
 typedef enum {
     TLS_CLIENT_MODE,

@@ -1,5 +1,5 @@
 #include <check.h>
-#include "../src/mode.h"
+#include "spiffetls/src/mode.h"
 
 START_TEST(test_spiffetls_TLSClient)
 {
