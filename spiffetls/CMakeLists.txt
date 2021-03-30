@@ -6,6 +6,7 @@ set(TARGET_NAME "spiffetls")
 project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C)
 
 set(LIB_SPIFFETLS
+${PROJECT_SOURCE_DIR}/tlsconfig/src/config.c
 ${PROJECT_SOURCE_DIR}/tlsconfig/src/authorizer.c
 ${PROJECT_SOURCE_DIR}/src/mode.c)
 
