@@ -70,4 +70,4 @@ ARG OPENSSL_DIR=/opt/
 
 RUN curl --silent --location $OPENSSL_RELEASE | tar -xzf -
 RUN mv openssl-${OPENSSL_VERSION} ${OPENSSL_DIR}
-RUN cd /opt/openssl-${OPENSSL_VERSION} && ./config --prefix=/usr/local --openssldir=/usr/local shared -lcrypto && make && make test && make install
+RUN cd /opt/openssl-${OPENSSL_VERSION} && ./config --prefix=/usr --openssldir=/usr/lib/ssl --libdir=lib/x86_64-linux-gnu shared -lcrypto && make && make test && make install
