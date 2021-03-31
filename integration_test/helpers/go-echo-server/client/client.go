@@ -40,6 +40,9 @@ func main() {
 
 	reply := make([]byte, 100)
 	n, err = conn.Read(reply)
-	log.Printf("client: received %q (%d bytes)", string(reply[:n]), n)
+	if err != nil {
+		log.Printf("client: received %q (%d bytes)", string(reply[:n]), n)
+	}
+	log.Printf("client: read: %s", err)
 	log.Print("client: exiting")
 }
