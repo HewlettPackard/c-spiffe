@@ -56,5 +56,10 @@ jobs:
       - name: Generate documentation
         uses: mattnotmitt/doxygen-action@v1
         with:
-            working-directory: 'docs/'
-            doxyfile-path: 'Doxyfile'
+            working-directory: '.'
+            doxyfile-path: 'docs/Doxyfile'
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_dir: docs/html
