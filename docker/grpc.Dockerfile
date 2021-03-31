@@ -42,6 +42,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip3 install behave PyHamcrest pathlib2
 RUN apt-get clean
 
+# Install OpenSSL
+ARG OPENSSL_VERSION=1.1.1k
+ARG OPENSSL_RELEASE=https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
+ARG OPENSSL_DIR=/opt/
+
+RUN curl --silent --location $OPENSSL_RELEASE | tar -xzf -
+RUN mv openssl-${OPENSSL_VERSION} ${OPENSSL_DIR}
+RUN cd /opt/openssl-${OPENSSL_VERSION} && ./config --prefix=/usr --openssldir=/usr/lib/ssl --libdir=lib/x86_64-linux-gnu shared -lcrypto && make && make test && make install
+
 # gRPC
 # https://github.com/grpc/grpc/tree/master/src/cpp
 # https://github.com/grpc/grpc/blob/master/BUILDING.md
@@ -63,12 +72,3 @@ RUN mv spire-${SPIRE_VERSION} ${SPIRE_DIR}
 
 RUN ln -s /opt/spire/bin/spire-server /usr/bin/spire-server
 RUN ln -s /opt/spire/bin/spire-agent /usr/bin/spire-agent
-
-# Install OpenSSL
-ARG OPENSSL_VERSION=1.1.1k
-ARG OPENSSL_RELEASE=https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
-ARG OPENSSL_DIR=/opt/
-
-RUN curl --silent --location $OPENSSL_RELEASE | tar -xzf -
-RUN mv openssl-${OPENSSL_VERSION} ${OPENSSL_DIR}
-RUN cd /opt/openssl-${OPENSSL_VERSION} && ./config --prefix=/usr --openssldir=/usr/lib/ssl --libdir=lib/x86_64-linux-gnu shared -lcrypto && make && make test && make install
