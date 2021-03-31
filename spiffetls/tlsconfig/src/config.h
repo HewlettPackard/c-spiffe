@@ -3,7 +3,7 @@
 
 #include "bundle/x509bundle/src/source.h"
 #include "svid/x509svid/src/source.h"
-#include "authorizer.h"
+#include "spiffetls/tlsconfig/src/authorizer.h"
 #include <openssl/ssl.h>
 
 typedef struct {

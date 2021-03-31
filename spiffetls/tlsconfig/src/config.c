@@ -1,5 +1,5 @@
-#include "config.h"
-#include "authorizer.h"
+#include "spiffetls/tlsconfig/src/config.h"
+#include "spiffetls/tlsconfig/src/authorizer.h"
 #include "svid/x509svid/src/verify.h"
 
 // tlsconfig_Trace *__trace;
