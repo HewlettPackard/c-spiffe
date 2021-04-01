@@ -32,7 +32,7 @@ Feature: Fetch X509
         When The agent is turned on
 
 
-    @Sprint8 @SVID
+    @Sprint8 @SVID @server-off
     Scenario: FX_005 - Check that it is possible to fetch X509 SVID with the server down
         When The server is turned off
         And  I fetch "X509" "SVID"
@@ -41,7 +41,7 @@ Feature: Fetch X509
         When The server is turned on
 
 
-    @Sprint8 @Bundle
+    @Sprint8 @Bundle @server-off
     Scenario: FX_006 - Check that it is possible to fetch the X509 Bundle with the server down
         When The server is turned off
         And  I fetch "X509" "Bundle"
