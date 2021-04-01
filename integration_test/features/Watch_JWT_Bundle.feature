@@ -12,7 +12,7 @@ Feature: Watch JWT Bundle
         And   The Bundle was updated
 
 
-    @Sprint9
+    @Sprint9 @server-off
     Scenario: WJB_002 - Check the behavior when taking down the server with watch bundle running and later turn the server on
         When  I fetch "JWT" "Bundle"
         Then  I check that the "Bundle" is returned correctly
