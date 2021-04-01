@@ -26,11 +26,14 @@ clean:
 integrations-tests:
 	docker-compose up -d
 	docker exec infra_spire-server_1 spire-server run &
-	docker exec infra_spire-server_1 spire-server entry create -parentID spiffe://example.org/myagent -spiffeID spiffe://example.org/myworkload -selector unix:user:root &
-	docker exec infra_spire-server_1 spire-server token generate -spiffeID spiffe://example.org/myagent > token
-	docker cp token infra_tests_1:/mnt/c-spiffe/integration_test
-	docker exec infra_tests_1 ./connect_agent.sh
-	docker exec -w /mnt/c-spiffe/build infra_tests_1 cmake ..
-	docker exec -w /mnt/c-spiffe/build infra_tests_1 make
-	docker exec -w /mnt/c-spiffe/integration_test infra_tests_1 behave --tags=-@wip
+	docker exec infra_spire-server_1 spire-server entry create -parentID spiffe://example.org/myagent -spiffeID spiffe://example.org/myworkload -selector unix:user:root
+	docker exec infra_spire-server_1 spire-server token generate -spiffeID spiffe://example.org/myagent > myagent.token
+
+	docker cp update-repo.sh infra_tests_1:/mnt/c-spiffe/integration_test
+	docker exec infra_tests_1 chmod 777 ./update-repo.sh
+	docker exec infra_tests_1 ./update-repo.sh
+
+	docker cp myagent.token infra_tests_1:/mnt/c-spiffe/integration_test
+	docker exec infra_tests_1 chmod +x ./run-behave-tests.sh
+	docker exec infra_tests_1 ./run-behave-tests.sh
 	docker-compose down
