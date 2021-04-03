@@ -91,6 +91,44 @@ uint32_t jwtbundle_Set_Len(jwtbundle_Set *s)
     return len;
 }
 
+void jwtbundle_Set_print_(jwtbundle_Set *s, int offset, BIO *out)
+{
+    if(s) {
+        mtx_lock(&s->mtx); // lock the mutex so we guarantee no one changes the
+                           // set before we print.
+        bool should_free = false;
+        if(!out) { // if not provided, allocate a new BIO*
+            out = BIO_new_fd(stdout, BIO_NOCLOSE);
+            should_free = true; // and take note so we free it later
+        }
+        char *spaces = calloc(offset + 1, sizeof(char));
+        for(int i = 0; i < offset; ++i) {
+            spaces[i] = ' ';
+        }
+        BIO_printf(out, "%sBundle Set: [\n", spaces);
+
+        for(size_t i = 0, size = shlenu(s->bundles); i < size; ++i) {
+            // print using ssl functions.
+            jwtbundle_Bundle_print_(s->bundles[i].value, offset + 1, out);
+        }
+        BIO_printf(out, "%s]\n", spaces);
+
+        if(should_free) {
+            BIO_free(out);
+        }
+
+        free(spaces);
+
+        mtx_unlock(&s->mtx); // unlock bundle mutex.
+    }
+}
+
+void jwtbundle_Set_Print(jwtbundle_Set *s)
+{
+    // call print with default params.
+    jwtbundle_Set_print_(s, 0, NULL);
+}
+
 jwtbundle_Bundle *jwtbundle_Set_GetJWTBundleForTrustDomain(
     jwtbundle_Set *s, const spiffeid_TrustDomain td, err_t *err)
 {
