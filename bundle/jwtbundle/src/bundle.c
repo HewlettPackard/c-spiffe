@@ -254,3 +254,43 @@ void jwtbundle_Bundle_Free(jwtbundle_Bundle *b)
         free(b);
     }
 }
+
+void jwtbundle_Bundle_print_(jwtbundle_Bundle *b, int offset, BIO* out)
+{
+    if(b) {
+        mtx_lock(&b->mtx); //lock the mutex so we guarantee no one changes things before we print.
+        bool should_free = false;
+        if(!out){// if not provided, allocate a new BIO*
+            out = BIO_new_fd(stdout,BIO_NOCLOSE);
+            should_free = true;//and take not so we free it later
+        }
+        char* spaces = calloc(offset+1,sizeof(char));
+        for(int i = 0; i < offset; ++i){
+            spaces[i] = ' ';
+        }
+        BIO_printf(out,"%sTrust Domain: %s\n",spaces,b->td.name);
+        BIO_printf(out,"%sKeys: [\n",spaces,b->td.name);
+        
+        for(size_t i = 0, size = shlenu(b->auths); i < size; ++i) {
+            //print using ssl functions.
+            BIO_printf(out,"%s kID: %s{",spaces,b->auths[i].key);
+            EVP_PKEY_print_public(out,b->auths[i].value,offset+2,NULL);
+            BIO_printf(out,"%s }\n",spaces,b->auths[i].key);
+        }
+        BIO_printf(out,"%s]\n",spaces);
+        
+        if(should_free){
+            BIO_free(out);
+        }
+        
+        free(spaces);
+        
+        mtx_unlock(&b->mtx);//unlock bundle mutex.
+    }
+}
+
+void jwtbundle_Bundle_Print(jwtbundle_Bundle* b){
+    //call print with default params.
+    jwtbundle_Bundle_print_(b,0,NULL);
+}
+
