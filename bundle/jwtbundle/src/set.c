@@ -91,42 +91,55 @@ uint32_t jwtbundle_Set_Len(jwtbundle_Set *s)
 
     return len;
 }
-void jwtbundle_Set_print_BIO(jwtbundle_Set *s, int offset, BIO *out)
+
+err_t jwtbundle_Set_print_BIO(jwtbundle_Set *s, int offset, BIO *out)
 {
-    if(s) {
+    if(offset < 0){
+        return ERROR3;
+    }
+    else if(s && out) {
         mtx_lock(&s->mtx); // lock the mutex so we guarantee no one changes the
                            // set before we print.
-        BIO_indent(out,offset,20);
+        BIO_indent(out, offset, 20);
         BIO_printf(out, "Bundle Set: [\n");
-
-        for(size_t i = 0, size = shlenu(s->bundles); i < size; ++i) {
+        err_t error = NO_ERROR;
+        for(size_t i = 0, size = shlenu(s->bundles); i < size && error == NO_ERROR; ++i) {
             // print using ssl functions.
-            jwtbundle_Bundle_print_BIO(s->bundles[i].value, offset + 1, out);
+            error = jwtbundle_Bundle_print_BIO(s->bundles[i].value, offset + 1, out);
         }
-        BIO_indent(out,offset,20);
+        BIO_indent(out, offset, 20);
         BIO_printf(out, "]\n");
 
         mtx_unlock(&s->mtx); // unlock bundle mutex.
+        return error;
+    } else if(!s) {
+        return ERROR1;
+    } else {
+        return ERROR2;
     }
 }
 
-void jwtbundle_Set_print_fd(jwtbundle_Set *s,int offset, FILE* fd)
+err_t jwtbundle_Set_print_fd(jwtbundle_Set *s, int offset, FILE *fd)
 {
-    BIO* out = BIO_new_fp(fd,BIO_NOCLOSE);
-    jwtbundle_Set_print_BIO(s, offset,out);
+    BIO *out = BIO_new_fp(fd, BIO_NOCLOSE);
+    if (!out){
+        return ERROR4;
+    }
+    err_t error = jwtbundle_Set_print_BIO(s, offset, out);
     BIO_free(out);
+    return error;
 }
 
-void jwtbundle_Set_print_stdout(jwtbundle_Set *s,int offset)
+err_t jwtbundle_Set_print_stdout(jwtbundle_Set *s, int offset)
 {
     // call print with default params.
-    jwtbundle_Set_print_fd(s, offset,stdout);
+    return jwtbundle_Set_print_fd(s, offset, stdout);
 }
 
-void jwtbundle_Set_Print(jwtbundle_Set *s)
+err_t jwtbundle_Set_Print(jwtbundle_Set *s)
 {
     // call print with default params.
-    jwtbundle_Set_print_stdout(s, 0);
+    return jwtbundle_Set_print_stdout(s, 0);
 }
 
 jwtbundle_Bundle *jwtbundle_Set_GetJWTBundleForTrustDomain(

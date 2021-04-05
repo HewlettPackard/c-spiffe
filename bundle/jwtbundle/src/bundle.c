@@ -256,9 +256,12 @@ void jwtbundle_Bundle_Free(jwtbundle_Bundle *b)
     }
 }
 
-void jwtbundle_Bundle_print_BIO(jwtbundle_Bundle *b, int offset, BIO* out)
+err_t jwtbundle_Bundle_print_BIO(jwtbundle_Bundle *b, int offset, BIO* out)
 {
-    if(b) {
+    if(offset < 0){
+        return ERROR3;
+    }
+    else if(b && out) {
         mtx_lock(&b->mtx); //lock the mutex so we guarantee no one changes things before we print.
         
         BIO_indent(out,offset,20);
@@ -281,22 +284,33 @@ void jwtbundle_Bundle_print_BIO(jwtbundle_Bundle *b, int offset, BIO* out)
         BIO_printf(out,"]\n");
         
         mtx_unlock(&b->mtx);//unlock bundle mutex.
+        return NO_ERROR;
+    }
+    else if(!b){
+        return ERROR1;
+    }
+    else {
+        return ERROR2;
     }
 }
 
-void jwtbundle_Bundle_print_fd(jwtbundle_Bundle *b, int offset, FILE* fd)
+err_t jwtbundle_Bundle_print_fd(jwtbundle_Bundle *b, int offset, FILE* fd)
 {
     BIO* out = BIO_new_fp(fd,BIO_NOCLOSE);
-    jwtbundle_Bundle_print_BIO(b,offset,out);
+    if (!out){
+        return ERROR4;
+    }
+    err_t error = jwtbundle_Bundle_print_BIO(b,offset,out);
     BIO_free(out);
+    return error;
 }
 
-void jwtbundle_Bundle_print_stdout(jwtbundle_Bundle *b, int offset){
-    jwtbundle_Bundle_print_fd(b, offset,stdout);
+err_t jwtbundle_Bundle_print_stdout(jwtbundle_Bundle *b, int offset){
+    return jwtbundle_Bundle_print_fd(b, offset,stdout);
 }
 
-void jwtbundle_Bundle_Print(jwtbundle_Bundle* b){
+err_t jwtbundle_Bundle_Print(jwtbundle_Bundle* b){
     //call print with default params.
-    jwtbundle_Bundle_print_stdout(b,0);
+    return jwtbundle_Bundle_print_stdout(b,0);
 }
 
