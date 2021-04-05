@@ -916,6 +916,22 @@ START_TEST(test_jwtbundle_Bundle_GetJWTBundleForTrustDomain)
 }
 END_TEST
 
+// precondition: valid jwt bundle object and BIO*
+// postcondition: printed bundle
+START_TEST(test_jwtbundle_Bundle_Print)
+{
+    spiffeid_TrustDomain td = { "example.com" };
+    err_t err;
+
+    jwtbundle_Bundle *bundle_ptr
+        = jwtbundle_Load(td, "./resources/jwk_keys.json", &err);
+    BIO* out = BIO_new_fp(stdout,BIO_NOCLOSE);
+    jwtbundle_Bundle_print_BIO(bundle_ptr,0,out);
+    ck_assert_int_eq(BIO_number_written(out),2433); ///size of bundle
+    jwtbundle_Bundle_Free(bundle_ptr);
+}
+END_TEST
+
 Suite *bundle_suite(void)
 {
     Suite *s = suite_create("bundle");
@@ -935,6 +951,7 @@ Suite *bundle_suite(void)
     tcase_add_test(tc_core, test_jwtbundle_Bundle_Clone);
     tcase_add_test(tc_core, test_jwtbundle_Bundle_Equal);
     tcase_add_test(tc_core, test_jwtbundle_Bundle_GetJWTBundleForTrustDomain);
+    tcase_add_test(tc_core, test_jwtbundle_Bundle_Print);
 
     suite_add_tcase(s, tc_core);
 
