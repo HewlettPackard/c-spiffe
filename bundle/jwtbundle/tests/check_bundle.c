@@ -926,9 +926,21 @@ START_TEST(test_jwtbundle_Bundle_Print)
     jwtbundle_Bundle *bundle_ptr
         = jwtbundle_Load(td, "./resources/jwk_keys.json", &err);
     BIO* out = BIO_new_fp(stdout,BIO_NOCLOSE);
-    jwtbundle_Bundle_print_BIO(bundle_ptr,0,out);
-    ck_assert_int_eq(BIO_number_written(out),2433); ///size of bundle
+    int offset = 2;
+    jwtbundle_Bundle_print_BIO(bundle_ptr,offset,out);
+    ck_assert_int_eq(BIO_number_written(out),2433 + 60*offset); ///size of bundle + indentation
+    BIO_free(out);
+    out = BIO_new_fp(stdout,BIO_NOCLOSE);
+    offset += 3;
+    jwtbundle_Bundle_print_BIO(bundle_ptr,offset,out);
+    ck_assert_int_eq(BIO_number_written(out),2433 + 60*offset); ///size of bundle + indentation
+    BIO_free(out);
+    out = BIO_new_fp(stdout,BIO_NOCLOSE);
+    ++offset;
+    jwtbundle_Bundle_print_BIO(bundle_ptr,offset,out);
+    ck_assert_int_eq(BIO_number_written(out),2433 + 60*offset); ///size of bundle + indentation
     jwtbundle_Bundle_Free(bundle_ptr);
+    BIO_free(out);
 }
 END_TEST
 

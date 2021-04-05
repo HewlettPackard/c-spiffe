@@ -294,6 +294,44 @@ START_TEST(test_jwtbundle_Set_GetJWTBundleForTrustDomain)
 }
 END_TEST
 
+START_TEST(test_jwtbundle_Set_Print)
+{
+    const int ITERS = 4;
+
+    spiffeid_TrustDomain td[]
+        = { { "example1.com" }, { "example2.com" }, { "example3.com" }, { "example4.com" } };
+
+    err_t err;
+    jwtbundle_Bundle *bundle_ptr[ITERS];
+
+    for(int i = 0; i < ITERS; ++i) {
+        bundle_ptr[i]
+            = jwtbundle_Load(td[i], "./resources/jwk_keys.json", &err);
+        ck_assert_uint_eq(err, NO_ERROR);
+    }
+
+    jwtbundle_Set *set
+        = jwtbundle_NewSet(ITERS, bundle_ptr[0], bundle_ptr[1], bundle_ptr[2],bundle_ptr[3]);
+    int offset = 3;
+    BIO* out = BIO_new_fp(stdout,BIO_NOCLOSE);
+    jwtbundle_Set_print_BIO(set,offset,out);
+    ck_assert_int_eq(BIO_number_written(out),2494*ITERS+16+(60*ITERS + 2)*offset); ///size of bundles + padding from set
+    BIO_free(out);
+    out = BIO_new_fp(stdout,BIO_NOCLOSE);
+    offset+=3;
+    jwtbundle_Set_print_BIO(set,offset,out);
+    ck_assert_int_eq(BIO_number_written(out),2494*ITERS+16+(60*ITERS + 2)*offset); ///size of bundles + padding from set
+    BIO_free(out);
+    out = BIO_new_fp(stdout,BIO_NOCLOSE);
+    ++offset;
+    jwtbundle_Set_print_BIO(set,offset,out);
+    ck_assert_int_eq(BIO_number_written(out),2494*ITERS+16+(60*ITERS + 2)*offset); ///size of bundles + padding from set
+    BIO_free(out);
+    
+    jwtbundle_Set_Free(set);
+}
+END_TEST
+
 Suite *set_suite(void)
 {
     Suite *s = suite_create("set");
@@ -307,6 +345,7 @@ Suite *set_suite(void)
     tcase_add_test(tc_core, test_jwtbundle_Set_Bundles);
     tcase_add_test(tc_core, test_jwtbundle_Set_Len);
     tcase_add_test(tc_core, test_jwtbundle_Set_GetJWTBundleForTrustDomain);
+    tcase_add_test(tc_core, test_jwtbundle_Set_Print);
 
     suite_add_tcase(s, tc_core);
 
