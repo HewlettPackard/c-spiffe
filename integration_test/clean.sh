@@ -1,1 +1,1 @@
-rm -rf /mnt/integration_test/data
+rm -rf /mnt/c-spiffe/integration_test/data
