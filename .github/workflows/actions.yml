@@ -36,7 +36,7 @@ jobs:
 
       - name: Integration Test
         shell: bash
-        run: cd integration_test && behave --tags=-@wip
+        run: cd infra && make integration_test
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
