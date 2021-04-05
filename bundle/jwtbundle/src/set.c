@@ -94,18 +94,19 @@ uint32_t jwtbundle_Set_Len(jwtbundle_Set *s)
 
 err_t jwtbundle_Set_print_BIO(jwtbundle_Set *s, int offset, BIO *out)
 {
-    if(offset < 0){
+    if(offset < 0) {
         return ERROR3;
-    }
-    else if(s && out) {
+    } else if(s && out) {
         mtx_lock(&s->mtx); // lock the mutex so we guarantee no one changes the
                            // set before we print.
         BIO_indent(out, offset, 20);
         BIO_printf(out, "Bundle Set: [\n");
         err_t error = NO_ERROR;
-        for(size_t i = 0, size = shlenu(s->bundles); i < size && error == NO_ERROR; ++i) {
+        for(size_t i = 0, size = shlenu(s->bundles);
+            i < size && error == NO_ERROR; ++i) {
             // print using ssl functions.
-            error = jwtbundle_Bundle_print_BIO(s->bundles[i].value, offset + 1, out);
+            error = jwtbundle_Bundle_print_BIO(s->bundles[i].value, offset + 1,
+                                               out);
         }
         BIO_indent(out, offset, 20);
         BIO_printf(out, "]\n");
@@ -122,7 +123,7 @@ err_t jwtbundle_Set_print_BIO(jwtbundle_Set *s, int offset, BIO *out)
 err_t jwtbundle_Set_print_fd(jwtbundle_Set *s, int offset, FILE *fd)
 {
     BIO *out = BIO_new_fp(fd, BIO_NOCLOSE);
-    if (!out){
+    if(!out) {
         return ERROR4;
     }
     err_t error = jwtbundle_Set_print_BIO(s, offset, out);

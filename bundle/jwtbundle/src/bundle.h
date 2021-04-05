@@ -174,7 +174,7 @@ err_t jwtbundle_Bundle_print_BIO(jwtbundle_Bundle *b, int offset, BIO *out);
  * \param offset [in] Integer. How many spaces to append before each line.
  * \param fd [in] file descriptor.
  */
-err_t jwtbundle_Bundle_print_fd(jwtbundle_Bundle *b, int offset, FILE* fd);
+err_t jwtbundle_Bundle_print_fd(jwtbundle_Bundle *b, int offset, FILE *fd);
 
 /**
  * Prints bundle to stdout, including public keys.
