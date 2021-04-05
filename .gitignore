@@ -37,7 +37,9 @@ internal/x509util/tests/util.o
 # Integration test files
 integration_test/data
 integration_test/**/__pycache__
+*.token
 
 #files generated from the document generator
 html/
 latex/
+
