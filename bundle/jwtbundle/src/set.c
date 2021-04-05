@@ -1,5 +1,6 @@
 #include "bundle/jwtbundle/src/set.h"
 #include <stdarg.h>
+#include <stdio.h>
 
 jwtbundle_Set *jwtbundle_NewSet(const int n_args, ...)
 {
@@ -90,43 +91,42 @@ uint32_t jwtbundle_Set_Len(jwtbundle_Set *s)
 
     return len;
 }
-
-void jwtbundle_Set_print_(jwtbundle_Set *s, int offset, BIO *out)
+void jwtbundle_Set_print_BIO(jwtbundle_Set *s, int offset, BIO *out)
 {
     if(s) {
         mtx_lock(&s->mtx); // lock the mutex so we guarantee no one changes the
                            // set before we print.
-        bool should_free = false;
-        if(!out) { // if not provided, allocate a new BIO*
-            out = BIO_new_fd(stdout, BIO_NOCLOSE);
-            should_free = true; // and take note so we free it later
-        }
-        char *spaces = calloc(offset + 1, sizeof(char));
-        for(int i = 0; i < offset; ++i) {
-            spaces[i] = ' ';
-        }
-        BIO_printf(out, "%sBundle Set: [\n", spaces);
+        BIO_indent(out,offset,20);
+        BIO_printf(out, "Bundle Set: [\n");
 
         for(size_t i = 0, size = shlenu(s->bundles); i < size; ++i) {
             // print using ssl functions.
-            jwtbundle_Bundle_print_(s->bundles[i].value, offset + 1, out);
+            jwtbundle_Bundle_print_BIO(s->bundles[i].value, offset + 1, out);
         }
-        BIO_printf(out, "%s]\n", spaces);
-
-        if(should_free) {
-            BIO_free(out);
-        }
-
-        free(spaces);
+        BIO_indent(out,offset,20);
+        BIO_printf(out, "]\n");
 
         mtx_unlock(&s->mtx); // unlock bundle mutex.
     }
 }
 
+void jwtbundle_Set_print_fd(jwtbundle_Set *s,int offset, FILE* fd)
+{
+    BIO* out = BIO_new_fp(fd,BIO_NOCLOSE);
+    jwtbundle_Set_print_BIO(s, offset,out);
+    BIO_free(out);
+}
+
+void jwtbundle_Set_print_stdout(jwtbundle_Set *s,int offset)
+{
+    // call print with default params.
+    jwtbundle_Set_print_fd(s, offset,stdout);
+}
+
 void jwtbundle_Set_Print(jwtbundle_Set *s)
 {
     // call print with default params.
-    jwtbundle_Set_print_(s, 0, NULL);
+    jwtbundle_Set_print_stdout(s, 0);
 }
 
 jwtbundle_Bundle *jwtbundle_Set_GetJWTBundleForTrustDomain(
