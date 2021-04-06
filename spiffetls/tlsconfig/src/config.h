@@ -7,6 +7,7 @@
 #include <openssl/ssl.h>
 
 typedef struct {
+    void *trace;
     // tlsconfig_Trace *trace;
 } tlsconfig_options;
 
@@ -21,17 +22,17 @@ typedef struct {
 } tlsconfig_Option;
 
 void tlsconfig_Option_apply(tlsconfig_Option *, tlsconfig_options *options);
-
+tlsconfig_Option *tlsconfig_OptionFromFunc(tlsconfig_option fn);
 tlsconfig_options *tlsconfig_newOptions(tlsconfig_Option **opts);
 
 // tlsconfig_Option *tlsconfig_WithTrace(const tlsconfig_Trace *trace);
 
 // SSL_CTX *tlsconfig_TLSClientConfig();
-void tlsconfig_HookTLSClientConfig(SSL_CTX *ctx, x509bundle_Source *bundle,
+bool tlsconfig_HookTLSClientConfig(SSL_CTX *ctx, x509bundle_Source *bundle,
                                    tlsconfig_Authorizer *authorizer,
                                    tlsconfig_Option **opts);
 // tlsconfig_MTLSClientConfig();
-void tlsconfig_HookMTLSClientConfig(SSL_CTX *ctx, x509svid_Source *svid,
+bool tlsconfig_HookMTLSClientConfig(SSL_CTX *ctx, x509svid_Source *svid,
                                     x509bundle_Source *bundle,
                                     tlsconfig_Authorizer *authorizer,
                                     tlsconfig_Option **opts);
@@ -45,5 +46,7 @@ void tlsconfig_HookMTLSClientConfig(SSL_CTX *ctx, x509svid_Source *svid,
 // tlsconfig_HookMTLSWebServerConfig();
 // tlsconfig_getTLSCertificate();
 void tlsconfig_resetAuthFields();
+
+void tlsconfig_Option_Free(tlsconfig_Option *option);
 
 #endif // INCLUDE_SPIFFETLS_TLSCONFIG_CONFIG_H

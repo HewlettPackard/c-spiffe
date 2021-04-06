@@ -39,8 +39,6 @@ tlsconfig_options *tlsconfig_newOptions(tlsconfig_Option **opts)
 //     return tlsconfig_OptionFromFunc(setTrace);
 // }
 
-// func TLSClientConfig(bundle x509bundle.Source, authorizer Authorizer, opts
-// ...Option) *tls.Config {
 SSL_CTX *tlsconfig_TLSClientConfig(x509bundle_Source *bundle,
                                    tlsconfig_Authorizer *authorizer,
                                    tlsconfig_Option **opts)
@@ -73,11 +71,13 @@ static int hookTLSClientConfig_cb(X509_STORE_CTX *store_ctx, void *arg)
     }
 }
 
-void tlsconfig_HookTLSClientConfig(SSL_CTX *ctx, x509bundle_Source *bundle,
+bool tlsconfig_HookTLSClientConfig(SSL_CTX *ctx, x509bundle_Source *bundle,
                                    tlsconfig_Authorizer *authorizer,
                                    tlsconfig_Option **opts)
 {
     tlsconfig_resetAuthFields(ctx);
+    // dummy call
+    SSL_CTX_set_ecdh_auto(ctx, 1);
     /// WARNING: temporary solution
 
     struct hookTLSClientConfig_st *safe_arg = malloc(sizeof *safe_arg);
@@ -86,6 +86,8 @@ void tlsconfig_HookTLSClientConfig(SSL_CTX *ctx, x509bundle_Source *bundle,
     safe_arg->opts = opts;
 
     SSL_CTX_set_cert_verify_callback(ctx, hookTLSClientConfig_cb, safe_arg);
+
+    return true;
 }
 
 struct hookMTLSClientConfig_st {
@@ -95,14 +97,12 @@ struct hookMTLSClientConfig_st {
     tlsconfig_Option **opts;
 };
 
+struct hookMTLSClientConfig_st *__config = NULL;
 /// TODO: change function name
 static int hookMTLSClientConfig_cb(SSL *ssl, X509 **cert, EVP_PKEY **pkey)
 {
-    /// TODO: change to a global variable
-    struct hookMTLSClientConfig_st *config = NULL;
-
     err_t err;
-    x509svid_SVID *svid = x509svid_Source_GetX509SVID(config->svid, &err);
+    x509svid_SVID *svid = x509svid_Source_GetX509SVID(__config->svid, &err);
 
     if(!err && svid) {
         /// TODO: check if it is needed to up the reference
@@ -116,32 +116,46 @@ static int hookMTLSClientConfig_cb(SSL *ssl, X509 **cert, EVP_PKEY **pkey)
     return 0;
 }
 
-void tlsconfig_HookMTLSClientConfig(SSL_CTX *ctx, x509svid_Source *svid,
+bool tlsconfig_HookMTLSClientConfig(SSL_CTX *ctx, x509svid_Source *svid,
                                     x509bundle_Source *bundle,
                                     tlsconfig_Authorizer *authorizer,
                                     tlsconfig_Option **opts)
 {
     tlsconfig_resetAuthFields(ctx);
-    /// WARNING: temporary solution
+    // dummy call
+    SSL_CTX_set_ecdh_auto(ctx, 1);
 
-    struct hookMTLSClientConfig_st *safe_arg0 = malloc(sizeof *safe_arg0);
-    safe_arg0->svid = svid;
-    safe_arg0->bundle = bundle;
-    safe_arg0->authorizer = authorizer;
-    safe_arg0->opts = opts;
-    SSL_CTX_set_client_cert_cb(ctx, hookMTLSClientConfig_cb);
+    err_t err;
+    x509svid_SVID *my_svid = x509svid_Source_GetX509SVID(svid, &err);
+
+    if(!err && svid) {
+        if(arrlenu(my_svid->certs) > 0 && my_svid->private_key) {
+            const int ret1 = SSL_CTX_use_certificate(ctx, my_svid->certs[0]);
+            const int ret2 = SSL_CTX_use_PrivateKey(ctx, my_svid->private_key);
+
+            if(ret1 <= 0 || ret2 <= 0) {
+                return false;
+            }
+        } else {
+            /// TODO: handle error
+        }
+    } else {
+        /// TODO: handle error
+    }
 
     struct hookTLSClientConfig_st *safe_arg1 = malloc(sizeof *safe_arg1);
     safe_arg1->bundle = bundle;
     safe_arg1->authorizer = authorizer;
     safe_arg1->opts = opts;
     SSL_CTX_set_cert_verify_callback(ctx, hookTLSClientConfig_cb, safe_arg1);
+
+    return true;
 }
 
-void tlsconfig_HookMTLSWebClientConfig(SSL_CTX *ctx, x509svid_Source *svid,
-                                       x509util_CertPool *roots,
-                                       tlsconfig_Option **opts)
-{}
+// void tlsconfig_HookMTLSWebClientConfig(SSL_CTX *ctx, x509svid_Source *svid,
+//                                        x509util_CertPool *roots,
+//                                        tlsconfig_Option **opts)
+// {}
 
 void tlsconfig_resetAuthFields(SSL_CTX *ctx)
 {
@@ -161,4 +175,11 @@ void tlsconfig_resetAuthFields(SSL_CTX *ctx)
     SSL_CTX_set_client_cert_cb(ctx, NULL);
     // set default verification
     SSL_CTX_set_cert_verify_callback(ctx, NULL, NULL);
+}
+
+void tlsconfig_Option_Free(tlsconfig_Option *option)
+{
+    if(option) {
+        free(option);
+    }
 }
