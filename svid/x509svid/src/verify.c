@@ -197,8 +197,7 @@ spiffeid_ID x509svid_IDFromCert(X509 *cert, err_t *err)
     if(cert) {
         const int nid = NID_subject_alt_name;
         STACK_OF(GENERAL_NAME) *san_names
-            = (STACK_OF(GENERAL_NAME) *) X509_get_ext_d2i(cert, nid, NULL,
-                                                          NULL);
+            = X509_get_ext_d2i(cert, nid, NULL, NULL);
         int san_name_num = sk_GENERAL_NAME_num(san_names);
 
         if(san_name_num == 1) {
@@ -207,6 +206,7 @@ spiffeid_ID x509svid_IDFromCert(X509 *cert, err_t *err)
                 (const char *) name->d.uniformResourceIdentifier->data);
 
             id = spiffeid_FromString(uri_name, err);
+            arrfree(uri_name);
         } else if(san_name_num == 0) {
             // certificate contains no URI SAN
             *err = ERROR1;
