@@ -1,9 +1,8 @@
-#include "dial.h"
-#include "mode.h"
-#include "option.h"
-#include <arpa/inet.h>
-
-#include <sys/socket.h>
+#include "spiffetls/src/dial.h"
+#include "spiffetls/src/mode.h"
+#include "spiffetls/src/option.h"
+#include "spiffetls/tlsconfig/src/config.h"
+#include <unistd.h>
 
 static int createSocket(in_addr_t addr, in_port_t port)
 {
@@ -38,7 +37,7 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
         workloadapi_X509Source *source = mode->source;
         if(!source) {
             /// TODO: create source config
-            source = workloadapi_NewX509Source(NULL, &err);
+            source = workloadapi_NewX509Source(NULL, err);
 
             if(*err) {
                 /// TODO: handle source creation error
@@ -54,17 +53,14 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
 
     switch(mode->mode) {
     case TLS_CLIENT_MODE:
-        /// TODO: set config
-        // HookTLSClientConfig
+        tlsconfig_HookTLSClientConfig(tls_config, mode->bundle,
+                                      mode->authorizer, NULL);
         break;
     case MTLS_CLIENT_MODE:
-        /// TODO: set config
-        // HookMTLSClientConfig
+        tlsconfig_HookMTLSClientConfig(tls_config, mode->svid, mode->bundle,
+                                       mode->authorizer, NULL);
         break;
-    case MTLS_WEBCLIENT_MODE:
-        /// TODO: set config
-        // HookMTLSWebClientConfig
-        break;
+    case MTLS_WEBCLIENT_MODE: /// TODO: set config
     default:
         // unknown mode
         *err = ERROR1;
@@ -80,6 +76,9 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
     SSL_set_connect_state(conn);
     if(SSL_connect(conn) != 1) {
         // could not build a SSL session
+        SSL_shutdown(conn);
+        SSL_free(conn);
+        close(sockfd);
         *err = ERROR2;
         goto error;
     }
