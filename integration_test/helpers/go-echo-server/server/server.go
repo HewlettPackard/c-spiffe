@@ -26,11 +26,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("server: listen: %s", err)
 	}
-<<<<<<< HEAD
-	log.Print("server: listening")
-=======
 	log.Print("server: listening on port ", CONN_PORT)
->>>>>>> 69012dddf14c2dcf170c8a0414c681a47f361991
 	for {
 		conn, err := listener.Accept()
 		if err != nil {

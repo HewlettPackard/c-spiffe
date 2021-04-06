@@ -8,11 +8,7 @@ import (
 )
 
 const (
-<<<<<<< HEAD
-	CONN_HOST = "0.0.0.0"
-=======
 	CONN_HOST = "infra_workload_1"
->>>>>>> 69012dddf14c2dcf170c8a0414c681a47f361991
 	CONN_PORT = "8000"
 	CONN_TYPE = "tcp"
 )
@@ -44,9 +40,6 @@ func main() {
 
 	reply := make([]byte, 100)
 	n, err = conn.Read(reply)
-<<<<<<< HEAD
-	log.Printf("client: received %q (%d bytes)", string(reply[:n]), n)
-=======
 	if err != nil {
 		if err != io.EOF {
 			log.Printf("client: read: %s", err)
@@ -55,6 +48,5 @@ func main() {
 
 	log.Printf("client: received %q (%d bytes)\n", string(reply[:n]), n)
 
->>>>>>> 69012dddf14c2dcf170c8a0414c681a47f361991
 	log.Print("client: exiting")
 }
