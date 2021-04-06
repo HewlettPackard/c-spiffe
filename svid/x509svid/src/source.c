@@ -1,5 +1,18 @@
 #include "svid/x509svid/src/source.h"
 
+x509svid_Source *x509svid_SourceFromSource(workloadapi_X509Source *source)
+{
+    if(source) {
+        x509svid_Source *my_source = malloc(sizeof *my_source);
+        my_source->type = WORKLOADAPI_X509SOURCE_SVID;
+        my_source->source.source = source;
+
+        return my_source;
+    }
+
+    return NULL;
+}
+
 x509svid_SVID *x509svid_Source_GetX509SVID(x509svid_Source *source, err_t *err)
 {
     x509svid_SVID *svid = NULL;
