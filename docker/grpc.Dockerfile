@@ -36,9 +36,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libcjose-dev \
         libgtest-dev \
         libgmock-dev \
-        python3-pip
+        python3-pip \
+        checkinstall \
+        zlib1g-dev
 RUN pip3 install behave PyHamcrest pathlib2
 RUN apt-get clean
+
+# Install OpenSSL
+ARG OPENSSL_VERSION=1.1.1k
+ARG OPENSSL_RELEASE=https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
+ARG OPENSSL_DIR=/opt/
+
+RUN curl --silent --location $OPENSSL_RELEASE | tar -xzf -
+RUN mv openssl-${OPENSSL_VERSION} ${OPENSSL_DIR}
+RUN cd /opt/openssl-${OPENSSL_VERSION} && ./config --prefix=/usr --openssldir=/usr/lib/ssl --libdir=lib/x86_64-linux-gnu shared -lcrypto && make && make test && make install
 
 # gRPC
 # https://github.com/grpc/grpc/tree/master/src/cpp

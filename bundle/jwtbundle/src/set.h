@@ -89,6 +89,39 @@ jwtbundle_Bundle **jwtbundle_Set_Bundles(jwtbundle_Set *s);
 uint32_t jwtbundle_Set_Len(jwtbundle_Set *s);
 
 /**
+ * Prints bundle set to BIO object, including public keys.
+ *
+ * \param set [in] JWT Bundle Set object pointer to print.
+ * \param offset [in] Integer. How many spaces to append before each line.
+ * \param out [in] BIO object pointer.
+ */
+err_t jwtbundle_Set_print_BIO(jwtbundle_Set *set, int offset, BIO *out);
+
+/**
+ * Prints bundle set to file, including public keys.
+ *
+ * \param set [in] JWT Bundle Set object pointer to print.
+ * \param offset [in] Integer. How many spaces to append before each line.
+ * \param fd [in] file descriptor.
+ */
+err_t jwtbundle_Set_print_fd(jwtbundle_Set *set, int offset, FILE *fd);
+
+/**
+ * Prints bundle set to stdout, including public keys.
+ *
+ * \param bundle [in] JWT Bundle Set object pointer to print.
+ * \param offset [in] Integer. How many spaces to append before each line.
+ */
+err_t jwtbundle_Set_print_stdout(jwtbundle_Set *b, int offset);
+
+/**
+ * Prints bundle set to stdout, including public keys.
+ *
+ * \param set [in] JWT Bundle Set object pointer to print.
+ */
+err_t jwtbundle_Set_Print(jwtbundle_Set *set);
+
+/**
  * Gets bundle for a given Trust Domain object.
  *
  * \param set [in] Set of JWT bundles object pointer.
