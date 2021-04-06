@@ -158,6 +158,40 @@ bool jwtbundle_Bundle_Equal(const jwtbundle_Bundle *b1,
                             const jwtbundle_Bundle *b2);
 
 /**
+ * Prints bundle to BIO object, including public keys.
+ *
+ * \param bundle [in] JWT Bundle object pointer to print.
+ * \param offset [in] Integer. How many spaces to append before each line.
+ * \param out [in] BIO object pointer. if provided, will be used but not freed.
+ *  If not, a new one will be allocated and freed.
+ */
+err_t jwtbundle_Bundle_print_BIO(jwtbundle_Bundle *b, int offset, BIO *out);
+
+/**
+ * Prints bundle to file, including public keys.
+ *
+ * \param bundle [in] JWT Bundle object pointer to print.
+ * \param offset [in] Integer. How many spaces to append before each line.
+ * \param fd [in] file descriptor.
+ */
+err_t jwtbundle_Bundle_print_fd(jwtbundle_Bundle *b, int offset, FILE *fd);
+
+/**
+ * Prints bundle to stdout, including public keys.
+ *
+ * \param bundle [in] JWT Bundle object pointer to print.
+ * \param offset [in] Integer. How many spaces to append before each line.
+ */
+err_t jwtbundle_Bundle_print_stdout(jwtbundle_Bundle *b, int offset);
+
+/**
+ * Prints bundle to stdout, including public keys.
+ *
+ * \param bundle [in] JWT Bundle object pointer to print.
+ */
+err_t jwtbundle_Bundle_Print(jwtbundle_Bundle *b);
+
+/**
  * Gets bundle for a given Trust Domain object.
  *
  * \param bundle [in] JWT Bundle object pointer.

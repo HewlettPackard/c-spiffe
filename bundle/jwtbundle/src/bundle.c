@@ -7,6 +7,7 @@
 #include <openssl/pem.h>
 #include <openssl/rsa.h>
 #include <openssl/x509.h>
+#include <stdio.h>
 
 typedef struct _ec_keydata_int {
     cjose_jwk_ec_curve crv;
@@ -253,4 +254,62 @@ void jwtbundle_Bundle_Free(jwtbundle_Bundle *b)
         spiffeid_TrustDomain_Free(&(b->td));
         free(b);
     }
+}
+
+err_t jwtbundle_Bundle_print_BIO(jwtbundle_Bundle *b, int offset, BIO *out)
+{
+    if(offset < 0) {
+        return ERROR3;
+    } else if(b && out) {
+        mtx_lock(&b->mtx); // lock the mutex so we guarantee no one changes
+                           // things before we print.
+
+        BIO_indent(out, offset, 20);
+        BIO_printf(out, "Trust Domain: %s\n", b->td.name);
+        BIO_indent(out, offset, 20);
+        BIO_printf(out, "Keys: [\n");
+
+        for(size_t i = 0, size = shlenu(b->auths); i < size; ++i) {
+            // print using ssl functions.
+            BIO_indent(out, offset + 1, 20);
+            BIO_printf(out, "kID: \"%s\" {\n", b->auths[i].key);
+
+            EVP_PKEY_print_public(out, b->auths[i].value, offset + 2, NULL);
+
+            BIO_indent(out, offset + 1, 20);
+            BIO_printf(out, "}\n");
+        }
+
+        BIO_indent(out, offset, 20);
+        BIO_printf(out, "]\n");
+
+        mtx_unlock(&b->mtx); // unlock bundle mutex.
+        return NO_ERROR;
+    } else if(!b) {
+        return ERROR1;
+    } else {
+        return ERROR2;
+    }
+}
+
+err_t jwtbundle_Bundle_print_fd(jwtbundle_Bundle *b, int offset, FILE *fd)
+{
+    BIO *out = BIO_new_fp(fd, BIO_NOCLOSE);
+    if(!out) {
+        return ERROR4;
+    }
+    err_t error = jwtbundle_Bundle_print_BIO(b, offset, out);
+    BIO_free(out);
+    return error;
+}
+
+err_t jwtbundle_Bundle_print_stdout(jwtbundle_Bundle *b, int offset)
+{
+    return jwtbundle_Bundle_print_fd(b, offset, stdout);
+}
+
+err_t jwtbundle_Bundle_Print(jwtbundle_Bundle *b)
+{
+    // call print with default params.
+    return jwtbundle_Bundle_print_stdout(b, 0);
 }

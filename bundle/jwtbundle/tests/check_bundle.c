@@ -1,7 +1,7 @@
+#include "bundle/jwtbundle/src/bundle.h"
 #include "internal/cryptoutil/src/keys.h"
 #include "internal/jwtutil/src/util.h"
 #include "spiffeid/src/trustdomain.h"
-#include "bundle/jwtbundle/src/bundle.h"
 #include <check.h>
 #include <openssl/pem.h>
 
@@ -916,6 +916,62 @@ START_TEST(test_jwtbundle_Bundle_GetJWTBundleForTrustDomain)
 }
 END_TEST
 
+START_TEST(test_jwtbundle_Bundle_Print)
+{
+    spiffeid_TrustDomain td = { "example.com" };
+    err_t err;
+
+    jwtbundle_Bundle *bundle_ptr
+        = jwtbundle_Load(td, "./resources/jwk_keys.json", &err);
+    BIO *out = BIO_new_fp(stdout, BIO_NOCLOSE);
+    int offset = 2;
+    err = jwtbundle_Bundle_print_BIO(bundle_ptr, offset, out);
+
+    ck_assert_int_eq(err, NO_ERROR);
+    ck_assert_int_eq(BIO_number_written(out),
+                     2433 + 60 * offset); /// size of bundle + indentation
+    BIO_free(out);
+    out = BIO_new_fp(stdout, BIO_NOCLOSE);
+    offset += 3;
+    err = jwtbundle_Bundle_print_BIO(bundle_ptr, offset, out);
+    ck_assert_int_eq(err, NO_ERROR);
+    ck_assert_int_eq(BIO_number_written(out),
+                     2433 + 60 * offset); /// size of bundle + indentation
+    BIO_free(out);
+    out = BIO_new_fp(stdout, BIO_NOCLOSE);
+    ++offset;
+    err = jwtbundle_Bundle_print_BIO(bundle_ptr, offset, out);
+    ck_assert_int_eq(err, NO_ERROR);
+    ck_assert_int_eq(BIO_number_written(out),
+                     2433 + 60 * offset); /// size of bundle + indentation
+    jwtbundle_Bundle_Free(bundle_ptr);
+    BIO_free(out);
+}
+END_TEST
+
+START_TEST(test_jwtbundle_Bundle_Print_Errors)
+{
+    err_t err;
+    jwtbundle_Bundle *bundle_ptr = NULL;
+    BIO *out = NULL;
+
+    // negative offset error
+    int offset = -1;
+    err = jwtbundle_Bundle_print_stdout(bundle_ptr, offset);
+    ck_assert_int_eq(err, ERROR3);
+
+    // NULL bundle error
+    offset = 0;
+    err = jwtbundle_Bundle_Print(bundle_ptr);
+    ck_assert_int_eq(err, ERROR1);
+
+    // NULL BIO* error
+    bundle_ptr = 1; //"valid" bundle
+    err = jwtbundle_Bundle_print_BIO(bundle_ptr, offset, out);
+    ck_assert_int_eq(err, ERROR2);
+}
+END_TEST
+
 Suite *bundle_suite(void)
 {
     Suite *s = suite_create("bundle");
@@ -935,6 +991,8 @@ Suite *bundle_suite(void)
     tcase_add_test(tc_core, test_jwtbundle_Bundle_Clone);
     tcase_add_test(tc_core, test_jwtbundle_Bundle_Equal);
     tcase_add_test(tc_core, test_jwtbundle_Bundle_GetJWTBundleForTrustDomain);
+    tcase_add_test(tc_core, test_jwtbundle_Bundle_Print);
+    tcase_add_test(tc_core, test_jwtbundle_Bundle_Print_Errors);
 
     suite_add_tcase(s, tc_core);
 
