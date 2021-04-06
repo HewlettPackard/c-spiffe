@@ -21,3 +21,24 @@ target_link_libraries(check_authorizer spiffetls ${CHECK_LIBRARIES}
   pthread)
 
 add_test(check_authorizer check_authorizer)
+
+add_executable(check_config check_config.c)
+
+target_link_libraries(check_config spiffetls ${CHECK_LIBRARIES}
+  OpenSSL::SSL
+  spiffeid
+  internal
+  svid
+  uriparser
+  bundle
+  jansson
+  cjose
+  subunit
+  check_pic
+  check
+  rt
+  m
+  crypto
+  pthread)
+
+add_test(check_config check_config)
