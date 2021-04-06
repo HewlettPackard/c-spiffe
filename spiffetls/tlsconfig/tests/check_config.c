@@ -11,7 +11,7 @@ void option_dummy(tlsconfig_options *opt)
 void option_dummy2(tlsconfig_options *opt)
 {
     if(opt) {
-        opt->trace = ((uint64_t) opt->trace) + 1;
+        opt->trace = ((uint64_t *) opt->trace) + 1;
     }
 }
 
