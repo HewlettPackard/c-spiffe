@@ -21,7 +21,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	libjansson-dev \
         libcjose-dev \
         libgtest-dev \
-        libgmock-dev
+        libgmock-dev \
+        golang-go
 RUN apt-get clean
 
 # gRPC
