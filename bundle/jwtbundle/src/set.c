@@ -162,12 +162,12 @@ jwtbundle_Bundle *jwtbundle_Set_GetJWTBundleForTrustDomain(
 
 jwtbundle_Set *jwtbundle_Set_Clone(jwtbundle_Set *set)
 {
-    jwtbundle_Set* ret = jwtbundle_NewSet(0);
+    jwtbundle_Set *ret = jwtbundle_NewSet(0);
     mtx_lock(&(set->mtx));
-    for (size_t i = 0,size=hmlenu(set->bundles); i < size; ++i)
-    {
-        jwtbundle_Bundle* bundle = jwtbundle_Bundle_Clone(set->bundles[i].value);
-        jwtbundle_Set_Add(ret,bundle);
+    for(size_t i = 0, size = hmlenu(set->bundles); i < size; ++i) {
+        jwtbundle_Bundle *bundle
+            = jwtbundle_Bundle_Clone(set->bundles[i].value);
+        jwtbundle_Set_Add(ret, bundle);
     }
     mtx_unlock(&(set->mtx));
     return ret;
