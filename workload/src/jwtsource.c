@@ -98,7 +98,7 @@ void workloadapi_JWTSource_applyJWTBundle_Set(workloadapi_JWTSource *source,
 {
     mtx_lock(&(source->mtx));
     jwtbundle_Set_Free(source->bundles);
-    source->bundles = set;
+    source->bundles = jwtbundle_Set_Clone(set);
     mtx_unlock(&(source->mtx));
 }
 
