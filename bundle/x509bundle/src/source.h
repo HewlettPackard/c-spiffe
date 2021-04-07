@@ -53,6 +53,14 @@ x509bundle_Source *x509bundle_SourceFromBundle(x509bundle_Bundle *b);
  */
 x509bundle_Source *x509bundle_SourceFromSet(x509bundle_Set *set);
 
+/**
+ * Creates a source of X.509 bundles from a workload API X.509 source of
+ * bundles. Takes ownership of the object, so it will be freed when the source
+ * is freed.
+ *
+ * \param source [in] Workload API source of X.509 bundles object pointer.
+ * \returns A source of X.509 bundles object pointer.
+ */
 x509bundle_Source *x509bundle_SourceFromSource(workloadapi_X509Source *source);
 
 /**
