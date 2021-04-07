@@ -364,7 +364,7 @@ START_TEST(test_jwtbundle_Set_Print_Errors)
 
     // NULL BIO* error
     set = 1; //"valid" set
-    err = jwtbundle_Bundle_print_BIO(set, offset, out);
+    err = jwtbundle_Set_print_BIO(set, offset, out);
     ck_assert_int_eq(err, ERROR2);
 }
 END_TEST
