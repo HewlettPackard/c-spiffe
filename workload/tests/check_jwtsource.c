@@ -61,11 +61,13 @@ START_TEST(test_workloadapi_JWTSource_applyJWTBundle_Set);
     err_t err;
     workloadapi_JWTSource *tested = workloadapi_NewJWTSource(NULL, &err);
 
-    jwtbundle_Set *set = (jwtbundle_Set *) 1;
-
+    jwtbundle_Set *set = jwtbundle_NewSet(0);
+    jwtbundle_Bundle* bundle = jwtbundle_New(spiffeid_TrustDomainFromString("spiffe://example.com",&err));
+    jwtbundle_Set_Add(set,bundle);
     workloadapi_JWTSource_applyJWTBundle_Set(tested, set);
 
-    ck_assert_ptr_eq(tested->bundles, (jwtbundle_Set *) 1);
+    ck_assert_ptr_ne(tested->bundles,set);
+    ck_assert_str_eq(tested->bundles->bundles[0].value->td.name,set->bundles[0].value->td.name);
 
     tested->bundles = NULL;
     workloadapi_JWTSource_Free(tested);
