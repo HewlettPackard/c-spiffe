@@ -2,28 +2,6 @@
 #include <threads.h>
 #include <time.h>
 
-void print_bundles(workloadapi_JWTSource *source, void *not_used)
-{
-    BIO *out;
-    out = BIO_new_fd(fileno(stdout), BIO_NOCLOSE);
-    jwtbundle_Set *set = jwtbundle_Set_Clone(source->bundles);
-    printf("Bundles: [\n");
-    for(uint32_t i = 0, size = jwtbundle_Set_Len(set); i < size; ++i) {
-        printf(" TD: %s: [\n", set->bundles[i].value->td.name);
-
-        for(size_t j = 0, size2 = shlenu(set->bundles[i].value->auths);
-            j < size2; ++j) {
-            printf("  kID: %s\n", set->bundles[i].value->auths[j].key);
-            EVP_PKEY_print_public(out, set->bundles[i].value->auths[j].value,
-                                  3, NULL);
-        }
-        printf(" ]\n");
-    }
-    printf("]\n");
-    jwtbundle_Set_Free(set);
-    BIO_free(out);
-}
-
 int print_forever(void *args)
 {
     workloadapi_JWTSource *source = (workloadapi_JWTSource *) args;
@@ -42,6 +20,11 @@ int print_forever(void *args)
                                   .subject = id };
         jwtsvid_SVID *svid
             = workloadapi_JWTSource_GetJWTSVID(source, &params, &err);
+
+        util_string_t_Free(audience);
+        util_string_t_Free(audience2);
+        util_string_t_Free(audience3);
+
         if(svid) {
             printf("SVID: %s%s\n", svid->id.td.name, svid->id.path);
             printf(" Path: %s\n", svid->id.path);
@@ -57,7 +40,7 @@ int print_forever(void *args)
                 free(value);
             }
             printf(" ]\n");
-            print_bundles(source, NULL);
+            jwtbundle_Set_Print(source->bundles);
             jwtbundle_Source *src = jwtbundle_SourceFromSet(
                 jwtbundle_Set_Clone(source->bundles));
             jwtsvid_SVID *svid2 = jwtsvid_ParseAndValidate(
@@ -102,7 +85,7 @@ int main()
     workloadapi_JWTSource *source = workloadapi_NewJWTSource(NULL, &err);
 
     if(err) {
-        printf("ERROR %d\n",err);
+        printf("ERROR %d\n", err);
         return err;
     }
     printf("\n\n\nPress ENTER to stop.\n\n\n");
@@ -110,7 +93,7 @@ int main()
     err = workloadapi_JWTSource_Start(source);
 
     if(err) {
-        printf("ERROR %d\n",err);
+        printf("ERROR %d\n", err);
         return err;
     }
 
@@ -123,12 +106,12 @@ int main()
     printf("Stopping.\n");
 
     err = workloadapi_JWTSource_Close(source);
-    
-    if(err != 1) { //error 1 == client closed properly
-        printf("ERROR %d\n",err);
+
+    if(err != 1) { // error 1 == client closed properly
+        printf("ERROR %d\n", err);
         return err;
     }
-    
+
     thrd_join(thread, NULL);
     workloadapi_JWTSource_Free(source);
     return 0;
