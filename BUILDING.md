@@ -1,4 +1,3 @@
-
 # Building
 
 ## Docker Building(recommended)
@@ -12,6 +11,8 @@
 You can build the docker image from source with the above command line:
 
 ```
+git clone git@github.com:HewlettPackard/c-spiffe.git
+cd c-spiffe
 docker build -f docker/grpc.Dockerfile --build-arg GPRC_VERSION=1.34.0 --build-arg NUM_JOBS=8 --tag grpc-build:1.34.0 .
 ```
 
