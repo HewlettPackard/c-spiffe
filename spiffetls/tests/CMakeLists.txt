@@ -1,6 +1,8 @@
 # Minimum CMake required
 cmake_minimum_required(VERSION 3.13)
 
+file(COPY ../tests/resources/ DESTINATION ${PROJECT_BINARY_DIR}/spiffetls/tests/resources/)
+
 add_executable(check_mode check_mode.c)
 
 target_link_libraries(check_mode spiffetls ${CHECK_LIBRARIES}
