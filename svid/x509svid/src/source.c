@@ -29,7 +29,8 @@ x509svid_Source *x509svid_SourceFromSource(workloadapi_X509Source *source)
 x509svid_SVID *x509svid_Source_GetX509SVID(x509svid_Source *source, err_t *err)
 {
     x509svid_SVID *svid = NULL;
-
+    *err = NO_ERROR;
+    
     if(source) {
         if(source->type == X509SVID_SVID) {
             svid = source->source.svid;
