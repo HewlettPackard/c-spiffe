@@ -1,0 +1,13 @@
+<map id="workloadapi_JWTSource" name="workloadapi_JWTSource">
+<area shape="rect" id="node1" title=" " alt="" coords="277,556,444,583"/>
+<area shape="rect" id="node2" href="$structworkloadapi__JWTSourceConfig.html" title=" " alt="" coords="37,467,239,493"/>
+<area shape="rect" id="node3" href="$structworkloadapi__JWTWatcherConfig.html" title=" " alt="" coords="5,377,215,404"/>
+<area shape="rect" id="node4" href="$structworkloadapi__Client.html" title=" " alt="" coords="171,288,302,315"/>
+<area shape="rect" id="node5" href="$structworkloadapi__JWTWatcher.html" title=" " alt="" coords="274,467,447,493"/>
+<area shape="rect" id="node6" href="$structworkloadapi__JWTCallback.html" title=" " alt="" coords="323,377,497,404"/>
+<area shape="rect" id="node7" href="$structjwtbundle__Set.html" title=" " alt="" coords="451,288,555,315"/>
+<area shape="rect" id="node8" href="$structmap__string__jwtbundle__Bundle.html" title=" " alt="" coords="429,184,577,225"/>
+<area shape="rect" id="node9" href="$structjwtbundle__Bundle.html" title=" " alt="" coords="441,95,565,121"/>
+<area shape="rect" id="node10" href="$structspiffeid__TrustDomain.html" title=" " alt="" coords="343,5,487,32"/>
+<area shape="rect" id="node11" href="$structmap__string__EVP__PKEY.html" title=" " alt="" coords="512,5,673,32"/>
+</map>

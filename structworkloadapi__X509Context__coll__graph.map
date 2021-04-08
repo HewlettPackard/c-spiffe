@@ -1,0 +1,9 @@
+<map id="workloadapi_X509Context" name="workloadapi_X509Context">
+<area shape="rect" id="node1" title=" " alt="" coords="59,389,231,416"/>
+<area shape="rect" id="node2" href="$structx509bundle__Set.html" title=" " alt="" coords="33,300,147,327"/>
+<area shape="rect" id="node3" href="$structmap__string__x509bundle__Bundle.html" title=" " alt="" coords="5,184,164,225"/>
+<area shape="rect" id="node4" href="$structx509bundle__Bundle.html" title=" " alt="" coords="5,95,140,121"/>
+<area shape="rect" id="node5" href="$structspiffeid__TrustDomain.html" title=" " alt="" coords="67,5,211,32"/>
+<area shape="rect" id="node7" href="$structspiffeid__ID.html" title=" " alt="" coords="165,95,247,121"/>
+<area shape="rect" id="node6" href="$structx509svid__SVID.html" title=" " alt="" coords="145,249,256,276"/>
+</map>
