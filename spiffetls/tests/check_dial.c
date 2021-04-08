@@ -19,22 +19,22 @@ START_TEST(test_spiffetls_DialWithMode)
 
     spiffetls_dialConfig config = { .base_TLS_conf = NULL, .dialer_fd = 0 };
 
-    /// TODO: set up TLS server
-    SSL *conn = spiffetls_DialWithMode((in_port_t) 4433, /*127.0.0.1*/(in_addr_t) 0x7F000001, mode,
-                                       &config, &err);
+    SSL *conn = spiffetls_DialWithMode((in_port_t) 4433,
+                                       /*127.0.0.1*/ (in_addr_t) 0x7F000001,
+                                       mode, &config, &err);
 
-    ck_assert_uint_ne(err, NO_ERROR);
-    ck_assert_ptr_eq(conn, NULL);
+    ck_assert_uint_eq(err, NO_ERROR);
+    ck_assert_ptr_ne(conn, NULL);
 
     spiffeid_TrustDomain_Free(&td);
     tlsconfig_Authorizer_Free(authorizer);
     x509bundle_Source_Free(bundle_src);
     spiffetls_DialMode_Free(mode);
 
-    // const int fd = SSL_get_fd(conn);
-    // SSL_shutdown(conn);
-    // SSL_free(conn);
-    // close(fd);
+    const int fd = SSL_get_fd(conn);
+    SSL_shutdown(conn);
+    SSL_free(conn);
+    close(fd);
 }
 END_TEST
 
@@ -54,6 +54,9 @@ int main(void)
 {
     Suite *s = dial_suite();
     SRunner *sr = srunner_create(s);
+
+    system("./tls_server &");
+    sleep(1);
 
     srunner_run_all(sr, CK_NORMAL);
     const int number_failed = srunner_ntests_failed(sr);
