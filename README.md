@@ -246,6 +246,11 @@ make lcov
 The coverage reports will be into `Coverage` folder. In the case of `lcov`, you
 can see into the browser, opening the `index.html` file on the folder above.
 
+# Generate docs
+``` 
+doxygen docs/Doxyfile
+```
+
 # Continuous Integration (CI)
 
 ## Operation
