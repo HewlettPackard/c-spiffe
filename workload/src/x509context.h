@@ -8,8 +8,11 @@
 extern "C" {
 #endif
 
+/** workloadapi_X509Context conveys X.509 materials from the Workload API.
+ * */
 typedef struct {
     x509svid_SVID **svids;
+    /* Bundles is a set of X.509 bundles. */
     x509bundle_Set *bundles;
 
 } workloadapi_X509Context;
