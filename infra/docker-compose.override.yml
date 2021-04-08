@@ -9,5 +9,3 @@ services:
   spire-server:
   workload:
   tests:
-    # volumes:
-    #   - ../integration_test/:/mnt/c-spiffe/integration_test/
