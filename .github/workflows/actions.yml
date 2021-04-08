@@ -53,4 +53,14 @@ jobs:
         shell: bash
         run: cd build && target=60.9;functions=`awk '{print substr($2, 6, 4)}' coverage | tail -1`;if { echo $functions; echo $target ; } | sort -hu -c 2>/dev/null; then echo "This coverage is less than threshold"; exit 1; fi
 
+      - name: Generate documentation
+        uses: mattnotmitt/doxygen-action@v1
+        with:
+            working-directory: '.'
+            doxyfile-path: 'docs/Doxyfile'
 
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/html
