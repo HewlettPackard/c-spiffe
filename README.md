@@ -8,9 +8,9 @@ C extension for Spiffe platform.
 
 ## Introduction
 
-[SPIFFE](https://spiffe.io/) stands for Seurity Identity Framewor for Evertyone and is a set for securely identifying system in dynamic and heteregeous environment. Please refer to https://spiffe.io/docs/latest/spiffe-about/overview/ for more information.  
-C-spiffe is a extension for Spiffe that allows any [workload](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#workload) written C, C++ or even any language witch can import a .so library, access [Workload API](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-workload-api) and establish a mTLS connection.  
-The image above shows a a example, where a C/C++ Workload imports the c-spiffe library in order to fetch a [SVID](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-verifiable-identity-document-svid) and use it to establish a mTLS connection with another Workload, that can be implemented using another language, following Spiffe specification.
+[SPIFFE](https://spiffe.io/) stands for Security Identity Framework for Everyone and is a set for securely identifying system in dynamic and heteregeneous environment. Please refer to https://spiffe.io/docs/latest/spiffe-about/overview/ for more information.  
+C-spiffe is an extension for Spiffe that allows any [workload](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#workload) written C, C++ or  any language that supports loading a .so library, access [Workload API](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-workload-api) and establish a mTLS connection with other workloads.  
+The image above shows an example, where a C/C++ Workload imports the c-spiffe library in order to fetch a [SVID](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-verifiable-identity-document-svid) and use it to establish a mTLS connection with another Workload, which can be implemented in another language, provided it follows the SPIFFE standard.
 
 ![Alt text](img/cspiffe_example.png "C-spiffe usage example")
 

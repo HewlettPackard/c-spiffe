@@ -49,6 +49,15 @@ void jwtbundle_Set_Add(jwtbundle_Set *s, jwtbundle_Bundle *bundle);
 void jwtbundle_Set_Remove(jwtbundle_Set *s, const spiffeid_TrustDomain td);
 
 /**
+ * Copies the content of a bundle set.
+ *
+ * \param set [in] JWT Bundle Set object pointer.
+ * \returns a copy of the set. Must be freed using jwtbundle_Set_Free
+ * function.
+ */
+jwtbundle_Set *jwtbundle_Set_Clone(jwtbundle_Set *set);
+
+/**
  * Checks if a bundle belongs to the set.
  *
  * \param set [in] Set of JWT bundles object pointer.
@@ -87,6 +96,39 @@ jwtbundle_Bundle **jwtbundle_Set_Bundles(jwtbundle_Set *s);
  * \returns The size of the set as an unsigned 32 bits integer.
  */
 uint32_t jwtbundle_Set_Len(jwtbundle_Set *s);
+
+/**
+ * Prints bundle set to BIO object, including public keys.
+ *
+ * \param set [in] JWT Bundle Set object pointer to print.
+ * \param offset [in] Integer. How many spaces to append before each line.
+ * \param out [in] BIO object pointer.
+ */
+err_t jwtbundle_Set_print_BIO(jwtbundle_Set *set, int offset, BIO *out);
+
+/**
+ * Prints bundle set to file, including public keys.
+ *
+ * \param set [in] JWT Bundle Set object pointer to print.
+ * \param offset [in] Integer. How many spaces to append before each line.
+ * \param fd [in] file descriptor.
+ */
+err_t jwtbundle_Set_print_fd(jwtbundle_Set *set, int offset, FILE *fd);
+
+/**
+ * Prints bundle set to stdout, including public keys.
+ *
+ * \param bundle [in] JWT Bundle Set object pointer to print.
+ * \param offset [in] Integer. How many spaces to append before each line.
+ */
+err_t jwtbundle_Set_print_stdout(jwtbundle_Set *b, int offset);
+
+/**
+ * Prints bundle set to stdout, including public keys.
+ *
+ * \param set [in] JWT Bundle Set object pointer to print.
+ */
+err_t jwtbundle_Set_Print(jwtbundle_Set *set);
 
 /**
  * Gets bundle for a given Trust Domain object.

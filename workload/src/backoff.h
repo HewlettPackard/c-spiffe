@@ -7,6 +7,8 @@
 extern "C" {
 #endif
 
+/** backoff defines an linear backoff policy.
+ * */
 typedef struct {
     /** initial wait time for backoff */
     struct timespec initial;
