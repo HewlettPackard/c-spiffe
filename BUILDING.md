@@ -9,7 +9,7 @@
 
 ###  Build Docker Image
 
-You can build the docker image from source with the above command line:
+You can build the docker image from source with the following command line:
 
 ```
 docker build -f docker/grpc.Dockerfile --build-arg GPRC_VERSION=1.34.0 --build-arg NUM_JOBS=8 --tag grpc-build:1.34.0 .
@@ -17,7 +17,7 @@ docker build -f docker/grpc.Dockerfile --build-arg GPRC_VERSION=1.34.0 --build-a
 
 ### Pull our Docker image
 
-Or you can use a pre build image:
+Or you can use a pre-built image:
 
 ````
 docker pull willallves/grpc-build:1.34.0
@@ -51,7 +51,7 @@ cmake ..
 make
 make test
 ```
-After running `make test`, you will find the test files into `Testing` folder.
+After running `make test`, you will find the test files in the `Testing` folder.
 
 ## Local building
 
@@ -72,9 +72,9 @@ After running `make test`, you will find the test files into `Testing` folder.
 * libgtest-dev
 * libgmock-dev
 
-### Compile GRPC
+### Compile gRPC
 
-In order to create a pure C lib, supporting GRPC, wich is a C++ lib, it is necessarty to compile GRPC code together with c-spiffe code. The following steps can be used for compiling GCC:
+In order to create a pure C lib, supporting gRPC, which is a C++ lib, it is necessarty to compile gRPC code together with c-spiffe code. The following steps can be used for compiling gRPC:
 
 * Clone GRPC source
 
@@ -95,7 +95,7 @@ RUN cd /tmp/grpc/cmake/build && make -j${NUM_JOBS} && make install
 ```
 ### Compile C-Spiffe library
 
-Once you have all the requirements, building is straightfoward with `CMake`
+Once you meet all the requirements, building is straightforward with `CMake`
 
 ```
 mkdir build && cd build
@@ -113,13 +113,13 @@ make install
 
 ## Code Coverage Support
 
-This implements Code Coverage Reports using either using either `gcov` or `lcov`.
-If you want to check them, you should run the following command after `make test`:
+This project generates Code Coverage Reports using either using `gcov` and `lcov`.
+If you want to generate cover reports, you should run the following command after `make test`:
 
 ```
 make gcov
 make lcov
 ```
 
-The coverage reports will be into `Coverage` folder. In the case of `lcov`, you
-can see into the browser, opening the `index.html` file on the folder above.
+The coverage reports will be written to the `Coverage` folder. In the case of `lcov`, you
+can see it opening the `index.html` file on the folder above in your browser.
