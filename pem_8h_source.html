@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE: internal/pemutil/src/pem.h Source File</title>
+<title>C-SPIFFE Library: internal/pemutil/src/pem.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,8 +21,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">C-SPIFFE
+   <div id="projectname">C-SPIFFE Library
+   &#160;<span id="projectnumber">1.0</span>
    </div>
+   <div id="projectbrief">C-SPIFFE Library for C extension for Spiffe platform.</div>
   </td>
  </tr>
  </tbody>
@@ -69,10 +71,10 @@ $(function() {
 <div class="title">pem.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef INCLUDE_INTERNAL_PEMUTIL_PEM_H</span></div>
+<a href="pem_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef INCLUDE_INTERNAL_PEMUTIL_PEM_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define INCLUDE_INTERNAL_PEMUTIL_PEM_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;utils/src/util.h&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="utils_2src_2util_8h.html">utils/src/util.h</a>&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;openssl/evp.h&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;openssl/pem.h&gt;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;openssl/x509.h&gt;</span></div>
@@ -82,19 +84,26 @@ $(function() {
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;X509 **pemutil_ParseCertificates(<span class="keyword">const</span> <span class="keywordtype">byte</span> *bytes, err_t *err);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;X509 **<a class="code" href="pem_8h.html#a3ff4b626d71e8c8c6d0a49ac4e3d995d">pemutil_ParseCertificates</a>(<span class="keyword">const</span> <span class="keywordtype">byte</span> *bytes, <a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;EVP_PKEY *pemutil_ParsePrivateKey(<span class="keyword">const</span> <span class="keywordtype">byte</span> *bytes, err_t *err);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;EVP_PKEY *<a class="code" href="pem_8h.html#aa8ab9d05261ee69342f113549927d324">pemutil_ParsePrivateKey</a>(<span class="keyword">const</span> <span class="keywordtype">byte</span> *bytes, <a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err);</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keywordtype">byte</span> *pemutil_EncodePrivateKey(EVP_PKEY *pkey, <span class="keywordtype">int</span> *bytes_len, err_t *err);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keywordtype">byte</span> *<a class="code" href="pem_8h.html#a9d2222f6adc3b01794a6db8e6422ddf2">pemutil_EncodePrivateKey</a>(EVP_PKEY *pkey, <span class="keywordtype">int</span> *bytes_len, <a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err);</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">byte</span> **pemutil_EncodeCertificates(X509 **certs);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">byte</span> **<a class="code" href="pem_8h.html#a59082b75fdf5f16fb393d5adf876df5a">pemutil_EncodeCertificates</a>(X509 **<a class="code" href="check__x509source_8c.html#a86cc65f14198e068d60b43bcf233a074">certs</a>);</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="acheck__x509source_8c_html_a86cc65f14198e068d60b43bcf233a074"><div class="ttname"><a href="check__x509source_8c.html#a86cc65f14198e068d60b43bcf233a074">certs</a></div><div class="ttdeci">_svid1 certs</div><div class="ttdef"><b>Definition:</b> check_x509source.c:82</div></div>
+<div class="ttc" id="apem_8h_html_a3ff4b626d71e8c8c6d0a49ac4e3d995d"><div class="ttname"><a href="pem_8h.html#a3ff4b626d71e8c8c6d0a49ac4e3d995d">pemutil_ParseCertificates</a></div><div class="ttdeci">X509 ** pemutil_ParseCertificates(const byte *bytes, err_t *err)</div><div class="ttdef"><b>Definition:</b> pem.c:107</div></div>
+<div class="ttc" id="apem_8h_html_a59082b75fdf5f16fb393d5adf876df5a"><div class="ttname"><a href="pem_8h.html#a59082b75fdf5f16fb393d5adf876df5a">pemutil_EncodeCertificates</a></div><div class="ttdeci">byte ** pemutil_EncodeCertificates(X509 **certs)</div><div class="ttdef"><b>Definition:</b> pem.c:183</div></div>
+<div class="ttc" id="apem_8h_html_a9d2222f6adc3b01794a6db8e6422ddf2"><div class="ttname"><a href="pem_8h.html#a9d2222f6adc3b01794a6db8e6422ddf2">pemutil_EncodePrivateKey</a></div><div class="ttdeci">byte * pemutil_EncodePrivateKey(EVP_PKEY *pkey, int *bytes_len, err_t *err)</div><div class="ttdef"><b>Definition:</b> pem.c:166</div></div>
+<div class="ttc" id="apem_8h_html_aa8ab9d05261ee69342f113549927d324"><div class="ttname"><a href="pem_8h.html#aa8ab9d05261ee69342f113549927d324">pemutil_ParsePrivateKey</a></div><div class="ttdeci">EVP_PKEY * pemutil_ParsePrivateKey(const byte *bytes, err_t *err)</div><div class="ttdef"><b>Definition:</b> pem.c:132</div></div>
+<div class="ttc" id="autils_2src_2util_8h_html"><div class="ttname"><a href="utils_2src_2util_8h.html">util.h</a></div></div>
+<div class="ttc" id="autils_2src_2util_8h_html_a5362d878a3b55147d5cfd29820512556"><div class="ttname"><a href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a></div><div class="ttdeci">enum enum_err_t err_t</div><div class="ttdef"><b>Definition:</b> util.h:42</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

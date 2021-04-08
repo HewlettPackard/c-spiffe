@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE: workloadapi_JWTSource Struct Reference</title>
+<title>C-SPIFFE Library: workloadapi_JWTSource Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,8 +21,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">C-SPIFFE
+   <div id="projectname">C-SPIFFE Library
+   &#160;<span id="projectnumber">1.0</span>
    </div>
+   <div id="projectbrief">C-SPIFFE Library for C extension for Spiffe platform.</div>
   </td>
  </tr>
  </tbody>
@@ -68,6 +70,8 @@ $(function() {
 <div class="title">workloadapi_JWTSource Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="jwtsource_8h_source.html">jwtsource.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for workloadapi_JWTSource:</div>
 <div class="dyncontent">
@@ -89,25 +93,106 @@ Collaboration diagram for workloadapi_JWTSource:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a927be10583dcc22e9e34376e06826cf9"><td class="memItemLeft" align="right" valign="top"><a id="a927be10583dcc22e9e34376e06826cf9"></a>
-<a class="el" href="structworkloadapi__JWTWatcher.html">workloadapi_JWTWatcher</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>watcher</b></td></tr>
+<tr class="memitem:a927be10583dcc22e9e34376e06826cf9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structworkloadapi__JWTWatcher.html">workloadapi_JWTWatcher</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structworkloadapi__JWTSource.html#a927be10583dcc22e9e34376e06826cf9">watcher</a></td></tr>
 <tr class="separator:a927be10583dcc22e9e34376e06826cf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15c30cfdfcc549ce33b3f16566f05db0"><td class="memItemLeft" align="right" valign="top"><a id="a15c30cfdfcc549ce33b3f16566f05db0"></a>
-<a class="el" href="structworkloadapi__JWTSourceConfig.html">workloadapi_JWTSourceConfig</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>config</b></td></tr>
+<tr class="memitem:a15c30cfdfcc549ce33b3f16566f05db0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structworkloadapi__JWTSourceConfig.html">workloadapi_JWTSourceConfig</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structworkloadapi__JWTSource.html#a15c30cfdfcc549ce33b3f16566f05db0">config</a></td></tr>
 <tr class="separator:a15c30cfdfcc549ce33b3f16566f05db0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae141823ae7ac1ba15461602807462c7e"><td class="memItemLeft" align="right" valign="top"><a id="ae141823ae7ac1ba15461602807462c7e"></a>
-mtx_t&#160;</td><td class="memItemRight" valign="bottom"><b>mtx</b></td></tr>
+<tr class="memitem:ae141823ae7ac1ba15461602807462c7e"><td class="memItemLeft" align="right" valign="top">mtx_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structworkloadapi__JWTSource.html#ae141823ae7ac1ba15461602807462c7e">mtx</a></td></tr>
 <tr class="separator:ae141823ae7ac1ba15461602807462c7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49f13bd799adfcc0a4026a2c1a1a7983"><td class="memItemLeft" align="right" valign="top"><a id="a49f13bd799adfcc0a4026a2c1a1a7983"></a>
-mtx_t&#160;</td><td class="memItemRight" valign="bottom"><b>closed_mutex</b></td></tr>
+<tr class="memitem:a49f13bd799adfcc0a4026a2c1a1a7983"><td class="memItemLeft" align="right" valign="top">mtx_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structworkloadapi__JWTSource.html#a49f13bd799adfcc0a4026a2c1a1a7983">closed_mutex</a></td></tr>
 <tr class="separator:a49f13bd799adfcc0a4026a2c1a1a7983"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa611e203536bc007769659bede8a4cb1"><td class="memItemLeft" align="right" valign="top"><a id="aa611e203536bc007769659bede8a4cb1"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>closed</b></td></tr>
+<tr class="memitem:aa611e203536bc007769659bede8a4cb1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structworkloadapi__JWTSource.html#aa611e203536bc007769659bede8a4cb1">closed</a></td></tr>
 <tr class="separator:aa611e203536bc007769659bede8a4cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a838b80da275fb6f4c030e49223265a52"><td class="memItemLeft" align="right" valign="top"><a id="a838b80da275fb6f4c030e49223265a52"></a>
-<a class="el" href="structjwtbundle__Set.html">jwtbundle_Set</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>bundles</b></td></tr>
+<tr class="memitem:a838b80da275fb6f4c030e49223265a52"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structjwtbundle__Set.html">jwtbundle_Set</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structworkloadapi__JWTSource.html#a838b80da275fb6f4c030e49223265a52">bundles</a></td></tr>
 <tr class="separator:a838b80da275fb6f4c030e49223265a52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p><a class="el" href="structworkloadapi__JWTSource.html">workloadapi_JWTSource</a> is a source of JWT-SVID and JWT bundles maintained via the Workload API </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="a838b80da275fb6f4c030e49223265a52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a838b80da275fb6f4c030e49223265a52">&#9670;&nbsp;</a></span>bundles</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structjwtbundle__Set.html">jwtbundle_Set</a>* workloadapi_JWTSource::bundles</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa611e203536bc007769659bede8a4cb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa611e203536bc007769659bede8a4cb1">&#9670;&nbsp;</a></span>closed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool workloadapi_JWTSource::closed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a49f13bd799adfcc0a4026a2c1a1a7983"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49f13bd799adfcc0a4026a2c1a1a7983">&#9670;&nbsp;</a></span>closed_mutex</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">mtx_t workloadapi_JWTSource::closed_mutex</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a15c30cfdfcc549ce33b3f16566f05db0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15c30cfdfcc549ce33b3f16566f05db0">&#9670;&nbsp;</a></span>config</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structworkloadapi__JWTSourceConfig.html">workloadapi_JWTSourceConfig</a>* workloadapi_JWTSource::config</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae141823ae7ac1ba15461602807462c7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae141823ae7ac1ba15461602807462c7e">&#9670;&nbsp;</a></span>mtx</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">mtx_t workloadapi_JWTSource::mtx</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a927be10583dcc22e9e34376e06826cf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a927be10583dcc22e9e34376e06826cf9">&#9670;&nbsp;</a></span>watcher</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structworkloadapi__JWTWatcher.html">workloadapi_JWTWatcher</a>* workloadapi_JWTSource::watcher</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>workload/src/<a class="el" href="jwtsource_8h_source.html">jwtsource.h</a></li>
 </ul>

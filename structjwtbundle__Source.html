@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE: jwtbundle_Source Struct Reference</title>
+<title>C-SPIFFE Library: jwtbundle_Source Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,8 +21,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">C-SPIFFE
+   <div id="projectname">C-SPIFFE Library
+   &#160;<span id="projectnumber">1.0</span>
    </div>
+   <div id="projectbrief">C-SPIFFE Library for C extension for Spiffe platform.</div>
   </td>
  </tr>
  </tbody>
@@ -87,30 +89,102 @@ Collaboration diagram for jwtbundle_Source:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a4eb7f17219c8d39a3a3e4e332cc8d587"><td class="memItemLeft" align="right" valign="top"><a id="a4eb7f17219c8d39a3a3e4e332cc8d587"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>jwtbundle_Source_Cardinality</b> { <b>JWTBUNDLE_BUNDLE</b>
-, <b>JWTBUNDLE_SET</b>
+<tr class="memitem:a4eb7f17219c8d39a3a3e4e332cc8d587"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjwtbundle__Source.html#a4eb7f17219c8d39a3a3e4e332cc8d587">jwtbundle_Source_Cardinality</a> { <a class="el" href="structjwtbundle__Source.html#a4eb7f17219c8d39a3a3e4e332cc8d587a7273e6b8e9659f437924f4810b1b5587">JWTBUNDLE_BUNDLE</a>
+, <a class="el" href="structjwtbundle__Source.html#a4eb7f17219c8d39a3a3e4e332cc8d587aab4b97eac74b8ebfdd3edee136af95e5">JWTBUNDLE_SET</a>
  }</td></tr>
 <tr class="separator:a4eb7f17219c8d39a3a3e4e332cc8d587"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a0f662fde89fef97cdcde4a886a6ae0f3"><td class="memItemLeft" align="right" valign="top"><a id="a0f662fde89fef97cdcde4a886a6ae0f3"></a>
-enum jwtbundle_Source::jwtbundle_Source_Cardinality&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
+<tr class="memitem:a0f662fde89fef97cdcde4a886a6ae0f3"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="structjwtbundle__Source.html#a4eb7f17219c8d39a3a3e4e332cc8d587">jwtbundle_Source::jwtbundle_Source_Cardinality</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjwtbundle__Source.html#a0f662fde89fef97cdcde4a886a6ae0f3">type</a></td></tr>
 <tr class="separator:a0f662fde89fef97cdcde4a886a6ae0f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3627b5e2226757acc2a6d66bfabe33dc"><td class="memItemLeft" ><a id="a3627b5e2226757acc2a6d66bfabe33dc"></a>
-union {</td></tr>
-<tr class="memitem:a2b577d5494d0668a524b455901e69e46"><td class="memItemLeft" >
-&#160;&#160;&#160;<a class="el" href="structjwtbundle__Bundle.html">jwtbundle_Bundle</a> *&#160;&#160;&#160;<b>bundle</b></td></tr>
+<tr class="memitem:a3627b5e2226757acc2a6d66bfabe33dc"><td class="memItemLeft" >union {</td></tr>
+<tr class="memitem:a2b577d5494d0668a524b455901e69e46"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="structjwtbundle__Bundle.html">jwtbundle_Bundle</a> *&#160;&#160;&#160;<a class="el" href="structjwtbundle__Source.html#a8d59428ed4f39ebcaad92bf9ae214337">bundle</a></td></tr>
 <tr class="separator:a2b577d5494d0668a524b455901e69e46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a898c61ef16879a811664e419635c4fbf"><td class="memItemLeft" >
-&#160;&#160;&#160;<a class="el" href="structjwtbundle__Set.html">jwtbundle_Set</a> *&#160;&#160;&#160;<b>set</b></td></tr>
+<tr class="memitem:a898c61ef16879a811664e419635c4fbf"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="structjwtbundle__Set.html">jwtbundle_Set</a> *&#160;&#160;&#160;<a class="el" href="structjwtbundle__Source.html#a60d5fb13aea130f13a9eafb90a134731">set</a></td></tr>
 <tr class="separator:a898c61ef16879a811664e419635c4fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3627b5e2226757acc2a6d66bfabe33dc"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><b>source</b></td></tr>
+<tr class="memitem:a3627b5e2226757acc2a6d66bfabe33dc"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjwtbundle__Source.html#a3627b5e2226757acc2a6d66bfabe33dc">source</a></td></tr>
 <tr class="separator:a3627b5e2226757acc2a6d66bfabe33dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Source represents a source of JWT bundles keyed by trust domain. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a4eb7f17219c8d39a3a3e4e332cc8d587"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4eb7f17219c8d39a3a3e4e332cc8d587">&#9670;&nbsp;</a></span>jwtbundle_Source_Cardinality</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="structjwtbundle__Source.html#a4eb7f17219c8d39a3a3e4e332cc8d587">jwtbundle_Source::jwtbundle_Source_Cardinality</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a4eb7f17219c8d39a3a3e4e332cc8d587a7273e6b8e9659f437924f4810b1b5587"></a>JWTBUNDLE_BUNDLE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4eb7f17219c8d39a3a3e4e332cc8d587aab4b97eac74b8ebfdd3edee136af95e5"></a>JWTBUNDLE_SET&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a8d59428ed4f39ebcaad92bf9ae214337"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d59428ed4f39ebcaad92bf9ae214337">&#9670;&nbsp;</a></span>bundle</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structjwtbundle__Bundle.html">jwtbundle_Bundle</a>* jwtbundle_Source::bundle</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a60d5fb13aea130f13a9eafb90a134731"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60d5fb13aea130f13a9eafb90a134731">&#9670;&nbsp;</a></span>set</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structjwtbundle__Set.html">jwtbundle_Set</a>* jwtbundle_Source::set</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3627b5e2226757acc2a6d66bfabe33dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3627b5e2226757acc2a6d66bfabe33dc">&#9670;&nbsp;</a></span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">union { ... }  jwtbundle_Source::source</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0f662fde89fef97cdcde4a886a6ae0f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f662fde89fef97cdcde4a886a6ae0f3">&#9670;&nbsp;</a></span>type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="structjwtbundle__Source.html#a4eb7f17219c8d39a3a3e4e332cc8d587">jwtbundle_Source::jwtbundle_Source_Cardinality</a> jwtbundle_Source::type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>bundle/jwtbundle/src/<a class="el" href="jwtbundle_2src_2source_8h_source.html">source.h</a></li>
 </ul>
 </div><!-- contents -->

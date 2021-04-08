@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE: x509bundle_Source Struct Reference</title>
+<title>C-SPIFFE Library: x509bundle_Source Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,8 +21,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">C-SPIFFE
+   <div id="projectname">C-SPIFFE Library
+   &#160;<span id="projectnumber">1.0</span>
    </div>
+   <div id="projectbrief">C-SPIFFE Library for C extension for Spiffe platform.</div>
   </td>
  </tr>
  </tbody>
@@ -86,30 +88,102 @@ Collaboration diagram for x509bundle_Source:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:aaa1bac005ce96754442b285b5bc02298"><td class="memItemLeft" align="right" valign="top"><a id="aaa1bac005ce96754442b285b5bc02298"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>x509bundle_Source_Cardinality</b> { <b>X509BUNDLE_BUNDLE</b>
-, <b>X509BUNDLE_SET</b>
+<tr class="memitem:aaa1bac005ce96754442b285b5bc02298"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structx509bundle__Source.html#aaa1bac005ce96754442b285b5bc02298">x509bundle_Source_Cardinality</a> { <a class="el" href="structx509bundle__Source.html#aaa1bac005ce96754442b285b5bc02298ab5e923c4accb38aebb949e3a2af9635b">X509BUNDLE_BUNDLE</a>
+, <a class="el" href="structx509bundle__Source.html#aaa1bac005ce96754442b285b5bc02298ad5893f792281271effb4e00f22a9878e">X509BUNDLE_SET</a>
  }</td></tr>
 <tr class="separator:aaa1bac005ce96754442b285b5bc02298"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a44a3338bf8080a8b27a5ea9af61a6b5f"><td class="memItemLeft" align="right" valign="top"><a id="a44a3338bf8080a8b27a5ea9af61a6b5f"></a>
-enum x509bundle_Source::x509bundle_Source_Cardinality&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
+<tr class="memitem:a44a3338bf8080a8b27a5ea9af61a6b5f"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="structx509bundle__Source.html#aaa1bac005ce96754442b285b5bc02298">x509bundle_Source::x509bundle_Source_Cardinality</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structx509bundle__Source.html#a44a3338bf8080a8b27a5ea9af61a6b5f">type</a></td></tr>
 <tr class="separator:a44a3338bf8080a8b27a5ea9af61a6b5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f72601a05dabf004b116d7e8c34c93f"><td class="memItemLeft" ><a id="a7f72601a05dabf004b116d7e8c34c93f"></a>
-union {</td></tr>
-<tr class="memitem:a51b8f38ee48151c1ebfdb0b1655a2569"><td class="memItemLeft" >
-&#160;&#160;&#160;<a class="el" href="structx509bundle__Bundle.html">x509bundle_Bundle</a> *&#160;&#160;&#160;<b>bundle</b></td></tr>
+<tr class="memitem:a7f72601a05dabf004b116d7e8c34c93f"><td class="memItemLeft" >union {</td></tr>
+<tr class="memitem:a51b8f38ee48151c1ebfdb0b1655a2569"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="structx509bundle__Bundle.html">x509bundle_Bundle</a> *&#160;&#160;&#160;<a class="el" href="structx509bundle__Source.html#a72c0ef6dba1ce276e6d71070a042c4ed">bundle</a></td></tr>
 <tr class="separator:a51b8f38ee48151c1ebfdb0b1655a2569"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdc8b2c18ab6bf9173e55aad8a975cf3"><td class="memItemLeft" >
-&#160;&#160;&#160;<a class="el" href="structx509bundle__Set.html">x509bundle_Set</a> *&#160;&#160;&#160;<b>set</b></td></tr>
+<tr class="memitem:afdc8b2c18ab6bf9173e55aad8a975cf3"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="structx509bundle__Set.html">x509bundle_Set</a> *&#160;&#160;&#160;<a class="el" href="structx509bundle__Source.html#a7e5e59edd95e9b58aeb933158dbc3e26">set</a></td></tr>
 <tr class="separator:afdc8b2c18ab6bf9173e55aad8a975cf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f72601a05dabf004b116d7e8c34c93f"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><b>source</b></td></tr>
+<tr class="memitem:a7f72601a05dabf004b116d7e8c34c93f"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structx509bundle__Source.html#a7f72601a05dabf004b116d7e8c34c93f">source</a></td></tr>
 <tr class="separator:a7f72601a05dabf004b116d7e8c34c93f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Source represents a source of X.509 bundles keyed by trust domain. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="aaa1bac005ce96754442b285b5bc02298"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa1bac005ce96754442b285b5bc02298">&#9670;&nbsp;</a></span>x509bundle_Source_Cardinality</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="structx509bundle__Source.html#aaa1bac005ce96754442b285b5bc02298">x509bundle_Source::x509bundle_Source_Cardinality</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aaa1bac005ce96754442b285b5bc02298ab5e923c4accb38aebb949e3a2af9635b"></a>X509BUNDLE_BUNDLE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aaa1bac005ce96754442b285b5bc02298ad5893f792281271effb4e00f22a9878e"></a>X509BUNDLE_SET&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a72c0ef6dba1ce276e6d71070a042c4ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72c0ef6dba1ce276e6d71070a042c4ed">&#9670;&nbsp;</a></span>bundle</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structx509bundle__Bundle.html">x509bundle_Bundle</a>* x509bundle_Source::bundle</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7e5e59edd95e9b58aeb933158dbc3e26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e5e59edd95e9b58aeb933158dbc3e26">&#9670;&nbsp;</a></span>set</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structx509bundle__Set.html">x509bundle_Set</a>* x509bundle_Source::set</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7f72601a05dabf004b116d7e8c34c93f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f72601a05dabf004b116d7e8c34c93f">&#9670;&nbsp;</a></span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">union { ... }  x509bundle_Source::source</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a44a3338bf8080a8b27a5ea9af61a6b5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44a3338bf8080a8b27a5ea9af61a6b5f">&#9670;&nbsp;</a></span>type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="structx509bundle__Source.html#aaa1bac005ce96754442b285b5bc02298">x509bundle_Source::x509bundle_Source_Cardinality</a> x509bundle_Source::type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>bundle/x509bundle/src/<a class="el" href="x509bundle_2src_2source_8h_source.html">source.h</a></li>
 </ul>
 </div><!-- contents -->

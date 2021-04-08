@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE: workload/src/jwtcallback.h Source File</title>
+<title>C-SPIFFE Library: workload/src/jwtcallback.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,8 +21,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">C-SPIFFE
+   <div id="projectname">C-SPIFFE Library
+   &#160;<span id="projectnumber">1.0</span>
    </div>
+   <div id="projectbrief">C-SPIFFE Library for C extension for Spiffe platform.</div>
   </td>
  </tr>
  </tbody>
@@ -69,21 +71,21 @@ $(function() {
 <div class="title">jwtcallback.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef INCLUDE_WORKLOAD_JWTCALLBACK_H</span></div>
+<a href="jwtcallback_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef INCLUDE_WORKLOAD_JWTCALLBACK_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define INCLUDE_WORKLOAD_JWTCALLBACK_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;bundle/jwtbundle/src/set.h&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;svid/jwtsvid/src/svid.h&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="jwtbundle_2src_2set_8h.html">bundle/jwtbundle/src/set.h</a>&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="jwtsvid_2src_2svid_8h.html">svid/jwtsvid/src/svid.h</a>&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">typedef</span> void (*workloadapi_jwtBundleSetFunc_t)(<a class="code" href="structjwtbundle__Set.html">jwtbundle_Set</a> *, <span class="keywordtype">void</span> *);</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="jwtcallback_8h.html#abf50f622a98273f35e2343c569dbfc96">   12</a></span>&#160;<span class="keyword">typedef</span> void (*<a class="code" href="jwtcallback_8h.html#abf50f622a98273f35e2343c569dbfc96">workloadapi_jwtBundleSetFunc_t</a>)(<a class="code" href="structjwtbundle__Set.html">jwtbundle_Set</a> *, <span class="keywordtype">void</span> *);</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="structworkloadapi__JWTCallback.html">   14</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordtype">void</span> *args;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    workloadapi_jwtBundleSetFunc_t func;</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="structworkloadapi__JWTCallback.html#aa7f21e71ecd6885b8606777365feedb2">   15</a></span>&#160;    <span class="keywordtype">void</span> *<a class="code" href="structworkloadapi__JWTCallback.html#aa7f21e71ecd6885b8606777365feedb2">args</a>;</div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="structworkloadapi__JWTCallback.html#a33b7057f2476850f1f9f0c2cd26df7a1">   16</a></span>&#160;    <a class="code" href="jwtcallback_8h.html#abf50f622a98273f35e2343c569dbfc96">workloadapi_jwtBundleSetFunc_t</a> <a class="code" href="structworkloadapi__JWTCallback.html#a33b7057f2476850f1f9f0c2cd26df7a1">func</a>;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;} <a class="code" href="structworkloadapi__JWTCallback.html">workloadapi_JWTCallback</a>;</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
@@ -91,8 +93,13 @@ $(function() {
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// INCLUDE_WORKLOAD_JWTCALLBACK_H</span></div>
+<div class="ttc" id="ajwtbundle_2src_2set_8h_html"><div class="ttname"><a href="jwtbundle_2src_2set_8h.html">set.h</a></div></div>
+<div class="ttc" id="ajwtcallback_8h_html_abf50f622a98273f35e2343c569dbfc96"><div class="ttname"><a href="jwtcallback_8h.html#abf50f622a98273f35e2343c569dbfc96">workloadapi_jwtBundleSetFunc_t</a></div><div class="ttdeci">void(* workloadapi_jwtBundleSetFunc_t)(jwtbundle_Set *, void *)</div><div class="ttdef"><b>Definition:</b> jwtcallback.h:12</div></div>
+<div class="ttc" id="ajwtsvid_2src_2svid_8h_html"><div class="ttname"><a href="jwtsvid_2src_2svid_8h.html">svid.h</a></div></div>
 <div class="ttc" id="astructjwtbundle__Set_html"><div class="ttname"><a href="structjwtbundle__Set.html">jwtbundle_Set</a></div><div class="ttdef"><b>Definition:</b> set.h:18</div></div>
 <div class="ttc" id="astructworkloadapi__JWTCallback_html"><div class="ttname"><a href="structworkloadapi__JWTCallback.html">workloadapi_JWTCallback</a></div><div class="ttdef"><b>Definition:</b> jwtcallback.h:14</div></div>
+<div class="ttc" id="astructworkloadapi__JWTCallback_html_a33b7057f2476850f1f9f0c2cd26df7a1"><div class="ttname"><a href="structworkloadapi__JWTCallback.html#a33b7057f2476850f1f9f0c2cd26df7a1">workloadapi_JWTCallback::func</a></div><div class="ttdeci">workloadapi_jwtBundleSetFunc_t func</div><div class="ttdef"><b>Definition:</b> jwtcallback.h:16</div></div>
+<div class="ttc" id="astructworkloadapi__JWTCallback_html_aa7f21e71ecd6885b8606777365feedb2"><div class="ttname"><a href="structworkloadapi__JWTCallback.html#aa7f21e71ecd6885b8606777365feedb2">workloadapi_JWTCallback::args</a></div><div class="ttdeci">void * args</div><div class="ttdef"><b>Definition:</b> jwtcallback.h:15</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

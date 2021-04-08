@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE: spiffetls/tlsconfig/src/authorizer.h Source File</title>
+<title>C-SPIFFE Library: spiffetls/tlsconfig/src/authorizer.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,8 +21,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">C-SPIFFE
+   <div id="projectname">C-SPIFFE Library
+   &#160;<span id="projectnumber">1.0</span>
    </div>
+   <div id="projectbrief">C-SPIFFE Library for C extension for Spiffe platform.</div>
   </td>
  </tr>
  </tbody>
@@ -69,32 +71,44 @@ $(function() {
 <div class="title">authorizer.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef INCLUDE_SPIFFETLS_TLSCONFIG_AUTHORIZER_H</span></div>
+<a href="authorizer_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef INCLUDE_SPIFFETLS_TLSCONFIG_AUTHORIZER_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define INCLUDE_SPIFFETLS_TLSCONFIG_AUTHORIZER_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;spiffeid/src/match.h&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="match_8h.html">spiffeid/src/match.h</a>&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;openssl/x509.h&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
 <div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="structtlsconfig__Authorizer.html">    7</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> {</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    <a class="code" href="structspiffeid__Matcher.html">spiffeid_Matcher</a> *matcher;</div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="structtlsconfig__Authorizer.html#a830502dc8ef52b5e539c9021fd495fd5">    8</a></span>&#160;    <a class="code" href="structspiffeid__Matcher.html">spiffeid_Matcher</a> *<a class="code" href="structtlsconfig__Authorizer.html#a830502dc8ef52b5e539c9021fd495fd5">matcher</a>;</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="comment">// list of arrays of pointers to X509 certificates</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    X509 ***certifiedChains;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;} <a class="code" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a>;</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="structtlsconfig__Authorizer.html#a2cbf24f406377dfd73249e2721f8c998">   10</a></span>&#160;    X509 ***<a class="code" href="structtlsconfig__Authorizer.html#a2cbf24f406377dfd73249e2721f8c998">certifiedChains</a>;</div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="authorizer_8h.html#a219e391d315e971dc6c7e78f4642cdfe">   11</a></span>&#160;} <a class="code" href="authorizer_8h.html#a219e391d315e971dc6c7e78f4642cdfe">tlsconfig_Authorizer</a>;</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<a class="code" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *tlsconfig_AuthourizeAny(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<a class="code" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *tlsconfig_AuthourizeID(<span class="keyword">const</span> <a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> <span class="keywordtype">id</span>);</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<a class="code" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *tlsconfig_AuthourizeOneOf(<span class="keywordtype">int</span> n_args, ...);</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<a class="code" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *<a class="code" href="authorizer_8h.html#ae0015c3eca538db6245986235a10b2f1">tlsconfig_AuthourizeAny</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<a class="code" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *<a class="code" href="authorizer_8h.html#a3b33a7c67450d25755f8aed2d2778eb8">tlsconfig_AuthourizeID</a>(<span class="keyword">const</span> <a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> <span class="keywordtype">id</span>);</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<a class="code" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *<a class="code" href="authorizer_8h.html#acef523b839c75b55cf581ee90bbafe9c">tlsconfig_AuthourizeOneOf</a>(<span class="keywordtype">int</span> n_args, ...);</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<a class="code" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;tlsconfig_AuthourizeMemberOf(<span class="keyword">const</span> <a class="code" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> td);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<a class="code" href="authorizer_8h.html#a6201c61397adbde48751eb100558e0dc">tlsconfig_AuthourizeMemberOf</a>(<span class="keyword">const</span> <a class="code" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> <a class="code" href="check__jwtsource_8c.html#af961692354eb34b5aacc2fedfbdb664c">td</a>);</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;match_t tlsconfig_ApplyAuthorizer(<a class="code" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *authorizer,</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                                  <span class="keyword">const</span> <a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> <span class="keywordtype">id</span>, <span class="keyword">const</span> X509 ***certs);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<a class="code" href="match_8h.html#aac9aae8352b83f757957069c80236c63">match_t</a> <a class="code" href="authorizer_8h.html#a18e362b57ca35c7244e2ebe4b4b4a15a">tlsconfig_ApplyAuthorizer</a>(<a class="code" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *authorizer,</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                                  <span class="keyword">const</span> <a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> <span class="keywordtype">id</span>, <span class="keyword">const</span> X509 ***<a class="code" href="check__x509source_8c.html#a86cc65f14198e068d60b43bcf233a074">certs</a>);</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aauthorizer_8h_html_a18e362b57ca35c7244e2ebe4b4b4a15a"><div class="ttname"><a href="authorizer_8h.html#a18e362b57ca35c7244e2ebe4b4b4a15a">tlsconfig_ApplyAuthorizer</a></div><div class="ttdeci">match_t tlsconfig_ApplyAuthorizer(tlsconfig_Authorizer *authorizer, const spiffeid_ID id, const X509 ***certs)</div><div class="ttdef"><b>Definition:</b> authorizer.c:3</div></div>
+<div class="ttc" id="aauthorizer_8h_html_a219e391d315e971dc6c7e78f4642cdfe"><div class="ttname"><a href="authorizer_8h.html#a219e391d315e971dc6c7e78f4642cdfe">tlsconfig_Authorizer</a></div><div class="ttdeci">struct tlsconfig_Authorizer tlsconfig_Authorizer</div></div>
+<div class="ttc" id="aauthorizer_8h_html_a3b33a7c67450d25755f8aed2d2778eb8"><div class="ttname"><a href="authorizer_8h.html#a3b33a7c67450d25755f8aed2d2778eb8">tlsconfig_AuthourizeID</a></div><div class="ttdeci">tlsconfig_Authorizer * tlsconfig_AuthourizeID(const spiffeid_ID id)</div><div class="ttdef"><b>Definition:</b> authorizer.c:21</div></div>
+<div class="ttc" id="aauthorizer_8h_html_a6201c61397adbde48751eb100558e0dc"><div class="ttname"><a href="authorizer_8h.html#a6201c61397adbde48751eb100558e0dc">tlsconfig_AuthourizeMemberOf</a></div><div class="ttdeci">tlsconfig_Authorizer * tlsconfig_AuthourizeMemberOf(const spiffeid_TrustDomain td)</div><div class="ttdef"><b>Definition:</b> authorizer.c:45</div></div>
+<div class="ttc" id="aauthorizer_8h_html_acef523b839c75b55cf581ee90bbafe9c"><div class="ttname"><a href="authorizer_8h.html#acef523b839c75b55cf581ee90bbafe9c">tlsconfig_AuthourizeOneOf</a></div><div class="ttdeci">tlsconfig_Authorizer * tlsconfig_AuthourizeOneOf(int n_args,...)</div><div class="ttdef"><b>Definition:</b> authorizer.c:31</div></div>
+<div class="ttc" id="aauthorizer_8h_html_ae0015c3eca538db6245986235a10b2f1"><div class="ttname"><a href="authorizer_8h.html#ae0015c3eca538db6245986235a10b2f1">tlsconfig_AuthourizeAny</a></div><div class="ttdeci">tlsconfig_Authorizer * tlsconfig_AuthourizeAny(void)</div><div class="ttdef"><b>Definition:</b> authorizer.c:11</div></div>
+<div class="ttc" id="acheck__jwtsource_8c_html_af961692354eb34b5aacc2fedfbdb664c"><div class="ttname"><a href="check__jwtsource_8c.html#af961692354eb34b5aacc2fedfbdb664c">td</a></div><div class="ttdeci">spiffeid_TrustDomain td</div><div class="ttdef"><b>Definition:</b> check_jwtsource.c:161</div></div>
+<div class="ttc" id="acheck__x509source_8c_html_a86cc65f14198e068d60b43bcf233a074"><div class="ttname"><a href="check__x509source_8c.html#a86cc65f14198e068d60b43bcf233a074">certs</a></div><div class="ttdeci">_svid1 certs</div><div class="ttdef"><b>Definition:</b> check_x509source.c:82</div></div>
+<div class="ttc" id="amatch_8h_html"><div class="ttname"><a href="match_8h.html">match.h</a></div></div>
+<div class="ttc" id="amatch_8h_html_aac9aae8352b83f757957069c80236c63"><div class="ttname"><a href="match_8h.html#aac9aae8352b83f757957069c80236c63">match_t</a></div><div class="ttdeci">enum enum_match_t match_t</div><div class="ttdef"><b>Definition:</b> match.h:15</div></div>
 <div class="ttc" id="astructspiffeid__ID_html"><div class="ttname"><a href="structspiffeid__ID.html">spiffeid_ID</a></div><div class="ttdef"><b>Definition:</b> id.h:19</div></div>
 <div class="ttc" id="astructspiffeid__Matcher_html"><div class="ttname"><a href="structspiffeid__Matcher.html">spiffeid_Matcher</a></div><div class="ttdef"><b>Definition:</b> match.h:18</div></div>
 <div class="ttc" id="astructspiffeid__TrustDomain_html"><div class="ttname"><a href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a></div><div class="ttdef"><b>Definition:</b> id.h:13</div></div>
 <div class="ttc" id="astructtlsconfig__Authorizer_html"><div class="ttname"><a href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a></div><div class="ttdef"><b>Definition:</b> authorizer.h:7</div></div>
+<div class="ttc" id="astructtlsconfig__Authorizer_html_a2cbf24f406377dfd73249e2721f8c998"><div class="ttname"><a href="structtlsconfig__Authorizer.html#a2cbf24f406377dfd73249e2721f8c998">tlsconfig_Authorizer::certifiedChains</a></div><div class="ttdeci">X509 *** certifiedChains</div><div class="ttdef"><b>Definition:</b> authorizer.h:10</div></div>
+<div class="ttc" id="astructtlsconfig__Authorizer_html_a830502dc8ef52b5e539c9021fd495fd5"><div class="ttname"><a href="structtlsconfig__Authorizer.html#a830502dc8ef52b5e539c9021fd495fd5">tlsconfig_Authorizer::matcher</a></div><div class="ttdeci">spiffeid_Matcher * matcher</div><div class="ttdef"><b>Definition:</b> authorizer.h:8</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

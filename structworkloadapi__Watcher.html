@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE: workloadapi_Watcher Struct Reference</title>
+<title>C-SPIFFE Library: workloadapi_Watcher Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,8 +21,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">C-SPIFFE
+   <div id="projectname">C-SPIFFE Library
+   &#160;<span id="projectnumber">1.0</span>
    </div>
+   <div id="projectbrief">C-SPIFFE Library for C extension for Spiffe platform.</div>
   </td>
  </tr>
  </tbody>
@@ -68,6 +70,8 @@ $(function() {
 <div class="title">workloadapi_Watcher Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="watcher_8h_source.html">watcher.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for workloadapi_Watcher:</div>
 <div class="dyncontent">
@@ -94,27 +98,21 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a4007f3c5d58517b6636cbb71ca77d364"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e2cc6a7194aa05cb0c4a1a0e7e5f36a"><td class="memItemLeft" align="right" valign="top">mtx_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structworkloadapi__Watcher.html#a7e2cc6a7194aa05cb0c4a1a0e7e5f36a">update_mutex</a></td></tr>
 <tr class="separator:a7e2cc6a7194aa05cb0c4a1a0e7e5f36a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b95b2302127b0fc175a85e8bbc7ad9c"><td class="memItemLeft" align="right" valign="top"><a id="a7b95b2302127b0fc175a85e8bbc7ad9c"></a>
-cnd_t&#160;</td><td class="memItemRight" valign="bottom"><b>update_cond</b></td></tr>
+<tr class="memitem:a7b95b2302127b0fc175a85e8bbc7ad9c"><td class="memItemLeft" align="right" valign="top">cnd_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structworkloadapi__Watcher.html#a7b95b2302127b0fc175a85e8bbc7ad9c">update_cond</a></td></tr>
 <tr class="separator:a7b95b2302127b0fc175a85e8bbc7ad9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad234ef5cca0591d3f32fc21313782740"><td class="memItemLeft" align="right" valign="top"><a id="ad234ef5cca0591d3f32fc21313782740"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>updated</b></td></tr>
+<tr class="memitem:ad234ef5cca0591d3f32fc21313782740"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structworkloadapi__Watcher.html#ad234ef5cca0591d3f32fc21313782740">updated</a></td></tr>
 <tr class="separator:ad234ef5cca0591d3f32fc21313782740"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfdbf7ea5e1cbfdf1d6be6f27327be83"><td class="memItemLeft" align="right" valign="top"><a id="adfdbf7ea5e1cbfdf1d6be6f27327be83"></a>
-err_t&#160;</td><td class="memItemRight" valign="bottom"><b>update_error</b></td></tr>
+<tr class="memitem:adfdbf7ea5e1cbfdf1d6be6f27327be83"><td class="memItemLeft" align="right" valign="top"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structworkloadapi__Watcher.html#adfdbf7ea5e1cbfdf1d6be6f27327be83">update_error</a></td></tr>
 <tr class="separator:adfdbf7ea5e1cbfdf1d6be6f27327be83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a8ca65eb02a9410c3966337d142d12d"><td class="memItemLeft" align="right" valign="top">mtx_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structworkloadapi__Watcher.html#a1a8ca65eb02a9410c3966337d142d12d">close_mutex</a></td></tr>
 <tr class="separator:a1a8ca65eb02a9410c3966337d142d12d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19aec2edb2c3c5d48b4e00a902679e1f"><td class="memItemLeft" align="right" valign="top"><a id="a19aec2edb2c3c5d48b4e00a902679e1f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>closed</b></td></tr>
+<tr class="memitem:a19aec2edb2c3c5d48b4e00a902679e1f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structworkloadapi__Watcher.html#a19aec2edb2c3c5d48b4e00a902679e1f">closed</a></td></tr>
 <tr class="separator:a19aec2edb2c3c5d48b4e00a902679e1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9531e77933691134e1b58ac4e795f02b"><td class="memItemLeft" align="right" valign="top"><a id="a9531e77933691134e1b58ac4e795f02b"></a>
-err_t&#160;</td><td class="memItemRight" valign="bottom"><b>close_error</b></td></tr>
+<tr class="memitem:a9531e77933691134e1b58ac4e795f02b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structworkloadapi__Watcher.html#a9531e77933691134e1b58ac4e795f02b">close_error</a></td></tr>
 <tr class="separator:a9531e77933691134e1b58ac4e795f02b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd4ad3c40d7dc19ac448dfaa8ec3235d"><td class="memItemLeft" align="right" valign="top">thrd_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structworkloadapi__Watcher.html#abd4ad3c40d7dc19ac448dfaa8ec3235d">watcher_thread</a></td></tr>
 <tr class="separator:abd4ad3c40d7dc19ac448dfaa8ec3235d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb6c649fc47e0b6a697988ef61072be7"><td class="memItemLeft" align="right" valign="top"><a id="abb6c649fc47e0b6a697988ef61072be7"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>thread_error</b></td></tr>
+<tr class="memitem:abb6c649fc47e0b6a697988ef61072be7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structworkloadapi__Watcher.html#abb6c649fc47e0b6a697988ef61072be7">thread_error</a></td></tr>
 <tr class="separator:abb6c649fc47e0b6a697988ef61072be7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e2ac77ba8ec20efed75fe1959e5f33f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structworkloadapi__X509Callback.html">workloadapi_X509Callback</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structworkloadapi__Watcher.html#a1e2ac77ba8ec20efed75fe1959e5f33f">x509callback</a></td></tr>
 <tr class="separator:a1e2ac77ba8ec20efed75fe1959e5f33f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,6 +133,20 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>thread_error</b></td><
 
 </div>
 </div>
+<a id="a9531e77933691134e1b58ac4e795f02b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9531e77933691134e1b58ac4e795f02b">&#9670;&nbsp;</a></span>close_error</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> workloadapi_Watcher::close_error</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a1a8ca65eb02a9410c3966337d142d12d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1a8ca65eb02a9410c3966337d142d12d">&#9670;&nbsp;</a></span>close_mutex</h2>
 
@@ -147,6 +159,20 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>thread_error</b></td><
       </table>
 </div><div class="memdoc">
 <p>Close sync </p>
+
+</div>
+</div>
+<a id="a19aec2edb2c3c5d48b4e00a902679e1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19aec2edb2c3c5d48b4e00a902679e1f">&#9670;&nbsp;</a></span>closed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool workloadapi_Watcher::closed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -165,6 +191,48 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>thread_error</b></td><
 
 </div>
 </div>
+<a id="abb6c649fc47e0b6a697988ef61072be7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb6c649fc47e0b6a697988ef61072be7">&#9670;&nbsp;</a></span>thread_error</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int workloadapi_Watcher::thread_error</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7b95b2302127b0fc175a85e8bbc7ad9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b95b2302127b0fc175a85e8bbc7ad9c">&#9670;&nbsp;</a></span>update_cond</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">cnd_t workloadapi_Watcher::update_cond</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adfdbf7ea5e1cbfdf1d6be6f27327be83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfdbf7ea5e1cbfdf1d6be6f27327be83">&#9670;&nbsp;</a></span>update_error</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> workloadapi_Watcher::update_error</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a7e2cc6a7194aa05cb0c4a1a0e7e5f36a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7e2cc6a7194aa05cb0c4a1a0e7e5f36a">&#9670;&nbsp;</a></span>update_mutex</h2>
 
@@ -177,6 +245,20 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>thread_error</b></td><
       </table>
 </div><div class="memdoc">
 <p>Update Sync </p>
+
+</div>
+</div>
+<a id="ad234ef5cca0591d3f32fc21313782740"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad234ef5cca0591d3f32fc21313782740">&#9670;&nbsp;</a></span>updated</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool workloadapi_Watcher::updated</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

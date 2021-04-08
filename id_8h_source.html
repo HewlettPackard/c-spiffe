@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE: spiffeid/src/id.h Source File</title>
+<title>C-SPIFFE Library: spiffeid/src/id.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,8 +21,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">C-SPIFFE
+   <div id="projectname">C-SPIFFE Library
+   &#160;<span id="projectnumber">1.0</span>
    </div>
+   <div id="projectbrief">C-SPIFFE Library for C extension for Spiffe platform.</div>
   </td>
  </tr>
  </tbody>
@@ -69,10 +71,10 @@ $(function() {
 <div class="title">id.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef SPIFFEID_ID_H</span></div>
+<a href="id_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef SPIFFEID_ID_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define SPIFFEID_ID_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;utils/src/util.h&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="utils_2src_2util_8h.html">utils/src/util.h</a>&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;stdbool.h&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;uriparser/Uri.h&gt;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
@@ -81,51 +83,69 @@ $(function() {
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
 <div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="structspiffeid__TrustDomain.html">   13</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="structspiffeid__TrustDomain.html#aab759227cfd0cbf45000c0afaadcdac8">   15</a></span>&#160;    string_t <a class="code" href="structspiffeid__TrustDomain.html#aab759227cfd0cbf45000c0afaadcdac8">name</a>;</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="structspiffeid__TrustDomain.html#aab759227cfd0cbf45000c0afaadcdac8">   15</a></span>&#160;    <a class="code" href="utils_2src_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a> <a class="code" href="structspiffeid__TrustDomain.html#aab759227cfd0cbf45000c0afaadcdac8">name</a>;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;} <a class="code" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a>;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="structspiffeid__ID.html">   19</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
 <div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="structspiffeid__ID.html#a4e0a712af40d8a40a798c44910c7c838">   21</a></span>&#160;    <a class="code" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> <a class="code" href="structspiffeid__ID.html#a4e0a712af40d8a40a798c44910c7c838">td</a>;</div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="structspiffeid__ID.html#a0929bd730875a0291bfa93f639b19723">   23</a></span>&#160;    string_t <a class="code" href="structspiffeid__ID.html#a0929bd730875a0291bfa93f639b19723">path</a>;</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="structspiffeid__ID.html#a0929bd730875a0291bfa93f639b19723">   23</a></span>&#160;    <a class="code" href="utils_2src_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a> <a class="code" href="structspiffeid__ID.html#a0929bd730875a0291bfa93f639b19723">path</a>;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;} <a class="code" href="structspiffeid__ID.html">spiffeid_ID</a>;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;string_t join(string_arr_t str_arr);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<a class="code" href="utils_2src_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a> <a class="code" href="id_8h.html#af0f81f6967381d9feb538772eb316d86">join</a>(<a class="code" href="utils_2src_2util_8h.html#a58051424487a21d6ef4f0894b2bcc4a9">string_arr_t</a> str_arr);</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> spiffeid_ID_New(string_t td_str, <span class="keyword">const</span> string_arr_t segments,</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                            err_t *err);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> <a class="code" href="id_8h.html#a5c9ca53c9e3e3f9afce44ad8651decba">spiffeid_ID_New</a>(<a class="code" href="utils_2src_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a> td_str, <span class="keyword">const</span> <a class="code" href="utils_2src_2util_8h.html#a58051424487a21d6ef4f0894b2bcc4a9">string_arr_t</a> segments,</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                            <a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err);</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;string_t spiffeid_Join(string_t td_str, <span class="keyword">const</span> string_arr_t segments,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                       err_t *err);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<a class="code" href="utils_2src_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a> <a class="code" href="id_8h.html#a7899d3d3c413837bc5c2be9c05bb7646">spiffeid_Join</a>(<a class="code" href="utils_2src_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a> td_str, <span class="keyword">const</span> <a class="code" href="utils_2src_2util_8h.html#a58051424487a21d6ef4f0894b2bcc4a9">string_arr_t</a> segments,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                       <a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err);</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> spiffeid_FromString(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, err_t *err);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> <a class="code" href="id_8h.html#a82642dddeb502838f566ee9b9ce251f3">spiffeid_FromString</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, <a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err);</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> spiffeid_FromURI(<span class="keyword">const</span> UriUriA *uri, err_t *err);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> <a class="code" href="id_8h.html#ad2551fbb86a607a6fe90218e88b24828">spiffeid_FromURI</a>(<span class="keyword">const</span> UriUriA *uri, <a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<a class="code" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> spiffeid_ID_TrustDomain(<span class="keyword">const</span> <a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> <span class="keywordtype">id</span>);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<a class="code" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> <a class="code" href="id_8h.html#a33ea7126bda97ed0080ce21bb0b19dad">spiffeid_ID_TrustDomain</a>(<span class="keyword">const</span> <a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> <span class="keywordtype">id</span>);</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="keywordtype">bool</span> spiffeid_ID_MemberOf(<span class="keyword">const</span> <a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> <span class="keywordtype">id</span>, <span class="keyword">const</span> <a class="code" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> td);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="id_8h.html#ad10ae541c5771d4562a5e6af0416027c">spiffeid_ID_MemberOf</a>(<span class="keyword">const</span> <a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> <span class="keywordtype">id</span>, <span class="keyword">const</span> <a class="code" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> <a class="code" href="check__jwtsource_8c.html#af961692354eb34b5aacc2fedfbdb664c">td</a>);</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> *spiffeid_ID_Path(<span class="keyword">const</span> <a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> <span class="keywordtype">id</span>);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="id_8h.html#ab4c1fc8510592909329f6db50ee01c6e">spiffeid_ID_Path</a>(<span class="keyword">const</span> <a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> <span class="keywordtype">id</span>);</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;string_t spiffeid_ID_String(<span class="keyword">const</span> <a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> <span class="keywordtype">id</span>);</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<a class="code" href="utils_2src_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a> <a class="code" href="id_8h.html#a7159aca9d9a7a7c5e808ae285cc1a38b">spiffeid_ID_String</a>(<span class="keyword">const</span> <a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> <span class="keywordtype">id</span>);</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="keywordtype">bool</span> spiffeid_ID_IsZero(<span class="keyword">const</span> <a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> <span class="keywordtype">id</span>);</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="id_8h.html#a2d2900c3424d17b93c8b72f16d020e42">spiffeid_ID_IsZero</a>(<span class="keyword">const</span> <a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> <span class="keywordtype">id</span>);</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;string_t spiffeid_normalizeTrustDomain(string_t str);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;string_t spiffeid_normalizePath(string_t str);</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<a class="code" href="utils_2src_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a> <a class="code" href="id_8h.html#a019c70f4d4f23ff5b3f0a067f5fbdf3d">spiffeid_normalizeTrustDomain</a>(<a class="code" href="utils_2src_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a> str);</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<a class="code" href="utils_2src_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a> <a class="code" href="id_8h.html#acd1b9d5df1e112831871672d8bd90b90">spiffeid_normalizePath</a>(<a class="code" href="utils_2src_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a> str);</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="keywordtype">void</span> spiffeid_ID_Free(<a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> *<span class="keywordtype">id</span>);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="keywordtype">void</span> <a class="code" href="id_8h.html#ad4d6ca3a1073e3eed3bc39e39b90a5ce">spiffeid_ID_Free</a>(<a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> *<span class="keywordtype">id</span>);</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;}</div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="acheck__jwtsource_8c_html_af961692354eb34b5aacc2fedfbdb664c"><div class="ttname"><a href="check__jwtsource_8c.html#af961692354eb34b5aacc2fedfbdb664c">td</a></div><div class="ttdeci">spiffeid_TrustDomain td</div><div class="ttdef"><b>Definition:</b> check_jwtsource.c:161</div></div>
+<div class="ttc" id="aid_8h_html_a019c70f4d4f23ff5b3f0a067f5fbdf3d"><div class="ttname"><a href="id_8h.html#a019c70f4d4f23ff5b3f0a067f5fbdf3d">spiffeid_normalizeTrustDomain</a></div><div class="ttdeci">string_t spiffeid_normalizeTrustDomain(string_t str)</div><div class="ttdef"><b>Definition:</b> id.c:99</div></div>
+<div class="ttc" id="aid_8h_html_a2d2900c3424d17b93c8b72f16d020e42"><div class="ttname"><a href="id_8h.html#a2d2900c3424d17b93c8b72f16d020e42">spiffeid_ID_IsZero</a></div><div class="ttdeci">bool spiffeid_ID_IsZero(const spiffeid_ID id)</div><div class="ttdef"><b>Definition:</b> id.c:293</div></div>
+<div class="ttc" id="aid_8h_html_a33ea7126bda97ed0080ce21bb0b19dad"><div class="ttname"><a href="id_8h.html#a33ea7126bda97ed0080ce21bb0b19dad">spiffeid_ID_TrustDomain</a></div><div class="ttdeci">spiffeid_TrustDomain spiffeid_ID_TrustDomain(const spiffeid_ID id)</div><div class="ttdef"><b>Definition:</b> id.c:231</div></div>
+<div class="ttc" id="aid_8h_html_a5c9ca53c9e3e3f9afce44ad8651decba"><div class="ttname"><a href="id_8h.html#a5c9ca53c9e3e3f9afce44ad8651decba">spiffeid_ID_New</a></div><div class="ttdeci">spiffeid_ID spiffeid_ID_New(string_t td_str, const string_arr_t segments, err_t *err)</div><div class="ttdef"><b>Definition:</b> id.c:197</div></div>
+<div class="ttc" id="aid_8h_html_a7159aca9d9a7a7c5e808ae285cc1a38b"><div class="ttname"><a href="id_8h.html#a7159aca9d9a7a7c5e808ae285cc1a38b">spiffeid_ID_String</a></div><div class="ttdeci">string_t spiffeid_ID_String(const spiffeid_ID id)</div><div class="ttdef"><b>Definition:</b> id.c:281</div></div>
+<div class="ttc" id="aid_8h_html_a7899d3d3c413837bc5c2be9c05bb7646"><div class="ttname"><a href="id_8h.html#a7899d3d3c413837bc5c2be9c05bb7646">spiffeid_Join</a></div><div class="ttdeci">string_t spiffeid_Join(string_t td_str, const string_arr_t segments, err_t *err)</div><div class="ttdef"><b>Definition:</b> id.c:66</div></div>
+<div class="ttc" id="aid_8h_html_a82642dddeb502838f566ee9b9ce251f3"><div class="ttname"><a href="id_8h.html#a82642dddeb502838f566ee9b9ce251f3">spiffeid_FromString</a></div><div class="ttdeci">spiffeid_ID spiffeid_FromString(const char *str, err_t *err)</div><div class="ttdef"><b>Definition:</b> id.c:210</div></div>
+<div class="ttc" id="aid_8h_html_ab4c1fc8510592909329f6db50ee01c6e"><div class="ttname"><a href="id_8h.html#ab4c1fc8510592909329f6db50ee01c6e">spiffeid_ID_Path</a></div><div class="ttdeci">const char * spiffeid_ID_Path(const spiffeid_ID id)</div><div class="ttdef"><b>Definition:</b> id.c:241</div></div>
+<div class="ttc" id="aid_8h_html_acd1b9d5df1e112831871672d8bd90b90"><div class="ttname"><a href="id_8h.html#acd1b9d5df1e112831871672d8bd90b90">spiffeid_normalizePath</a></div><div class="ttdeci">string_t spiffeid_normalizePath(string_t str)</div><div class="ttdef"><b>Definition:</b> id.c:52</div></div>
+<div class="ttc" id="aid_8h_html_ad10ae541c5771d4562a5e6af0416027c"><div class="ttname"><a href="id_8h.html#ad10ae541c5771d4562a5e6af0416027c">spiffeid_ID_MemberOf</a></div><div class="ttdeci">bool spiffeid_ID_MemberOf(const spiffeid_ID id, const spiffeid_TrustDomain td)</div><div class="ttdef"><b>Definition:</b> id.c:236</div></div>
+<div class="ttc" id="aid_8h_html_ad2551fbb86a607a6fe90218e88b24828"><div class="ttname"><a href="id_8h.html#ad2551fbb86a607a6fe90218e88b24828">spiffeid_FromURI</a></div><div class="ttdeci">spiffeid_ID spiffeid_FromURI(const UriUriA *uri, err_t *err)</div><div class="ttdef"><b>Definition:</b> id.c:131</div></div>
+<div class="ttc" id="aid_8h_html_ad4d6ca3a1073e3eed3bc39e39b90a5ce"><div class="ttname"><a href="id_8h.html#ad4d6ca3a1073e3eed3bc39e39b90a5ce">spiffeid_ID_Free</a></div><div class="ttdeci">void spiffeid_ID_Free(spiffeid_ID *id)</div><div class="ttdef"><b>Definition:</b> id.c:223</div></div>
+<div class="ttc" id="aid_8h_html_af0f81f6967381d9feb538772eb316d86"><div class="ttname"><a href="id_8h.html#af0f81f6967381d9feb538772eb316d86">join</a></div><div class="ttdeci">string_t join(string_arr_t str_arr)</div><div class="ttdef"><b>Definition:</b> id.c:8</div></div>
 <div class="ttc" id="astructspiffeid__ID_html"><div class="ttname"><a href="structspiffeid__ID.html">spiffeid_ID</a></div><div class="ttdef"><b>Definition:</b> id.h:19</div></div>
 <div class="ttc" id="astructspiffeid__ID_html_a0929bd730875a0291bfa93f639b19723"><div class="ttname"><a href="structspiffeid__ID.html#a0929bd730875a0291bfa93f639b19723">spiffeid_ID::path</a></div><div class="ttdeci">string_t path</div><div class="ttdef"><b>Definition:</b> id.h:23</div></div>
 <div class="ttc" id="astructspiffeid__ID_html_a4e0a712af40d8a40a798c44910c7c838"><div class="ttname"><a href="structspiffeid__ID.html#a4e0a712af40d8a40a798c44910c7c838">spiffeid_ID::td</a></div><div class="ttdeci">spiffeid_TrustDomain td</div><div class="ttdef"><b>Definition:</b> id.h:21</div></div>
 <div class="ttc" id="astructspiffeid__TrustDomain_html"><div class="ttname"><a href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a></div><div class="ttdef"><b>Definition:</b> id.h:13</div></div>
 <div class="ttc" id="astructspiffeid__TrustDomain_html_aab759227cfd0cbf45000c0afaadcdac8"><div class="ttname"><a href="structspiffeid__TrustDomain.html#aab759227cfd0cbf45000c0afaadcdac8">spiffeid_TrustDomain::name</a></div><div class="ttdeci">string_t name</div><div class="ttdef"><b>Definition:</b> id.h:15</div></div>
+<div class="ttc" id="autils_2src_2util_8h_html"><div class="ttname"><a href="utils_2src_2util_8h.html">util.h</a></div></div>
+<div class="ttc" id="autils_2src_2util_8h_html_a5362d878a3b55147d5cfd29820512556"><div class="ttname"><a href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a></div><div class="ttdeci">enum enum_err_t err_t</div><div class="ttdef"><b>Definition:</b> util.h:42</div></div>
+<div class="ttc" id="autils_2src_2util_8h_html_a58051424487a21d6ef4f0894b2bcc4a9"><div class="ttname"><a href="utils_2src_2util_8h.html#a58051424487a21d6ef4f0894b2bcc4a9">string_arr_t</a></div><div class="ttdeci">char ** string_arr_t</div><div class="ttdef"><b>Definition:</b> util.h:18</div></div>
+<div class="ttc" id="autils_2src_2util_8h_html_ab0dcbec9b4b3c60b939b1095f93cb1b9"><div class="ttname"><a href="utils_2src_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a></div><div class="ttdeci">char * string_t</div><div class="ttdef"><b>Definition:</b> util.h:15</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

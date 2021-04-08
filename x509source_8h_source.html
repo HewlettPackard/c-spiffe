@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE: workload/src/x509source.h Source File</title>
+<title>C-SPIFFE Library: workload/src/x509source.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,8 +21,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">C-SPIFFE
+   <div id="projectname">C-SPIFFE Library
+   &#160;<span id="projectnumber">1.0</span>
    </div>
+   <div id="projectbrief">C-SPIFFE Library for C extension for Spiffe platform.</div>
   </td>
  </tr>
  </tbody>
@@ -69,12 +71,12 @@ $(function() {
 <div class="title">x509source.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef INCLUDE_WORKLOAD_X509SOURCE_H</span></div>
+<a href="x509source_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef INCLUDE_WORKLOAD_X509SOURCE_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define INCLUDE_WORKLOAD_X509SOURCE_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;bundle/x509bundle/src/set.h&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;svid/x509svid/src/svid.h&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;workload/src/watcher.h&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="x509bundle_2src_2set_8h.html">bundle/x509bundle/src/set.h</a>&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="x509svid_2src_2svid_8h.html">svid/x509svid/src/svid.h</a>&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="watcher_8h.html">workload/src/watcher.h</a>&quot;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;threads.h&gt;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
@@ -82,54 +84,79 @@ $(function() {
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
 <div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="structworkloadapi__X509SourceConfig.html">   13</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <a class="code" href="structworkloadapi__WatcherConfig.html">workloadapi_WatcherConfig</a> watcher_config;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="structx509svid__SVID.html">x509svid_SVID</a> *(*picker)(<a class="code" href="structx509svid__SVID.html">x509svid_SVID</a> **);</div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="structworkloadapi__X509SourceConfig.html#aa5e56e889fbd3b1d62baedca4daf3ad8">   14</a></span>&#160;    <a class="code" href="structworkloadapi__WatcherConfig.html">workloadapi_WatcherConfig</a> <a class="code" href="structworkloadapi__X509SourceConfig.html#aa5e56e889fbd3b1d62baedca4daf3ad8">watcher_config</a>;</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="structworkloadapi__X509SourceConfig.html#a73f803da381a3086065059cbb9965c80">   15</a></span>&#160;    <a class="code" href="structx509svid__SVID.html">x509svid_SVID</a> *(*picker)(<a class="code" href="structx509svid__SVID.html">x509svid_SVID</a> **);</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;} <a class="code" href="structworkloadapi__X509SourceConfig.html">workloadapi_X509SourceConfig</a>;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="structworkloadapi__X509Source.html">   18</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="structworkloadapi__Watcher.html">workloadapi_Watcher</a> *watcher;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="structworkloadapi__X509SourceConfig.html">workloadapi_X509SourceConfig</a> *config;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    mtx_t mtx;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    mtx_t closed_mutex;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordtype">bool</span> closed;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="structx509svid__SVID.html">x509svid_SVID</a> **svids;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="structx509bundle__Set.html">x509bundle_Set</a> *bundles;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;} <a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a>;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;workloadapi_NewX509Source(<a class="code" href="structworkloadapi__X509SourceConfig.html">workloadapi_X509SourceConfig</a> *config, err_t *err);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">void</span> workloadapi_X509Source_Free(<a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *source);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;err_t workloadapi_X509Source_Start(<a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *source);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;err_t workloadapi_X509Source_Close(<a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *source);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;err_t workloadapi_X509Source_checkClosed(<a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *source);</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="structworkloadapi__X509Source.html">   20</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="structworkloadapi__X509Source.html#aab3e58b875c5ee3ca646fe5b7f9b6a3b">   21</a></span>&#160;    <a class="code" href="structworkloadapi__Watcher.html">workloadapi_Watcher</a> *<a class="code" href="structworkloadapi__X509Source.html#aab3e58b875c5ee3ca646fe5b7f9b6a3b">watcher</a>;</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="structworkloadapi__X509Source.html#a33a5eff812f47b2308f886408643a914">   22</a></span>&#160;    <a class="code" href="structworkloadapi__X509SourceConfig.html">workloadapi_X509SourceConfig</a> *<a class="code" href="structworkloadapi__X509Source.html#a33a5eff812f47b2308f886408643a914">config</a>;</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="structworkloadapi__X509Source.html#a8cc102e285f9ae478e075dc26bb49d9b">   23</a></span>&#160;    mtx_t <a class="code" href="structworkloadapi__X509Source.html#a8cc102e285f9ae478e075dc26bb49d9b">mtx</a>;</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="structworkloadapi__X509Source.html#a4c881a6d19a144e5bfee595c30933fcc">   24</a></span>&#160;    mtx_t <a class="code" href="structworkloadapi__X509Source.html#a4c881a6d19a144e5bfee595c30933fcc">closed_mutex</a>;</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="structworkloadapi__X509Source.html#a8a292f2f325899bfceb12a4a711e3f77">   25</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structworkloadapi__X509Source.html#a8a292f2f325899bfceb12a4a711e3f77">closed</a>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="structworkloadapi__X509Source.html#ad44a9a1d5b3c830acef2b60dc15d343d">   27</a></span>&#160;    <a class="code" href="structx509svid__SVID.html">x509svid_SVID</a> **<a class="code" href="structworkloadapi__X509Source.html#ad44a9a1d5b3c830acef2b60dc15d343d">svids</a>;</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="structworkloadapi__X509Source.html#adabc3388a093897b3253594077191167">   28</a></span>&#160;    <a class="code" href="structx509bundle__Set.html">x509bundle_Set</a> *<a class="code" href="structworkloadapi__X509Source.html#adabc3388a093897b3253594077191167">bundles</a>;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;} <a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<a class="code" href="x509source_8h.html#acdf854f230209668a3d6b5f671f6a23b">workloadapi_NewX509Source</a>(<a class="code" href="structworkloadapi__X509SourceConfig.html">workloadapi_X509SourceConfig</a> *<a class="code" href="check__jwtsource_8c.html#ac4bce25b2f2c75b798ee2fe84c200d90">config</a>, <a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keywordtype">void</span> <a class="code" href="x509source_8h.html#a1d8dc819f8db486a571bae689d3a3ffa">workloadapi_X509Source_Free</a>(<a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *source);</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;err_t workloadapi_X509Source_WaitUntilUpdated(<a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *source);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">void</span> workloadapi_X509Source_applyX509Context(<a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *source,</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                                             <a class="code" href="structworkloadapi__X509Context.html">workloadapi_X509Context</a> *ctx);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<a class="code" href="structx509svid__SVID.html">x509svid_SVID</a> *</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;workloadapi_X509Source_GetX509SVID(<a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *source, err_t *err);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<a class="code" href="structx509bundle__Bundle.html">x509bundle_Bundle</a> *workloadapi_X509Source_GetX509BundleForTrustDomain(</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *source, <a class="code" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> *td, err_t *err);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// INCLUDE_WORKLOAD_X509SOURCE_H</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> <a class="code" href="x509source_8h.html#a840404947725218d94405c42092b6205">workloadapi_X509Source_Start</a>(<a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *source);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> <a class="code" href="x509source_8h.html#aa22b6000441fad455b1dea534b6a9842">workloadapi_X509Source_Close</a>(<a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *source);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> <a class="code" href="x509source_8h.html#a85f63ea355fe4ff009f61715519625b8">workloadapi_X509Source_checkClosed</a>(<a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *source);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> <a class="code" href="x509source_8h.html#a4e7b56525e357fbf1d749c4c8050a32a">workloadapi_X509Source_WaitUntilUpdated</a>(<a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *source);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">void</span> <a class="code" href="x509source_8h.html#a255d53d4ed5182e3c90cf44ce472c874">workloadapi_X509Source_applyX509Context</a>(<a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *source,</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                                             <a class="code" href="structworkloadapi__X509Context.html">workloadapi_X509Context</a> *<a class="code" href="check__x509source_8c.html#a6c3b78515067e51cbb30c326c3b908b2">ctx</a>);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<a class="code" href="structx509svid__SVID.html">x509svid_SVID</a> *</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<a class="code" href="x509source_8h.html#a0d11b6e4b5f18f0fc24edcf9a12578ff">workloadapi_X509Source_GetX509SVID</a>(<a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *source, <a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<a class="code" href="structx509bundle__Bundle.html">x509bundle_Bundle</a> *<a class="code" href="x509source_8h.html#a2d7d2839225002749b8abfbc80692c79">workloadapi_X509Source_GetX509BundleForTrustDomain</a>(</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *source, <a class="code" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> *<a class="code" href="check__jwtsource_8c.html#af961692354eb34b5aacc2fedfbdb664c">td</a>, <a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// INCLUDE_WORKLOAD_X509SOURCE_H</span></div>
+<div class="ttc" id="acheck__jwtsource_8c_html_ac4bce25b2f2c75b798ee2fe84c200d90"><div class="ttname"><a href="check__jwtsource_8c.html#ac4bce25b2f2c75b798ee2fe84c200d90">config</a></div><div class="ttdeci">workloadapi_JWTSourceConfig * config</div><div class="ttdef"><b>Definition:</b> check_jwtsource.c:40</div></div>
+<div class="ttc" id="acheck__jwtsource_8c_html_af961692354eb34b5aacc2fedfbdb664c"><div class="ttname"><a href="check__jwtsource_8c.html#af961692354eb34b5aacc2fedfbdb664c">td</a></div><div class="ttdeci">spiffeid_TrustDomain td</div><div class="ttdef"><b>Definition:</b> check_jwtsource.c:161</div></div>
+<div class="ttc" id="acheck__x509source_8c_html_a6c3b78515067e51cbb30c326c3b908b2"><div class="ttname"><a href="check__x509source_8c.html#a6c3b78515067e51cbb30c326c3b908b2">ctx</a></div><div class="ttdeci">workloadapi_X509Context ctx</div><div class="ttdef"><b>Definition:</b> check_x509source.c:148</div></div>
 <div class="ttc" id="astructspiffeid__TrustDomain_html"><div class="ttname"><a href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a></div><div class="ttdef"><b>Definition:</b> id.h:13</div></div>
 <div class="ttc" id="astructworkloadapi__WatcherConfig_html"><div class="ttname"><a href="structworkloadapi__WatcherConfig.html">workloadapi_WatcherConfig</a></div><div class="ttdef"><b>Definition:</b> watcher.h:18</div></div>
 <div class="ttc" id="astructworkloadapi__Watcher_html"><div class="ttname"><a href="structworkloadapi__Watcher.html">workloadapi_Watcher</a></div><div class="ttdef"><b>Definition:</b> watcher.h:23</div></div>
-<div class="ttc" id="astructworkloadapi__X509Context_html"><div class="ttname"><a href="structworkloadapi__X509Context.html">workloadapi_X509Context</a></div><div class="ttdef"><b>Definition:</b> x509context.h:11</div></div>
+<div class="ttc" id="astructworkloadapi__X509Context_html"><div class="ttname"><a href="structworkloadapi__X509Context.html">workloadapi_X509Context</a></div><div class="ttdef"><b>Definition:</b> x509context.h:13</div></div>
 <div class="ttc" id="astructworkloadapi__X509SourceConfig_html"><div class="ttname"><a href="structworkloadapi__X509SourceConfig.html">workloadapi_X509SourceConfig</a></div><div class="ttdef"><b>Definition:</b> x509source.h:13</div></div>
-<div class="ttc" id="astructworkloadapi__X509Source_html"><div class="ttname"><a href="structworkloadapi__X509Source.html">workloadapi_X509Source</a></div><div class="ttdef"><b>Definition:</b> x509source.h:18</div></div>
+<div class="ttc" id="astructworkloadapi__X509SourceConfig_html_aa5e56e889fbd3b1d62baedca4daf3ad8"><div class="ttname"><a href="structworkloadapi__X509SourceConfig.html#aa5e56e889fbd3b1d62baedca4daf3ad8">workloadapi_X509SourceConfig::watcher_config</a></div><div class="ttdeci">workloadapi_WatcherConfig watcher_config</div><div class="ttdef"><b>Definition:</b> x509source.h:14</div></div>
+<div class="ttc" id="astructworkloadapi__X509Source_html"><div class="ttname"><a href="structworkloadapi__X509Source.html">workloadapi_X509Source</a></div><div class="ttdef"><b>Definition:</b> x509source.h:20</div></div>
+<div class="ttc" id="astructworkloadapi__X509Source_html_a33a5eff812f47b2308f886408643a914"><div class="ttname"><a href="structworkloadapi__X509Source.html#a33a5eff812f47b2308f886408643a914">workloadapi_X509Source::config</a></div><div class="ttdeci">workloadapi_X509SourceConfig * config</div><div class="ttdef"><b>Definition:</b> x509source.h:22</div></div>
+<div class="ttc" id="astructworkloadapi__X509Source_html_a4c881a6d19a144e5bfee595c30933fcc"><div class="ttname"><a href="structworkloadapi__X509Source.html#a4c881a6d19a144e5bfee595c30933fcc">workloadapi_X509Source::closed_mutex</a></div><div class="ttdeci">mtx_t closed_mutex</div><div class="ttdef"><b>Definition:</b> x509source.h:24</div></div>
+<div class="ttc" id="astructworkloadapi__X509Source_html_a8a292f2f325899bfceb12a4a711e3f77"><div class="ttname"><a href="structworkloadapi__X509Source.html#a8a292f2f325899bfceb12a4a711e3f77">workloadapi_X509Source::closed</a></div><div class="ttdeci">bool closed</div><div class="ttdef"><b>Definition:</b> x509source.h:25</div></div>
+<div class="ttc" id="astructworkloadapi__X509Source_html_a8cc102e285f9ae478e075dc26bb49d9b"><div class="ttname"><a href="structworkloadapi__X509Source.html#a8cc102e285f9ae478e075dc26bb49d9b">workloadapi_X509Source::mtx</a></div><div class="ttdeci">mtx_t mtx</div><div class="ttdef"><b>Definition:</b> x509source.h:23</div></div>
+<div class="ttc" id="astructworkloadapi__X509Source_html_aab3e58b875c5ee3ca646fe5b7f9b6a3b"><div class="ttname"><a href="structworkloadapi__X509Source.html#aab3e58b875c5ee3ca646fe5b7f9b6a3b">workloadapi_X509Source::watcher</a></div><div class="ttdeci">workloadapi_Watcher * watcher</div><div class="ttdef"><b>Definition:</b> x509source.h:21</div></div>
+<div class="ttc" id="astructworkloadapi__X509Source_html_ad44a9a1d5b3c830acef2b60dc15d343d"><div class="ttname"><a href="structworkloadapi__X509Source.html#ad44a9a1d5b3c830acef2b60dc15d343d">workloadapi_X509Source::svids</a></div><div class="ttdeci">x509svid_SVID ** svids</div><div class="ttdef"><b>Definition:</b> x509source.h:27</div></div>
+<div class="ttc" id="astructworkloadapi__X509Source_html_adabc3388a093897b3253594077191167"><div class="ttname"><a href="structworkloadapi__X509Source.html#adabc3388a093897b3253594077191167">workloadapi_X509Source::bundles</a></div><div class="ttdeci">x509bundle_Set * bundles</div><div class="ttdef"><b>Definition:</b> x509source.h:28</div></div>
 <div class="ttc" id="astructx509bundle__Bundle_html"><div class="ttname"><a href="structx509bundle__Bundle.html">x509bundle_Bundle</a></div><div class="ttdef"><b>Definition:</b> bundle.h:15</div></div>
 <div class="ttc" id="astructx509bundle__Set_html"><div class="ttname"><a href="structx509bundle__Set.html">x509bundle_Set</a></div><div class="ttdef"><b>Definition:</b> set.h:17</div></div>
 <div class="ttc" id="astructx509svid__SVID_html"><div class="ttname"><a href="structx509svid__SVID.html">x509svid_SVID</a></div><div class="ttdef"><b>Definition:</b> svid.h:17</div></div>
+<div class="ttc" id="autils_2src_2util_8h_html_a5362d878a3b55147d5cfd29820512556"><div class="ttname"><a href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a></div><div class="ttdeci">enum enum_err_t err_t</div><div class="ttdef"><b>Definition:</b> util.h:42</div></div>
+<div class="ttc" id="awatcher_8h_html"><div class="ttname"><a href="watcher_8h.html">watcher.h</a></div></div>
+<div class="ttc" id="ax509bundle_2src_2set_8h_html"><div class="ttname"><a href="x509bundle_2src_2set_8h.html">set.h</a></div></div>
+<div class="ttc" id="ax509source_8h_html_a0d11b6e4b5f18f0fc24edcf9a12578ff"><div class="ttname"><a href="x509source_8h.html#a0d11b6e4b5f18f0fc24edcf9a12578ff">workloadapi_X509Source_GetX509SVID</a></div><div class="ttdeci">x509svid_SVID * workloadapi_X509Source_GetX509SVID(workloadapi_X509Source *source, err_t *err)</div><div class="ttdef"><b>Definition:</b> x509source.c:71</div></div>
+<div class="ttc" id="ax509source_8h_html_a1d8dc819f8db486a571bae689d3a3ffa"><div class="ttname"><a href="x509source_8h.html#a1d8dc819f8db486a571bae689d3a3ffa">workloadapi_X509Source_Free</a></div><div class="ttdeci">void workloadapi_X509Source_Free(workloadapi_X509Source *source)</div><div class="ttdef"><b>Definition:</b> x509source.c:138</div></div>
+<div class="ttc" id="ax509source_8h_html_a255d53d4ed5182e3c90cf44ce472c874"><div class="ttname"><a href="x509source_8h.html#a255d53d4ed5182e3c90cf44ce472c874">workloadapi_X509Source_applyX509Context</a></div><div class="ttdeci">void workloadapi_X509Source_applyX509Context(workloadapi_X509Source *source, workloadapi_X509Context *ctx)</div><div class="ttdef"><b>Definition:</b> x509source.c:112</div></div>
+<div class="ttc" id="ax509source_8h_html_a2d7d2839225002749b8abfbc80692c79"><div class="ttname"><a href="x509source_8h.html#a2d7d2839225002749b8abfbc80692c79">workloadapi_X509Source_GetX509BundleForTrustDomain</a></div><div class="ttdeci">x509bundle_Bundle * workloadapi_X509Source_GetX509BundleForTrustDomain(workloadapi_X509Source *source, spiffeid_TrustDomain *td, err_t *err)</div><div class="ttdef"><b>Definition:</b> x509source.c:92</div></div>
+<div class="ttc" id="ax509source_8h_html_a4e7b56525e357fbf1d749c4c8050a32a"><div class="ttname"><a href="x509source_8h.html#a4e7b56525e357fbf1d749c4c8050a32a">workloadapi_X509Source_WaitUntilUpdated</a></div><div class="ttdeci">err_t workloadapi_X509Source_WaitUntilUpdated(workloadapi_X509Source *source)</div><div class="ttdef"><b>Definition:</b> x509source.c:107</div></div>
+<div class="ttc" id="ax509source_8h_html_a840404947725218d94405c42092b6205"><div class="ttname"><a href="x509source_8h.html#a840404947725218d94405c42092b6205">workloadapi_X509Source_Start</a></div><div class="ttdeci">err_t workloadapi_X509Source_Start(workloadapi_X509Source *source)</div><div class="ttdef"><b>Definition:</b> x509source.c:48</div></div>
+<div class="ttc" id="ax509source_8h_html_a85f63ea355fe4ff009f61715519625b8"><div class="ttname"><a href="x509source_8h.html#a85f63ea355fe4ff009f61715519625b8">workloadapi_X509Source_checkClosed</a></div><div class="ttdeci">err_t workloadapi_X509Source_checkClosed(workloadapi_X509Source *source)</div><div class="ttdef"><b>Definition:</b> x509source.c:126</div></div>
+<div class="ttc" id="ax509source_8h_html_aa22b6000441fad455b1dea534b6a9842"><div class="ttname"><a href="x509source_8h.html#aa22b6000441fad455b1dea534b6a9842">workloadapi_X509Source_Close</a></div><div class="ttdeci">err_t workloadapi_X509Source_Close(workloadapi_X509Source *source)</div><div class="ttdef"><b>Definition:</b> x509source.c:61</div></div>
+<div class="ttc" id="ax509source_8h_html_acdf854f230209668a3d6b5f671f6a23b"><div class="ttname"><a href="x509source_8h.html#acdf854f230209668a3d6b5f671f6a23b">workloadapi_NewX509Source</a></div><div class="ttdeci">workloadapi_X509Source * workloadapi_NewX509Source(workloadapi_X509SourceConfig *config, err_t *err)</div><div class="ttdef"><b>Definition:</b> x509source.c:12</div></div>
+<div class="ttc" id="ax509svid_2src_2svid_8h_html"><div class="ttname"><a href="x509svid_2src_2svid_8h.html">svid.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

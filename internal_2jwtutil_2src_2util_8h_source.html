@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE: internal/jwtutil/src/util.h Source File</title>
+<title>C-SPIFFE Library: internal/jwtutil/src/util.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,8 +21,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">C-SPIFFE
+   <div id="projectname">C-SPIFFE Library
+   &#160;<span id="projectnumber">1.0</span>
    </div>
+   <div id="projectbrief">C-SPIFFE Library for C extension for Spiffe platform.</div>
   </td>
  </tr>
  </tbody>
@@ -69,19 +71,19 @@ $(function() {
 <div class="title">util.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef INCLUDE_INTERNAL_JWTUTIL_UTIL_H</span></div>
+<a href="internal_2jwtutil_2src_2util_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef INCLUDE_INTERNAL_JWTUTIL_UTIL_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define INCLUDE_INTERNAL_JWTUTIL_UTIL_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;utils/src/util.h&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="utils_2src_2util_8h.html">utils/src/util.h</a>&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;stdbool.h&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<a class="code" href="structmap__string__EVP__PKEY.html">map_string_EVP_PKEY</a> *jwtutil_CopyJWTAuthorities(<a class="code" href="structmap__string__EVP__PKEY.html">map_string_EVP_PKEY</a> *hash);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<a class="code" href="structmap__string__EVP__PKEY.html">map_string_EVP_PKEY</a> *<a class="code" href="internal_2jwtutil_2src_2util_8h.html#af34a0993e3342071f5b48fa4f26cbca1">jwtutil_CopyJWTAuthorities</a>(<a class="code" href="structmap__string__EVP__PKEY.html">map_string_EVP_PKEY</a> *hash);</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">bool</span> jwtutil_JWTAuthoritiesEqual(<a class="code" href="structmap__string__EVP__PKEY.html">map_string_EVP_PKEY</a> *hash1,</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="internal_2jwtutil_2src_2util_8h.html#a48cba483dfaddf07ef51ed2a87d36055">jwtutil_JWTAuthoritiesEqual</a>(<a class="code" href="structmap__string__EVP__PKEY.html">map_string_EVP_PKEY</a> *hash1,</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                                 <a class="code" href="structmap__string__EVP__PKEY.html">map_string_EVP_PKEY</a> *hash2);</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
@@ -89,7 +91,10 @@ $(function() {
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="ainternal_2jwtutil_2src_2util_8h_html_a48cba483dfaddf07ef51ed2a87d36055"><div class="ttname"><a href="internal_2jwtutil_2src_2util_8h.html#a48cba483dfaddf07ef51ed2a87d36055">jwtutil_JWTAuthoritiesEqual</a></div><div class="ttdeci">bool jwtutil_JWTAuthoritiesEqual(map_string_EVP_PKEY *hash1, map_string_EVP_PKEY *hash2)</div><div class="ttdef"><b>Definition:</b> util.c:24</div></div>
+<div class="ttc" id="ainternal_2jwtutil_2src_2util_8h_html_af34a0993e3342071f5b48fa4f26cbca1"><div class="ttname"><a href="internal_2jwtutil_2src_2util_8h.html#af34a0993e3342071f5b48fa4f26cbca1">jwtutil_CopyJWTAuthorities</a></div><div class="ttdeci">map_string_EVP_PKEY * jwtutil_CopyJWTAuthorities(map_string_EVP_PKEY *hash)</div><div class="ttdef"><b>Definition:</b> util.c:4</div></div>
 <div class="ttc" id="astructmap__string__EVP__PKEY_html"><div class="ttname"><a href="structmap__string__EVP__PKEY.html">map_string_EVP_PKEY</a></div><div class="ttdef"><b>Definition:</b> util.h:21</div></div>
+<div class="ttc" id="autils_2src_2util_8h_html"><div class="ttname"><a href="utils_2src_2util_8h.html">util.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
