@@ -46,3 +46,9 @@ target_link_libraries(check_dial spiffetls ${CHECK_LIBRARIES}
   pthread)
 
 add_test(check_dial check_dial)
+
+add_executable(tls_server resources/tls_server.c)
+
+target_link_libraries(tls_server
+  OpenSSL::SSL
+  crypto)
