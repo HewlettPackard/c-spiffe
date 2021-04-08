@@ -179,3 +179,9 @@ set(C_CLIENT_VALIDATE
 )
 add_executable(c_client_validate "${C_CLIENT_VALIDATE}")
 target_link_libraries(c_client_validate client)
+
+set(JWTSOURCE_EXAMPLE
+    src/jwtsource_example.c
+)
+add_executable(jwtsource_example "${JWTSOURCE_EXAMPLE}")
+target_link_libraries(jwtsource_example source)
