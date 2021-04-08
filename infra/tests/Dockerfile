@@ -1,4 +1,4 @@
-FROM infra_workload
+FROM alg4/infra_workload
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends software-properties-common python3 python3-pip
@@ -11,16 +11,6 @@ WORKDIR ${TEST_DIR}/integration_test
 ### ADD ../../integration-test /mnt/tests
 
 RUN pip3 install -r requirements.txt
-
-COPY get-entries.sh .
-COPY get-entries.py .
-COPY run-behave-tests.sh .
-COPY connect_agent.sh .
-
-RUN chmod +x get-entries.sh
-RUN chmod +x get-entries.py
-RUN chmod +x run-behave-tests.sh
-RUN chmod +x connect_agent.sh
 
 # Create user for test workloads
 RUN useradd tests -u 1002
