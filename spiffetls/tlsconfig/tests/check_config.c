@@ -30,7 +30,7 @@ END_TEST
 START_TEST(test_tlsconfig_OptionFromFunc)
 {
     tlsconfig_Option *op = tlsconfig_OptionFromFunc(option_dummy);
-    
+
     ck_assert_uint_eq(op->type, TLSCONFIG_FUNC);
     ck_assert_ptr_eq(op->source.func, option_dummy);
 
@@ -46,8 +46,8 @@ START_TEST(test_tlsconfig_newOptions)
     arrput(opts, opt1);
     arrput(opts, opt2);
     tlsconfig_options *op = tlsconfig_newOptions(opts);
-    
-    ck_assert_ptr_eq(op->trace, (void*) 0x9);
+
+    ck_assert_ptr_eq(op->trace, (void *) 0x9);
 
     for(size_t i = 0, size = arrlenu(opts); i < size; ++i) {
         tlsconfig_Option_Free(opts[i]);
@@ -59,19 +59,72 @@ END_TEST
 
 START_TEST(test_tlsconfig_HookTLSClientConfig)
 {
+    const SSL_METHOD *method = TLS_method();
+    SSL_CTX *ctx = SSL_CTX_new(method);
 
+    spiffeid_TrustDomain td = { string_new("example.org") };
+    err_t err;
+    x509bundle_Bundle *bundle
+        = x509bundle_Load(td, "resources/good-leaf-only.pem", &err);
+    
+    ck_assert_uint_eq(err, NO_ERROR);
+
+    x509bundle_Source *bundle_src = x509bundle_SourceFromBundle(bundle);
+    tlsconfig_Authorizer *authorizer = tlsconfig_AuthorizeMemberOf(td);
+
+    bool suc
+        = tlsconfig_HookTLSClientConfig(ctx, bundle_src, authorizer, NULL);
+
+    ck_assert(suc);
+
+    SSL_CTX_free(ctx);
+    spiffeid_TrustDomain_Free(&td);
+    x509bundle_Source_Free(bundle_src);
+    tlsconfig_Authorizer_Free(authorizer);
 }
 END_TEST
 
 START_TEST(test_tlsconfig_HookMTLSClientConfig)
 {
+    const SSL_METHOD *method = TLS_method();
+    SSL_CTX *ctx = SSL_CTX_new(method);
 
+    spiffeid_TrustDomain td = { string_new("example.org") };
+
+    err_t err;
+    x509svid_SVID *svid
+        = x509svid_Load("resources/good-leaf-and-intermediate.pem",
+                        "resources/key-pkcs8-ecdsa.pem", &err);
+
+    ck_assert_uint_eq(err, NO_ERROR);
+
+    x509svid_Source *svid_src = x509svid_SourceFromSVID(svid);
+    x509bundle_Bundle *bundle
+        = x509bundle_Load(td, "resources/good-leaf-only.pem", &err);
+
+    ck_assert_uint_eq(err, NO_ERROR);
+
+    x509bundle_Source *bundle_src = x509bundle_SourceFromBundle(bundle);
+    tlsconfig_Authorizer *authorizer = tlsconfig_AuthorizeMemberOf(td);
+
+    bool suc = tlsconfig_HookMTLSClientConfig(ctx, svid_src, bundle_src, authorizer, NULL);
+
+    SSL_CTX_free(ctx);
+    spiffeid_TrustDomain_Free(&td);
+    x509svid_Source_Free(svid_src);
+    x509bundle_Source_Free(bundle_src);
+    tlsconfig_Authorizer_Free(authorizer);
 }
 END_TEST
 
 START_TEST(test_tlsconfig_resetAuthFields)
 {
+    const SSL_METHOD *method = TLS_method();
+    SSL_CTX *ctx = SSL_CTX_new(method);
 
+    tlsconfig_resetAuthFields(ctx);
+
+    SSL_CTX_free(ctx);   
 }
 END_TEST
 
