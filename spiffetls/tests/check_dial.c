@@ -7,32 +7,34 @@ START_TEST(test_spiffetls_DialWithMode)
     spiffeid_TrustDomain td = { string_new("example.org") };
     tlsconfig_Authorizer *authorizer = tlsconfig_AuthorizeMemberOf(td);
     err_t err;
-    x509bundle_Bundle *bundle
-        = x509bundle_Load(td, "resources/certs.pem", &err);
+    x509bundle_Bundle *bundle = x509bundle_Load(
+        td, "resources/good-leaf-and-intermediate.pem", &err);
 
     ck_assert_uint_eq(err, NO_ERROR);
 
     x509bundle_Source *bundle_src = x509bundle_SourceFromBundle(bundle);
+
     spiffetls_DialMode *mode
         = spiffetls_TLSClientWithRawConfig(authorizer, bundle_src);
 
     spiffetls_dialConfig config = { .base_TLS_conf = NULL, .dialer_fd = 0 };
 
-    SSL *conn = spiffetls_DialWithMode((in_port_t) -1, (in_addr_t) -1, mode,
+    /// TODO: set up TLS server
+    SSL *conn = spiffetls_DialWithMode((in_port_t) 4433, /*127.0.0.1*/(in_addr_t) 0x7F000001, mode,
                                        &config, &err);
-    
-    ck_assert_uint_eq(err, NO_ERROR);
-    ck_assert_ptr_ne(conn, NULL);
+
+    ck_assert_uint_ne(err, NO_ERROR);
+    ck_assert_ptr_eq(conn, NULL);
 
     spiffeid_TrustDomain_Free(&td);
     tlsconfig_Authorizer_Free(authorizer);
     x509bundle_Source_Free(bundle_src);
     spiffetls_DialMode_Free(mode);
 
-    const int fd = SSL_get_fd(conn);
-    SSL_shutdown(conn);
-    SSL_free(conn);
-    close(fd);
+    // const int fd = SSL_get_fd(conn);
+    // SSL_shutdown(conn);
+    // SSL_free(conn);
+    // close(fd);
 }
 END_TEST
 
