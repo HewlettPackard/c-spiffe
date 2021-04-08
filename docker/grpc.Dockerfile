@@ -38,7 +38,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libgmock-dev \
         python3-pip \
         checkinstall \
-        zlib1g-dev
+        zlib1g-dev \
+        doxygen \
+        graphviz
+
 RUN pip3 install behave PyHamcrest pathlib2
 RUN apt-get clean
 
