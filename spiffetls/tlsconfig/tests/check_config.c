@@ -66,7 +66,7 @@ START_TEST(test_tlsconfig_HookTLSClientConfig)
     err_t err;
     x509bundle_Bundle *bundle
         = x509bundle_Load(td, "resources/good-leaf-only.pem", &err);
-    
+
     ck_assert_uint_eq(err, NO_ERROR);
 
     x509bundle_Source *bundle_src = x509bundle_SourceFromBundle(bundle);
@@ -97,6 +97,7 @@ START_TEST(test_tlsconfig_HookMTLSClientConfig)
                         "resources/key-pkcs8-ecdsa.pem", &err);
 
     ck_assert_uint_eq(err, NO_ERROR);
+    ck_assert_ptr_ne(svid, NULL);
 
     x509svid_Source *svid_src = x509svid_SourceFromSVID(svid);
     x509bundle_Bundle *bundle
@@ -107,7 +108,8 @@ START_TEST(test_tlsconfig_HookMTLSClientConfig)
     x509bundle_Source *bundle_src = x509bundle_SourceFromBundle(bundle);
     tlsconfig_Authorizer *authorizer = tlsconfig_AuthorizeMemberOf(td);
 
-    bool suc = tlsconfig_HookMTLSClientConfig(ctx, svid_src, bundle_src, authorizer, NULL);
+    bool suc = tlsconfig_HookMTLSClientConfig(ctx, svid_src, bundle_src,
+                                              authorizer, NULL);
 
     SSL_CTX_free(ctx);
     spiffeid_TrustDomain_Free(&td);
@@ -124,7 +126,7 @@ START_TEST(test_tlsconfig_resetAuthFields)
 
     tlsconfig_resetAuthFields(ctx);
 
-    SSL_CTX_free(ctx);   
+    SSL_CTX_free(ctx);
 }
 END_TEST
 
