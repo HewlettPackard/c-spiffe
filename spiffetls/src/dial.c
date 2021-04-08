@@ -9,13 +9,12 @@ static int createSocket(in_addr_t addr, in_port_t port)
     struct sockaddr_in address = { .sin_family = AF_INET,
                                    .sin_addr.s_addr = htonl(addr),
                                    .sin_port = htons(port) };
-    memset(&address.sin_zero, 0, sizeof address.sin_zero);
 
     const int sockfd = socket(/*IPv4*/ AF_INET, /*TCP*/ SOCK_STREAM, /*IP*/ 0);
-    if(connect(sockfd, (const struct sockaddr *) &address, sizeof address) < 0
-       || sockfd < 0) {
+    const int connect_ret = connect(sockfd, (const struct sockaddr *) &address, sizeof address);
+    if(connect_ret < 0 || sockfd < 0) {
         // could not create socket
-        /// TODO: handle error
+        return -1;
     }
 
     return sockfd;
@@ -72,8 +71,15 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
     const int sockfd
         = config->dialer_fd > 0 ? config->dialer_fd : createSocket(addr, port);
 
+    if(sockfd < 0) {
+        // could not create socket with given address and port
+        *err = ERROR1;
+        goto error;
+    }
+
     SSL_set_fd(conn, sockfd);
     SSL_set_connect_state(conn);
+
     if(SSL_connect(conn) != 1) {
         // could not build a SSL session
         SSL_shutdown(conn);
@@ -82,7 +88,6 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
         *err = ERROR2;
         goto error;
     }
-
     // successful handshake
     return conn;
 
