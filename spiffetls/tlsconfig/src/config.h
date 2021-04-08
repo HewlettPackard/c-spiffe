@@ -2,8 +2,8 @@
 #define INCLUDE_SPIFFETLS_TLSCONFIG_CONFIG_H
 
 #include "bundle/x509bundle/src/source.h"
-#include "svid/x509svid/src/source.h"
 #include "spiffetls/tlsconfig/src/authorizer.h"
+#include "svid/x509svid/src/source.h"
 #include <openssl/ssl.h>
 
 typedef struct {
@@ -14,7 +14,7 @@ typedef struct {
 typedef void (*tlsconfig_option)(tlsconfig_options *);
 
 typedef struct {
-    enum { TLSCONFIG_FUNC/*, TLSCONFIG_OPTIONS*/ } type;
+    enum { TLSCONFIG_FUNC /*, TLSCONFIG_OPTIONS*/ } type;
     union {
         /* tlsconfig_options *options;*/
         tlsconfig_option func;
@@ -45,7 +45,7 @@ bool tlsconfig_HookMTLSClientConfig(SSL_CTX *ctx, x509svid_Source *svid,
 // tlsconfig_MTLSWebServerConfig();
 // tlsconfig_HookMTLSWebServerConfig();
 // tlsconfig_getTLSCertificate();
-void tlsconfig_resetAuthFields();
+void tlsconfig_resetAuthFields(SSL_CTX *ctx);
 
 void tlsconfig_Option_Free(tlsconfig_Option *option);
 
