@@ -1,7 +1,7 @@
 #include "spiffetls/src/dial.h"
 #include <unistd.h>
 
-int main()
+int main(void)
 {
     err_t err;
     workloadapi_Client *client = workloadapi_NewClient(&err);
