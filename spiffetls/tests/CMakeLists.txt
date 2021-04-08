@@ -43,4 +43,4 @@ target_link_libraries(check_dial spiffetls ${CHECK_LIBRARIES}
   crypto
   pthread)
 
-add_test(check_dial check_mode)
+add_test(check_dial check_dial)
