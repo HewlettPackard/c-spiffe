@@ -31,22 +31,6 @@ tlsconfig_options *tlsconfig_newOptions(tlsconfig_Option **opts)
     return out;
 }
 
-// static void setTrace(tlsconfig_options *opts) { opts->trace = __trace; }
-
-// tlsconfig_Option *tlsconfig_WithTrace(tlsconfig_Trace *trace)
-// {
-//     __trace = trace;
-//     return tlsconfig_OptionFromFunc(setTrace);
-// }
-
-SSL_CTX *tlsconfig_TLSClientConfig(x509bundle_Source *bundle,
-                                   tlsconfig_Authorizer *authorizer,
-                                   tlsconfig_Option **opts)
-{
-    // dummy
-    return NULL;
-}
-
 struct hookTLSClientConfig_st {
     x509bundle_Source *bundle;
     tlsconfig_Authorizer *authorizer;
@@ -137,10 +121,12 @@ bool tlsconfig_HookMTLSClientConfig(SSL_CTX *ctx, x509svid_Source *svid,
                 return false;
             }
         } else {
-            /// TODO: handle error
+            // svid doest not contain certificate or private key
+            return false;
         }
     } else {
-        /// TODO: handle error
+        // could not get svid
+        return false;
     }
 
     struct hookTLSClientConfig_st *safe_arg1 = malloc(sizeof *safe_arg1);
@@ -151,11 +137,6 @@ bool tlsconfig_HookMTLSClientConfig(SSL_CTX *ctx, x509svid_Source *svid,
 
     return true;
 }
-
-// void tlsconfig_HookMTLSWebClientConfig(SSL_CTX *ctx, x509svid_Source *svid,
-//                                        x509util_CertPool *roots,
-//                                        tlsconfig_Option **opts)
-// {}
 
 void tlsconfig_resetAuthFields(SSL_CTX *ctx)
 {
