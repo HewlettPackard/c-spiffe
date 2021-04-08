@@ -1,6 +1,8 @@
 # Minimum CMake required
 cmake_minimum_required(VERSION 3.13)
 
+file(COPY ../tests/resources/ DESTINATION ${PROJECT_BINARY_DIR}/spiffetls/tlsconfig/tests/resources/)
+
 add_executable(check_authorizer check_authorizer.c)
 
 target_link_libraries(check_authorizer spiffetls ${CHECK_LIBRARIES}
