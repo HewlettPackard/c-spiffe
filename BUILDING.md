@@ -125,3 +125,4 @@ make lcov
 
 The coverage reports will be written to the `Coverage` folder. In the case of `lcov`, you
 can see it opening the `index.html` file on the folder above in your browser.
+

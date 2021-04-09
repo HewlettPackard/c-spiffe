@@ -8,14 +8,15 @@ C extension for Spiffe platform.
 
 ## Introduction
 
-[SPIFFE](https://spiffe.io/) stands for Security Identity Framework for Everyone and is a set for securely identifying system in dynamic and heteregeneous environment. Please refer to https://spiffe.io/docs/latest/spiffe-about/overview/ for more information.  
+[SPIFFE](https://spiffe.io/) stands for Security Identity Framework for Everyone and is a set for securely identifying system in dynamic and heterogeneous environment. Please refer to https://spiffe.io/docs/latest/spiffe-about/overview/ for more information.  
 C-spiffe is an extension for Spiffe that allows any [workload](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#workload) written C, C++ or  any language that supports loading a .so library, access [Workload API](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-workload-api) and establish a mTLS connection with other workloads.  
 The image above shows an example, where a C/C++ Workload imports the c-spiffe library in order to fetch a [SVID](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-verifiable-identity-document-svid) and use it to establish a mTLS connection with another Workload, which can be implemented in another language, provided it follows the SPIFFE standard.
-<<<<<<< HEAD
+
 
 ![Alt text](img/cspiffe_example.png "C-spiffe usage example")
 
 ### Motivation
+
 
 Even though there is an official [c-spiffe](https://github.com/spiffe/c-spiffe) library, we started this one from scratch. We wanted a C implementation (not C++) for better compatibility. We also based most of the design decisions on [go-spiffe](https://github.com/spiffe/c-spiffe), which is the offical supported extension by the Spiffe Community.
 
