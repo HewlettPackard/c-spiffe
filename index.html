@@ -72,15 +72,16 @@ $(function() {
 <p><a href="https://codecov.io/gh/HewlettPackard/c-spiffe"><img src="https://codecov.io/gh/HewlettPackard/c-spiffe/branch/master/graph/badge.svg" alt="codecov" style="pointer-events: none;" class="inline"/></a></p>
 <h1><a class="anchor" id="autotoc_md48"></a>
 Introduction</h1>
-<p><a href="https://spiffe.io/">SPIFFE</a> stands for Security Identity Framework for Everyone and is a set for securely identifying system in dynamic and heteregeneous environment. Please refer to <a href="https://spiffe.io/docs/latest/spiffe-about/overview/">https://spiffe.io/docs/latest/spiffe-about/overview/</a> for more information. <br  />
+<p><a href="https://spiffe.io/">SPIFFE</a> stands for Security Identity Framework for Everyone and is a set for securely identifying system in dynamic and heterogeneous environment. Please refer to <a href="https://spiffe.io/docs/latest/spiffe-about/overview/">https://spiffe.io/docs/latest/spiffe-about/overview/</a> for more information. <br  />
  C-spiffe is an extension for Spiffe that allows any <a href="https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#workload">workload</a> written C, C++ or any language that supports loading a .so library, access <a href="https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-workload-api">Workload API</a> and establish a mTLS connection with other workloads. <br  />
- The image above shows an example, where a C/C++ Workload imports the c-spiffe library in order to fetch a <a href="https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-verifiable-identity-document-svid">SVID</a> and use it to establish a mTLS connection with another Workload, which can be implemented in another language, provided it follows the SPIFFE standard. <img src="img/cspiffe_example.png" alt="Alt text" title="C-spiffe usage example" class="inline"/></p>
+ The image above shows an example, where a C/C++ Workload imports the c-spiffe library in order to fetch a <a href="https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-verifiable-identity-document-svid">SVID</a> and use it to establish a mTLS connection with another Workload, which can be implemented in another language, provided it follows the SPIFFE standard.</p>
+<p><img src="img/cspiffe_example.png" alt="Alt text" title="C-spiffe usage example" class="inline"/></p>
 <h2><a class="anchor" id="autotoc_md49"></a>
 Motivation</h2>
-<p>Even though there is an official <a href="https://github.com/spiffe/c-spiffe">c-spiffe</a> library, we started this one from scratch. We wanted a C implementation (not C++) for better compatibility, and also based all the design decisions on <a href="https://github.com/spiffe/c-spiffe">go-spiffe</a>, which is the official supported extension by the Spiffe Community.</p>
+<p>Even though there is an official <a href="https://github.com/spiffe/c-spiffe">c-spiffe</a> library, we started this one from scratch. We wanted a C implementation (not C++) for better compatibility. We also based most of the design decisions on <a href="https://github.com/spiffe/c-spiffe">go-spiffe</a>, which is the offical supported extension by the Spiffe Community.</p>
 <h1><a class="anchor" id="autotoc_md50"></a>
 Examples</h1>
-<p>Refer to <a class="el" href="md_workload_src_EXAMPLE.html">workload/src/Example.MD</a> for in-depth examples.</p>
+<p>Refer to <a class="el" href="md_workload_src_EXAMPLE.html">Examples</a> for more information.</p>
 <h1><a class="anchor" id="autotoc_md51"></a>
 Project structure</h1>
 <h2><a class="anchor" id="autotoc_md52"></a>
