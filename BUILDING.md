@@ -1,4 +1,3 @@
-
 # Building
 
 ## Docker Building(recommended)
@@ -9,9 +8,12 @@
 
 ###  Build Docker Image
 
+
 You can build the docker image from source with the following command line:
 
 ```
+git clone git@github.com:HewlettPackard/c-spiffe.git
+cd c-spiffe
 docker build -f docker/grpc.Dockerfile --build-arg GPRC_VERSION=1.34.0 --build-arg NUM_JOBS=8 --tag grpc-build:1.34.0 .
 ```
 
@@ -123,3 +125,4 @@ make lcov
 
 The coverage reports will be written to the `Coverage` folder. In the case of `lcov`, you
 can see it opening the `index.html` file on the folder above in your browser.
+
