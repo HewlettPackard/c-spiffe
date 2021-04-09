@@ -108,10 +108,10 @@ Functions</h2></td></tr>
 <tr class="separator:a3ff4b626d71e8c8c6d0a49ac4e3d995d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8ab9d05261ee69342f113549927d324"><td class="memItemLeft" align="right" valign="top">EVP_PKEY *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pem_8c.html#aa8ab9d05261ee69342f113549927d324">pemutil_ParsePrivateKey</a> (const <a class="el" href="utils_2src_2util_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> *bytes, <a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err)</td></tr>
 <tr class="separator:aa8ab9d05261ee69342f113549927d324"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d2222f6adc3b01794a6db8e6422ddf2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="utils_2src_2util_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pem_8c.html#a9d2222f6adc3b01794a6db8e6422ddf2">pemutil_EncodePrivateKey</a> (EVP_PKEY *pkey, int *bytes_len, <a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err)</td></tr>
-<tr class="separator:a9d2222f6adc3b01794a6db8e6422ddf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59082b75fdf5f16fb393d5adf876df5a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="utils_2src_2util_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pem_8c.html#a59082b75fdf5f16fb393d5adf876df5a">pemutil_EncodeCertificates</a> (X509 **<a class="el" href="check__x509source_8c.html#a86cc65f14198e068d60b43bcf233a074">certs</a>)</td></tr>
-<tr class="separator:a59082b75fdf5f16fb393d5adf876df5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3963e783adecbcad286949e213e12415"><td class="memItemLeft" align="right" valign="top"><a class="el" href="utils_2src_2util_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pem_8c.html#a3963e783adecbcad286949e213e12415">pemutil_EncodePrivateKey</a> (EVP_PKEY *pkey, <a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err)</td></tr>
+<tr class="separator:a3963e783adecbcad286949e213e12415"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1e83efd6b29b1e71ebcc91c4bda3540"><td class="memItemLeft" align="right" valign="top"><a class="el" href="utils_2src_2util_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pem_8c.html#ad1e83efd6b29b1e71ebcc91c4bda3540">pemutil_EncodeCertificates</a> (X509 **<a class="el" href="check__x509source_8c.html#a86cc65f14198e068d60b43bcf233a074">certs</a>, <a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err)</td></tr>
+<tr class="separator:ad1e83efd6b29b1e71ebcc91c4bda3540"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a7d4975043cedac735faf41ea8ccc653a"></a>
@@ -133,8 +133,8 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a59082b75fdf5f16fb393d5adf876df5a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59082b75fdf5f16fb393d5adf876df5a">&#9670;&nbsp;</a></span>pemutil_EncodeCertificates()</h2>
+<a id="ad1e83efd6b29b1e71ebcc91c4bda3540"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1e83efd6b29b1e71ebcc91c4bda3540">&#9670;&nbsp;</a></span>pemutil_EncodeCertificates()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -143,39 +143,7 @@ Functions</h2></td></tr>
           <td class="memname"><a class="el" href="utils_2src_2util_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a>** pemutil_EncodeCertificates </td>
           <td>(</td>
           <td class="paramtype">X509 **&#160;</td>
-          <td class="paramname"><em>certs</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Encodes a stb array of X.509 certificates in DER format.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">certs</td><td>[in] stb array ox X.509 certificate object pointers. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Encoded stb array of stb arrays of bytes if successful, <code>NULL</code> otherwise. Must be freed iterating on the array using arrfree, and then arrfree on the outer stb array. </dd></dl>
-
-</div>
-</div>
-<a id="a9d2222f6adc3b01794a6db8e6422ddf2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d2222f6adc3b01794a6db8e6422ddf2">&#9670;&nbsp;</a></span>pemutil_EncodePrivateKey()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="utils_2src_2util_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a>* pemutil_EncodePrivateKey </td>
-          <td>(</td>
-          <td class="paramtype">EVP_PKEY *&#160;</td>
-          <td class="paramname"><em>pkey</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>bytes_len</em>, </td>
+          <td class="paramname"><em>certs</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -190,7 +158,51 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>TODO: check if it is better to copy pem_bytes data to a stb array </p>
+<p>Encodes a stb array of X.509 certificates in DER format.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">certs</td><td>[in] stb array ox X.509 certificate object pointers. </td></tr>
+    <tr><td class="paramname">err</td><td>[out] Variable to get information in the event of error. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Encoded stb array of stb arrays of bytes if successful, <code>NULL</code> otherwise. Must be freed iterating on the array using arrfree, and then arrfree on the outer stb array. </dd></dl>
+
+</div>
+</div>
+<a id="a3963e783adecbcad286949e213e12415"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3963e783adecbcad286949e213e12415">&#9670;&nbsp;</a></span>pemutil_EncodePrivateKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="utils_2src_2util_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a>* pemutil_EncodePrivateKey </td>
+          <td>(</td>
+          <td class="paramtype">EVP_PKEY *&#160;</td>
+          <td class="paramname"><em>pkey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *&#160;</td>
+          <td class="paramname"><em>err</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Encodes a private key in DER format.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pkey</td><td>[in] private key object pointer.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Encoded private key array of bytes if successful, <code>NULL</code> otherwise. Must be freed using arrfree function. </dd></dl>
 
 </div>
 </div>

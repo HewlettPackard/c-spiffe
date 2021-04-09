@@ -1,4 +1,15 @@
 <map id="spiffetls/tlsconfig/src/authorizer.h" name="spiffetls/tlsconfig/src/authorizer.h">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,124,47"/>
-<area shape="rect" id="node2" href="$authorizer_8c.html" title=" " alt="" coords="5,95,124,136"/>
+<area shape="rect" id="node1" title=" " alt="" coords="603,5,721,47"/>
+<area shape="rect" id="node2" href="$dial_8h.html" title=" " alt="" coords="165,191,287,218"/>
+<area shape="rect" id="node6" href="$mode_8h.html" title=" " alt="" coords="363,102,497,129"/>
+<area shape="rect" id="node9" href="$authorizer_8c.html" title=" " alt="" coords="555,95,673,136"/>
+<area shape="rect" id="node10" href="$config_8c.html" title=" " alt="" coords="685,184,804,225"/>
+<area shape="rect" id="node11" href="$config_8h.html" title=" " alt="" coords="749,95,868,136"/>
+<area shape="rect" id="node13" href="$check__authorizer_8c.html" title=" " alt="" coords="892,95,1059,136"/>
+<area shape="rect" id="node3" href="$c__dial__example_8c.html" title=" " alt="" coords="5,273,132,315"/>
+<area shape="rect" id="node4" href="$dial_8c.html" title=" " alt="" coords="319,281,442,307"/>
+<area shape="rect" id="node5" href="$check__dial_8c.html" title=" " alt="" coords="157,273,295,315"/>
+<area shape="rect" id="node7" href="$mode_8c.html" title=" " alt="" coords="363,191,497,218"/>
+<area shape="rect" id="node8" href="$check__mode_8c.html" title=" " alt="" coords="522,184,661,225"/>
+<area shape="rect" id="node12" href="$check__config_8c.html" title=" " alt="" coords="880,184,1025,225"/>
 </map>

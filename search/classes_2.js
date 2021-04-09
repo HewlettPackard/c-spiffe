@@ -1,11 +1,10 @@
 var searchData=
 [
-  ['map_5fstring_5fclaim_780',['map_string_claim',['../structmap__string__claim.html',1,'']]],
-  ['map_5fstring_5fevp_5fpkey_781',['map_string_EVP_PKEY',['../structmap__string__EVP__PKEY.html',1,'']]],
-  ['map_5fstring_5fint_5farr_782',['map_string_int_arr',['../structmap__string__int__arr.html',1,'']]],
-  ['map_5fstring_5fjwtbundle_5fbundle_783',['map_string_jwtbundle_Bundle',['../structmap__string__jwtbundle__Bundle.html',1,'']]],
-  ['map_5fstring_5fspiffebundle_5fbundle_784',['map_string_spiffebundle_Bundle',['../structmap__string__spiffebundle__Bundle.html',1,'']]],
-  ['map_5fstring_5fstring_785',['map_string_string',['../structmap__string__string.html',1,'']]],
-  ['map_5fstring_5fx509bundle_5fbundle_786',['map_string_x509bundle_Bundle',['../structmap__string__x509bundle__Bundle.html',1,'']]],
-  ['map_5fx509_5fchains_787',['map_X509_chains',['../structmap__X509__chains.html',1,'']]]
+  ['jwtbundle_5fbundle_867',['jwtbundle_Bundle',['../structjwtbundle__Bundle.html',1,'']]],
+  ['jwtbundle_5fset_868',['jwtbundle_Set',['../structjwtbundle__Set.html',1,'']]],
+  ['jwtbundle_5fsource_869',['jwtbundle_Source',['../structjwtbundle__Source.html',1,'']]],
+  ['jwtsvid_5fclaims_870',['jwtsvid_Claims',['../structjwtsvid__Claims.html',1,'']]],
+  ['jwtsvid_5fjwt_871',['jwtsvid_JWT',['../structjwtsvid__JWT.html',1,'']]],
+  ['jwtsvid_5fparams_872',['jwtsvid_Params',['../structjwtsvid__Params.html',1,'']]],
+  ['jwtsvid_5fsvid_873',['jwtsvid_SVID',['../structjwtsvid__SVID.html',1,'']]]
 ];

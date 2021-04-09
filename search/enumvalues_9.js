@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['stbds_5fsh_5farena_1419',['STBDS_SH_ARENA',['../stb__ds_8h.html#abc6126af1d45847bc59afa0aa3216b04acc00a7d3e35d4cf49876ccd28090d822',1,'stb_ds.h']]],
-  ['stbds_5fsh_5fdefault_1420',['STBDS_SH_DEFAULT',['../stb__ds_8h.html#abc6126af1d45847bc59afa0aa3216b04a8e3b6ebef25ad0cd1671d1907f674b33',1,'stb_ds.h']]],
-  ['stbds_5fsh_5fnone_1421',['STBDS_SH_NONE',['../stb__ds_8h.html#abc6126af1d45847bc59afa0aa3216b04a59182471de92e24b86ffad093024442a',1,'stb_ds.h']]],
-  ['stbds_5fsh_5fstrdup_1422',['STBDS_SH_STRDUP',['../stb__ds_8h.html#abc6126af1d45847bc59afa0aa3216b04a0f3b4e19006b798f5f57bb959fa436a7',1,'stb_ds.h']]]
+  ['x509bundle_5fbundle_1604',['X509BUNDLE_BUNDLE',['../structx509bundle__Source.html#aaa1bac005ce96754442b285b5bc02298ab5e923c4accb38aebb949e3a2af9635b',1,'x509bundle_Source']]],
+  ['x509bundle_5fset_1605',['X509BUNDLE_SET',['../structx509bundle__Source.html#aaa1bac005ce96754442b285b5bc02298ad5893f792281271effb4e00f22a9878e',1,'x509bundle_Source']]],
+  ['x509svid_5fsvid_1606',['X509SVID_SVID',['../structx509svid__Source.html#aa22d29f7e75deaf697975d2d1a697d3da47471c32960afd59a15c2830e13c940a',1,'x509svid_Source']]]
 ];

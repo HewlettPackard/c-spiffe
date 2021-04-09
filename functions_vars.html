@@ -78,6 +78,11 @@ $(function() {
 , <a class="el" href="structjwtsvid__Params.html#a441dd539a91263cb9e0e00cb52e1a81d">jwtsvid_Params</a>
 , <a class="el" href="structjwtsvid__SVID.html#aec57aecb8ac6a0339c7467ff8fac327a">jwtsvid_SVID</a>
 </li>
+<li>authorizer
+: <a class="el" href="structhookMTLSClientConfig__st.html#a908c098b47ac621c0b3a2d3f7ea5f30e">hookMTLSClientConfig_st</a>
+, <a class="el" href="structhookTLSClientConfig__st.html#a510ff95bfecf2aa832d281bfa96c849f">hookTLSClientConfig_st</a>
+, <a class="el" href="structspiffetls__DialMode.html#ab47faefe91bc82d8fd2ece1617e2ad20">spiffetls_DialMode</a>
+</li>
 <li>auths
 : <a class="el" href="structjwtbundle__Bundle.html#a4dd03e307cd58cbfd1d6f3faca58b79e">jwtbundle_Bundle</a>
 , <a class="el" href="structx509bundle__Bundle.html#aa5806acb9a63385251b2799463d4524e">x509bundle_Bundle</a>
@@ -86,11 +91,17 @@ $(function() {
 
 
 <h3><a id="index_b"></a>- b -</h3><ul>
+<li>base_TLS_conf
+: <a class="el" href="structspiffetls__dialConfig.html#abe6112f348a9489b7f9b25eb79de9599">spiffetls_dialConfig</a>
+</li>
 <li>block
 : <a class="el" href="structstbds__string__arena.html#ae7abec55a9ec1abd3341b4c7641e91e3">stbds_string_arena</a>
 </li>
 <li>bundle
-: <a class="el" href="structjwtbundle__Source.html#a8d59428ed4f39ebcaad92bf9ae214337">jwtbundle_Source</a>
+: <a class="el" href="structhookMTLSClientConfig__st.html#a796eb7835c9170e03b6a1bfe4dd9dfeb">hookMTLSClientConfig_st</a>
+, <a class="el" href="structhookTLSClientConfig__st.html#a5920ec81501d3d569a214ab0855de875">hookTLSClientConfig_st</a>
+, <a class="el" href="structjwtbundle__Source.html#a8d59428ed4f39ebcaad92bf9ae214337">jwtbundle_Source</a>
+, <a class="el" href="structspiffetls__DialMode.html#a3be242fc90b9578ca2de3164cf710d9d">spiffetls_DialMode</a>
 , <a class="el" href="structx509bundle__Source.html#a72c0ef6dba1ce276e6d71070a042c4ed">x509bundle_Source</a>
 </li>
 <li>bundles
@@ -108,8 +119,11 @@ $(function() {
 <li>capacity
 : <a class="el" href="structstbds__array__header.html#ab88c136d4fbd348cba0ad8fd1b1ce7d7">stbds_array_header</a>
 </li>
-<li>certifiedChains
-: <a class="el" href="structtlsconfig__Authorizer.html#a2cbf24f406377dfd73249e2721f8c998">tlsconfig_Authorizer</a>
+<li>cert
+: <a class="el" href="structtlsconfig__GotCertificateInfo.html#a77723bd4620184dbef5dec2957dfb896">tlsconfig_GotCertificateInfo</a>
+</li>
+<li>certified_chains
+: <a class="el" href="structtlsconfig__Authorizer.html#a7341f330ca32dc72c96b227efe838569">tlsconfig_Authorizer</a>
 </li>
 <li>certs
 : <a class="el" href="structx509svid__SVID.html#aeb01dd22256e12be0294c72869f8c85f">x509svid_SVID</a>
@@ -119,7 +133,8 @@ $(function() {
 : <a class="el" href="structjwtsvid__SVID.html#a94de84400f0d05e57f6adbc35d803336">jwtsvid_SVID</a>
 </li>
 <li>client
-: <a class="el" href="structworkloadapi__JWTWatcher.html#acd68c3dd2ebb453887c7ebea9f8226db">workloadapi_JWTWatcher</a>
+: <a class="el" href="structssl__server__connection.html#a77792cd56c5e3b19e5f04055cae6d246">ssl_server_connection</a>
+, <a class="el" href="structworkloadapi__JWTWatcher.html#acd68c3dd2ebb453887c7ebea9f8226db">workloadapi_JWTWatcher</a>
 , <a class="el" href="structworkloadapi__JWTWatcherConfig.html#a32e46c6dcccbf4c1c3dffcd24b2be923">workloadapi_JWTWatcherConfig</a>
 , <a class="el" href="structworkloadapi__Watcher.html#aa3655439320da92f93cdd2d0305e7c12">workloadapi_Watcher</a>
 , <a class="el" href="structworkloadapi__WatcherConfig.html#a0afd1d367ce4d3b85da1c6849f8c8d37">workloadapi_WatcherConfig</a>
@@ -164,7 +179,17 @@ $(function() {
 </ul>
 
 
+<h3><a id="index_d"></a>- d -</h3><ul>
+<li>dialer_fd
+: <a class="el" href="structspiffetls__dialConfig.html#a3cbda953dbf762cbaaadce145b36d0d6">spiffetls_dialConfig</a>
+</li>
+</ul>
+
+
 <h3><a id="index_e"></a>- e -</h3><ul>
+<li>err
+: <a class="el" href="structtlsconfig__GotCertificateInfo.html#aa04b610dc94311a4ba01f39f9f13e7d6">tlsconfig_GotCertificateInfo</a>
+</li>
 <li>expiry
 : <a class="el" href="structjwtsvid__Claims.html#a86ccca83527b0b84b72466b2898eb0cd">jwtsvid_Claims</a>
 , <a class="el" href="structjwtsvid__SVID.html#a3288bd13b81904f924327350528b3cb5">jwtsvid_SVID</a>
@@ -177,7 +202,8 @@ $(function() {
 
 <h3><a id="index_f"></a>- f -</h3><ul>
 <li>func
-: <a class="el" href="structworkloadapi__JWTCallback.html#a33b7057f2476850f1f9f0c2cd26df7a1">workloadapi_JWTCallback</a>
+: <a class="el" href="structtlsconfig__Option.html#a4936db114b4118c1d96ac01a166d3813">tlsconfig_Option</a>
+, <a class="el" href="structworkloadapi__JWTCallback.html#a33b7057f2476850f1f9f0c2cd26df7a1">workloadapi_JWTCallback</a>
 , <a class="el" href="structworkloadapi__X509Callback.html#a09805d3ccaf3306b9da214462e4d3689">workloadapi_X509Callback</a>
 </li>
 </ul>
@@ -240,7 +266,6 @@ $(function() {
 , <a class="el" href="structmap__string__spiffebundle__Bundle.html#a0e6762ef5dd05dd36cc6c02ae01bfc8d">map_string_spiffebundle_Bundle</a>
 , <a class="el" href="structmap__string__string.html#a8bbe8c80b7696dc45ecd58ddf4522068">map_string_string</a>
 , <a class="el" href="structmap__string__x509bundle__Bundle.html#a9e4185cc11d230d7e537f6193070dde5">map_string_x509bundle_Bundle</a>
-, <a class="el" href="structmap__X509__chains.html#a9b8868da06dc78a7153a7e59c9681040">map_X509_chains</a>
 </li>
 </ul>
 
@@ -260,7 +285,8 @@ $(function() {
 : <a class="el" href="structworkloadapi__Backoff.html#a698beea9767fa9778da2b71c7474830a">workloadapi_Backoff</a>
 </li>
 <li>mode
-: <a class="el" href="structstbds__string__arena.html#afafb53a85f37b648cb5b4e9c72f0ac91">stbds_string_arena</a>
+: <a class="el" href="structspiffetls__DialMode.html#acb9e231baac418f3bc95974ed2b7c9d4">spiffetls_DialMode</a>
+, <a class="el" href="structstbds__string__arena.html#afafb53a85f37b648cb5b4e9c72f0ac91">stbds_string_arena</a>
 </li>
 <li>mtx
 : <a class="el" href="structjwtbundle__Bundle.html#a69ee392a0b3b5b30bc2f4636f9be3f92">jwtbundle_Bundle</a>
@@ -292,6 +318,10 @@ $(function() {
 
 
 <h3><a id="index_o"></a>- o -</h3><ul>
+<li>opts
+: <a class="el" href="structhookMTLSClientConfig__st.html#a9c4ae61e4ac2a02b4001e8a0841629d9">hookMTLSClientConfig_st</a>
+, <a class="el" href="structhookTLSClientConfig__st.html#a3d3cca39c2c00b9e1eec5fc119c1d31e">hookTLSClientConfig_st</a>
+</li>
 <li>owns_client
 : <a class="el" href="structworkloadapi__JWTWatcher.html#a0d887b110a650551942810ed0bcfa1b2">workloadapi_JWTWatcher</a>
 , <a class="el" href="structworkloadapi__Watcher.html#a4007f3c5d58517b6636cbb71ca77d364">workloadapi_Watcher</a>
@@ -328,12 +358,18 @@ $(function() {
 <li>remaining
 : <a class="el" href="structstbds__string__arena.html#aabd3e4b954978c298d730e707d478c16">stbds_string_arena</a>
 </li>
+<li>roots
+: <a class="el" href="structspiffetls__DialMode.html#a2634bb852de7c0588daaa3bff122122f">spiffetls_DialMode</a>
+</li>
 </ul>
 
 
 <h3><a id="index_s"></a>- s -</h3><ul>
 <li>seqNumber
 : <a class="el" href="structspiffebundle__Bundle.html#a476401679a2bdc29b5173ab1e3049d1c">spiffebundle_Bundle</a>
+</li>
+<li>service
+: <a class="el" href="structssl__server__connection.html#a1f968a2c61779338f062f7924c1611cb">ssl_server_connection</a>
 </li>
 <li>set
 : <a class="el" href="structjwtbundle__Source.html#a60d5fb13aea130f13a9eafb90a134731">jwtbundle_Source</a>
@@ -344,7 +380,13 @@ $(function() {
 </li>
 <li>source
 : <a class="el" href="structjwtbundle__Source.html#a3627b5e2226757acc2a6d66bfabe33dc">jwtbundle_Source</a>
-, <a class="el" href="structx509bundle__Source.html#a7f72601a05dabf004b116d7e8c34c93f">x509bundle_Source</a>
+, <a class="el" href="structspiffetls__DialMode.html#a13d016a581b7e71d9261ef282f5405e9">spiffetls_DialMode</a>
+, <a class="el" href="structtlsconfig__Option.html#a2da7d3b860868f328b87e73620503c23">tlsconfig_Option</a>
+, <a class="el" href="structx509bundle__Source.html#a69c20d441b3c797be8df1a8eabc14235">x509bundle_Source</a>
+, <a class="el" href="structx509svid__Source.html#a5d47e1603a0d8f9c58d5a7237d8cf911">x509svid_Source</a>
+</li>
+<li>ssl
+: <a class="el" href="structssl__server__connection.html#a13807382b20aa54a0c300fb348c858ea">ssl_server_connection</a>
 </li>
 <li>storage
 : <a class="el" href="structstbds__string__arena.html#abd7b0b8327bd67a97a054e6b556f2086">stbds_string_arena</a>
@@ -359,6 +401,11 @@ $(function() {
 <li>subject
 : <a class="el" href="structjwtsvid__Claims.html#aa8b563d29baeb879478af6f05c2a48e4">jwtsvid_Claims</a>
 , <a class="el" href="structjwtsvid__Params.html#aa4c936df7119cd7f0f4c16d0e2cd7b5a">jwtsvid_Params</a>
+</li>
+<li>svid
+: <a class="el" href="structhookMTLSClientConfig__st.html#a3b6c8cea42ac049563f21f7d4e2c2500">hookMTLSClientConfig_st</a>
+, <a class="el" href="structspiffetls__DialMode.html#af7471fc5902d5563150806108655218f">spiffetls_DialMode</a>
+, <a class="el" href="structx509svid__Source.html#afb344be4e95af5bfbbda0e5a423de7cd">x509svid_Source</a>
 </li>
 <li>svids
 : <a class="el" href="structworkloadapi__X509Context.html#a35281cfdd3d46f7317b106a7fb0f6996">workloadapi_X509Context</a>
@@ -388,15 +435,23 @@ $(function() {
 <li>token
 : <a class="el" href="structjwtsvid__SVID.html#af626fa7f6b72f30d837b3ce6d73844ed">jwtsvid_SVID</a>
 </li>
+<li>trace
+: <a class="el" href="structtlsconfig__options.html#a5b1b53741eb6ed95de2e7d5279c31c0c">tlsconfig_options</a>
+</li>
 <li>type
 : <a class="el" href="structjwtbundle__Source.html#a0f662fde89fef97cdcde4a886a6ae0f3">jwtbundle_Source</a>
 , <a class="el" href="structspiffeid__Matcher.html#a7f2fb9fe1d5b29fce04d05c57eb8a86d">spiffeid_Matcher</a>
+, <a class="el" href="structtlsconfig__Option.html#abbc1d4f8ca96524b7dac6d0bec28f1cc">tlsconfig_Option</a>
 , <a class="el" href="structx509bundle__Source.html#a44a3338bf8080a8b27a5ea9af61a6b5f">x509bundle_Source</a>
+, <a class="el" href="structx509svid__Source.html#a30e3387dab67ae89759eaeb3f18a5b9c">x509svid_Source</a>
 </li>
 </ul>
 
 
 <h3><a id="index_u"></a>- u -</h3><ul>
+<li>unneeded_source
+: <a class="el" href="structspiffetls__DialMode.html#a603ab6c4e3ab214ea53cdfeb662dbbfb">spiffetls_DialMode</a>
+</li>
 <li>update_cond
 : <a class="el" href="structworkloadapi__JWTWatcher.html#a8161c82f5102d8df92f22a471b504de0">workloadapi_JWTWatcher</a>
 , <a class="el" href="structworkloadapi__Watcher.html#a7b95b2302127b0fc175a85e8bbc7ad9c">workloadapi_Watcher</a>
@@ -425,7 +480,6 @@ $(function() {
 , <a class="el" href="structmap__string__spiffebundle__Bundle.html#a41eecf71c3dde7d77acea411cf063ef8">map_string_spiffebundle_Bundle</a>
 , <a class="el" href="structmap__string__string.html#ac94205c396664b51ade9657197d14bee">map_string_string</a>
 , <a class="el" href="structmap__string__x509bundle__Bundle.html#a834ca6c8d1b76caeb33e7687568e0601">map_string_x509bundle_Bundle</a>
-, <a class="el" href="structmap__X509__chains.html#aefa2b13fddcf35206269e561c648a33f">map_X509_chains</a>
 </li>
 </ul>
 
