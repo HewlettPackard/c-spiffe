@@ -18,7 +18,7 @@ docker build -f docker/grpc.Dockerfile --build-arg GPRC_VERSION=1.34.0 --build-a
 
 ### Pull our Docker image
 
-Or you can use a pre build image:
+Or you can use a pre-built image:
 
 ````
 docker pull willallves/grpc-build:1.34.0
