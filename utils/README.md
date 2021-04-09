@@ -1,4 +1,3 @@
 # Util
 
-The Utils module is composed by generarl utility functions. Most used interally by the lib.
-
+The Utils module is composed by general utility functions. Most used internally by the lib.
