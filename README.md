@@ -16,7 +16,7 @@ The image above shows an example, where a C/C++ Workload imports the c-spiffe li
 
 ### Motivation
 
-Even though there is an official [c-spiffe](https://github.com/spiffe/c-spiffe) library, we started this one from scratch. We wanted a C implementation (not C++) for better compatibility, and also we based all the design decisions on [go-spiffe](https://github.com/spiffe/c-spiffe), which is the offical supported extension by the Spiffe Community.
+Even though there is an official [c-spiffe](https://github.com/spiffe/c-spiffe) library, we started this one from scratch. We wanted a C implementation (not C++) for better compatibility. We also based most of the design decisions on [go-spiffe](https://github.com/spiffe/c-spiffe), which is the official supported extension by the Spiffe Community.
 
 
 ## Examples
@@ -82,7 +82,6 @@ Refer to [Examples](workload/src/EXAMPLE.md) for more information.
 
 ## Contributing
 Refer to [Contributing](workload/src/CONTRIBUTING.md) for more information.
-
 
 
 
