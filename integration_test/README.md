@@ -1,6 +1,6 @@
 # Integration tests
 
-This folder contains all integration automated tests scripts. They were all implemented using Python, with [Behave](https://behave.readthedocs.io/) framework.
+This folder contains all automated integration tests scripts. They were all implemented using Python, with [Behave](https://behave.readthedocs.io/) framework.
 
 ## Installing dependencies
 
