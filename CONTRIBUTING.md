@@ -3,7 +3,7 @@
 ## Contributing
 
 In order to contribute to the project, the following steps should be followed:
-1. Fork this repository
+1. Fork the main repository
 2. Create your feature branch
 3. Commit your local changes in the feature branch
 4. Push to your fork
