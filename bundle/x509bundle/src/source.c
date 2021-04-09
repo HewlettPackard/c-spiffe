@@ -32,7 +32,6 @@ x509bundle_Source *x509bundle_SourceFromSet(x509bundle_Set *s)
 {
     if(s) {
         x509bundle_Source *source = malloc(sizeof *source);
-
         source->type = X509BUNDLE_SET;
         source->source.set = s;
 
@@ -41,6 +40,20 @@ x509bundle_Source *x509bundle_SourceFromSet(x509bundle_Set *s)
 
     return NULL;
 }
+
+x509bundle_Source *x509bundle_SourceFromSource(workloadapi_X509Source *source)
+{
+    if(source) {
+        x509bundle_Source *my_source = malloc(sizeof *my_source);
+        my_source->type = WORKLOADAPI_X509SOURCE;
+        my_source->source.source = source;
+
+        return my_source;
+    }
+
+    return NULL;
+}
+
 
 void x509bundle_Source_Free(x509bundle_Source *s)
 {

@@ -630,7 +630,6 @@ x509svid_SVID *workloadapi_Client_FetchX509SVID(workloadapi_Client *client,
             return NULL; // Should never happen
         }
         x509svid_SVID *ret_svid = svids[0];
-
         for(size_t i = 1, size = arrlenu(svids); i < size; ++i) {
             x509svid_SVID_Free(svids[i]);
         }
