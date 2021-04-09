@@ -70,302 +70,73 @@ $(function() {
 <div class="textblock"><p><a class="anchor" id="md_README"></a> C extension for Spiffe platform.</p>
 <p><a href="https://github.com/HewlettPackard/c-spiffe/actions/workflows/actions.yml"><img src="https://github.com/HewlettPackard/c-spiffe/actions/workflows/actions.yml/badge.svg" alt="Build and run tests" style="pointer-events: none;" class="inline"/></a></p>
 <p><a href="https://codecov.io/gh/HewlettPackard/c-spiffe"><img src="https://codecov.io/gh/HewlettPackard/c-spiffe/branch/master/graph/badge.svg" alt="codecov" style="pointer-events: none;" class="inline"/></a></p>
-<h1><a class="anchor" id="autotoc_md9"></a>
+<h1><a class="anchor" id="autotoc_md48"></a>
 Introduction</h1>
-<p>gRPC C++ examples built with CMake.</p>
-<h1><a class="anchor" id="autotoc_md10"></a>
-Files</h1>
-<div class="fragment"><div class="line">.</div>
-<div class="line">├── bundle</div>
-<div class="line">│   ├── CMakeLists.txt</div>
-<div class="line">│   ├── jwtbundle</div>
-<div class="line">│   │   ├── src</div>
-<div class="line">│   │   │   ├── bundle.c</div>
-<div class="line">│   │   │   ├── bundle.h</div>
-<div class="line">│   │   │   ├── set.c</div>
-<div class="line">│   │   │   ├── set.h</div>
-<div class="line">│   │   │   ├── source.c</div>
-<div class="line">│   │   │   └── source.h</div>
-<div class="line">│   │   └── tests</div>
-<div class="line">│   │       ├── check_bundle.c</div>
-<div class="line">│   │       ├── jwk_keys.json</div>
-<div class="line">│   │       └── README</div>
-<div class="line">│   ├── spiffebundle</div>
-<div class="line">│   │   └── src</div>
-<div class="line">│   │       ├── bundle.c</div>
-<div class="line">│   │       ├── bundle.h</div>
-<div class="line">│   │       ├── set.c</div>
-<div class="line">│   │       └── set.h</div>
-<div class="line">│   └── x509bundle</div>
-<div class="line">│       ├── src</div>
-<div class="line">│       │   ├── bundle.c</div>
-<div class="line">│       │   ├── bundle.h</div>
-<div class="line">│       │   ├── set.c</div>
-<div class="line">│       │   ├── set.h</div>
-<div class="line">│       │   ├── source.c</div>
-<div class="line">│       │   └── source.h</div>
-<div class="line">│       └── tests</div>
-<div class="line">│           ├── certs.pem</div>
-<div class="line">│           ├── check_bundle.c</div>
-<div class="line">│           ├── check_set.c</div>
-<div class="line">│           └── README</div>
-<div class="line">├── cmake</div>
-<div class="line">│   ├── config.h.in</div>
-<div class="line">│   ├── COPYING-CMAKE-SCRIPTS.txt</div>
-<div class="line">│   └── FindCheck.cmake</div>
-<div class="line">├── CMakeLists.txt</div>
-<div class="line">├── docker</div>
-<div class="line">│   └── grpc.Dockerfile</div>
-<div class="line">├── file</div>
-<div class="line">├── img</div>
-<div class="line">│   └── ci-process.png</div>
-<div class="line">├── integration_test</div>
-<div class="line">│   ├── behave.ini</div>
-<div class="line">│   ├── common</div>
-<div class="line">│   │   ├── assets</div>
-<div class="line">│   │   │   ├── good-cert-and-key.pem</div>
-<div class="line">│   │   │   └── good-key-and-cert.pem</div>
-<div class="line">│   │   └── constants.py</div>
-<div class="line">│   ├── features</div>
-<div class="line">│   │   ├── environment.py</div>
-<div class="line">│   │   ├── steps</div>
-<div class="line">│   │   │   └── fetch_x509_step.py</div>
-<div class="line">│   │   ├── Fetch_X509.feature</div>
-<div class="line">│   │   └── utils.py</div>
-<div class="line">│   ├── get-entries.py</div>
-<div class="line">│   ├── grpc_conn_test_agent.sh</div>
-<div class="line">│   ├── grpc_conn_test_entries.sh</div>
-<div class="line">│   ├── grpc_conn_test_server.sh</div>
-<div class="line">│   ├── README.md</div>
-<div class="line">│   └── requirements.txt</div>
-<div class="line">├── internal</div>
-<div class="line">│   ├── CMakeLists.txt</div>
-<div class="line">│   ├── cryptoutil</div>
-<div class="line">│   │   ├── src</div>
-<div class="line">│   │   │   ├── keys.c</div>
-<div class="line">│   │   │   └── keys.h</div>
-<div class="line">│   │   └── tests</div>
-<div class="line">│   │       ├── check_keys.c</div>
-<div class="line">│   │       ├── CMakeLists.txt</div>
-<div class="line">│   │       └── README</div>
-<div class="line">│   ├── jwtutil</div>
-<div class="line">│   │   ├── src</div>
-<div class="line">│   │   │   ├── util.c</div>
-<div class="line">│   │   │   └── util.h</div>
-<div class="line">│   │   └── tests</div>
-<div class="line">│   │       ├── check_util.c</div>
-<div class="line">│   │       ├── CMakeLists.txt</div>
-<div class="line">│   │       └── README</div>
-<div class="line">│   ├── pemutil</div>
-<div class="line">│   │   ├── src</div>
-<div class="line">│   │   │   ├── pem.c</div>
-<div class="line">│   │   │   └── pem.h</div>
-<div class="line">│   │   └── tests</div>
-<div class="line">│   │       ├── check_pem.c</div>
-<div class="line">│   │       ├── CMakeLists.txt</div>
-<div class="line">│   │       └── README</div>
-<div class="line">│   └── x509util</div>
-<div class="line">│       ├── src</div>
-<div class="line">│       │   ├── certpool.c</div>
-<div class="line">│       │   ├── certpool.h</div>
-<div class="line">│       │   ├── util.c</div>
-<div class="line">│       │   └── util.h</div>
-<div class="line">│       └── tests</div>
-<div class="line">│           ├── certs.pem</div>
-<div class="line">│           ├── check_certpool.c</div>
-<div class="line">│           ├── check_util.c</div>
-<div class="line">│           ├── CMakeLists.txt</div>
-<div class="line">│           ├── key-pkcs8-rsa.pem</div>
-<div class="line">│           ├── README</div>
-<div class="line">│           └── resources</div>
-<div class="line">│               ├── certs.pem</div>
-<div class="line">│               └── key-pkcs8-rsa.pem</div>
-<div class="line">├── protos</div>
-<div class="line">│   └── workload.proto</div>
-<div class="line">├── README.md</div>
-<div class="line">├── spiffeid</div>
-<div class="line">│   ├── CMakeLists.txt</div>
-<div class="line">│   ├── src</div>
-<div class="line">│   │   ├── id.c</div>
-<div class="line">│   │   ├── id.h</div>
-<div class="line">│   │   ├── match.c</div>
-<div class="line">│   │   ├── match.h</div>
-<div class="line">│   │   ├── trustdomain.c</div>
-<div class="line">│   │   └── trustdomain.h</div>
-<div class="line">│   └── tests</div>
-<div class="line">│       ├── check_id.c</div>
-<div class="line">│       ├── check_match.c</div>
-<div class="line">│       ├── check_trustdomain.c</div>
-<div class="line">│       ├── CMakeLists.txt</div>
-<div class="line">│       └── README</div>
-<div class="line">├── spiffetls</div>
-<div class="line">│   └── tlsconfig</div>
-<div class="line">│       └── src</div>
-<div class="line">│           ├── authorizer.c</div>
-<div class="line">│           └── authorizer.h</div>
-<div class="line">├── svid</div>
-<div class="line">│   ├── CMakeLists.txt</div>
-<div class="line">│   ├── x509svid</div>
-<div class="line">│   |   ├── src</div>
-<div class="line">│   |   │   ├── svid.c</div>
-<div class="line">│   |   │   ├── svid.h</div>
-<div class="line">│   |   │   ├── verify.c</div>
-<div class="line">│   |   │   └── verify.h</div>
-<div class="line">│   |   └── tests</div>
-<div class="line">│   |       ├── check_svid.c</div>
-<div class="line">│   |       ├── check_verify.c</div>
-<div class="line">│   |       ├── CMakeLists.txt</div>
-<div class="line">│   |       ├── README</div>
-<div class="line">│   |       └── resources</div>
-<div class="line">│   |           ├── good-cert-and-key.pem</div>
-<div class="line">│   |           ├── good-key-and-cert.pem</div>
-<div class="line">│   |           ├── good-leaf-and-intermediate.pem</div>
-<div class="line">│   |           ├── good-leaf-only.pem</div>
-<div class="line">│   |           ├── key-pkcs8-ecdsa.pem</div>
-<div class="line">│   |           └── key-pkcs8-rsa.pem</div>
-<div class="line">│   └── jwtsvid</div>
-<div class="line">│       ├── src</div>
-<div class="line">│       │   ├── svid.c</div>
-<div class="line">│       │   └── svid.h</div>
-<div class="line">│       └── tests</div>
-<div class="line">│           ├── check_svid.c</div>
-<div class="line">│           ├── CMakeLists.txt</div>
-<div class="line">│           └── resources</div>
-<div class="line">│               └── privkey.pem</div>
-<div class="line">├── utils</div>
-<div class="line">│   ├── src</div>
-<div class="line">│   │   ├── stb_ds.h</div>
-<div class="line">│   │   ├── util.c</div>
-<div class="line">│   │   └── util.h</div>
-<div class="line">│   └── tests</div>
-<div class="line">│       ├── check_util.c</div>
-<div class="line">│       ├── README</div>
-<div class="line">|       └── resources</div>
-<div class="line">│           └── test.txt</div>
-<div class="line">└── workload</div>
-<div class="line">    ├── CMakeLists.txt</div>
-<div class="line">    ├── src</div>
-<div class="line">    │   ├── c_client_example_bundle.c</div>
-<div class="line">    │   ├── c_client_example.c</div>
-<div class="line">    │   ├── client.cc</div>
-<div class="line">    │   ├── client.h</div>
-<div class="line">    │   ├── cpp_client_example.cc</div>
-<div class="line">    │   ├── EXAMPLE.md</div>
-<div class="line">    │   └──  grpc_conn_test.cc</div>
-<div class="line">    └── tests</div>
-<div class="line">        ├── check_client.cc</div>
-<div class="line">        ├── CMakeLists.txt</div>
-<div class="line">        └── resources</div>
-<div class="line">            └── certs.pem</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md11"></a>
-Dependencies</h1>
+<p><a href="https://spiffe.io/">SPIFFE</a> stands for Security Identity Framework for Everyone and is a set for securely identifying system in dynamic and heteregeneous environment. Please refer to <a href="https://spiffe.io/docs/latest/spiffe-about/overview/">https://spiffe.io/docs/latest/spiffe-about/overview/</a> for more information. <br  />
+ C-spiffe is an extension for Spiffe that allows any <a href="https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#workload">workload</a> written C, C++ or any language that supports loading a .so library, access <a href="https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-workload-api">Workload API</a> and establish a mTLS connection with other workloads. <br  />
+ The image above shows an example, where a C/C++ Workload imports the c-spiffe library in order to fetch a <a href="https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-verifiable-identity-document-svid">SVID</a> and use it to establish a mTLS connection with another Workload, which can be implemented in another language, provided it follows the SPIFFE standard. <img src="img/cspiffe_example.png" alt="Alt text" title="C-spiffe usage example" class="inline"/></p>
+<h2><a class="anchor" id="autotoc_md49"></a>
+Motivation</h2>
+<p>Even though there is an official <a href="https://github.com/spiffe/c-spiffe">c-spiffe</a> library, we started this one from scratch. We wanted a C implementation (not C++) for better compatibility, and also based all the design decisions on <a href="https://github.com/spiffe/c-spiffe">go-spiffe</a>, which is the official supported extension by the Spiffe Community.</p>
+<h1><a class="anchor" id="autotoc_md50"></a>
+Examples</h1>
+<p>Refer to <a class="el" href="md_workload_src_EXAMPLE.html">workload/src/Example.MD</a> for in-depth examples.</p>
+<h1><a class="anchor" id="autotoc_md51"></a>
+Project structure</h1>
+<h2><a class="anchor" id="autotoc_md52"></a>
+Folders</h2>
+<p>The project folder structure is described as follows:</p>
 <ul>
-<li>gRPC 1.34</li>
-<li>CMake 3.13.0+</li>
+<li><b>bundle</b> Source code for bundle module</li>
+<li><b>cmake</b> Configuration for cmake build</li>
+<li><b>docker</b> Configuration files for container used to build</li>
+<li><b>img</b> Images files for documentations</li>
+<li><b>infra</b> Container orchestration for tests environment</li>
+<li><b>integration_test</b> Source code for automated test</li>
+<li><b>internal</b> Souce code for internal module</li>
+<li><b>protos</b> Source code for gRPC protos</li>
+<li><b>spiffeid</b> Sour code for spiffeid module</li>
+<li><b>spiffetls</b> Source code for spiffetls module</li>
+<li><b>svid</b> Source code for SVID module</li>
+<li><b>utils</b> Source code for utility functions</li>
+<li><b>workload</b> Source code for workload</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md12"></a>
-Build Docker Image</h1>
-<div class="fragment"><div class="line">docker build -f docker/grpc.Dockerfile --build-arg GPRC_VERSION=1.34.0 --build-arg NUM_JOBS=8 --tag grpc-build:1.34.0 .</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md13"></a>
-Run Docker Container</h1>
-<h3><a class="anchor" id="autotoc_md14"></a>
-setting volume path: &lt;code&gt;/mnt&lt;/code&gt;</h3>
-<div class="fragment"><div class="line">docker run -it --rm --network host -v $(pwd):/mnt grpc-build:1.34.0</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md15"></a>
-For Windows</h1>
-<div class="fragment"><div class="line">docker run -it --rm --network host -v //c/Repositorios/c-spiffe:/mnt grpc-build:1.34.0</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md16"></a>
-Building</h2>
-<p>Build the c-spiffe project: </p><div class="fragment"><div class="line">cd /mnt</div>
-<div class="line">mkdir build &amp;&amp; cd build</div>
-<div class="line">cmake ..</div>
-<div class="line">make</div>
-<div class="line">make test</div>
-</div><!-- fragment --><p> After running <code>make test</code>, you will find the test files into <code>Testing</code> folder.</p>
-<h3><a class="anchor" id="autotoc_md17"></a>
-Code Coverage Support</h3>
-<p>This implements Code Coverage Reports using either using either <code>gcov</code> or <code>lcov</code>. If you want to check them, you should run the following command after <code>make test</code>:</p>
-<div class="fragment"><div class="line">make gcov</div>
-<div class="line">make lcov</div>
-</div><!-- fragment --><p>The coverage reports will be into <code>Coverage</code> folder. In the case of <code>lcov</code>, you can see into the browser, opening the <code>index.html</code> file on the folder above.</p>
-<h1><a class="anchor" id="autotoc_md18"></a>
-Generate docs</h1>
-<div class="fragment"><div class="line">doxygen docs/Doxyfile</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md19"></a>
-Continuous Integration (CI)</h1>
-<h2><a class="anchor" id="autotoc_md20"></a>
-Operation</h2>
-<p>Continuous integration (CI) is a practice where a team of developers integrate their code early and often to the main branch or code repository. The goal is to reduce the risk of seeing “integration hell” by waiting for the end of a project or a sprint to merge the work of all developers.</p>
-<p>To adopt continuous integration, we will need to run your tests on every change that gets pushed back to the main branch. To do so, you will need to have a service that can monitor your repository and listen to new pushes to the codebase.</p>
-<p><img src="img/ci-process.png" alt="Alt text" title="Commit, Build and Deploy" class="inline"/></p>
-<h1><a class="anchor" id="autotoc_md21"></a>
-Introduction</h1>
-<p>We only need an existing GitHub repository to create and run a GitHub Actions workflow. In this guide, you'll add a workflow that lints multiple coding languages using the GitHub Super-Linter action. The workflow uses Super-Linter to validate your source code every time a new commit is pushed to your repository.</p>
-<h1><a class="anchor" id="autotoc_md22"></a>
-To use Github Actions CI/CD, we need:</h1>
-<p>Most CI tools integrate seamlessly with Git services — especially GitHub.</p>
-<ol>
-<li>
-From your repository on GitHub, create a new file in the .github/workflows directory named superlinter.yml.  </li>
-<li>
-<p class="startli">Copy the following YAML contents into the superlinter.yml file. Note: If your default branch is not main, update the value of DEFAULT_BRANCH to match your repository's default branch name.</p>
-<div class="fragment"><div class="line">name: Super-Linter</div>
-<div class="line"> </div>
-<div class="line"># Run this workflow every time a new commit pushed to your repository</div>
-<div class="line">on: push</div>
-<div class="line"> </div>
-<div class="line">jobs:</div>
-<div class="line">  # Set the job key. The key is displayed as the job name</div>
-<div class="line">  # when a job name is not provided</div>
-<div class="line">  super-lint:</div>
-<div class="line">    # Name the Job</div>
-<div class="line">    name: Lint code base</div>
-<div class="line">    # Set the type of machine to run on</div>
-<div class="line">    runs-on: ubuntu-latest</div>
-<div class="line"> </div>
-<div class="line">    steps:</div>
-<div class="line">      # Checks out a copy of your repository on the ubuntu-latest machine</div>
-<div class="line">      - name: Checkout code</div>
-<div class="line">        uses: actions/checkout@v2</div>
-<div class="line"> </div>
-<div class="line">      # Runs the Super-Linter action</div>
-<div class="line">      - name: Run Super-Linter</div>
-<div class="line">        uses: github/super-linter@v3</div>
-<div class="line">        env:</div>
-<div class="line">          DEFAULT_BRANCH: main</div>
-<div class="line">          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}</div>
-</div><!-- fragment -->  </li>
-<li>
-To run your workflow, scroll to the bottom of the page and select Create a new branch for this commit and start a pull request. Then, to create a pull request, click Propose new file.  </li>
-</ol>
-<p><img src="img/commit-workflow-file.png" alt="Alt text" class="inline"/></p>
-<p>Committing the workflow file in your repository triggers the push event and runs your workflow.</p>
-<h1><a class="anchor" id="autotoc_md23"></a>
-Viewing your workflow results</h1>
-<ol>
-<li>
-On GitHub, navigate to the main page of the repository.  </li>
-<li>
-<p class="startli">Under your repository name, click <b>Actions</b>.</p>
-<p class="endli"><img src="img/actions-tab.png" alt="Alt text" class="inline"/>  </p>
-</li>
-<li>
-<p class="startli">In the left sidebar, click the workflow you want to see.</p>
-<p class="endli"><img src="img/superlinter-workflow-sidebar.png" alt="Alt text" class="inline"/>  </p>
-</li>
-<li>
-<p class="startli">From the list of workflow runs, click the name of the run you want to see.</p>
-<p class="endli"><img src="img/superlinter-run-name.png" alt="Alt text" class="inline"/>  </p>
-</li>
-<li>
-<p class="startli">Under <b>Jobs</b> or in the visualization graph, <b>click the Lint code base</b> job.</p>
-<p class="endli"><img src="img/superlinter-lint-code-base-job-updated.png" alt="Alt text" class="inline"/>  </p>
-</li>
-<li>
-<p class="startli">Any failed steps are automatically expanded to display the results.</p>
-<p class="endli"><img src="img/super-linter-workflow-results-updated-2.png" alt="Alt text" class="inline"/>  </p>
-</li>
-</ol>
+<h2><a class="anchor" id="autotoc_md53"></a>
+Remarkable files</h2>
+<ul>
+<li><a href="CMakeLists.txt">CMakeList.txt</a> Main build configuration file. Each source folder also has its own CMake file.</li>
+<li><a class="el" href="index.html#md_README">README.md</a> This README.</li>
+<li>[LICENSE](LICENSE) Project license.</li>
+<li><a class="el" href="md_BUILDING.html">BUILDING.md</a> Instructions on how to build c-spiffe in your system.</li>
+<li><a class="el" href="md_CONTRIBUTING.html">CONTRIBUTING.md</a> Guidelines for contributing to c-spiffe project.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md54"></a>
+Using C-Spiffe</h1>
+<h2><a class="anchor" id="autotoc_md55"></a>
+Installing</h2>
+<h3><a class="anchor" id="autotoc_md56"></a>
+Install from source</h3>
+<p>Reffer to <a class="el" href="md_BUILDING.html">BUILDING.md</a></p>
+<h3><a class="anchor" id="autotoc_md57"></a>
+Install on system</h3>
+<p>We are planning on delivering package for the most popular Linux distros, but at this moment, only building from source is supported.</p>
+<h2><a class="anchor" id="autotoc_md58"></a>
+Basic usage</h2>
+<p>Refer to <a class="el" href="md_workload_src_EXAMPLE.html">Examples</a> for more information.</p>
+<h1><a class="anchor" id="autotoc_md59"></a>
+Initial Contributors</h1>
+<ul>
+<li>Ariana Guimarães</li>
+<li>Débora Silva</li>
+<li>Glaucimar Aguiar</li>
+<li>Otávio Silva</li>
+<li>Rodrigo Carvalho</li>
+<li>Thiago Jamir</li>
+<li>Willian Alves</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md60"></a>
+Contributing</h1>
+<p>Refer to Contributing for more information. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->

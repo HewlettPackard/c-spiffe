@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE Library: README</title>
+<title>C-SPIFFE Library: Integration tests</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,21 +64,64 @@ $(function() {
 </div><!-- top -->
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">README </div>  </div>
+<div class="title">Integration tests </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><ul>
-<li>Install Python 3.8.3</li>
+<div class="textblock"><p>This folder contains all automated integration tests scripts. They were all implemented using Python, with <a href="https://behave.readthedocs.io/">Behave</a> framework.</p>
+<h1><a class="anchor" id="autotoc_md41"></a>
+Installing dependencies</h1>
+<ul>
+<li><a href="https://docs.docker.com/install/">Docker</a></li>
+<li><a href="https://docs.docker.com/compose/install/">Docker Compose</a></li>
 </ul>
-<p>python -m pip install -r <a class="el" href="requirements_8txt.html">requirements.txt</a></p>
-<p>INSTALL SPIRE:</p><ul>
-<li>Obtain the latest tarball from the SPIRE downloads page and then extract it into the /opt/spire directory using the following commands: $ wget <a href="https://github.com/spiffe/spire/releases/download/v0.12.0/spire-0.12.0-linux-x86_64-glibc.tar.gz">https://github.com/spiffe/spire/releases/download/v0.12.0/spire-0.12.0-linux-x86_64-glibc.tar.gz</a> $ tar zvxf spire-0.12.0-linux-x86_64-glibc.tar.gz $ sudo cp -r spire-0.12.0/. /opt/spire/</li>
-<li>add spire-server and spire-agent to your $PATH for convenience: $ sudo ln -s /opt/spire/bin/spire-server /usr/bin/spire-server $ sudo ln -s /opt/spire/bin/spire-agent /usr/bin/spire-agent</li>
+<h1><a class="anchor" id="autotoc_md42"></a>
+Building</h1>
+<div class="fragment"><div class="line">$ cd infra/</div>
+<div class="line">$ make build</div>
+<div class="line"> </div>
+<div class="line">    Successfully built</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md43"></a>
+Running the tests</h1>
+<div class="fragment"><div class="line">$ make integration-tests</div>
+<div class="line"> </div>
+<div class="line">    docker-compose up -d</div>
+<div class="line">    Building with native build. Learn about native build in Compose here: https://docs.docker.com/go/compose-native-build/</div>
+<div class="line">    Creating network &quot;infra_default&quot; with the default driver</div>
+<div class="line">    Creating infra_spire-server_1 ... done</div>
+<div class="line">    Creating infra_workload_1     ... done</div>
+<div class="line">    Creating infra_tests_1        ... done</div>
+<div class="line"> </div>
+<div class="line">    ....</div>
+<div class="line"> </div>
+<div class="line">    4 features passed, 0 failed, 0 skipped</div>
+<div class="line">    14 scenarios passed, 0 failed, 6 skipped</div>
+<div class="line">    72 steps passed, 0 failed, 32 skipped, 0 undefined</div>
+<div class="line">    Took 1m20.920s</div>
+<div class="line">    docker-compose down</div>
+<div class="line">    Stopping infra_tests_1        ... done</div>
+<div class="line">    Stopping infra_workload_1     ... done</div>
+<div class="line">    Stopping infra_spire-server_1 ... done</div>
+<div class="line">    Removing infra_tests_1        ... done</div>
+<div class="line">    Removing infra_workload_1     ... done</div>
+<div class="line">    Removing infra_spire-server_1 ... done</div>
+<div class="line">    Removing network infra_default</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md44"></a>
+Details inside &lt;tt&gt;$ make integration-tests&lt;/tt&gt;</h2>
+<p>This command encapsulates some steps:</p><ol type="1">
+<li>Start <code>infra_tests</code>, <code>inrfa_spire-server</code> and <code>infra_workload</code> containers</li>
+<li>Start <code>spire-server</code> proccess inside <code>infra_spire-server</code> container</li>
+<li>Create <code>spire-server</code> entry</li>
+<li>Generate <code>spire-server</code> token which is copied into <code>infra_tests</code> container</li>
+<li>Inside <code>infra_tests</code> container, run <code>run-behave-tests.sh</code> script, which encapsulates the following:<ul>
+<li>Build binary files examples (the interface to use c-spiffe lib)</li>
+<li>Run behave tests<ul>
+<li>Before all the tests are run, this stage is also responsible for starting <code>spire-agent</code> proccess inside <code>infra_tests</code> container and connect it to the <code>spire-server</code> running inside the <code>infra_spire-server</code> container</li>
 </ul>
-<p>UP spire server: $ spire-server run -config /opt/spire/conf/server/server.conf</p><ul>
-<li>Generate token: $ spire-server token generate -spiffeID spiffe://example.org/myagent $ TOKEN="token_value" $ spire-agent run -joinToken $TOKEN -config /opt/spire/conf/agent/agent.conf</li>
+</li>
 </ul>
-<p>Note: It is necessary to run all test cases inside the docker container.. </p>
+</li>
+<li>Stop <code>infra_tests</code>, <code>inrfa_spire-server</code> and <code>infra_workload</code> containers </li>
+</ol>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
