@@ -51,7 +51,7 @@ The project folder structure is described as follows:
 * [README.md](README.md) This README.
 * [LICENSE](LICENSE) Project license
 * [BUILDING.md](BUILDING.md) Instructions on how to build c-spiffe in your system
-* [CONTRIBUTING.md](CONTRIBUTING.md) Guide how to contribute c-spiffe project
+* [CONTRIBUTING.md](CONTRIBUTING.md) Guide on how to contribute c-spiffe project
 
 <!--TODO: List all folders with its contents -->
 
@@ -82,4 +82,3 @@ Refer to [Examples](workload/src/EXAMPLE.md) for more information.
 
 ## Contributing
 Refer to [Contributing](workload/src/CONTRIBUTING.md) for more information.
-
