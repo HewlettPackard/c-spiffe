@@ -9,7 +9,7 @@ In order to contribute to the project, the following steps should be followed:
 4. Push to your fork
 5. Create a pull request
 
-Pull request are going to be reviewed by mainteners, some change can be requested before the Pull Request is accepted.
+Pull requests are going to be reviewed by maintainers, some change may be required before the Pull Request is accepted.
 
 ## Development setup
 
