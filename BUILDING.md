@@ -9,7 +9,7 @@
 ###  Build Docker Image
 
 
-You can build the docker image from source with the above command line:
+You can build the docker image from source with the following command line:
 
 ```
 git clone git@github.com:HewlettPackard/c-spiffe.git
