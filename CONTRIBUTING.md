@@ -17,7 +17,7 @@ For building, we recommend to build and run inside a docker container. Refer to 
 
 ## Conventions
 
-This project follows the [GNU Coding Standard](https://www.gnu.org/prep/standards/html_node/Writing-C.html) for formatting, commenting, and convetions in general. Our build system checks for formatting in the build proccess.
+This project follows the [GNU Coding Standard](https://www.gnu.org/prep/standards/html_node/Writing-C.html) for formatting, commenting, and conventions in general. Our build system checks for formatting in the build process.
 
 ## Continuous Integration
 
