@@ -1,7 +1,6 @@
 ## Fetch SVID
 
 Fetch SVID and Bundles for C and C++ example.
-
 ### Client object
 ``` C++
 err_t error;
@@ -50,7 +49,6 @@ Don't forget to free allocated objects.
 ``` C++
 error = workloadapi_Client_Close(client);
 error = workloadapi_Client_Free(client);
-
 ```
 For SVIDs:
 ``` C++
@@ -128,6 +126,8 @@ Always compile with make.
 
 Run examples: 
 ``` bash
+./c_client_validate token1.txt spiffe://example.org/audience1
+./c_client_validate token2 spiffe://www.spiffe.org/aud1/path1
 
 ./c_client svid_type=x509
 ./c_client svid_type=jwt

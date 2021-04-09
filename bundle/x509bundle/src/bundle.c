@@ -34,12 +34,15 @@ x509bundle_Bundle *x509bundle_Load(const spiffeid_TrustDomain td,
     FILE *fx509 = fopen(path, "r");
     if(fx509) {
         string_t buffer = FILE_to_string(fx509);
+        fclose(fx509);
         // string end
         // arrput(buffer, (byte) 0);
         bundleptr = x509bundle_Parse(td, buffer, err);
         arrfree(buffer);
-    } else
+    } else {
+        // could not open file
         *err = ERROR1;
+    }
 
     return bundleptr;
 }

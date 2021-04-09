@@ -7,14 +7,14 @@
 version: '3'
 services:
   spire-server:
-    build: ./spire-server
+    image: alg4/infra_spire-server
     hostname: spire-server
     tty: true
     ports:
       - "8081:8081"
 
   workload:
-    build: ./workload
+    image: alg4/infra_workload
     tty: true
     hostname: workload
     links:
@@ -24,7 +24,7 @@ services:
 
   # Todo: Create sceneries for spire-server test; script python; "getRequestor" {generate, get, (entrys, token)}
   tests:
-    build: ./tests
+    image: alg4/infra_tests
     tty: true
     hostname: tests
     links:

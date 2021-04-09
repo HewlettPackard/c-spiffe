@@ -34,8 +34,8 @@ RUN ln -s /opt/spire/bin/spire-server /usr/bin/spire-server
 RUN ln -s /opt/spire/bin/spire-agent /usr/bin/spire-agent
 
 # Todo: Improve
-ARG BRANCH=test-container
-RUN cd /mnt && git clone -b ${BRANCH} https://github.com/willallves/c-spiffe.git
+ARG BRANCH=test/286-refactor-test-code-to-use-new-infrastructure
+RUN cd /mnt && git clone -b ${BRANCH} https://github.com/arianalima/c-spiffe.git
 RUN mkdir -p ${C_SPIFFE_DIR}/build/
 
 # Configure Spire

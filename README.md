@@ -11,17 +11,18 @@ C extension for Spiffe platform.
 [SPIFFE](https://spiffe.io/) stands for Security Identity Framework for Everyone and is a set for securely identifying system in dynamic and heteregeneous environment. Please refer to https://spiffe.io/docs/latest/spiffe-about/overview/ for more information.  
 C-spiffe is an extension for Spiffe that allows any [workload](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#workload) written C, C++ or  any language that supports loading a .so library, access [Workload API](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-workload-api) and establish a mTLS connection with other workloads.  
 The image above shows an example, where a C/C++ Workload imports the c-spiffe library in order to fetch a [SVID](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-verifiable-identity-document-svid) and use it to establish a mTLS connection with another Workload, which can be implemented in another language, provided it follows the SPIFFE standard.
+<<<<<<< HEAD
 
 ![Alt text](img/cspiffe_example.png "C-spiffe usage example")
 
 ### Motivation
 
-Even though there is an official [c-spiffe](https://github.com/spiffe/c-spiffe) library, we started this one from scratch. We wanted a C implementation (not C++) for better compatibility, and also we based all the design decisions on [go-spiffe](https://github.com/spiffe/c-spiffe), which is the offical supported extension by the Spiffe Community.
+Even though there is an official [c-spiffe](https://github.com/spiffe/c-spiffe) library, we started this one from scratch. We wanted a C implementation (not C++) for better compatibility. We also based most of the design decisions on [go-spiffe](https://github.com/spiffe/c-spiffe), which is the offical supported extension by the Spiffe Community.
 
 
 ## Examples
  
- Refer to [workload/src/Example.MD](workload/src/EXAMPLE.md) for in-depth examples.
+Refer to [Examples](workload/src/EXAMPLE.md) for more information.
 
 
 ## Project structure
@@ -49,9 +50,9 @@ The project folder structure is described as follows:
 
 * [CMakeList.txt](CMakeLists.txt) Main build configuration file. Each source folder also has its own CMake file.
 * [README.md](README.md) This README.
-* [LICENSE](LICENSE) Project license
-* [BUILDING.md](BUILDING.md) Instructions how to build c-spiffe in your system
-* [CONTRIBUTING.md](CONTRIBUTING.md) Guide how to contribute c-spiffe project
+* [LICENSE](LICENSE) Project license.
+* [BUILDING.md](BUILDING.md) Instructions on how to build c-spiffe in your system.
+* [CONTRIBUTING.md](CONTRIBUTING.md) Guidelines for contributing to c-spiffe project.
 
 <!--TODO: List all folders with its contents -->
 
@@ -64,13 +65,13 @@ Reffer to [BUILDING.md](BUILDING.md)
 
 #### Install on system
 
-We are planning to deliver installers for main Linux distro, but at this moment, only building from source is supported.
+We are planning on delivering package for the most popular Linux distros, but at this moment, only building from source is supported.
 
 ### Basic usage
 
 Refer to [Examples](workload/src/EXAMPLE.md) for more information.
 
-## Intial Contributors
+## Initial Contributors
 
 * Ariana Guimarães
 * Débora Silva
@@ -82,7 +83,3 @@ Refer to [Examples](workload/src/EXAMPLE.md) for more information.
 
 ## Contributing
 Refer to [Contributing](workload/src/CONTRIBUTING.md) for more information.
-
-
-
-

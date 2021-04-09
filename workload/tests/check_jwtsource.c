@@ -1,6 +1,6 @@
-#include "../../svid/jwtsvid/src/svid.h"
-#include "../src/jwtsource.h"
-#include "../src/jwtwatcher.h"
+#include "svid/jwtsvid/src/svid.h"
+#include "workload/src/jwtsource.h"
+#include "workload/src/jwtwatcher.h"
 #include <check.h>
 
 START_TEST(test_workloadapi_NewJWTSource_creates_default_config);
