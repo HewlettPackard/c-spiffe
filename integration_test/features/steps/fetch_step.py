@@ -17,7 +17,7 @@ def step_impl(context, profile, document):
     else:
         bin_file = "c_client_bundle"
 
-    c_client_bin = os.popen("../build/workload/%s %s_type=%s" % (bin_file, document.lower(), profile.lower()))
+    c_client_bin = os.popen("/mnt/c-spiffe/build/workload/%s %s_type=%s" % (bin_file, document.lower(), profile.lower()))
     context.result = c_client_bin.read()
 
 
@@ -55,7 +55,5 @@ def step_impl(context):
 
 @when('The agent is turned on')
 def step_impl(context):
-    os.system("./grpc_generate_token.sh")
-    time.sleep(5)
     os.system("./grpc_connect_agent.sh")
     time.sleep(5)

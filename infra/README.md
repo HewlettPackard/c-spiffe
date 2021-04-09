@@ -1,4 +1,10 @@
+# Infra
+
+This folder contains an orchestration for some integration test scenarios. It is composed by a server container, a test workload, and some tests scripts.
+
 ### Run the Docker containers
+
+
 
 ##### Prerequisites
 

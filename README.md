@@ -8,340 +8,80 @@ C extension for Spiffe platform.
 
 ## Introduction
 
-gRPC C++ examples built with CMake.
+[SPIFFE](https://spiffe.io/) stands for Security Identity Framework for Everyone and is a set for securely identifying system in dynamic and heteregeneous environment. Please refer to https://spiffe.io/docs/latest/spiffe-about/overview/ for more information.  
+C-spiffe is an extension for Spiffe that allows any [workload](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#workload) written C, C++ or  any language that supports loading a .so library, access [Workload API](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-workload-api) and establish a mTLS connection with other workloads.  
+The image above shows an example, where a C/C++ Workload imports the c-spiffe library in order to fetch a [SVID](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-verifiable-identity-document-svid) and use it to establish a mTLS connection with another Workload, which can be implemented in another language, provided it follows the SPIFFE standard.
+![Alt text](img/cspiffe_example.png "C-spiffe usage example")
 
-## Files
+### Motivation
 
-```
-.
-├── bundle
-│   ├── CMakeLists.txt
-│   ├── jwtbundle
-│   │   ├── src
-│   │   │   ├── bundle.c
-│   │   │   ├── bundle.h
-│   │   │   ├── set.c
-│   │   │   ├── set.h
-│   │   │   ├── source.c
-│   │   │   └── source.h
-│   │   └── tests
-│   │       ├── check_bundle.c
-│   │       ├── jwk_keys.json
-│   │       └── README
-│   ├── spiffebundle
-│   │   └── src
-│   │       ├── bundle.c
-│   │       ├── bundle.h
-│   │       ├── set.c
-│   │       └── set.h
-│   └── x509bundle
-│       ├── src
-│       │   ├── bundle.c
-│       │   ├── bundle.h
-│       │   ├── set.c
-│       │   ├── set.h
-│       │   ├── source.c
-│       │   └── source.h
-│       └── tests
-│           ├── certs.pem
-│           ├── check_bundle.c
-│           ├── check_set.c
-│           └── README
-├── cmake
-│   ├── config.h.in
-│   ├── COPYING-CMAKE-SCRIPTS.txt
-│   └── FindCheck.cmake
-├── CMakeLists.txt
-├── docker
-│   └── grpc.Dockerfile
-├── file
-├── img
-│   └── ci-process.png
-├── integration_test
-│   ├── behave.ini
-│   ├── common
-│   │   ├── assets
-│   │   │   ├── good-cert-and-key.pem
-│   │   │   └── good-key-and-cert.pem
-│   │   └── constants.py
-│   ├── features
-│   │   ├── environment.py
-│   │   ├── steps
-│   │   │   └── fetch_x509_step.py
-│   │   ├── Fetch_X509.feature
-│   │   └── utils.py
-│   ├── get-entries.py
-│   ├── grpc_conn_test_agent.sh
-│   ├── grpc_conn_test_entries.sh
-│   ├── grpc_conn_test_server.sh
-│   ├── README.md
-│   └── requirements.txt
-├── internal
-│   ├── CMakeLists.txt
-│   ├── cryptoutil
-│   │   ├── src
-│   │   │   ├── keys.c
-│   │   │   └── keys.h
-│   │   └── tests
-│   │       ├── check_keys.c
-│   │       ├── CMakeLists.txt
-│   │       └── README
-│   ├── jwtutil
-│   │   ├── src
-│   │   │   ├── util.c
-│   │   │   └── util.h
-│   │   └── tests
-│   │       ├── check_util.c
-│   │       ├── CMakeLists.txt
-│   │       └── README
-│   ├── pemutil
-│   │   ├── src
-│   │   │   ├── pem.c
-│   │   │   └── pem.h
-│   │   └── tests
-│   │       ├── check_pem.c
-│   │       ├── CMakeLists.txt
-│   │       └── README
-│   └── x509util
-│       ├── src
-│       │   ├── certpool.c
-│       │   ├── certpool.h
-│       │   ├── util.c
-│       │   └── util.h
-│       └── tests
-│           ├── certs.pem
-│           ├── check_certpool.c
-│           ├── check_util.c
-│           ├── CMakeLists.txt
-│           ├── key-pkcs8-rsa.pem
-│           ├── README
-│           └── resources
-│               ├── certs.pem
-│               └── key-pkcs8-rsa.pem
-├── protos
-│   └── workload.proto
-├── README.md
-├── spiffeid
-│   ├── CMakeLists.txt
-│   ├── src
-│   │   ├── id.c
-│   │   ├── id.h
-│   │   ├── match.c
-│   │   ├── match.h
-│   │   ├── trustdomain.c
-│   │   └── trustdomain.h
-│   └── tests
-│       ├── check_id.c
-│       ├── check_match.c
-│       ├── check_trustdomain.c
-│       ├── CMakeLists.txt
-│       └── README
-├── spiffetls
-│   └── tlsconfig
-│       └── src
-│           ├── authorizer.c
-│           └── authorizer.h
-├── svid
-│   ├── CMakeLists.txt
-│   ├── x509svid
-│   |   ├── src
-│   |   │   ├── svid.c
-│   |   │   ├── svid.h
-│   |   │   ├── verify.c
-│   |   │   └── verify.h
-│   |   └── tests
-│   |       ├── check_svid.c
-│   |       ├── check_verify.c
-│   |       ├── CMakeLists.txt
-│   |       ├── README
-│   |       └── resources
-│   |           ├── good-cert-and-key.pem
-│   |           ├── good-key-and-cert.pem
-│   |           ├── good-leaf-and-intermediate.pem
-│   |           ├── good-leaf-only.pem
-│   |           ├── key-pkcs8-ecdsa.pem
-│   |           └── key-pkcs8-rsa.pem
-│   └── jwtsvid
-│       ├── src
-│       │   ├── svid.c
-│       │   └── svid.h
-│       └── tests
-│           ├── check_svid.c
-│           ├── CMakeLists.txt
-│           └── resources
-│               └── privkey.pem
-├── utils
-│   ├── src
-│   │   ├── stb_ds.h
-│   │   ├── util.c
-│   │   └── util.h
-│   └── tests
-│       ├── check_util.c
-│       ├── README
-|       └── resources
-│           └── test.txt
-└── workload
-    ├── CMakeLists.txt
-    ├── src
-    │   ├── c_client_example_bundle.c
-    │   ├── c_client_example.c
-    │   ├── client.cc
-    │   ├── client.h
-    │   ├── cpp_client_example.cc
-    │   ├── EXAMPLE.md
-    │   └──  grpc_conn_test.cc
-    └── tests
-        ├── check_client.cc
-        ├── CMakeLists.txt
-        └── resources
-            └── certs.pem
-```
+Even though there is an official [c-spiffe](https://github.com/spiffe/c-spiffe) library, we started this one from scratch. We wanted a C implementation (not C++) for better compatibility, and also based all the design decisions on [go-spiffe](https://github.com/spiffe/c-spiffe), which is the official supported extension by the Spiffe Community.
 
-## Dependencies
 
-* gRPC 1.34
-* CMake 3.13.0+
+## Examples
+ 
+ Refer to [workload/src/Example.MD](workload/src/EXAMPLE.md) for in-depth examples.
 
-##  Build Docker Image
 
-```
-docker build -f docker/grpc.Dockerfile --build-arg GPRC_VERSION=1.34.0 --build-arg NUM_JOBS=8 --tag grpc-build:1.34.0 .
-```
+## Project structure
 
-## Run Docker Container
 
-#### setting volume path: <code>/mnt</code>
+### Folders
+The project folder structure is described as follows:
 
-```
-docker run -it --rm --network host -v $(pwd):/mnt grpc-build:1.34.0
-```
+* **bundle** Source code for bundle module
+* **cmake** Configuration for cmake build
+* **docker** Configuration files for container used to build 
+* **img** Images files for documentations
+* **infra** Container orchestration for tests environment
+* **integration_test** Source code for automated test
+* **internal** Souce code for internal module
+* **protos** Source code for gRPC protos
+* **spiffeid** Sour code for spiffeid module
+* **spiffetls** Source code for spiffetls module
+* **svid** Source code for SVID module
+* **utils** Source code for utility functions
+* **workload** Source code for workload
 
-# For Windows 
 
-```
-docker run -it --rm --network host -v //c/Repositorios/c-spiffe:/mnt grpc-build:1.34.0
-```
+### Remarkable files
 
-## Building
-Build the c-spiffe project:
-```
-cd /mnt
-mkdir build && cd build
-cmake ..
-make
-make test
-```
-After running `make test`, you will find the test files into `Testing` folder.
+* [CMakeList.txt](CMakeLists.txt) Main build configuration file. Each source folder also has its own CMake file.
+* [README.md](README.md) This README.
+* [LICENSE](LICENSE) Project license.
+* [BUILDING.md](BUILDING.md) Instructions on how to build c-spiffe in your system.
+* [CONTRIBUTING.md](CONTRIBUTING.md) Guidelines for contributing to c-spiffe project.
 
-### Code Coverage Support
+<!--TODO: List all folders with its contents -->
 
-This implements Code Coverage Reports using either using either `gcov` or `lcov`.
-If you want to check them, you should run the following command after `make test`:
+## Using C-Spiffe
 
-```
-make gcov
-make lcov
-```
+### Installing
 
-The coverage reports will be into `Coverage` folder. In the case of `lcov`, you
-can see into the browser, opening the `index.html` file on the folder above.
+#### Install from source
+Reffer to [BUILDING.md](BUILDING.md) 
 
-# Generate docs
-``` 
-doxygen docs/Doxyfile
-```
+#### Install on system
 
-# Continuous Integration (CI)
+We are planning on delivering package for the most popular Linux distros, but at this moment, only building from source is supported.
 
-## Operation
+### Basic usage
 
-Continuous integration (CI) is a practice where a team of developers integrate their code early and often to the main branch or code repository. The goal is to reduce the risk of seeing “integration hell” by waiting for the end of a project or a sprint to merge the work of all developers.
+Refer to [Examples](workload/src/EXAMPLE.md) for more information.
 
-To adopt continuous integration, we will need to run your tests on every change that gets pushed back to the main branch. To do so, you will need to have a service that can monitor your repository and listen to new pushes to the codebase. 
+## Initial Contributors
 
-![Alt text](img/ci-process.png "Commit, Build and Deploy")
+* Ariana Guimarães
+* Débora Silva
+* Glaucimar Aguiar
+* Otávio Silva
+* Rodrigo Carvalho
+* Thiago Jamir
+* Willian Alves
 
-# Introduction
+## Contributing
+Refer to [Contributing](workload/src/CONTRIBUTING.md) for more information.
 
-We only need an existing GitHub repository to create and run a GitHub Actions workflow. In this guide, you'll add a workflow that lints multiple coding languages using the GitHub Super-Linter action. The workflow uses Super-Linter to validate your source code every time a new commit is pushed to your repository.
 
-# To use Github Actions CI/CD, we need:
 
-Most CI tools integrate seamlessly with Git services — especially GitHub.
 
-<ol>
-    <li>
-    From your repository on GitHub, create a new file in the .github/workflows directory named superlinter.yml.
-    </li>
-    <li>
-    Copy the following YAML contents into the superlinter.yml file. Note: If your default branch is not main, update the value of DEFAULT_BRANCH to match your repository's default branch name.
-
-```
-name: Super-Linter
-
-# Run this workflow every time a new commit pushed to your repository
-on: push
-
-jobs:
-  # Set the job key. The key is displayed as the job name
-  # when a job name is not provided
-  super-lint:
-    # Name the Job
-    name: Lint code base
-    # Set the type of machine to run on
-    runs-on: ubuntu-latest
-
-    steps:
-      # Checks out a copy of your repository on the ubuntu-latest machine
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Runs the Super-Linter action
-      - name: Run Super-Linter
-        uses: github/super-linter@v3
-        env:
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
-</li>
-    <li>
-    To run your workflow, scroll to the bottom of the page and select Create a new branch for this commit and start a pull request. Then, to create a pull request, click Propose new file.
-    </li>
- </ol>
-
- ![Alt text](img/commit-workflow-file.png)
-
-Committing the workflow file in your repository triggers the push event and runs your workflow.
-
-# Viewing your workflow results
-
-<ol>
-    <li>
-    On GitHub, navigate to the main page of the repository.
-    </li>
-    <li>
-    Under your repository name, click <b>Actions</b>.
-
-![Alt text](img/actions-tab.png)
-    </li>
-    <li>
-    In the left sidebar, click the workflow you want to see.
-
-![Alt text](img/superlinter-workflow-sidebar.png)
-    </li>
-    <li>
-    From the list of workflow runs, click the name of the run you want to see.
-
-![Alt text](img/superlinter-run-name.png)
-    </li>
-    <li>
-    Under <b>Jobs</b> or in the visualization graph, <b>click the Lint code base</b> job.
-
-![Alt text](img/superlinter-lint-code-base-job-updated.png)
-    </li>
-    <li>
-    Any failed steps are automatically expanded to display the results.
-
-![Alt text](img/super-linter-workflow-results-updated-2.png)
-    </li>
-</ol>
