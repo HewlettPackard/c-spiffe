@@ -13,7 +13,7 @@ Pull request are going to be reviewed by mainteners, some change can be requeste
 
 ## Development setup
 
-For building, we recommend to build an run inside a docker container. Refer to  [BUILDING.md](BUILDING.MD) for more information.
+For building, we recommend to build and run inside a docker container. Refer to [BUILDING.md](BUILDING.MD) for more information.
 
 ## Conventions
 
