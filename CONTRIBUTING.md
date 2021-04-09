@@ -7,7 +7,7 @@ In order to contribute to the project, the following steps should be followed:
 2. Create your feature branch
 3. Commit your local changes in the feature branch
 4. Push to your fork
-5. Create a pull Request
+5. Create a pull request
 
 Pull request are going to be reviewed by mainteners, some change can be requested before the Pull Request is accepted.
 
