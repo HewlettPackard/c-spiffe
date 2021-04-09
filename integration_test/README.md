@@ -1,29 +1,57 @@
 # Integration tests
 
-This folder contains all integration automated tests scripts. They were all implemented using [Behave](https://behave.readthedocs.io/).
+This folder contains all integration automated tests scripts. They were all implemented using Python, with [Behave](https://behave.readthedocs.io/) framework.
 
 ## Installing dependencies
 
+- [Docker](https://docs.docker.com/install/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
-### Python 3 and libs
+## Building
+```
+$ cd infra/
+$ make build
 
-* Install Python 3.8.3
-* python -m pip install -r requirements.txt
- 
-### Spire Server
-    * Obtain the latest tarball from the SPIRE downloads page and then extract it into the /opt/spire directory using the following commands:
-       $ wget https://github.com/spiffe/spire/releases/download/v0.12.0/spire-0.12.0-linux-x86_64-glibc.tar.gz
-       $ tar zvxf spire-0.12.0-linux-x86_64-glibc.tar.gz
-       $ sudo cp -r spire-0.12.0/. /opt/spire/
-    * add spire-server and spire-agent to your $PATH for convenience:
-       $ sudo ln -s /opt/spire/bin/spire-server /usr/bin/spire-server
-       $ sudo ln -s /opt/spire/bin/spire-agent /usr/bin/spire-agent
-## Starting spire server
+    Successfully built
+```
 
-       $ spire-server run -config /opt/spire/conf/server/server.conf
-## Generating token
-       $ spire-server token generate -spiffeID spiffe://example.org/myagent
-       $ TOKEN="token_value"
-       $ spire-agent run -joinToken $TOKEN -config /opt/spire/conf/agent/agent.conf
+## Running the tests
 
-**Note**: It is necessary to run all test cases inside the docker container..
+```
+$ make integration-tests
+
+    docker-compose up -d
+    Building with native build. Learn about native build in Compose here: https://docs.docker.com/go/compose-native-build/
+    Creating network "infra_default" with the default driver
+    Creating infra_spire-server_1 ... done
+    Creating infra_workload_1     ... done
+    Creating infra_tests_1        ... done
+
+    ....
+
+    4 features passed, 0 failed, 0 skipped
+    14 scenarios passed, 0 failed, 6 skipped
+    72 steps passed, 0 failed, 32 skipped, 0 undefined
+    Took 1m20.920s
+    docker-compose down
+    Stopping infra_tests_1        ... done
+    Stopping infra_workload_1     ... done
+    Stopping infra_spire-server_1 ... done
+    Removing infra_tests_1        ... done
+    Removing infra_workload_1     ... done
+    Removing infra_spire-server_1 ... done
+    Removing network infra_default
+```
+
+### Details inside `$ make integration-tests`
+
+This command encapsulates some steps:
+1. Start `infra_tests`, `inrfa_spire-server` and `infra_workload` containers
+2. Start `spire-server` proccess inside `infra_spire-server` container
+3. Create `spire-server` entry
+4. Generate `spire-server` token which is copied into `infra_tests` container
+5. Inside `infra_tests` container, run `run-behave-tests.sh` script, which encapsulates the following:
+    - Build binary files examples (the interface to use c-spiffe lib)
+    - Run behave tests
+        - Before all the tests are run, this stage is also responsible for starting `spire-agent` proccess inside `infra_tests` container and connect it to the `spire-server` running inside the `infra_spire-server` container
+6. Stop `infra_tests`, `inrfa_spire-server` and `infra_workload` containers
