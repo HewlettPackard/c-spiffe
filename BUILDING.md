@@ -25,7 +25,7 @@ docker pull willallves/grpc-build:1.34.0
 
 #### Run Docker Container
 
-##### Setting volume path: <code>/mnt</code>
+##### Setting volume path: <code>/mnt/<code>
 
 ```
 docker run -it --rm --network host -v $(pwd):/mnt grpc-build:1.34.0
