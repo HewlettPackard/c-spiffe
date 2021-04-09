@@ -1,6 +1,6 @@
 # Internal
 
-The Internal module is composed by general use utility functions, and some cryptographic functions. It is divided into the following modules:
+The Internal module is composed by general use utility functions and some cryptographic functions. It is divided into the following modules:
 
 * **cryptoutil** Utility functions for managing keys
 * **jwtutil** Utility functions for managing JWT tokens.
