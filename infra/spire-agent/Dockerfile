@@ -34,7 +34,7 @@ RUN ln -s /opt/spire/bin/spire-server /usr/bin/spire-server
 RUN ln -s /opt/spire/bin/spire-agent /usr/bin/spire-agent
 
 # Todo: Improve
-ARG BRANCH=test/286-refactor-test-code-to-use-new-infrastructure
+ARG BRANCH=test/198-Spiffetls-dial+listen-integration-test
 RUN cd /mnt && git clone -b ${BRANCH} https://github.com/arianalima/c-spiffe.git
 RUN mkdir -p ${C_SPIFFE_DIR}/build/
 
