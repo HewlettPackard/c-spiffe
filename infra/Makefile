@@ -29,8 +29,8 @@ integration-tests:
 	sleep 1
 	docker exec infra_spire-server_1 spire-server entry create -parentID spiffe://example.org/myagent -spiffeID spiffe://example.org/myworkload -selector unix:user:root
 	docker exec infra_spire-server_1 spire-server token generate -spiffeID spiffe://example.org/myagent > myagent.token && docker cp myagent.token infra_tests_1:/mnt/c-spiffe/integration_test
-	docker exec -w /mnt/c-spiffe/integration_test infra_tests_1 chmod +x ./run-behave-tests.sh
-	docker exec -w /mnt/c-spiffe/integration_test infra_tests_1 ./run-behave-tests.sh
+	docker exec -w /mnt/c-spiffe/integration_test/helpers/bash-general-scripts infra_tests_1 chmod +x ./run-behave-tests.sh
+	docker exec -w /mnt/c-spiffe/integration_test/helpers/bash-general-scripts infra_tests_1 ./run-behave-tests.sh
 	docker-compose down
 
 
