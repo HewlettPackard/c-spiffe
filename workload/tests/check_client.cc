@@ -89,6 +89,13 @@ START_TEST(test_workloadapi_parseX509Bundles)
     ck_assert_uint_eq(x509bundle_Set_Len(set), 3);
 
     x509bundle_Set_Free(set);
+
+    //NULL response test
+    set = workloadapi_parseX509Bundles(NULL,&err);
+
+    ck_assert_ptr_eq(set,NULL);
+    ck_assert_int_eq(err,ERROR1);
+    
 }
 END_TEST
 
@@ -105,6 +112,10 @@ START_TEST(test_workloadapi_NewClient)
 
     error = workloadapi_Client_Free(client);
     ck_assert_int_eq(error, NO_ERROR);
+
+    //NULL client test.
+    error = workloadapi_Client_Free(NULL);
+    ck_assert_int_eq(error, ERROR1);
 }
 END_TEST
 
@@ -212,6 +223,13 @@ START_TEST(test_workloadapi_parseX509Context)
     }
     arrfree(ctx->svids);
     free(ctx);
+
+    //NULL response test
+    ctx = workloadapi_parseX509Context(NULL, &err);
+ 
+    ck_assert_ptr_eq(ctx,NULL);
+    ck_assert_int_eq(err,ERROR2);
+
 }
 END_TEST
 
@@ -284,11 +302,8 @@ ACTION(set_JWTBundle_response)
 
 START_TEST(test_workloadapi_Client_Close)
 {
-    // normal constructor test
-
     err_t err = NO_ERROR;
     workloadapi_Client *client = workloadapi_NewClient(&err);
-    auto cr = new grpc::testing::MockClientReader<X509SVIDResponse>();
 
     MockSpiffeWorkloadAPIStub *stub = new MockSpiffeWorkloadAPIStub();
     workloadapi_Client_SetStub(client, stub);
@@ -301,31 +316,78 @@ START_TEST(test_workloadapi_Client_Close)
     ck_assert_ptr_eq(client->stub, stub);
     ck_assert(!client->closed);
 
-    err = workloadapi_Client_Close(client);
+    //NULL client test.
+    err = workloadapi_Client_Close(NULL);
+    ck_assert_int_eq(err, ERROR1);
 
+    //close client test.
+    err = workloadapi_Client_Close(client);
     ck_assert(!client->owns_stub);
     ck_assert_ptr_eq(client->stub, NULL);
     ck_assert(client->closed);
+    ck_assert_int_eq(err, NO_ERROR);
+    
+    //close client with null stub test.
+    err = workloadapi_Client_Close(client);
+    ck_assert_int_eq(err, ERROR3);
+    
+    //close closed client test.
+    client->stub =(workloadapi_Stub*) 0x1; // check-passing invalid value
+    err = workloadapi_Client_Close(client);
+    ck_assert_int_eq(err, ERROR2);
+    
+    client->stub = NULL; // mem safety
+    
+    //free client
+    err = workloadapi_Client_Free(client);
     ck_assert_int_eq(err, NO_ERROR);
 }
 END_TEST
 
 START_TEST(test_workloadapi_Client_Connect_uses_stub)
 {
-    // normal constructor test
     err_t err = NO_ERROR;
+    
+    //NULL client test.
+    err = workloadapi_Client_Connect(NULL);
+    ck_assert_int_eq(err, ERROR1);
+    
+    err = NO_ERROR;
     workloadapi_Client *client = workloadapi_NewClient(&err);
-    auto cr = new grpc::testing::MockClientReader<X509SVIDResponse>();
 
     MockSpiffeWorkloadAPIStub *stub = new MockSpiffeWorkloadAPIStub();
     workloadapi_Client_SetStub(client, stub);
+
+    //setAddress tests
+    err = workloadapi_Client_SetAddress(NULL,NULL);
+    ck_assert_int_eq(err,ERROR1);
+
+    err = workloadapi_Client_SetAddress(client,NULL);
+    ck_assert_int_eq(err,ERROR2);
+    
+    //sets address to "fake"
+    err = workloadapi_Client_SetAddress(client, "unix:///tmp/not_agent.sock");
+    ck_assert_str_eq(client->address,"unix:///tmp/not_agent.sock");
+    ck_assert_int_eq(err,NO_ERROR);
+    
+    string_t old_address = client->address;
+    
+    //new address, so the old string is freed
     workloadapi_Client_setDefaultAddressOption(client, NULL);
+    ck_assert_str_eq(client->address,"unix:///tmp/agent.sock");
+    ck_assert_int_eq(err,NO_ERROR);
+    ck_assert_ptr_ne(client->address,old_address);
+    
+    
+
+
     workloadapi_Client_setDefaultHeaderOption(client, NULL);
 
     err = workloadapi_Client_Connect(client);
 
     ck_assert_ptr_eq(client->stub, stub);
 
+    auto cr = new grpc::testing::MockClientReader<X509SVIDResponse>();
     EXPECT_CALL(*stub, FetchX509SVIDRaw(_, _)).WillOnce(Return(cr));
 
     EXPECT_CALL(*cr, Read(_))
