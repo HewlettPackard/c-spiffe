@@ -5,11 +5,6 @@ import time
 from hamcrest import assert_that, is_, is_not
 
 
-PARENT_PATH = os.path.abspath("..")
-if PARENT_PATH not in sys.path:
-    sys.path.insert(0, PARENT_PATH)
-
-
 @when('I fetch "{profile}" "{document}"')
 def step_impl(context, profile, document):
     if document == "SVID":
@@ -55,5 +50,5 @@ def step_impl(context):
 
 @when('The agent is turned on')
 def step_impl(context):
-    os.system("./grpc_connect_agent.sh")
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/grpc_connect_agent.sh")
     time.sleep(5)
