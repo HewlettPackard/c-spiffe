@@ -5,7 +5,7 @@ import sys
 from pathlib2 import Path
 
 
-PARENT_PATH = os.path.abspath("..") + "integration_test/helpers/"
+PARENT_PATH = os.path.abspath("..") + "/integration_test/helpers/"
 
 
 def before_all(context):
