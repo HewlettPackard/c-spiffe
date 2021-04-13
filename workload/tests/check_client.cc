@@ -7,11 +7,11 @@
  * Copyright (c) 2020 CESAR
  */
 
-#include "svid/x509svid/src/svid.h"
-#include "workload/src/client.h"
 #include "../workload.grpc.pb.h"
 #include "../workload.pb.h"
 #include "../workload_mock.grpc.pb.h"
+#include "svid/x509svid/src/svid.h"
+#include "workload/src/client.h"
 #include <check.h>
 #include <gmock/gmock.h>
 #include <grpc/grpc.h>
@@ -43,6 +43,10 @@ workloadapi_X509Context *workloadapi_parseX509Context(X509SVIDResponse *resp,
 
 x509svid_SVID **workloadapi_parseX509SVIDs(X509SVIDResponse *resp,
                                            bool firstOnly, err_t *err);
+jwtsvid_SVID *workloadapi_parseJWTSVID(const JWTSVIDResponse *resp,
+                                       jwtsvid_Params *params, err_t *err);
+jwtbundle_Set *workloadapi_parseJWTBundles(const JWTBundlesResponse *resp,
+                                           err_t *err);
 
 START_TEST(test_workloadapi_parseX509Bundles)
 {
@@ -90,12 +94,11 @@ START_TEST(test_workloadapi_parseX509Bundles)
 
     x509bundle_Set_Free(set);
 
-    //NULL response test
-    set = workloadapi_parseX509Bundles(NULL,&err);
+    // NULL response test
+    set = workloadapi_parseX509Bundles(NULL, &err);
 
-    ck_assert_ptr_eq(set,NULL);
-    ck_assert_int_eq(err,ERROR1);
-    
+    ck_assert_ptr_eq(set, NULL);
+    ck_assert_int_eq(err, ERROR1);
 }
 END_TEST
 
@@ -113,7 +116,7 @@ START_TEST(test_workloadapi_NewClient)
     error = workloadapi_Client_Free(client);
     ck_assert_int_eq(error, NO_ERROR);
 
-    //NULL client test.
+    // NULL client test.
     error = workloadapi_Client_Free(NULL);
     ck_assert_int_eq(error, ERROR1);
 }
@@ -224,12 +227,11 @@ START_TEST(test_workloadapi_parseX509Context)
     arrfree(ctx->svids);
     free(ctx);
 
-    //NULL response test
+    // NULL response test
     ctx = workloadapi_parseX509Context(NULL, &err);
- 
-    ck_assert_ptr_eq(ctx,NULL);
-    ck_assert_int_eq(err,ERROR2);
 
+    ck_assert_ptr_eq(ctx, NULL);
+    ck_assert_int_eq(err, ERROR2);
 }
 END_TEST
 
@@ -302,8 +304,11 @@ ACTION(set_JWTBundle_response)
 
 START_TEST(test_workloadapi_Client_Close)
 {
+    // normal constructor test
+
     err_t err = NO_ERROR;
     workloadapi_Client *client = workloadapi_NewClient(&err);
+    // auto cr = new grpc::testing::MockClientReader<X509SVIDResponse>();
 
     MockSpiffeWorkloadAPIStub *stub = new MockSpiffeWorkloadAPIStub();
     workloadapi_Client_SetStub(client, stub);
@@ -316,29 +321,29 @@ START_TEST(test_workloadapi_Client_Close)
     ck_assert_ptr_eq(client->stub, stub);
     ck_assert(!client->closed);
 
-    //NULL client test.
+    // NULL client test.
     err = workloadapi_Client_Close(NULL);
     ck_assert_int_eq(err, ERROR1);
 
-    //close client test.
+    // close client test.
     err = workloadapi_Client_Close(client);
     ck_assert(!client->owns_stub);
     ck_assert_ptr_eq(client->stub, NULL);
     ck_assert(client->closed);
     ck_assert_int_eq(err, NO_ERROR);
-    
-    //close client with null stub test.
+
+    // close client with null stub test.
     err = workloadapi_Client_Close(client);
     ck_assert_int_eq(err, ERROR3);
-    
-    //close closed client test.
-    client->stub =(workloadapi_Stub*) 0x1; // check-passing invalid value
+
+    // close closed client test.
+    client->stub = (workloadapi_Stub *) 0x1; // check-passing invalid value
     err = workloadapi_Client_Close(client);
     ck_assert_int_eq(err, ERROR2);
-    
+
     client->stub = NULL; // mem safety
-    
-    //free client
+
+    // free client
     err = workloadapi_Client_Free(client);
     ck_assert_int_eq(err, NO_ERROR);
 }
@@ -347,39 +352,37 @@ END_TEST
 START_TEST(test_workloadapi_Client_Connect_uses_stub)
 {
     err_t err = NO_ERROR;
-    
-    //NULL client test.
+
+    // NULL client test.
     err = workloadapi_Client_Connect(NULL);
     ck_assert_int_eq(err, ERROR1);
-    
-    err = NO_ERROR;
+
+    // normal constructor test
     workloadapi_Client *client = workloadapi_NewClient(&err);
+    ck_assert_ptr_ne(client, NULL);
 
     MockSpiffeWorkloadAPIStub *stub = new MockSpiffeWorkloadAPIStub();
     workloadapi_Client_SetStub(client, stub);
 
-    //setAddress tests
-    err = workloadapi_Client_SetAddress(NULL,NULL);
-    ck_assert_int_eq(err,ERROR1);
+    // setAddress tests
+    err = workloadapi_Client_SetAddress(NULL, NULL);
+    ck_assert_int_eq(err, ERROR1);
 
-    err = workloadapi_Client_SetAddress(client,NULL);
-    ck_assert_int_eq(err,ERROR2);
-    
-    //sets address to "fake"
+    err = workloadapi_Client_SetAddress(client, NULL);
+    ck_assert_int_eq(err, ERROR2);
+
+    // sets address to "fake"
     err = workloadapi_Client_SetAddress(client, "unix:///tmp/not_agent.sock");
-    ck_assert_str_eq(client->address,"unix:///tmp/not_agent.sock");
-    ck_assert_int_eq(err,NO_ERROR);
-    
-    string_t old_address = client->address;
-    
-    //new address, so the old string is freed
-    workloadapi_Client_setDefaultAddressOption(client, NULL);
-    ck_assert_str_eq(client->address,"unix:///tmp/agent.sock");
-    ck_assert_int_eq(err,NO_ERROR);
-    ck_assert_ptr_ne(client->address,old_address);
-    
-    
+    ck_assert_str_eq(client->address, "unix:///tmp/not_agent.sock");
+    ck_assert_int_eq(err, NO_ERROR);
 
+    string_t old_address = client->address;
+
+    // new address, so the old string is freed
+    workloadapi_Client_setDefaultAddressOption(client, NULL);
+    ck_assert_str_eq(client->address, "unix:///tmp/agent.sock");
+    ck_assert_int_eq(err, NO_ERROR);
+    ck_assert_ptr_ne(client->address, old_address);
 
     workloadapi_Client_setDefaultHeaderOption(client, NULL);
 
@@ -400,6 +403,16 @@ START_TEST(test_workloadapi_Client_Connect_uses_stub)
     ck_assert_ptr_ne(svid, NULL);
     ck_assert_str_eq(svid->id.td.name, "example.org");
     delete stub;
+}
+END_TEST
+
+START_TEST(test_workloadapi_parseJWTSVID)
+{
+    err_t err = NO_ERROR;
+    jwtsvid_SVID *svid = workloadapi_parseJWTSVID(NULL, NULL, &err);
+
+    ck_assert_ptr_eq(svid, NULL);
+    ck_assert_int_eq(err, ERROR1); // NULL pointer error
 }
 END_TEST
 
@@ -805,6 +818,8 @@ Suite *client_suite(void)
     tcase_add_test(tc_core, test_workloadapi_Client_WatchX509Context);
     tcase_add_test(tc_core, test_workloadapi_Client_FetchJWTSVID);
     tcase_add_test(tc_core, test_workloadapi_Client_ValidateJWTSVID);
+    tcase_add_test(tc_core, test_workloadapi_parseJWTSVID);
+    
 
     suite_add_tcase(s, tc_core);
 
