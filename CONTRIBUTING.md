@@ -14,7 +14,7 @@ Pull request are going to be reviewed by maintainers, some change may be request
 
 ## Development setup
 
-For development purposes, we recommend to build an run inside a docker container. Refer to  [BUILDING.md](BUILDING.md) for more information.
+For development purposes, we recommend to build and run inside a docker container. Refer to  [BUILDING.md](BUILDING.md) for more information.
 
 ## Conventions
 
@@ -22,4 +22,4 @@ This project follows the [GNU Coding Standard](https://www.gnu.org/prep/standard
 
 ## Continuous Integration
 
-This project uses Github Actions as Continuous Integration tool. Refer to [CI.md](CI.md) for mor information.
+This project uses Github Actions as Continuous Integration tool. Refer to [CI.md](CI.md) for more information.

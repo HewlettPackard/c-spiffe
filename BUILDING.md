@@ -1,6 +1,6 @@
 # Building
 
-## Docker Building(recommended)
+## Docker Building (recommended)
 
 ### Docker Build Dependencies
 
@@ -119,7 +119,7 @@ make install
 
 ## Code Coverage Support
 
-This project generates Code Coverage Reports using either using `gcov` and `lcov`.
+This project generates Code Coverage Reports using either `gcov` and `lcov`.
 If you want to generate cover reports, you should run the following command after `make test`:
 
 ```bash
