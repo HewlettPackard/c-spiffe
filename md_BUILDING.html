@@ -68,9 +68,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><h1><a class="anchor" id="autotoc_md1"></a>
-Docker Building(recommended)</h1>
+Docker Building (recommended)</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
-Dependencies</h2>
+Docker Build Dependencies</h2>
 <ul>
 <li>Docker</li>
 </ul>
@@ -87,25 +87,26 @@ Pull our Docker image</h2>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md5"></a>
 Run Docker Container</h3>
 <h4><a class="anchor" id="autotoc_md6"></a>
-Setting volume path: &lt;code&gt;/mnt/&lt;code&gt;</h4>
+Setting volume path: &lt;tt&gt;/mnt/&lt;/tt&gt;</h4>
 <div class="fragment"><div class="line">docker run -it --rm --network host -v $(pwd):/mnt grpc-build:1.34.0</div>
 </div><!-- fragment --><h4><a class="anchor" id="autotoc_md7"></a>
 For Windows</h4>
 <div class="fragment"><div class="line">docker run -it --rm --network host -v &lt;ABSOLUTE_PATH_TO_CSPIFFE&gt;:/mnt grpc-build:1.34.0</div>
-</div><!-- fragment --><p> In the path <code>ABSOLUTE_PATH_TO_CSPIFFE</code>, start with <code>//</code> and don't use <code>:</code>. For example, if your code is in <code>C:\repositories\c-spiffe</code>, then you'll run:</p>
+</div><!-- fragment --><p>In the path <code>ABSOLUTE_PATH_TO_CSPIFFE</code>, start with <code>//</code> and don't use <code>:</code>. For example, if your code is in <code>C:\repositories\c-spiffe</code>, then you'll run:</p>
 <div class="fragment"><div class="line">docker run -it --rm --network host -v //c/repositories/c-spiffe:/mnt grpc-build:1.34.0</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md8"></a>
-Building</h3>
-<p>Build the c-spiffe project: </p><div class="fragment"><div class="line">cd /mnt</div>
+Docker Building</h3>
+<p>Build the c-spiffe project:</p>
+<div class="fragment"><div class="line">cd /mnt</div>
 <div class="line">mkdir build &amp;&amp; cd build</div>
 <div class="line">cmake ..</div>
 <div class="line">make</div>
 <div class="line">make test</div>
-</div><!-- fragment --><p> After running <code>make test</code>, you will find the test files in the <code>Testing</code> folder.</p>
+</div><!-- fragment --><p>After running <code>make test</code>, you will find the test files in the <code>Testing</code> folder.</p>
 <h1><a class="anchor" id="autotoc_md9"></a>
 Local building</h1>
 <h2><a class="anchor" id="autotoc_md10"></a>
-Dependencies</h2>
+Local Build Dependencies</h2>
 <ul>
 <li>Gcc</li>
 <li>CMake</li>
@@ -139,7 +140,7 @@ Compile gRPC</h2>
 <div class="line">RUN sed -i &#39;7,13d&#39; /tmp/grpc/third_party/benchmark/test/cxx03_test.cc </div>
 <div class="line"> </div>
 <div class="line">RUN cd /tmp/grpc/cmake/build &amp;&amp; make -j${NUM_JOBS} &amp;&amp; make install</div>
-</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md12"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md12"></a>
 Compile C-Spiffe library</h2>
 <p>Once you meet all the requirements, building is straightforward with <code>CMake</code></p>
 <div class="fragment"><div class="line">mkdir build &amp;&amp; cd build</div>
@@ -151,7 +152,7 @@ Installing</h2>
 <div class="fragment"><div class="line">make install</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md14"></a>
 Code Coverage Support</h1>
-<p>This project generates Code Coverage Reports using either using <code>gcov</code> and <code>lcov</code>. If you want to generate cover reports, you should run the following command after <code>make test</code>:</p>
+<p>This project generates Code Coverage Reports using either <code>gcov</code> and <code>lcov</code>. If you want to generate cover reports, you should run the following command after <code>make test</code>:</p>
 <div class="fragment"><div class="line">make gcov</div>
 <div class="line">make lcov</div>
 </div><!-- fragment --><p>The coverage reports will be written to the <code>Coverage</code> folder. In the case of <code>lcov</code>, you can see it opening the <code>index.html</code> file on the folder above in your browser. </p>

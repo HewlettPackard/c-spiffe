@@ -70,18 +70,15 @@ $(function() {
 <div class="textblock"><p><a class="anchor" id="md_README"></a> C extension for Spiffe platform.</p>
 <p><a href="https://github.com/HewlettPackard/c-spiffe/actions/workflows/actions.yml"><img src="https://github.com/HewlettPackard/c-spiffe/actions/workflows/actions.yml/badge.svg" alt="Build and run tests" style="pointer-events: none;" class="inline"/></a></p>
 <p><a href="https://codecov.io/gh/HewlettPackard/c-spiffe"><img src="https://codecov.io/gh/HewlettPackard/c-spiffe/branch/master/graph/badge.svg" alt="codecov" style="pointer-events: none;" class="inline"/></a></p>
-<h1><a class="anchor" id="autotoc_md48"></a>
+<h1><a class="anchor" id="autotoc_md49"></a>
 Introduction</h1>
-<p><a href="https://spiffe.io/">SPIFFE</a> stands for Security Identity Framework for Everyone and is a set for securely identifying system in dynamic and heterogeneous environment. Please refer to <a href="https://spiffe.io/docs/latest/spiffe-about/overview/">https://spiffe.io/docs/latest/spiffe-about/overview/</a> for more information. <br  />
+<p><a href="https://spiffe.io/">SPIFFE</a> stands for Security Identity Framework for Everyone and is a set for securely identifying system in dynamic and heterogeneous environment. Please refer to <a href="https://spiffe.io/docs/latest/spiffe-about/overview/">SPIFFE Documentation</a> for more information. <br  />
  C-spiffe is an extension for Spiffe that allows any <a href="https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#workload">workload</a> written C, C++ or any language that supports loading a .so library, access <a href="https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-workload-api">Workload API</a> and establish a mTLS connection with other workloads. <br  />
  The image above shows an example, where a C/C++ Workload imports the c-spiffe library in order to fetch a <a href="https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-verifiable-identity-document-svid">SVID</a> and use it to establish a mTLS connection with another Workload, which can be implemented in another language, provided it follows the SPIFFE standard.</p>
 <p><img src="img/cspiffe_example.png" alt="Alt text" title="C-spiffe usage example" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md49"></a>
+<h2><a class="anchor" id="autotoc_md50"></a>
 Motivation</h2>
-<p>Even though there is an official <a href="https://github.com/spiffe/c-spiffe">c-spiffe</a> library, we started this one from scratch. We wanted a C implementation (not C++) for better compatibility. We also based most of the design decisions on <a href="https://github.com/spiffe/c-spiffe">go-spiffe</a>, which is the offical supported extension by the Spiffe Community.</p>
-<h1><a class="anchor" id="autotoc_md50"></a>
-Examples</h1>
-<p>Refer to <a class="el" href="md_workload_src_EXAMPLE.html">Examples</a> for more information.</p>
+<p>Even though there is an official <a href="https://github.com/spiffe/c-spiffe">c-spiffe</a> library, we started this one from scratch. We wanted a C implementation (not C++) for better compatibility. We also based most of the design decisions on <a href="https://github.com/spiffe/go-spiffe">go-spiffe</a>, which is the offical supported extension by the Spiffe Community.</p>
 <h1><a class="anchor" id="autotoc_md51"></a>
 Project structure</h1>
 <h2><a class="anchor" id="autotoc_md52"></a>
@@ -90,7 +87,7 @@ Folders</h2>
 <ul>
 <li><b>bundle</b> Source code for bundle module</li>
 <li><b>cmake</b> Configuration for cmake build</li>
-<li><b>docker</b> Configuration files for container used to build</li>
+<li><b>docker</b> Configuration files for container used to build this lib</li>
 <li><b>img</b> Images files for documentations</li>
 <li><b>infra</b> Container orchestration for tests environment</li>
 <li><b>integration_test</b> Source code for automated test</li>
@@ -137,7 +134,7 @@ Initial Contributors</h1>
 </ul>
 <h1><a class="anchor" id="autotoc_md60"></a>
 Contributing</h1>
-<p>Refer to Contributing for more information. </p>
+<p>Refer to <a class="el" href="md_CONTRIBUTING.html">Contributing</a> for more information. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
