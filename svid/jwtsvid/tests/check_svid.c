@@ -144,8 +144,9 @@ START_TEST(test_jwtsvid_ParseAndValidate)
 }
 END_TEST
 
-// precondition:
-// postcondition:
+// precondition: valid elliptic curve jwt token
+// postcondition: valid jwt svid corresponding to the
+// token with valid claims map
 START_TEST(test_jwtsvid_EC)
 {
     spiffeid_TrustDomain td = { "example.com" };
@@ -189,8 +190,8 @@ START_TEST(test_jwtsvid_EC)
 }
 END_TEST
 
-// precondition:
-// postcondition:
+// precondition: valid elliptic curve jwt token
+// postcondition:  valid jwt svid corresponding to the token with valid
 START_TEST(test_jwtsvid_Marshal)
 {
     spiffeid_TrustDomain td = { "example.com" };
