@@ -21,6 +21,7 @@ services:
       - spire-server
     ports:
       - "8000:8000"
+      - "22:22"
 
   # Todo: Create sceneries for spire-server test; script python; "getRequestor" {generate, get, (entrys, token)}
   tests:
