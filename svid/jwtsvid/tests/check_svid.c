@@ -189,7 +189,10 @@ START_TEST(test_jwtsvid_EC)
 }
 END_TEST
 
+// precondition:
+// postcondition:
 START_TEST(test_jwtsvid_Marshal)
+{
     spiffeid_TrustDomain td = { "example.com" };
     jwtbundle_Bundle *bundle = jwtbundle_New(td);
 
@@ -231,6 +234,7 @@ START_TEST(test_jwtsvid_Marshal)
     jwtbundle_Source_Free(source);
     EVP_PKEY_free(pkey);
     jwtsvid_SVID_Free(svid);
+}
 END_TEST
 
 Suite *svid_suite(void)
