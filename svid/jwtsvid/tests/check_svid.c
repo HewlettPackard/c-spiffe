@@ -229,7 +229,7 @@ START_TEST(test_jwtsvid_Marshal)
 
     const char *marshal = jwtsvid_SVID_Marshal(svid);
 
-    ck_assert_ptr_ne(marshal, NULL);
+    ck_assert_str_eq(marshal, token);
 
     jwtbundle_Source_Free(source);
     EVP_PKEY_free(pkey);
