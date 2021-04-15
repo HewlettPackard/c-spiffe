@@ -278,7 +278,7 @@ START_TEST(test_jwtsvid_Marshal)
 }
 END_TEST
 
-START_TEST(test_jwtsvid_error5)
+START_TEST(test_jwtsvid_error_invalid_signature)
 {
     spiffeid_TrustDomain td = { "example.com" };
     jwtbundle_Bundle *bundle = jwtbundle_New(td);
@@ -320,7 +320,7 @@ Suite *svid_suite(void)
     tcase_add_test(tc_core, test_jwtsvid_ParseAndValidate);
     tcase_add_test(tc_core, test_jwtsvid_EC);
     tcase_add_test(tc_core, test_jwtsvid_Marshal);
-    tcase_add_test(tc_core, test_jwtsvid_error5);
+    tcase_add_test(tc_core, test_jwtsvid_error_invalid_signature);
 
     suite_add_tcase(s, tc_core);
 
