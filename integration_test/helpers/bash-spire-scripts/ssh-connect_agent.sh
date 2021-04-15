@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 ssh root@$1 << "EOL"
-echo "hello world"
+./grpc_connect_agent.sh WlB &
 EOL
