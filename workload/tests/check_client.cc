@@ -360,10 +360,27 @@ START_TEST(test_workloadapi_Client_Connect_uses_stub)
     // normal constructor test
     workloadapi_Client *client = workloadapi_NewClient(&err);
     ck_assert_ptr_ne(client, NULL);
+    ck_assert_int_eq(err,NO_ERROR);
 
     MockSpiffeWorkloadAPIStub *stub = new MockSpiffeWorkloadAPIStub();
-    workloadapi_Client_SetStub(client, stub);
+    err = workloadapi_Client_SetStub(client, stub);
+    
+    //set the owned flag so when we add a new stub the previous is deleted on SetStub
+    client->owns_stub = true;
+    stub = new MockSpiffeWorkloadAPIStub();
+    
+    err = workloadapi_Client_SetStub(client,(workloadapi_Stub*) 1);
+    ck_assert_int_eq(err, NO_ERROR);
+    ck_assert_ptr_eq(client->stub,(workloadapi_Stub*)1);
 
+    err = workloadapi_Client_SetStub(client,stub);
+    ck_assert_int_eq(err, NO_ERROR);
+    ck_assert_ptr_eq(client->stub,stub);
+
+    //null test to setStub
+    err = workloadapi_Client_SetStub(NULL,NULL);
+    ck_assert_int_eq(err,ERROR1);
+    
     // setAddress tests
     err = workloadapi_Client_SetAddress(NULL, NULL);
     ck_assert_int_eq(err, ERROR1);
@@ -383,6 +400,11 @@ START_TEST(test_workloadapi_Client_Connect_uses_stub)
     ck_assert_str_eq(client->address, "unix:///tmp/agent.sock");
     ck_assert_int_eq(err, NO_ERROR);
     ck_assert_ptr_ne(client->address, old_address);
+
+
+    // setHeader tests
+    err = workloadapi_Client_AddHeader(NULL,NULL,NULL);
+    ck_assert_int_eq(err,ERROR1);
 
     workloadapi_Client_setDefaultHeaderOption(client, NULL);
 
@@ -406,13 +428,27 @@ START_TEST(test_workloadapi_Client_Connect_uses_stub)
 }
 END_TEST
 
-START_TEST(test_workloadapi_parseJWTSVID)
+START_TEST(test_workloadapi_parseJWTSVID_null_or_empty)
 {
     err_t err = NO_ERROR;
     jwtsvid_SVID *svid = workloadapi_parseJWTSVID(NULL, NULL, &err);
 
     ck_assert_ptr_eq(svid, NULL);
     ck_assert_int_eq(err, ERROR1); // NULL pointer error
+
+    ///TODO: check with an empty response (no svid)
+
+}
+END_TEST
+
+START_TEST(test_workloadapi_parseJWTBundles_null_or_empty)
+{
+    err_t err = NO_ERROR;
+    jwtbundle_Set *set = workloadapi_parseJWTBundles(NULL, &err);
+
+    ck_assert_ptr_eq(set, NULL);
+    ck_assert_int_eq(err, ERROR1); // NULL pointer error
+
 }
 END_TEST
 
@@ -818,7 +854,8 @@ Suite *client_suite(void)
     tcase_add_test(tc_core, test_workloadapi_Client_WatchX509Context);
     tcase_add_test(tc_core, test_workloadapi_Client_FetchJWTSVID);
     tcase_add_test(tc_core, test_workloadapi_Client_ValidateJWTSVID);
-    tcase_add_test(tc_core, test_workloadapi_parseJWTSVID);
+    tcase_add_test(tc_core, test_workloadapi_parseJWTSVID_null_or_empty);
+    tcase_add_test(tc_core, test_workloadapi_parseJWTBundles_null_or_empty);
     
 
     suite_add_tcase(s, tc_core);
