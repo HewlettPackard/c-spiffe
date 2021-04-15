@@ -4,6 +4,28 @@
 
 #define STB_DS_IMPLEMENTATION
 #include "svid/jwtsvid/src/svid.h"
+#include "svid/jwtsvid/tests/check_util.h"
+
+
+// Check common fields
+void test_fields_verify(jwtsvid_SVID *svid, err_t err, char *token)
+{
+    ck_assert_uint_eq(err, NO_ERROR);
+    ck_assert_ptr_eq(svid->audience, NULL);
+    ck_assert_ptr_ne(svid->claims, NULL);
+    ck_assert_uint_eq(shlenu(svid->claims), 4);
+    ck_assert_int_ge(shgeti(svid->claims, "sub"), 0);
+    ck_assert_int_ge(shgeti(svid->claims, "name"), 0);
+    ck_assert_int_ge(shgeti(svid->claims, "iat"), 0);
+    ck_assert_int_ge(shgeti(svid->claims, "exp"), 0);
+    ck_assert_int_eq(svid->expiry, 1620000000);
+    ck_assert_ptr_ne(svid->id.path, NULL);
+    ck_assert_str_eq(svid->id.path, "/workload1");
+    ck_assert_ptr_ne(svid->id.td.name, NULL);
+    ck_assert_str_eq(svid->id.td.name, "example.com");
+    ck_assert_ptr_ne(svid->token, NULL);
+    ck_assert_str_eq(svid->token, token);
+}
 
 /*
 Each test named 'test_jwtsvid_<function name>' tests
@@ -68,21 +90,7 @@ START_TEST(test_jwtsvid_ParseInsecure)
     err_t err;
     jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, NULL, &err);
 
-    ck_assert_uint_eq(err, NO_ERROR);
-    ck_assert_ptr_eq(svid->audience, NULL);
-    ck_assert_ptr_ne(svid->claims, NULL);
-    ck_assert_uint_eq(shlenu(svid->claims), 4);
-    ck_assert_int_ge(shgeti(svid->claims, "sub"), 0);
-    ck_assert_int_ge(shgeti(svid->claims, "name"), 0);
-    ck_assert_int_ge(shgeti(svid->claims, "iat"), 0);
-    ck_assert_int_ge(shgeti(svid->claims, "exp"), 0);
-    ck_assert_int_eq(svid->expiry, 1620000000);
-    ck_assert_ptr_ne(svid->id.path, NULL);
-    ck_assert_str_eq(svid->id.path, "/workload1");
-    ck_assert_ptr_ne(svid->id.td.name, NULL);
-    ck_assert_str_eq(svid->id.td.name, "example.com");
-    ck_assert_ptr_ne(svid->token, NULL);
-    ck_assert_str_eq(svid->token, token);
+    test_fields_verify(svid, err, token);
 
     jwtsvid_SVID_Free(svid);
 }
@@ -119,21 +127,7 @@ START_TEST(test_jwtsvid_ParseAndValidate)
     jwtbundle_Source *source = jwtbundle_SourceFromBundle(bundle);
     jwtsvid_SVID *svid = jwtsvid_ParseAndValidate(token, source, NULL, &err);
 
-    ck_assert_uint_eq(err, NO_ERROR);
-    ck_assert_ptr_eq(svid->audience, NULL);
-    ck_assert_ptr_ne(svid->claims, NULL);
-    ck_assert_uint_eq(shlenu(svid->claims), 4);
-    ck_assert_int_ge(shgeti(svid->claims, "sub"), 0);
-    ck_assert_int_ge(shgeti(svid->claims, "name"), 0);
-    ck_assert_int_ge(shgeti(svid->claims, "iat"), 0);
-    ck_assert_int_ge(shgeti(svid->claims, "exp"), 0);
-    ck_assert_int_eq(svid->expiry, 1620000000);
-    ck_assert_ptr_ne(svid->id.path, NULL);
-    ck_assert_str_eq(svid->id.path, "/workload1");
-    ck_assert_ptr_ne(svid->id.td.name, NULL);
-    ck_assert_str_eq(svid->id.td.name, "example.com");
-    ck_assert_ptr_ne(svid->token, NULL);
-    ck_assert_str_eq(svid->token, token);
+    test_fields_verify(svid, err, token);
 
     jwtbundle_Source_Free(source);
     EVP_PKEY_free(pkey);
@@ -168,21 +162,7 @@ START_TEST(test_jwtsvid_EC)
     jwtbundle_Source *source = jwtbundle_SourceFromBundle(bundle);
     jwtsvid_SVID *svid = jwtsvid_ParseAndValidate(token, source, NULL, &err);
 
-    ck_assert_uint_eq(err, NO_ERROR);
-    ck_assert_ptr_eq(svid->audience, NULL);
-    ck_assert_ptr_ne(svid->claims, NULL);
-    ck_assert_uint_eq(shlenu(svid->claims), 4);
-    ck_assert_int_ge(shgeti(svid->claims, "sub"), 0);
-    ck_assert_int_ge(shgeti(svid->claims, "name"), 0);
-    ck_assert_int_ge(shgeti(svid->claims, "iat"), 0);
-    ck_assert_int_ge(shgeti(svid->claims, "exp"), 0);
-    ck_assert_int_eq(svid->expiry, 1620000000);
-    ck_assert_ptr_ne(svid->id.path, NULL);
-    ck_assert_str_eq(svid->id.path, "/workload1");
-    ck_assert_ptr_ne(svid->id.td.name, NULL);
-    ck_assert_str_eq(svid->id.td.name, "example.com");
-    ck_assert_ptr_ne(svid->token, NULL);
-    ck_assert_str_eq(svid->token, token);
+    test_fields_verify(svid, err, token);
 
     jwtbundle_Source_Free(source);
     EVP_PKEY_free(pkey);
@@ -212,22 +192,6 @@ START_TEST(test_jwtsvid_Marshal)
         = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZlZi1hODM5LTZmZjE2MDI3YWY3OCJ9.eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTYyMDAwMDAwMH0.WA7x2GiNZvh5BoLkvS7BBGIHz6ULTCsX7DBJo8kDoPla4wbo4G2157WWCZLx6zPE8Qpvvb11kMk0Ivk_G0gMeA";
     jwtbundle_Source *source = jwtbundle_SourceFromBundle(bundle);
     jwtsvid_SVID *svid = jwtsvid_ParseAndValidate(token, source, NULL, &err);
-
-    ck_assert_uint_eq(err, NO_ERROR);
-    ck_assert_ptr_eq(svid->audience, NULL);
-    ck_assert_ptr_ne(svid->claims, NULL);
-    ck_assert_uint_eq(shlenu(svid->claims), 4);
-    ck_assert_int_ge(shgeti(svid->claims, "sub"), 0);
-    ck_assert_int_ge(shgeti(svid->claims, "name"), 0);
-    ck_assert_int_ge(shgeti(svid->claims, "iat"), 0);
-    ck_assert_int_ge(shgeti(svid->claims, "exp"), 0);
-    ck_assert_int_eq(svid->expiry, 1620000000);
-    ck_assert_ptr_ne(svid->id.path, NULL);
-    ck_assert_str_eq(svid->id.path, "/workload1");
-    ck_assert_ptr_ne(svid->id.td.name, NULL);
-    ck_assert_str_eq(svid->id.td.name, "example.com");
-    ck_assert_ptr_ne(svid->token, NULL);
-    ck_assert_str_eq(svid->token, token);
 
     const char *marshal = jwtsvid_SVID_Marshal(svid);
 
@@ -275,7 +239,6 @@ END_TEST
 // precondition: invalid jwt token with subject not spifeeid
 START_TEST(test_jwtsvid_error_subject_not_spifeeid)
 {
-
     char token[]
         = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZ"
           "lZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
@@ -294,7 +257,6 @@ END_TEST
 // precondition: invalid jwt token without expiration date
 START_TEST(test_jwtsvid_error_without_exp)
 {
-
     char token[]
         = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZlZ"
           "i1hODM5LTZmZjE2MDI3YWY3OCJ9."
