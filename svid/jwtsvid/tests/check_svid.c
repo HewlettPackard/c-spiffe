@@ -53,11 +53,7 @@ END_TEST
 // token with valid claims map
 START_TEST(test_jwtsvid_ParseInsecure)
 {
-    // spiffeid_TrustDomain td = {"example.com"};
-    // jwtbundle_Bundle *bundle = jwtbundle_Load(td,
-    // "./resources/jwk_keys.json", &err);
-
-    char token1[]
+    char token[]
         = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZ"
           "lZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
           "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9"
@@ -69,31 +65,8 @@ START_TEST(test_jwtsvid_ParseInsecure)
           "NE_M6BnaubI35eOoegwSkfCWT54fWa8jwn1OjLF_"
           "K0e5FxF4i8YJHlpY54rge6grAPAJiKKRei__-ZC8osYOEpmhGltu2BQ";
 
-    char token2[]
-        = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZ"
-          "lZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
-          "eyJzdWIiOiJodHRwOi8vZXhhbXBsZS5jb20vd29ya2xvYWQxIiwibmFtZSI6IkpvaG4g"
-          "RG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE2MjAwMDAwMDB9.cVivPwGf8M9AkHP"
-          "9ekqeeWeDpeVHMV6A4TrdbHx285Ga07C4o47UHPqQvuttQACKnT7h_uhujJEFGUph0oJwqg";
-
-    char token3[]
-        = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZlZ"
-          "i1hODM5LTZmZjE2MDI3YWY3OCJ9."
-          "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9ob"
-          "iBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9."
-          "tIyeP2Alj6OE1KN3sLGDA89EdkTPqoHMi1hMyARyJZ_wpOpL57dgeeMSXWjbHYLW6tKIT"
-          "iOA9pcQVrCQRbcY9A";
-
-    char token4[]
-        = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZlZ"
-        "i1hODM5LTZmZjE2MDI3YWY3OCJ9."
-        "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9obiB"
-        "Eb2UiLCJpc3MiOiJIUEUiLCJpYXQiOjE1MTYyMzkwMjIsImp0aSI6IkFCQ0RFRkdIIiwibmJ"
-        "mIjoxNDAwMDAwMDAwLCJhdWQiOlsiYXVkMSIsImF1ZDIiXX0.afcc79kL3JYqwrh1ABQe7og"
-        "Cy-WxWGb-G2YdmIKIeej3RMT-usawYCC8c1OH30Fi-_ygfzk_qLJnOs1t30tcEQ";
-
     err_t err;
-    jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token1, NULL, &err);
+    jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, NULL, &err);
 
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_eq(svid->audience, NULL);
@@ -109,20 +82,8 @@ START_TEST(test_jwtsvid_ParseInsecure)
     ck_assert_ptr_ne(svid->id.td.name, NULL);
     ck_assert_str_eq(svid->id.td.name, "example.com");
     ck_assert_ptr_ne(svid->token, NULL);
-    ck_assert_str_eq(svid->token, token1);
+    ck_assert_str_eq(svid->token, token);
 
-    jwtsvid_SVID_Free(svid);
-
-    svid = jwtsvid_ParseInsecure(token2, NULL, &err);
-    ck_assert_ptr_eq(svid, NULL);
-    jwtsvid_SVID_Free(svid);
-
-    svid = jwtsvid_ParseInsecure(token3, NULL, &err);
-    ck_assert_ptr_eq(svid, NULL);
-    jwtsvid_SVID_Free(svid);
-
-    svid = jwtsvid_ParseInsecure(token4, NULL, &err);
-    ck_assert_ptr_eq(svid, NULL);
     jwtsvid_SVID_Free(svid);
 }
 END_TEST
@@ -278,6 +239,7 @@ START_TEST(test_jwtsvid_Marshal)
 }
 END_TEST
 
+// precondition: invalid jwt token with invalid signature
 START_TEST(test_jwtsvid_error_invalid_signature)
 {
     spiffeid_TrustDomain td = { "example.com" };
@@ -310,6 +272,64 @@ START_TEST(test_jwtsvid_error_invalid_signature)
 }
 END_TEST
 
+// precondition: invalid jwt token with subject not spifeeid
+START_TEST(test_jwtsvid_error_subject_not_spifeeid)
+{
+
+    char token[]
+        = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZ"
+          "lZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
+          "eyJzdWIiOiJodHRwOi8vZXhhbXBsZS5jb20vd29ya2xvYWQxIiwibmFtZSI6IkpvaG4g"
+          "RG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE2MjAwMDAwMDB9.cVivPwGf8M9AkHP"
+          "9ekqeeWeDpeVHMV6A4TrdbHx285Ga07C4o47UHPqQvuttQACKnT7h_uhujJEFGUph0oJwqg";
+
+    err_t err;
+    jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, NULL, &err);
+    ck_assert_ptr_eq(svid, NULL);
+    jwtsvid_SVID_Free(svid);
+
+}
+END_TEST
+
+// precondition: invalid jwt token without expiration date
+START_TEST(test_jwtsvid_error_without_exp)
+{
+
+    char token[]
+        = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZlZ"
+          "i1hODM5LTZmZjE2MDI3YWY3OCJ9."
+          "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9ob"
+          "iBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9."
+          "tIyeP2Alj6OE1KN3sLGDA89EdkTPqoHMi1hMyARyJZ_wpOpL57dgeeMSXWjbHYLW6tKIT"
+          "iOA9pcQVrCQRbcY9A";
+
+    err_t err;
+    jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, NULL, &err);
+    ck_assert_ptr_eq(svid, NULL);
+    jwtsvid_SVID_Free(svid);
+
+}
+END_TEST
+
+// precondition: invalid jwt token without issuer, jti, audience
+START_TEST(test_jwtsvid_error_issuer_jti_aud)
+{
+    char token[]
+        = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZlZ"
+        "i1hODM5LTZmZjE2MDI3YWY3OCJ9."
+        "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9obiB"
+        "Eb2UiLCJpc3MiOiJIUEUiLCJpYXQiOjE1MTYyMzkwMjIsImp0aSI6IkFCQ0RFRkdIIiwibmJ"
+        "mIjoxNDAwMDAwMDAwLCJhdWQiOlsiYXVkMSIsImF1ZDIiXX0.afcc79kL3JYqwrh1ABQe7og"
+        "Cy-WxWGb-G2YdmIKIeej3RMT-usawYCC8c1OH30Fi-_ygfzk_qLJnOs1t30tcEQ";
+
+    err_t err;
+    jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, NULL, &err);
+    ck_assert_ptr_eq(svid, NULL);
+    jwtsvid_SVID_Free(svid);
+}
+END_TEST
+
+
 Suite *svid_suite(void)
 {
     Suite *s = suite_create("svid");
@@ -321,6 +341,9 @@ Suite *svid_suite(void)
     tcase_add_test(tc_core, test_jwtsvid_EC);
     tcase_add_test(tc_core, test_jwtsvid_Marshal);
     tcase_add_test(tc_core, test_jwtsvid_error_invalid_signature);
+    tcase_add_test(tc_core, test_jwtsvid_error_subject_not_spifeeid);
+    tcase_add_test(tc_core, test_jwtsvid_error_without_exp);
+    tcase_add_test(tc_core, test_jwtsvid_error_issuer_jti_aud);
 
     suite_add_tcase(s, tc_core);
 
