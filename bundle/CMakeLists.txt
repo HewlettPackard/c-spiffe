@@ -35,17 +35,6 @@ install(
 )
 
 # Install Headers:
-set(HEADERS_BUNDLE_SPIFFE
-${PROJECT_SOURCE_DIR}/spiffebundle/src/bundle.h
-${PROJECT_SOURCE_DIR}/spiffebundle/src/set.h
-)
-#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
-install(
-    FILES ${HEADERS_BUNDLE_SPIFFE}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/spiffebundle/src"
-)
-
-# Install Headers:
 set(HEADERS_BUNDLE_X509
 ${PROJECT_SOURCE_DIR}/x509bundle/src/bundle.h
 ${PROJECT_SOURCE_DIR}/x509bundle/src/set.h
