@@ -8,33 +8,25 @@ C extension for Spiffe platform.
 
 ## Introduction
 
-[SPIFFE](https://spiffe.io/) stands for Security Identity Framework for Everyone and is a set for securely identifying system in dynamic and heterogeneous environment. Please refer to https://spiffe.io/docs/latest/spiffe-about/overview/ for more information.  
+[SPIFFE](https://spiffe.io/) stands for Security Identity Framework for Everyone and is a set for securely identifying system in dynamic and heterogeneous environment. Please refer to [SPIFFE Documentation](https://spiffe.io/docs/latest/spiffe-about/overview/) for more information.  
 C-spiffe is an extension for Spiffe that allows any [workload](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#workload) written C, C++ or  any language that supports loading a .so library, access [Workload API](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-workload-api) and establish a mTLS connection with other workloads.  
 The image above shows an example, where a C/C++ Workload imports the c-spiffe library in order to fetch a [SVID](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-verifiable-identity-document-svid) and use it to establish a mTLS connection with another Workload, which can be implemented in another language, provided it follows the SPIFFE standard.
-
 
 ![Alt text](img/cspiffe_example.png "C-spiffe usage example")
 
 ### Motivation
 
-
-Even though there is an official [c-spiffe](https://github.com/spiffe/c-spiffe) library, we started this one from scratch. We wanted a C implementation (not C++) for better compatibility. We also based most of the design decisions on [go-spiffe](https://github.com/spiffe/c-spiffe), which is the offical supported extension by the Spiffe Community.
-
-
-## Examples
- 
-Refer to [Examples](workload/src/EXAMPLE.md) for more information.
-
+Even though there is an official [c-spiffe](https://github.com/spiffe/c-spiffe) library, we started this one from scratch. We wanted a C implementation (not C++) for better compatibility. We also based most of the design decisions on [go-spiffe](https://github.com/spiffe/go-spiffe), which is the offical supported extension by the Spiffe Community.
 
 ## Project structure
 
-
 ### Folders
+
 The project folder structure is described as follows:
 
 * **bundle** Source code for bundle module
 * **cmake** Configuration for cmake build
-* **docker** Configuration files for container used to build 
+* **docker** Configuration files for container used to build this lib
 * **img** Images files for documentations
 * **infra** Container orchestration for tests environment
 * **integration_test** Source code for automated test
@@ -45,7 +37,6 @@ The project folder structure is described as follows:
 * **svid** Source code for SVID module
 * **utils** Source code for utility functions
 * **workload** Source code for workload
-
 
 ### Remarkable files
 
@@ -62,7 +53,8 @@ The project folder structure is described as follows:
 ### Installing
 
 #### Install from source
-Reffer to [BUILDING.md](BUILDING.md) 
+
+Reffer to [BUILDING.md](BUILDING.md)
 
 #### Install on system
 
@@ -83,4 +75,5 @@ Refer to [Examples](workload/src/EXAMPLE.md) for more information.
 * Willian Alves
 
 ## Contributing
-Refer to [Contributing](workload/src/CONTRIBUTING.md) for more information.
+
+Refer to [Contributing](CONTRIBUTING.md) for more information.

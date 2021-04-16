@@ -34,8 +34,7 @@ EVP_PKEY *pemutil_ParsePrivateKey(const byte *bytes, err_t *err);
 /**
  * Encodes a private key in DER format.
  *
- * \param pkey [in] private key object pointer.
- 
+ * \param pkey [in] private key object pointer. 
  * \returns Encoded private key array of bytes if successful, <tt>NULL</tt>
  * otherwise. Must be freed using arrfree function.
  */

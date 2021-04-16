@@ -41,18 +41,18 @@ static void *parseBlock(BIO *bio_mem, const char *type, err_t *err)
                 EVP_PKEY *pkey = d2i_AutoPrivateKey(
                     NULL, (const byte **) &data, len_data);
                 parsed_pem = pkey;
-            }
-            // PEM type not supported
-            else
+            } else {
+                // PEM type not supported
                 *err = ERROR1;
-        }
-        // diverging type
-        else
+            }
+        } else {
+            // diverging type
             *err = ERROR2;
-    }
-    // no PEM data found or nothing left to read
-    else
+        }
+    } else {
+        // no PEM data found or nothing left to read
         *err = ERROR3;
+    }
 
     OPENSSL_free(pem_name);
     OPENSSL_free(pem_header);
@@ -79,10 +79,8 @@ static void **parseBlocks(const byte *pem_byte, const char *type, err_t *err)
             // end of blocks, stop the loop
             *err = NO_ERROR;
             break;
-        } else // non trivial error
-        {
-            // type not supported currently or
-            // diverging type
+        } else {
+            // type not supported currently or diverging type
             if(*err) {
                 for(size_t i = 0, size = arrlenu(parsed_blocks_arr); i < size;
                     ++i) {
@@ -115,15 +113,6 @@ X509 **pemutil_ParseCertificates(const byte *bytes, err_t *err)
         // maybe check the vality of each object?
         // don't think it is possible, though
         x509_arr = (X509 **) objs;
-    } else if(objs) {
-        // free them all!
-        for(size_t i = 0, size = arrlenu(objs); i < size; ++i) {
-            // free each X509 certificate
-            if(objs[i])
-                X509_free(objs[i]);
-        }
-
-        arrfree(objs);
     }
 
     return x509_arr;
@@ -142,13 +131,6 @@ EVP_PKEY *pemutil_ParsePrivateKey(const byte *bytes, err_t *err)
 
         // free the remaining objects
         for(size_t i = 1, size = arrlenu(objs); i < size; ++i) {
-            if(objs[i])
-                EVP_PKEY_free(objs[i]);
-        }
-    } else if(objs) {
-        // free them all!
-        for(size_t i = 0, size = arrlenu(objs); i < size; ++i) {
-            // free each private key
             if(objs[i])
                 EVP_PKEY_free(objs[i]);
         }
@@ -176,7 +158,7 @@ byte *pemutil_EncodePrivateKey(EVP_PKEY *pkey, err_t *err)
         // error while reading
         *err = ERROR1;
     }
-    
+
     return pem_bytes;
 }
 
