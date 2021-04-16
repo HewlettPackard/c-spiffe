@@ -1,15 +1,10 @@
 #include "svid/x509svid/src/source.h"
 #include <check.h>
 
-START_TEST(test_x509svid_Source_GetX509SVID) {}
-END_TEST
-
-START_TEST(test_x509svid_SourceFromSVID) {}
-END_TEST
-
 START_TEST(test_x509svid_SourceFromSource)
 {
-    /// WARNING: temporary solution
+    /* type puning from integer '1' to address 0x1, which is a placeholder for
+     * the actual pointer. */
     x509svid_Source *source
         = x509svid_SourceFromSource((workloadapi_X509Source *) 0x1);
 
@@ -24,8 +19,6 @@ Suite *source_suite(void)
     Suite *s = suite_create("source");
     TCase *tc_core = tcase_create("core");
 
-    tcase_add_test(tc_core, test_x509svid_Source_GetX509SVID);
-    tcase_add_test(tc_core, test_x509svid_SourceFromSVID);
     tcase_add_test(tc_core, test_x509svid_SourceFromSource);
 
     suite_add_tcase(s, tc_core);
