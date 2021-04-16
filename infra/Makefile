@@ -25,6 +25,20 @@ clean:
 
 integration-tests:
 	docker-compose up -d
+
+	docker exec infra_workload_1 service ssh restart
+	docker exec infra_tests_1 service ssh restart
+	docker exec -w /mnt/c-spiffe/integration_test/helpers/bash-spire-scripts infra_tests_1 chmod +x ./ssh-stop_agent.sh
+	docker exec -w /mnt/c-spiffe/integration_test/helpers/bash-general-scripts infra_tests_1 chmod +x ./ssh-generate-pub.sh
+	docker exec -w /mnt/c-spiffe/integration_test/helpers/bash-general-scripts infra_tests_1 ./ssh-generate-pub.sh
+	docker exec -w /mnt/c-spiffe/integration_test/helpers/bash-general-scripts infra_tests_1 cat authorized_keys > authorized_keys && docker cp authorized_keys infra_workload_1:/mnt/c-spiffe/integration_test/helpers/bash-general-scripts && rm authorized_keys
+	docker exec -w /mnt/c-spiffe/integration_test/helpers/bash-general-scripts infra_workload_1 chmod +x ./ssh-copy-pub.sh
+	docker exec -w /mnt/c-spiffe/integration_test/helpers/bash-general-scripts infra_workload_1 ./ssh-copy-pub.sh
+	docker exec -w /mnt/c-spiffe/integration_test/helpers/bash-general-scripts infra_tests_1 chmod +x ./ssh-trusted-host.sh
+	docker exec -w /mnt/c-spiffe/integration_test/helpers/bash-general-scripts infra_tests_1 ./ssh-trusted-host.sh
+	docker exec -w /mnt/c-spiffe/infra/tests infra_workload_1 chmod +x ./build-examples.sh
+	docker exec -w /mnt/c-spiffe/infra/tests infra_workload_1 ./build-examples.sh
+	
 	docker exec infra_spire-server_1 spire-server run &
 	sleep 1
 	docker exec infra_spire-server_1 spire-server entry create -parentID spiffe://example.org/myagent -spiffeID spiffe://example.org/myworkloadA -selector unix:user:root
@@ -34,5 +48,3 @@ integration-tests:
 	docker exec -w /mnt/c-spiffe/integration_test/helpers/bash-general-scripts infra_tests_1 chmod +x ./run-behave-tests.sh
 	docker exec -w /mnt/c-spiffe/integration_test/helpers/bash-general-scripts infra_tests_1 ./run-behave-tests.sh
 	docker-compose down
-
-
