@@ -45,16 +45,6 @@ void x509util_CertPool_AddCert(x509util_CertPool *certpool, X509 *cert);
 bool x509util_CertPool_contains(x509util_CertPool *certpool, X509 *cert);
 
 /**
- * Finf potential parents of a given certificate on a certificate pool.
- *
- * \param certpool [in] Certificate pool object pointer.
- * \param cert [in] X.509 certificate object pointer.
- * \returns stb array of indices for internal use.
- */
-int *x509util_CertPool_findPotentialParents(x509util_CertPool *certpool,
-                                            X509 *cert);
-
-/**
  * Frees a certificate pool object.
  *
  * \param certpool [in] A certificate pool object pointer to be

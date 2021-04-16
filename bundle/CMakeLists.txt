@@ -9,8 +9,6 @@ set(LIB_BUNDLE
 ${PROJECT_SOURCE_DIR}/jwtbundle/src/bundle.c
 ${PROJECT_SOURCE_DIR}/jwtbundle/src/set.c
 ${PROJECT_SOURCE_DIR}/jwtbundle/src/source.c
-${PROJECT_SOURCE_DIR}/spiffebundle/src/bundle.c
-${PROJECT_SOURCE_DIR}/spiffebundle/src/set.c
 ${PROJECT_SOURCE_DIR}/x509bundle/src/bundle.c
 ${PROJECT_SOURCE_DIR}/x509bundle/src/set.c
 ${PROJECT_SOURCE_DIR}/x509bundle/src/source.c
@@ -34,17 +32,6 @@ ${PROJECT_SOURCE_DIR}/jwtbundle/src/source.h
 install(
     FILES ${HEADERS_BUNDLE_JWT}
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/jwtbundle/src"
-)
-
-# Install Headers:
-set(HEADERS_BUNDLE_SPIFFE
-${PROJECT_SOURCE_DIR}/spiffebundle/src/bundle.h
-${PROJECT_SOURCE_DIR}/spiffebundle/src/set.h
-)
-#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
-install(
-    FILES ${HEADERS_BUNDLE_SPIFFE}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/spiffebundle/src"
 )
 
 # Install Headers:

@@ -42,3 +42,23 @@ target_link_libraries(check_x509verify svid ${CHECK_LIBRARIES}
   pthread)
 
 add_test(check_x509verify check_x509verify)
+
+add_executable(check_x509svid_source check_source.c)
+
+target_link_libraries(check_x509svid_source svid ${CHECK_LIBRARIES}
+  OpenSSL::SSL
+  spiffeid
+  internal
+  uriparser
+  bundle
+  jansson
+  cjose
+  subunit
+  check_pic
+  check
+  rt
+  m
+  crypto
+  pthread)
+
+add_test(check_x509svid_source check_x509svid_source)
