@@ -3,16 +3,25 @@ import sys
 import time
 
 from hamcrest import assert_that, is_, is_not
+from behave.matchers import register_type
+from utils import parse_optional
 
 
-@when('I fetch "{profile}" "{document}"')
-def step_impl(context, profile, document):
+parse_optional.pattern = r'\s?\w*\s?'
+register_type(optional=parse_optional)
+
+
+@when('I fetch{external:optional}"{profile}" "{document}"')
+def step_impl(context, external, profile, document):
+    host = ""
+    if external == "external":
+        host = "workload"
+
     if document == "SVID":
         bin_file = "c_client"
     else:
         bin_file = "c_client_bundle"
-
-    c_client_bin = os.popen("/mnt/c-spiffe/build/workload/%s %s_type=%s" % (bin_file, document.lower(), profile.lower()))
+    c_client_bin = os.popen("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-fetch.sh %s %s %s %s" % (bin_file, document.lower(), profile.lower(), host))
     context.result = c_client_bin.read()
 
 
