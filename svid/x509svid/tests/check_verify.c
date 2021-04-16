@@ -24,10 +24,12 @@ START_TEST(test_x509svid_ParseAndVerify)
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_ne(pem_certs, NULL);
 
-    /// TODO: build bundle source
+    spiffeid_TrustDomain td = { "example.org" };
+    x509bundle_Bundle *bundle = x509bundle_New(td);
+    x509bundle_Source *source = x509bundle_SourceFromBundle(bundle);
 
     spiffeid_ID id;
-    X509 ***chains = x509svid_ParseAndVerify(pem_certs, NULL, &id, &err);
+    X509 ***chains = x509svid_ParseAndVerify(pem_certs, source, &id, &err);
 
     ck_assert_uint_ne(err, NO_ERROR);
     ck_assert_ptr_eq(chains, NULL);
@@ -43,6 +45,8 @@ START_TEST(test_x509svid_ParseAndVerify)
         arrfree(pem_certs[i]);
     }
     arrfree(pem_certs);
+
+    x509bundle_Source_Free(source);
 }
 END_TEST
 
@@ -63,7 +67,6 @@ START_TEST(test_x509svid_Verify)
     arrput(certs, leaf);
     arrput(certs, inter);
 
-    /// TODO: build bundle
     spiffeid_TrustDomain td = { "example.org" };
     x509bundle_Bundle *bundle = x509bundle_New(td);
     x509bundle_Source *source = x509bundle_SourceFromBundle(bundle);
@@ -88,6 +91,8 @@ START_TEST(test_x509svid_Verify)
     ck_assert_ptr_eq(id.td.name, NULL);
     ck_assert_ptr_eq(id.path, NULL);
     ck_assert_uint_ne(err, NO_ERROR);
+
+    x509bundle_Source_Free(source);
 }
 END_TEST
 
