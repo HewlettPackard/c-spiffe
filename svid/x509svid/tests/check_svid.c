@@ -136,6 +136,7 @@ START_TEST(test_x509svid_newSVID)
     FILE *f = fopen("./resources/good-leaf-and-intermediate.pem", "r");
     ck_assert_ptr_ne(f, NULL);
 
+    // adding certificates to a stb array of X509 objects
     X509 **certs = NULL;
     do {
         X509 *cert = PEM_read_X509(f, NULL, NULL, NULL);
@@ -149,6 +150,7 @@ START_TEST(test_x509svid_newSVID)
     f = fopen("./resources/key-pkcs8-ecdsa.pem", "r");
     ck_assert_ptr_ne(f, NULL);
 
+    // parsing private key to EVP_PKEY object
     EVP_PKEY *pkey = PEM_read_PrivateKey(f, NULL, NULL, NULL);
     fclose(f);
 
@@ -223,7 +225,6 @@ END_TEST
 START_TEST(test_x509svid_validateLeafCertificate)
 {
     /** well formed leaf case */
-
     FILE *f = fopen("./resources/good-leaf-only.pem", "r");
     ck_assert_ptr_ne(f, NULL);
 
@@ -261,6 +262,7 @@ START_TEST(test_x509svid_validateLeafCertificate)
 
     X509_free(cert);
 
+    /** leaf with no valid spiffe ID */
     f = fopen("./resources/wrong-leaf-empty-id.pem", "r");
     ck_assert_ptr_ne(f, NULL);
 
@@ -334,6 +336,7 @@ END_TEST
 
 START_TEST(test_x509svid_SVID_GetX509SVID)
 {
+    // GetX509SVID is the x509 Source interface function
     err_t err;
     x509svid_SVID *svid = x509svid_SVID_GetX509SVID(NULL, &err);
 
