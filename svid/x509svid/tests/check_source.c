@@ -9,7 +9,6 @@ END_TEST
 
 START_TEST(test_x509svid_SourceFromSource)
 {
-    /// WARNING: temporary solution
     x509svid_Source *source
         = x509svid_SourceFromSource((workloadapi_X509Source *) 0x1);
 
