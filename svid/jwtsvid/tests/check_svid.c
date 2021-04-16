@@ -4,7 +4,6 @@
 
 #define STB_DS_IMPLEMENTATION
 #include "svid/jwtsvid/src/svid.h"
-#include "svid/jwtsvid/tests/check_util.h"
 
 
 // Check common fields
@@ -172,7 +171,8 @@ START_TEST(test_jwtsvid_EC)
 END_TEST
 
 // precondition: valid elliptic curve jwt token
-// postcondition:  valid jwt svid corresponding to the token with valid
+// postcondition:  valid jwt svid corresponding
+// to the token with valid
 START_TEST(test_jwtsvid_Marshal)
 {
     spiffeid_TrustDomain td = { "example.com" };
@@ -204,6 +204,8 @@ START_TEST(test_jwtsvid_Marshal)
 END_TEST
 
 // precondition: invalid jwt token with invalid signature
+// postcondition: valid jwt svid corresponding to the
+// token with invalid signuture
 START_TEST(test_jwtsvid_error_invalid_signature)
 {
     spiffeid_TrustDomain td = { "example.com" };
@@ -237,7 +239,9 @@ START_TEST(test_jwtsvid_error_invalid_signature)
 END_TEST
 
 // precondition: invalid jwt token with subject not spifeeid
-START_TEST(test_jwtsvid_error_subject_not_spifeeid)
+// postcondition: invalid jwt svid corresponding to the
+// token with subject not spiffeeid
+START_TEST(test_jwtsvid_error_subject_not_spiffeid)
 {
     char token[]
         = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZ"
@@ -248,6 +252,7 @@ START_TEST(test_jwtsvid_error_subject_not_spifeeid)
 
     err_t err;
     jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, NULL, &err);
+    ck_assert_uint_eq(err, ERROR4);
     ck_assert_ptr_eq(svid, NULL);
     jwtsvid_SVID_Free(svid);
 
@@ -255,6 +260,8 @@ START_TEST(test_jwtsvid_error_subject_not_spifeeid)
 END_TEST
 
 // precondition: invalid jwt token without expiration date
+// postcondition: invalid jwt svid corresponding to the
+// token without expiry
 START_TEST(test_jwtsvid_error_without_exp)
 {
     char token[]
@@ -267,6 +274,7 @@ START_TEST(test_jwtsvid_error_without_exp)
 
     err_t err;
     jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, NULL, &err);
+    ck_assert_uint_eq(err, ERROR3);
     ck_assert_ptr_eq(svid, NULL);
     jwtsvid_SVID_Free(svid);
 
@@ -274,6 +282,8 @@ START_TEST(test_jwtsvid_error_without_exp)
 END_TEST
 
 // precondition: invalid jwt token without issuer, jti, audience
+// postcondition: invalid jwt svid corresponding to the
+// token without subject
 START_TEST(test_jwtsvid_error_issuer_jti_aud)
 {
     char token[]
@@ -286,6 +296,7 @@ START_TEST(test_jwtsvid_error_issuer_jti_aud)
 
     err_t err;
     jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, NULL, &err);
+    ck_assert_uint_eq(err, ERROR3);
     ck_assert_ptr_eq(svid, NULL);
     jwtsvid_SVID_Free(svid);
 }
@@ -303,7 +314,7 @@ Suite *svid_suite(void)
     tcase_add_test(tc_core, test_jwtsvid_EC);
     tcase_add_test(tc_core, test_jwtsvid_Marshal);
     tcase_add_test(tc_core, test_jwtsvid_error_invalid_signature);
-    tcase_add_test(tc_core, test_jwtsvid_error_subject_not_spifeeid);
+    tcase_add_test(tc_core, test_jwtsvid_error_subject_not_spiffeid);
     tcase_add_test(tc_core, test_jwtsvid_error_without_exp);
     tcase_add_test(tc_core, test_jwtsvid_error_issuer_jti_aud);
 
