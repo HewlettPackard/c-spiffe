@@ -3,6 +3,8 @@
 
 START_TEST(test_x509svid_Load)
 {
+    /** Well formed files for SVID */
+
     const int ITERS = 2;
     err_t err;
     x509svid_SVID *svid
@@ -20,10 +22,14 @@ START_TEST(test_x509svid_Load)
 
     x509svid_SVID_Free(svid);
 
+    /** Testing for NULL path on certificates */
+
     svid = x509svid_Load(NULL, "./resources/key-pkcs8-ecdsa.pem", &err);
 
     ck_assert_uint_ne(err, NO_ERROR);
     ck_assert_ptr_eq(svid, NULL);
+
+    /** Testing for NULL path on private key */
 
     svid = x509svid_Load("./resources/good-leaf-and-intermediate.pem", NULL,
                          &err);
@@ -170,6 +176,8 @@ END_TEST
 
 START_TEST(test_x509svid_validateCertificates)
 {
+    /** well formed partial certificate chain */
+
     const int ITERS = 2;
 
     FILE *f = fopen("./resources/good-leaf-and-intermediate.pem", "r");
@@ -202,6 +210,8 @@ START_TEST(test_x509svid_validateCertificates)
     }
     spiffeid_ID_Free(&id);
 
+    /** Testing for NULL chain */
+
     id = x509svid_validateCertificates(NULL, &err);
 
     ck_assert_uint_ne(err, NO_ERROR);
@@ -212,6 +222,8 @@ END_TEST
 
 START_TEST(test_x509svid_validateLeafCertificate)
 {
+    /** well formed leaf case */
+
     FILE *f = fopen("./resources/good-leaf-only.pem", "r");
     ck_assert_ptr_ne(f, NULL);
 
@@ -232,6 +244,7 @@ START_TEST(test_x509svid_validateLeafCertificate)
     X509_free(cert);
     spiffeid_ID_Free(&id);
 
+    /** leaf with wrong flags set */
     f = fopen("./resources/wrong-leaf-cert-sign.pem", "r");
     ck_assert_ptr_ne(f, NULL);
 
