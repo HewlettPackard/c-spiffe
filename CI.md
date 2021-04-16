@@ -12,4 +12,3 @@ Our Continuous Integration pipeline currently runs on Github Actions and is exec
 * Verify if current coverage is acceptable for lines and functions
   
 If any of the above steps fail, the build fails. Any Pull Request with failing builds should be rejected.
-
