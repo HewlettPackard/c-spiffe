@@ -15,20 +15,25 @@ START_TEST(test_x509svid_ParseAndVerify)
     ck_assert_ptr_ne(inter, NULL);
     fclose(f);
 
+    // creating certificate chain
     X509 **certs = NULL;
     arrput(certs, leaf);
     arrput(certs, inter);
 
     err_t err;
+    // creating raw certificate chain
     byte **pem_certs = pemutil_EncodeCertificates(certs, &err);
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_ne(pem_certs, NULL);
 
+    // create x509 bundle source
     spiffeid_TrustDomain td = { "example.org" };
     x509bundle_Bundle *bundle = x509bundle_New(td);
     x509bundle_Source *source = x509bundle_SourceFromBundle(bundle);
 
     spiffeid_ID id;
+    /* parse from raw bytes with given source. It is not a complete certificate
+     * chain, so it is going to fail. */
     X509 ***chains = x509svid_ParseAndVerify(pem_certs, source, &id, &err);
 
     ck_assert_uint_ne(err, NO_ERROR);
@@ -63,16 +68,20 @@ START_TEST(test_x509svid_Verify)
     ck_assert_ptr_ne(inter, NULL);
     fclose(f);
 
+    // creating certificate chain
     X509 **certs = NULL;
     arrput(certs, leaf);
     arrput(certs, inter);
 
+    // creating x509 bundle source
     spiffeid_TrustDomain td = { "example.org" };
     x509bundle_Bundle *bundle = x509bundle_New(td);
     x509bundle_Source *source = x509bundle_SourceFromBundle(bundle);
 
     spiffeid_ID id;
     err_t err;
+    /* Verify chain with given certificates and source. It is not a complete
+     * certificate chain, so it is going to fail. */
     X509 ***chains = x509svid_Verify(certs, source, &id, &err);
 
     ck_assert_ptr_eq(chains, NULL);
@@ -85,6 +94,7 @@ START_TEST(test_x509svid_Verify)
     }
     arrfree(certs);
 
+    /* Verify with NULL certificate chain */
     chains = x509svid_Verify(NULL, source, &id, &err);
 
     ck_assert_ptr_eq(chains, NULL);
@@ -98,8 +108,7 @@ END_TEST
 
 START_TEST(test_x509svid_IDFromCert)
 {
-    /** first case */
-
+    /** Well formed leaf */
     FILE *f = fopen("./resources/good-leaf-only.pem", "r");
     ck_assert_ptr_ne(f, NULL);
 
@@ -119,8 +128,7 @@ START_TEST(test_x509svid_IDFromCert)
 
     spiffeid_ID_Free(&id);
 
-    /** second case */
-
+    /** Leaf with no spiffe ID */
     f = fopen("./resources/wrong-leaf-empty-id.pem", "r");
     ck_assert_ptr_ne(f, NULL);
 
@@ -135,6 +143,7 @@ START_TEST(test_x509svid_IDFromCert)
     ck_assert_ptr_eq(id.td.name, NULL);
     ck_assert_ptr_eq(id.path, NULL);
 
+    /** Tests for NULL certificate object */
     id = x509svid_IDFromCert(NULL, &err);
 
     ck_assert_uint_ne(err, NO_ERROR);
