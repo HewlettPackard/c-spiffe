@@ -5,7 +5,6 @@
 #define STB_DS_IMPLEMENTATION
 #include "svid/jwtsvid/src/svid.h"
 
-
 // Check common fields
 void test_fields_verify(jwtsvid_SVID *svid, err_t err, char *token)
 {
@@ -153,11 +152,12 @@ START_TEST(test_jwtsvid_EC)
     ck_assert_uint_eq(err, NO_ERROR);
 
     char token[]
-        = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZlZ"
-          "i1hODM5LTZmZjE2MDI3YWY3OCJ9."
-          "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9obi"
-          "BEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTYyMDAwMDAwMH0.WA7x2GiNZvh5BoLk"
-          "vS7BBGIHz6ULTCsX7DBJo8kDoPla4wbo4G2157WWCZLx6zPE8Qpvvb11kMk0Ivk_G0gMeA";
+        = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LT"
+          "M5MmUtNDZlZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
+          "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW"
+          "1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTYyMDAwMDAwMH0."
+          "WA7x2GiNZvh5BoLkvS7BBGIHz6ULTCsX7DBJo8kDoPla4wbo4G2157WWCZ"
+          "Lx6zPE8Qpvvb11kMk0Ivk_G0gMeA";
     jwtbundle_Source *source = jwtbundle_SourceFromBundle(bundle);
     jwtsvid_SVID *svid = jwtsvid_ParseAndValidate(token, source, NULL, &err);
 
@@ -166,7 +166,6 @@ START_TEST(test_jwtsvid_EC)
     jwtbundle_Source_Free(source);
     EVP_PKEY_free(pkey);
     jwtsvid_SVID_Free(svid);
-
 }
 END_TEST
 
@@ -189,7 +188,12 @@ START_TEST(test_jwtsvid_Marshal)
     ck_assert_uint_eq(err, NO_ERROR);
 
     char token[]
-        = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZlZi1hODM5LTZmZjE2MDI3YWY3OCJ9.eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTYyMDAwMDAwMH0.WA7x2GiNZvh5BoLkvS7BBGIHz6ULTCsX7DBJo8kDoPla4wbo4G2157WWCZLx6zPE8Qpvvb11kMk0Ivk_G0gMeA";
+        = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZ"
+          "lZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
+          "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9"
+          "obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTYyMDAwMDAwMH0."
+          "WA7x2GiNZvh5BoLkvS7BBGIHz6ULTCsX7DBJo8kDoPla4wbo4G2157WWCZLx6zPE8Qp"
+          "vvb11kMk0Ivk_G0gMeA";
     jwtbundle_Source *source = jwtbundle_SourceFromBundle(bundle);
     jwtsvid_SVID *svid = jwtsvid_ParseAndValidate(token, source, NULL, &err);
 
@@ -222,11 +226,12 @@ START_TEST(test_jwtsvid_error_invalid_signature)
     ck_assert_uint_eq(err, NO_ERROR);
 
     char token[]
-        = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZlZ"
-          "i1hODM5LTZmZjE2MDI3YWY3OCJ9."
-          "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9obi"
-          "BEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTYyMDAwMDAwMH0.WA7x2GiNZvh5BoLk"
-          "vS7BBGIHz6ULTCsX7DBJo8kDoPla4wbo4G2157WWCZLx6zPE8Qpvvb11kMk0Ivk";
+        = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZ"
+          "lZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
+          "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9"
+          "obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTYyMDAwMDAwMH0."
+          "WA7x2GiNZvh5BoLkvS7BBGIHz6ULTCsX7DBJo8kDoPla4wbo4G2157WWCZLx6zPE8Qp"
+          "vvb11kMk0Ivk";
     jwtbundle_Source *source = jwtbundle_SourceFromBundle(bundle);
     jwtsvid_SVID *svid = jwtsvid_ParseAndValidate(token, source, NULL, &err);
 
@@ -246,16 +251,16 @@ START_TEST(test_jwtsvid_error_subject_not_spiffeid)
     char token[]
         = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZ"
           "lZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
-          "eyJzdWIiOiJodHRwOi8vZXhhbXBsZS5jb20vd29ya2xvYWQxIiwibmFtZSI6IkpvaG4g"
-          "RG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE2MjAwMDAwMDB9.cVivPwGf8M9AkHP"
-          "9ekqeeWeDpeVHMV6A4TrdbHx285Ga07C4o47UHPqQvuttQACKnT7h_uhujJEFGUph0oJwqg";
+          "eyJzdWIiOiJodHRwOi8vZXhhbXBsZS5jb20vd29ya2xvYWQxIiwibmFtZSI6IkpvaG4"
+          "gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE2MjAwMDAwMDB9."
+          "cVivPwGf8M9AkHP9ekqeeWeDpeVHMV6A4TrdbHx285Ga07C4o47UHPqQvuttQACKnT7"
+          "h_uhujJEFGUph0oJwqg";
 
     err_t err;
     jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, NULL, &err);
     ck_assert_uint_eq(err, ERROR4);
     ck_assert_ptr_eq(svid, NULL);
     jwtsvid_SVID_Free(svid);
-
 }
 END_TEST
 
@@ -264,20 +269,18 @@ END_TEST
 // token without expiry
 START_TEST(test_jwtsvid_error_without_exp)
 {
-    char token[]
-        = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZlZ"
-          "i1hODM5LTZmZjE2MDI3YWY3OCJ9."
-          "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9ob"
-          "iBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9."
-          "tIyeP2Alj6OE1KN3sLGDA89EdkTPqoHMi1hMyARyJZ_wpOpL57dgeeMSXWjbHYLW6tKIT"
-          "iOA9pcQVrCQRbcY9A";
+    char token[] = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LT"
+                   "M5MmUtNDZlZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
+                   "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW"
+                   "1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9."
+                   "tIyeP2Alj6OE1KN3sLGDA89EdkTPqoHMi1hMyARyJZ_"
+                   "wpOpL57dgeeMSXWjbHYLW6tKITiOA9pcQVrCQRbcY9A";
 
     err_t err;
     jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, NULL, &err);
     ck_assert_uint_eq(err, ERROR3);
     ck_assert_ptr_eq(svid, NULL);
     jwtsvid_SVID_Free(svid);
-
 }
 END_TEST
 
@@ -287,12 +290,13 @@ END_TEST
 START_TEST(test_jwtsvid_error_issuer_jti_aud)
 {
     char token[]
-        = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZlZ"
-        "i1hODM5LTZmZjE2MDI3YWY3OCJ9."
-        "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9obiB"
-        "Eb2UiLCJpc3MiOiJIUEUiLCJpYXQiOjE1MTYyMzkwMjIsImp0aSI6IkFCQ0RFRkdIIiwibmJ"
-        "mIjoxNDAwMDAwMDAwLCJhdWQiOlsiYXVkMSIsImF1ZDIiXX0.afcc79kL3JYqwrh1ABQe7og"
-        "Cy-WxWGb-G2YdmIKIeej3RMT-usawYCC8c1OH30Fi-_ygfzk_qLJnOs1t30tcEQ";
+        = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZ"
+          "lZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
+          "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9"
+          "obiBEb2UiLCJpc3MiOiJIUEUiLCJpYXQiOjE1MTYyMzkwMjIsImp0aSI6IkFCQ0RFRk"
+          "dIIiwibmJmIjoxNDAwMDAwMDAwLCJhdWQiOlsiYXVkMSIsImF1ZDIiXX0."
+          "afcc79kL3JYqwrh1ABQe7ogCy-WxWGb-G2YdmIKIeej3RMT-usawYCC8c1OH30Fi-_"
+          "ygfzk_qLJnOs1t30tcEQ";
 
     err_t err;
     jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, NULL, &err);
@@ -301,7 +305,6 @@ START_TEST(test_jwtsvid_error_issuer_jti_aud)
     jwtsvid_SVID_Free(svid);
 }
 END_TEST
-
 
 Suite *svid_suite(void)
 {
