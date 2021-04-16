@@ -25,7 +25,8 @@ START_TEST(test_x509svid_Load)
     ck_assert_uint_ne(err, NO_ERROR);
     ck_assert_ptr_eq(svid, NULL);
 
-    svid = x509svid_Load("./resources/good-leaf-and-intermediate.pem", NULL, &err);
+    svid = x509svid_Load("./resources/good-leaf-and-intermediate.pem", NULL,
+                         &err);
 
     ck_assert_uint_ne(err, NO_ERROR);
     ck_assert_ptr_eq(svid, NULL);
@@ -336,7 +337,6 @@ START_TEST(test_x509svid_SVID_GetX509SVID)
     ck_assert_uint_eq(err, NO_ERROR);
 
     x509svid_SVID_Free(svid);
-
 }
 END_TEST
 
