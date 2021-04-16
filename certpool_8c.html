@@ -104,8 +104,6 @@ Functions</h2></td></tr>
 <tr class="separator:a6e35d3bb7b55b3c266dd5341f0c6346a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27f4bc552d0742d725b44d60125abac6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="certpool_8c.html#a27f4bc552d0742d725b44d60125abac6">x509util_CertPool_contains</a> (<a class="el" href="structx509util__CertPool.html">x509util_CertPool</a> *certpool, X509 *cert)</td></tr>
 <tr class="separator:a27f4bc552d0742d725b44d60125abac6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a491fb5aa25c564db950cb9fb5bd527b3"><td class="memItemLeft" align="right" valign="top">int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="certpool_8c.html#a491fb5aa25c564db950cb9fb5bd527b3">x509util_CertPool_findPotentialParents</a> (<a class="el" href="structx509util__CertPool.html">x509util_CertPool</a> *certpool, X509 *cert)</td></tr>
-<tr class="separator:a491fb5aa25c564db950cb9fb5bd527b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20b704ee79f4c9f5f39cbee511a24b71"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="certpool_8c.html#a20b704ee79f4c9f5f39cbee511a24b71">x509util_CertPool_Free</a> (<a class="el" href="structx509util__CertPool.html">x509util_CertPool</a> *certpool)</td></tr>
 <tr class="separator:a20b704ee79f4c9f5f39cbee511a24b71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -180,43 +178,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if the pool contains the certificate, <code>false</code> otherwise. </dd></dl>
-
-</div>
-</div>
-<a id="a491fb5aa25c564db950cb9fb5bd527b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a491fb5aa25c564db950cb9fb5bd527b3">&#9670;&nbsp;</a></span>x509util_CertPool_findPotentialParents()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int* x509util_CertPool_findPotentialParents </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structx509util__CertPool.html">x509util_CertPool</a> *&#160;</td>
-          <td class="paramname"><em>certpool</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">X509 *&#160;</td>
-          <td class="paramname"><em>cert</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Finf potential parents of a given certificate on a certificate pool.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">certpool</td><td>[in] Certificate pool object pointer. </td></tr>
-    <tr><td class="paramname">cert</td><td>[in] X.509 certificate object pointer. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>stb array of indices for internal use. </dd></dl>
 
 </div>
 </div>

@@ -99,20 +99,16 @@ $(function() {
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="certpool_8h.html#a27f4bc552d0742d725b44d60125abac6">x509util_CertPool_contains</a>(<a class="code" href="structx509util__CertPool.html">x509util_CertPool</a> *certpool, X509 *cert);</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keywordtype">int</span> *<a class="code" href="certpool_8h.html#a491fb5aa25c564db950cb9fb5bd527b3">x509util_CertPool_findPotentialParents</a>(<a class="code" href="structx509util__CertPool.html">x509util_CertPool</a> *certpool,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                                            X509 *cert);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keywordtype">void</span> <a class="code" href="certpool_8h.html#a20b704ee79f4c9f5f39cbee511a24b71">x509util_CertPool_Free</a>(<a class="code" href="structx509util__CertPool.html">x509util_CertPool</a> *certpool);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">void</span> <a class="code" href="certpool_8h.html#a20b704ee79f4c9f5f39cbee511a24b71">x509util_CertPool_Free</a>(<a class="code" href="structx509util__CertPool.html">x509util_CertPool</a> *certpool);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="acertpool_8h_html_a0b815b5c3b46803eded844d1f8528b2e"><div class="ttname"><a href="certpool_8h.html#a0b815b5c3b46803eded844d1f8528b2e">x509util_CertPool</a></div><div class="ttdeci">struct x509util_CertPool x509util_CertPool</div></div>
-<div class="ttc" id="acertpool_8h_html_a20b704ee79f4c9f5f39cbee511a24b71"><div class="ttname"><a href="certpool_8h.html#a20b704ee79f4c9f5f39cbee511a24b71">x509util_CertPool_Free</a></div><div class="ttdeci">void x509util_CertPool_Free(x509util_CertPool *certpool)</div><div class="ttdef"><b>Definition:</b> certpool.c:153</div></div>
+<div class="ttc" id="acertpool_8h_html_a20b704ee79f4c9f5f39cbee511a24b71"><div class="ttname"><a href="certpool_8h.html#a20b704ee79f4c9f5f39cbee511a24b71">x509util_CertPool_Free</a></div><div class="ttdeci">void x509util_CertPool_Free(x509util_CertPool *certpool)</div><div class="ttdef"><b>Definition:</b> certpool.c:119</div></div>
 <div class="ttc" id="acertpool_8h_html_a27f4bc552d0742d725b44d60125abac6"><div class="ttname"><a href="certpool_8h.html#a27f4bc552d0742d725b44d60125abac6">x509util_CertPool_contains</a></div><div class="ttdeci">bool x509util_CertPool_contains(x509util_CertPool *certpool, X509 *cert)</div><div class="ttdef"><b>Definition:</b> certpool.c:90</div></div>
-<div class="ttc" id="acertpool_8h_html_a491fb5aa25c564db950cb9fb5bd527b3"><div class="ttname"><a href="certpool_8h.html#a491fb5aa25c564db950cb9fb5bd527b3">x509util_CertPool_findPotentialParents</a></div><div class="ttdeci">int * x509util_CertPool_findPotentialParents(x509util_CertPool *certpool, X509 *cert)</div><div class="ttdef"><b>Definition:</b> certpool.c:119</div></div>
 <div class="ttc" id="acertpool_8h_html_a6e35d3bb7b55b3c266dd5341f0c6346a"><div class="ttname"><a href="certpool_8h.html#a6e35d3bb7b55b3c266dd5341f0c6346a">x509util_CertPool_AddCert</a></div><div class="ttdeci">void x509util_CertPool_AddCert(x509util_CertPool *certpool, X509 *cert)</div><div class="ttdef"><b>Definition:</b> certpool.c:43</div></div>
 <div class="ttc" id="acertpool_8h_html_a823d6873c61885efbf36b9ca0dd58708"><div class="ttname"><a href="certpool_8h.html#a823d6873c61885efbf36b9ca0dd58708">x509util_CertPool_New</a></div><div class="ttdeci">x509util_CertPool * x509util_CertPool_New(void)</div><div class="ttdef"><b>Definition:</b> certpool.c:5</div></div>
 <div class="ttc" id="acertpool_8h_html_a83c9939bb8bedeee40b6543e40800fe5"><div class="ttname"><a href="certpool_8h.html#a83c9939bb8bedeee40b6543e40800fe5">map_string_int_arr</a></div><div class="ttdeci">struct map_string_int_arr map_string_int_arr</div></div>
