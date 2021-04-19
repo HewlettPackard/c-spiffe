@@ -33,13 +33,6 @@ x509svid_SVID *x509svid_Parse(const byte *certbytes, const byte *keybytes,
 
     // could not parse certificates
     if(*err) {
-        if(certs) {
-            for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
-                X509_free(certs[i]);
-            }
-            arrfree(certs);
-        }
-
         return NULL;
     }
 
@@ -47,9 +40,11 @@ x509svid_SVID *x509svid_Parse(const byte *certbytes, const byte *keybytes,
 
     // could not parse private key info
     if(*err) {
-        if(pkey)
-            EVP_PKEY_free(pkey);
-
+        for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
+            X509_free(certs[i]);
+        }
+        arrfree(certs);
+            
         return NULL;
     }
 
@@ -67,12 +62,6 @@ x509svid_SVID *x509svid_ParseRaw(const byte *certbytes, const size_t certlen,
 
         if(!(*err)) {
             return x509svid_newSVID(certs, pkey, err);
-        } else {
-            // freem them all
-            for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
-                X509_free(certs[i]);
-            }
-            arrfree(certs);
         }
     }
 
@@ -87,11 +76,13 @@ x509svid_SVID *x509svid_newSVID(X509 **certs, EVP_PKEY *pkey, err_t *err)
         EVP_PKEY *signer = x509svid_validatePrivateKey(pkey, certs[0], err);
         if(!(*err)) {
             x509svid_SVID *svid = malloc(sizeof *svid);
+            svid->certs = NULL;
             // increase ref count
-            for(size_t i = 0, size = arrlenu(certs); i < size; ++i)
+            for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
                 X509_up_ref(certs[i]);
+                arrput(svid->certs, certs[i]);
+            }
 
-            svid->certs = certs;
             svid->id = id;
             svid->private_key = signer;
 
@@ -208,7 +199,6 @@ EVP_PKEY *x509svid_validatePrivateKey(EVP_PKEY *priv_key, X509 *cert,
         if(!(*err)) {
             if(matched) {
                 // signer
-                /// TODO: is it right?
                 EVP_PKEY_up_ref(priv_key);
                 return priv_key;
             }
