@@ -62,7 +62,7 @@ static void *parseBlock(BIO *bio_mem, const char *type, err_t *err)
 
 static void **parseBlocks(const byte *pem_byte, const char *type, err_t *err)
 {
-    // bio_mem MUST be initialized just one time (??)
+    // bio_mem MUST be initialized just one time
     BIO *bio_mem = BIO_new(BIO_s_mem());
     BIO_puts(bio_mem, (const char *) pem_byte);
 
@@ -106,13 +106,17 @@ X509 **pemutil_ParseCertificates(const byte *bytes, err_t *err)
 {
     // array of X509 certificates
     X509 **x509_arr = NULL;
-    void **objs = parseBlocks(bytes, types_str[CERT_TYPE], err);
 
-    // not NULL and no error
-    if(objs && !(*err)) {
-        // maybe check the vality of each object?
-        // don't think it is possible, though
-        x509_arr = (X509 **) objs;
+    if(bytes) {
+        void **objs = parseBlocks(bytes, types_str[CERT_TYPE], err);
+
+        // not NULL and no error
+        if(objs && !(*err)) {
+            x509_arr = (X509 **) objs;
+        }
+    } else {
+        // null pointer error
+        *err = ERROR1;
     }
 
     return x509_arr;
@@ -121,23 +125,29 @@ X509 **pemutil_ParseCertificates(const byte *bytes, err_t *err)
 EVP_PKEY *pemutil_ParsePrivateKey(const byte *bytes, err_t *err)
 {
     EVP_PKEY *pkey = NULL;
-    void **objs = parseBlocks(bytes, types_str[KEY_TYPE], err);
 
-    // not NULL and no error
-    if(objs && !(*err)) {
-        // maybe check the vality of each object?
-        // don't think it is possible, though
-        pkey = (EVP_PKEY *) objs[0];
+    if(bytes) {
+        void **objs = parseBlocks(bytes, types_str[KEY_TYPE], err);
 
-        // free the remaining objects
-        for(size_t i = 1, size = arrlenu(objs); i < size; ++i) {
-            if(objs[i])
-                EVP_PKEY_free(objs[i]);
+        // not NULL and no error
+        if(objs && !(*err)) {
+            // maybe check the vality of each object?
+            // don't think it is possible, though
+            pkey = (EVP_PKEY *) objs[0];
+
+            // free the remaining objects
+            for(size_t i = 1, size = arrlenu(objs); i < size; ++i) {
+                if(objs[i])
+                    EVP_PKEY_free(objs[i]);
+            }
         }
+        // free array of pointers
+        arrfree(objs);
+    } else {
+        // null pointer error
+        *err = ERROR1;
     }
-    // free array of pointers
-    arrfree(objs);
-
+    
     return pkey;
 }
 
