@@ -52,8 +52,6 @@ int main(void)
         printf("client free error! %d\n", (int) err);
     }
 
-    x509bundle_Source_Free(bundle_src);
-    tlsconfig_Authorizer_Free(authorizer);
     spiffetls_DialMode_Free(mode);
 
     const int fd = SSL_get_fd(conn);

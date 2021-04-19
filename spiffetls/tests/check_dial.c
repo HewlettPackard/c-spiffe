@@ -27,8 +27,6 @@ START_TEST(test_spiffetls_DialWithMode)
     ck_assert_ptr_ne(conn, NULL);
 
     spiffeid_TrustDomain_Free(&td);
-    tlsconfig_Authorizer_Free(authorizer);
-    x509bundle_Source_Free(bundle_src);
     spiffetls_DialMode_Free(mode);
 
     const int fd = SSL_get_fd(conn);

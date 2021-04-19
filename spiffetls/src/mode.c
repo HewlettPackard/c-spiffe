@@ -116,7 +116,12 @@ spiffetls_MTLSWebClientWithRawConfig(x509util_CertPool *roots,
 void spiffetls_DialMode_Free(spiffetls_DialMode *mode)
 {
     if(mode) {
-        /// TODO: check is is needed to free member variables
+        tlsconfig_Authorizer_Free(mode->authorizer);
+        x509bundle_Source_Free(mode->bundle);
+        x509util_CertPool_Free(mode->roots);
+        workloadapi_X509Source_Free(mode->source);
+        x509svid_Source_Free(mode->svid);
+
         free(mode);
     }
 }

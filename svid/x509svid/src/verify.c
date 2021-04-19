@@ -37,7 +37,6 @@ static X509 ***verifyX509(X509 *leaf, X509 **roots, X509 **inters, err_t *err)
         for(int i = 0, size = sk_X509_num(certs_stack); i < size; ++i) {
             // from peer to root
             X509 *cert = sk_X509_value(certs_stack, i);
-            /// TODO: check if it is necessary to up the ref count
             X509_up_ref(cert);
             arrput(certs_chain, cert);
         }
@@ -52,7 +51,6 @@ static X509 ***verifyX509(X509 *leaf, X509 **roots, X509 **inters, err_t *err)
         *err = ERROR1;
     } else {
         // X509_verify_cert was invoked incorrectly
-        /// TODO: handle error
         *err = ERROR2;
     }
 

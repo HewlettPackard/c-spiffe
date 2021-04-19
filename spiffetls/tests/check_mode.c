@@ -10,7 +10,6 @@ START_TEST(test_spiffetls_TLSClient)
     ck_assert_uint_eq(mode->mode, TLS_CLIENT_MODE);
     ck_assert_ptr_eq(mode->authorizer, authorizer);
 
-    tlsconfig_Authorizer_Free(authorizer);
     spiffetls_DialMode_Free(mode);
 }
 END_TEST
@@ -28,8 +27,6 @@ START_TEST(test_spiffetls_TLSClientWithSource)
     ck_assert_ptr_eq(mode->authorizer, authorizer);
     ck_assert_ptr_eq(mode->source, source);
 
-    tlsconfig_Authorizer_Free(authorizer);
-    workloadapi_X509Source_Free(source);
     spiffetls_DialMode_Free(mode);
 }
 END_TEST
@@ -46,8 +43,6 @@ START_TEST(test_spiffetls_TLSClientWithRawConfig)
     ck_assert_ptr_eq(mode->bundle, bundle);
     ck_assert(mode->unneeded_source);
 
-    tlsconfig_Authorizer_Free(authorizer);
-    x509bundle_Source_Free(bundle);
     spiffetls_DialMode_Free(mode);
 }
 END_TEST
@@ -61,7 +56,6 @@ START_TEST(test_spiffetls_MTLSClient)
     ck_assert_uint_eq(mode->mode, MTLS_CLIENT_MODE);
     ck_assert_ptr_eq(mode->authorizer, authorizer);
 
-    tlsconfig_Authorizer_Free(authorizer);
     spiffetls_DialMode_Free(mode);
 }
 END_TEST
@@ -79,8 +73,6 @@ START_TEST(test_spiffetls_MTLSClientWithSource)
     ck_assert_ptr_eq(mode->authorizer, authorizer);
     ck_assert_ptr_eq(mode->source, source);
 
-    tlsconfig_Authorizer_Free(authorizer);
-    workloadapi_X509Source_Free(source);
     spiffetls_DialMode_Free(mode);
 }
 END_TEST
@@ -99,9 +91,6 @@ START_TEST(test_spiffetls_MTLSClientWithRawConfig)
     ck_assert(mode->unneeded_source);
     ck_assert_ptr_eq(mode->svid, svid);
 
-    tlsconfig_Authorizer_Free(authorizer);
-    x509bundle_Source_Free(bundle);
-    x509svid_Source_Free(svid);
     spiffetls_DialMode_Free(mode);
 }
 END_TEST
@@ -115,7 +104,6 @@ START_TEST(test_spiffetls_MTLSWebClient)
     ck_assert_uint_eq(mode->mode, MTLS_WEBCLIENT_MODE);
     ck_assert_ptr_eq(mode->roots, roots);
 
-    x509util_CertPool_Free(roots);
     spiffetls_DialMode_Free(mode);
 }
 END_TEST
@@ -133,8 +121,6 @@ START_TEST(test_spiffetls_MTLSWebClientWithSource)
     ck_assert_ptr_eq(mode->roots, roots);
     ck_assert_ptr_eq(mode->source, source);
 
-    x509util_CertPool_Free(roots);
-    workloadapi_X509Source_Free(source);
     spiffetls_DialMode_Free(mode);
 }
 END_TEST
@@ -151,8 +137,6 @@ START_TEST(test_spiffetls_MTLSWebClientWithRawConfig)
     ck_assert(mode->unneeded_source);
     ck_assert_ptr_eq(mode->svid, svid);
 
-    x509util_CertPool_Free(roots);
-    x509svid_Source_Free(svid);
     spiffetls_DialMode_Free(mode);
 }
 END_TEST
