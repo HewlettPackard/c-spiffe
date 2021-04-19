@@ -31,5 +31,3 @@ services:
     links:
       - spire-server
       - workload
-      
-
