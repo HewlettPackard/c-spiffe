@@ -110,31 +110,25 @@ x509svid_SVID *x509svid_newSVID(X509 **certs, EVP_PKEY *pkey, err_t *err)
 
 spiffeid_ID x509svid_validateCertificates(X509 **certs, err_t *err)
 {
-    if(certs) {
-        if(arrlenu(certs) > 0) {
-            spiffeid_ID leaf = x509svid_validateLeafCertificate(certs[0], err);
+    if(arrlenu(certs) > 0) {
+        spiffeid_ID leaf = x509svid_validateLeafCertificate(certs[0], err);
+        if(!(*err)) {
+            // leaf certified
+            X509 *leaf_cert = certs[0];
+
+            arrdel(certs, 0);
+            x509svid_validateSigningCertificates(certs, err);
+            arrins(certs, 0, leaf_cert);
+
             if(!(*err)) {
-                // leaf certified
-                X509 *leaf_cert = certs[0];
-
-                arrdel(certs, 0);
-                x509svid_validateSigningCertificates(certs, err);
-                arrins(certs, 0, leaf_cert);
-
-                if(!(*err)) {
-                    // signing certificates are valid
-                    return leaf;
-                }
+                // signing certificates are valid
+                return leaf;
             }
-        } else {
-            // empty array
-            *err = ERROR1;
         }
     } else {
-        // null array
+        // empty or null array
         *err = ERROR1;
     }
-
     return (spiffeid_ID){ { NULL }, NULL };
 }
 
@@ -352,8 +346,8 @@ void x509svid_SVID_Free(x509svid_SVID *svid)
 
 x509svid_SVID *x509svid_SVID_GetDefaultX509SVID(x509svid_SVID **svids)
 {
-    if(!svids) {
-        return NULL;
+    if(arrlenu(svids) > 0) {
+        return svids[0];
     }
-    return svids[0];
+    return NULL;
 }

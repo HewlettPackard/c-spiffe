@@ -63,7 +63,6 @@ Suite *certpool_suite(void)
 
     tcase_add_test(tc_core, test_x509util_CertPool_New);
     tcase_add_test(tc_core, test_x509util_CertPool_contains);
-    // tcase_add_test(tc_core, test_x509util_CertPool_findPotentialParents);
 
     return s;
 }
