@@ -131,8 +131,6 @@ EVP_PKEY *pemutil_ParsePrivateKey(const byte *bytes, err_t *err)
 
         // not NULL and no error
         if(objs && !(*err)) {
-            // maybe check the vality of each object?
-            // don't think it is possible, though
             pkey = (EVP_PKEY *) objs[0];
 
             // free the remaining objects
