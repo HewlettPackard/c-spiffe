@@ -873,6 +873,25 @@ START_TEST(test_workloadapi_Client_WatchX509Context)
     arrpop(ctxs);
 
     delete stub;
+
+    //NULL tests
+
+    err = workloadapi_Client_watchX509Context(client,watcher,(workloadapi_Backoff*) NULL);
+    ck_assert_int_eq(err,ERROR2);
+
+    watcher = NULL;
+    err = workloadapi_Client_WatchX509Context(client,watcher);
+    ck_assert_int_eq(err,ERROR2);
+
+    err = workloadapi_Client_watchX509Context(client,watcher,(workloadapi_Backoff*) 0x1);
+    ck_assert_int_eq(err,ERROR2);
+
+    client = NULL;
+    err = workloadapi_Client_WatchX509Context(client,watcher);
+    ck_assert_int_eq(err,ERROR1);
+    err = workloadapi_Client_watchX509Context(client,watcher,(workloadapi_Backoff*) 0x1);
+    ck_assert_int_eq(err,ERROR2);
+
 }
 END_TEST
 
@@ -946,6 +965,24 @@ START_TEST(test_workloadapi_Client_WatchJWTBundles)
     arrpop(sets);
 
     delete stub;
+
+    //NULL tests
+
+    err = workloadapi_Client_watchJWTBundles(client,watcher,(workloadapi_Backoff*) NULL);
+    ck_assert_int_eq(err,ERROR2);
+
+    watcher = NULL;
+    err = workloadapi_Client_WatchJWTBundles(client,watcher);
+    ck_assert_int_eq(err,ERROR2);
+
+    err = workloadapi_Client_watchJWTBundles(client,watcher,(workloadapi_Backoff*) 0x1);
+    ck_assert_int_eq(err,ERROR2);
+
+    client = NULL;
+    err = workloadapi_Client_WatchJWTBundles(client,watcher);
+    ck_assert_int_eq(err,ERROR1);
+    err = workloadapi_Client_watchJWTBundles(client,watcher,(workloadapi_Backoff*) 0x1);
+    ck_assert_int_eq(err,ERROR2);
 }
 END_TEST
 
