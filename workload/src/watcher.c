@@ -108,8 +108,6 @@ err_t workloadapi_Watcher_Start(workloadapi_Watcher *watcher)
     /// wait for update and check for errors.
     error = workloadapi_Watcher_WaitUntilUpdated(watcher);
     if(error != NO_ERROR) {
-        /// TODO: add error handling and destroy thread. error is already set
-        /// so we just need to get our bearings and deallocate stuff;
         watcher->update_error = error;
         return ERROR3;
     }
