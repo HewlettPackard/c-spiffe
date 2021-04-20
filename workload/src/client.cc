@@ -404,7 +404,6 @@ err_t workloadapi_Client_WatchX509Context(workloadapi_Client *client,
         if(err == grpc::CANCELLED || err == grpc::INVALID_ARGUMENT) {
             return err;
         } else if(err != NO_ERROR) {
-            // TODO: check error and reuse backoff if not cancelled
             return err;
         }
     }
@@ -755,7 +754,6 @@ err_t workloadapi_Client_WatchJWTBundles(workloadapi_Client *client,
             = workloadapi_Client_watchJWTBundles(client, watcher, &backoff);
         workloadapi_JWTWatcher_OnJWTBundlesWatchError(watcher, err);
         err = workloadapi_Client_HandleWatchError(client, err, &backoff);
-        // TODO: check error and reuse backoff if not cancelled
         if(err == grpc::CANCELLED || err == grpc::INVALID_ARGUMENT) {
             return err;
         } else if(err != NO_ERROR) {
