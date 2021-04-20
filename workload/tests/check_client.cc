@@ -488,6 +488,43 @@ START_TEST(test_workloadapi_Client_FetchX509Context)
 }
 END_TEST
 
+START_TEST(test_workloadapi_Client_FetchX509Bundles)
+{
+    // normal constructor test
+    const char *addr = "unix:///tmp/agent.sock";
+    err_t err = NO_ERROR;
+    workloadapi_Client *client = workloadapi_NewClient(&err);
+    auto cr = new grpc::testing::MockClientReader<X509SVIDResponse>();
+
+    MockSpiffeWorkloadAPIStub *stub = new MockSpiffeWorkloadAPIStub();
+    workloadapi_Client_SetStub(client, stub);
+    workloadapi_Client_setDefaultAddressOption(client, NULL);
+    workloadapi_Client_setDefaultHeaderOption(client, NULL);
+
+    err = workloadapi_Client_Connect(client);
+
+    ck_assert_ptr_eq(client->stub, stub);
+
+    EXPECT_CALL(*stub, FetchX509SVIDRaw(_, _)).WillOnce(Return(cr));
+
+    EXPECT_CALL(*cr, Read(_))
+        .WillOnce(DoAll(WithArg<0>(set_single_SVID_response()), Return(true)));
+    //   .WillOnce(Return(false));
+
+    x509bundle_Set *set
+        = workloadapi_Client_FetchX509Bundles(client, &err);
+    workloadapi_Client_Close(client);
+    workloadapi_Client_Free(client);
+    ck_assert_ptr_ne(set, NULL);
+    ck_assert_int_eq(x509bundle_Set_Len(set), 2); //trust domain + federated
+    ck_assert_ptr_ne(set->bundles, NULL);
+    ck_assert_str_eq(set->bundles[0].value[0].td.name, "example.org");
+    ck_assert_str_eq(set->bundles[1].value[0].td.name, "federated.com");
+    delete stub;
+    x509bundle_Set_Free(set);
+}
+END_TEST
+
 START_TEST(test_workloadapi_Client_FetchJWTBundles)
 {
     // normal constructor test
@@ -850,7 +887,7 @@ Suite *client_suite(void)
     tcase_add_test(tc_core, test_workloadapi_Client_Connect_uses_stub);
     tcase_add_test(tc_core, test_workloadapi_Client_Close);
     tcase_add_test(tc_core, test_workloadapi_Client_FetchX509Context);
-    tcase_add_test(tc_core, test_workloadapi_Client_FetchJWTBundles);
+    tcase_add_test(tc_core, test_workloadapi_Client_FetchJWTBundles);    tcase_add_test(tc_core, test_workloadapi_Client_FetchX509Bundles);
     tcase_add_test(tc_core, test_workloadapi_Client_WatchX509Context);
     tcase_add_test(tc_core, test_workloadapi_Client_FetchJWTSVID);
     tcase_add_test(tc_core, test_workloadapi_Client_ValidateJWTSVID);
