@@ -876,6 +876,51 @@ START_TEST(test_workloadapi_Client_WatchX509Context)
 }
 END_TEST
 
+START_TEST(test_workloadapi_Client_FetchX509SVIDs)
+{
+    // normal constructor test
+    const char *addr = "unix:///tmp/agent.sock";
+    err_t err = NO_ERROR;
+    workloadapi_Client *client = workloadapi_NewClient(&err);
+    auto cr = new grpc::testing::MockClientReader<X509SVIDResponse>();
+
+    MockSpiffeWorkloadAPIStub *stub = new MockSpiffeWorkloadAPIStub();
+    workloadapi_Client_SetStub(client, stub);
+    workloadapi_Client_setDefaultAddressOption(client, NULL);
+    workloadapi_Client_setDefaultHeaderOption(client, NULL);
+
+    err = workloadapi_Client_Connect(client);
+
+    ck_assert_ptr_eq(client->stub, stub);
+
+    EXPECT_CALL(*stub, FetchX509SVIDRaw(_, _)).WillOnce(Return(cr));
+
+    EXPECT_CALL(*cr, Read(_))
+        .WillOnce(DoAll(WithArg<0>(set_double_SVID_response()), Return(true)));
+    //   .WillOnce(Return(false));
+
+    x509svid_SVID **svids
+        = workloadapi_Client_FetchX509SVIDs(client, &err);
+    workloadapi_Client_Close(client);
+    workloadapi_Client_Free(client);
+
+    ck_assert_ptr_ne(svids, NULL);
+    ck_assert_ptr_ne(svids[0], NULL);
+    ck_assert_ptr_ne(svids[1], NULL);
+    ck_assert_ptr_ne(svids[0],svids[1]);
+    ck_assert_str_eq(svids[0]->id.path, "/workload-1");
+    ck_assert_str_eq(svids[1]->id.path, "/workload-1");
+
+    ck_assert_str_eq(svids[0]->id.td.name, "example.org");
+    ck_assert_str_eq(svids[1]->id.td.name, "example.org");
+
+    delete stub;
+    arrfree(svids);
+}
+END_TEST
+
+
+
 Suite *client_suite(void)
 {
     Suite *s = suite_create("client");
@@ -889,6 +934,7 @@ Suite *client_suite(void)
     tcase_add_test(tc_core, test_workloadapi_Client_FetchX509Context);
     tcase_add_test(tc_core, test_workloadapi_Client_FetchJWTBundles);    tcase_add_test(tc_core, test_workloadapi_Client_FetchX509Bundles);
     tcase_add_test(tc_core, test_workloadapi_Client_WatchX509Context);
+    tcase_add_test(tc_core, test_workloadapi_Client_FetchX509SVIDs);
     tcase_add_test(tc_core, test_workloadapi_Client_FetchJWTSVID);
     tcase_add_test(tc_core, test_workloadapi_Client_ValidateJWTSVID);
     tcase_add_test(tc_core, test_workloadapi_parseJWTSVID_null_or_empty);
