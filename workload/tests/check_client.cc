@@ -296,8 +296,8 @@ ACTION(set_JWTBundle_response)
     fclose(f);
 
     auto *bundles = resp->mutable_bundles();
-    (*bundles)["key0"] = str;
-    (*bundles)["key1"] = str;
+    (*bundles)["key0"] = string_new(str);
+    (*bundles)["key1"] = string_new(str);
 
     arrfree(str);
 }
@@ -876,6 +876,80 @@ START_TEST(test_workloadapi_Client_WatchX509Context)
 }
 END_TEST
 
+void callback_Watch_Jwtbundle_test(jwtbundle_Set *set, void *sets)
+{
+    jwtbundle_Set ***sets_ = (jwtbundle_Set***) sets;
+    jwtbundle_Set *newer = jwtbundle_Set_Clone((jwtbundle_Set*) set);
+    arrpush((*sets_), newer);
+}
+
+START_TEST(test_workloadapi_Client_WatchJWTBundles)
+{
+    err_t err = NO_ERROR;
+    workloadapi_Client *client = workloadapi_NewClient(&err);
+    auto cr = new grpc::testing::MockClientReader<JWTBundlesResponse>();
+
+    MockSpiffeWorkloadAPIStub *stub = new MockSpiffeWorkloadAPIStub();
+    workloadapi_Client_SetStub(client, stub);
+    // workloadapi_Client_setDefaultAddressOption(client, NULL);
+    // workloadapi_Client_setDefaultHeaderOption(client, NULL);
+
+    ck_assert_ptr_eq(client->stub, stub);
+
+    EXPECT_CALL(*stub, FetchJWTBundlesRaw(_, _)).WillRepeatedly(Return(cr));
+
+    EXPECT_CALL(*cr, Read(_))
+        .WillOnce(DoAll(WithArg<0>(set_JWTBundle_response()), Return(true)))
+        .WillOnce(DoAll(WithArg<0>(set_JWTBundle_response()), Return(true)))
+        .WillRepeatedly(Return(false));
+
+    grpc::Status status
+        = grpc::Status(grpc::StatusCode::CANCELLED, "abort???");
+
+    EXPECT_CALL(*cr, Finish()).WillOnce(Return(status));
+
+    err = workloadapi_Client_Connect(client);
+    workloadapi_JWTWatcherConfig config;
+    config.client = client;
+    config.client_options = NULL;
+
+    jwtbundle_Set **sets = NULL;
+    // arrsetcap(ctxs, 5);
+    workloadapi_JWTCallback callback;
+    callback.args = &sets;
+    callback.func = callback_Watch_Jwtbundle_test;
+
+    workloadapi_JWTWatcher *watcher
+        = workloadapi_newJWTWatcher(config, callback, &err);
+
+    err = workloadapi_Client_WatchJWTBundles(client, watcher);
+
+    ck_assert_int_eq(err, grpc::StatusCode::CANCELLED);
+
+    workloadapi_Client_Close(client);
+    workloadapi_Client_Free(client);
+    
+    ck_assert_ptr_ne(sets, NULL);
+    ck_assert_int_eq(arrlen(sets), 2);
+
+    ck_assert_ptr_ne(sets[0], NULL);
+    ck_assert_ptr_ne(sets[0]->bundles, NULL);
+    ck_assert_int_eq(jwtbundle_Set_Len(sets[0]), 2);
+    jwtbundle_Set_Free(sets[0]);
+
+    ck_assert_ptr_ne(sets[1], NULL);
+    ck_assert_ptr_ne(sets[1]->bundles, NULL);
+    ck_assert_int_eq(jwtbundle_Set_Len(sets[1]), 2);
+    jwtbundle_Set_Free(sets[1]);
+
+    arrpop(sets);
+    arrpop(sets);
+
+    delete stub;
+}
+END_TEST
+
+
 START_TEST(test_workloadapi_Client_FetchX509SVIDs)
 {
     // normal constructor test
@@ -934,6 +1008,7 @@ Suite *client_suite(void)
     tcase_add_test(tc_core, test_workloadapi_Client_FetchX509Context);
     tcase_add_test(tc_core, test_workloadapi_Client_FetchJWTBundles);    tcase_add_test(tc_core, test_workloadapi_Client_FetchX509Bundles);
     tcase_add_test(tc_core, test_workloadapi_Client_WatchX509Context);
+    tcase_add_test(tc_core, test_workloadapi_Client_WatchJWTBundles);
     tcase_add_test(tc_core, test_workloadapi_Client_FetchX509SVIDs);
     tcase_add_test(tc_core, test_workloadapi_Client_FetchJWTSVID);
     tcase_add_test(tc_core, test_workloadapi_Client_ValidateJWTSVID);
