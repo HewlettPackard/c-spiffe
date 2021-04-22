@@ -104,8 +104,11 @@ END_TEST
 
 START_TEST(test_workloadapi_NewClient)
 {
+    // when we create a new client
     err_t error = NO_ERROR;
     workloadapi_Client *client = workloadapi_NewClient(&error);
+
+    // then all parameters are empty
     ck_assert_ptr_ne(client, NULL);
     ck_assert_ptr_eq(client->stub, NULL);
     ck_assert_ptr_eq(client->address, NULL);
@@ -429,18 +432,25 @@ END_TEST
 
 START_TEST(test_workloadapi_parseJWTSVID_null_or_empty)
 {
+    // given null response and params
+    // when we try to parse the response for JWTSVIDS
     err_t err = NO_ERROR;
     jwtsvid_SVID *svid = workloadapi_parseJWTSVID(NULL, NULL, &err);
 
+    // then we should get no SVID, with an ERROR1 error
     ck_assert_ptr_eq(svid, NULL);
     ck_assert_int_eq(err, ERROR1); // NULL pointer error
 
-    /// check with an empty response (no svid)
+    // given misc parameters and an empty response (no svid)
+    string_t aud = string_new("audience1");
+    jwtsvid_Params params = { aud, NULL, NULL };
     JWTSVIDResponse *resp = new JWTSVIDResponse();
     resp->clear_svids();
-    string_t aud = string_new("audience1");
-    jwtsvid_Params params = { aud, NULL, NULL }; // incomplete params
+
+    // when we try to parse the response for a JWTSVID
     svid = workloadapi_parseJWTSVID(resp, &params, &err);
+
+    // then we should get no SVID, with a ERROR2 error
     ck_assert_ptr_eq(svid, NULL);
     ck_assert_int_eq(err, ERROR2);
     util_string_t_Free(aud);
@@ -449,9 +459,12 @@ END_TEST
 
 START_TEST(test_workloadapi_parseJWTBundles_null_or_empty)
 {
+    // given null response and params
+    // when we try to parse the response for bundles
     err_t err = NO_ERROR;
     jwtbundle_Set *set = workloadapi_parseJWTBundles(NULL, &err);
 
+    // then we should get no SVID, with an ERROR1 error
     ck_assert_ptr_eq(set, NULL);
     ck_assert_int_eq(err, ERROR1); // NULL pointer error
 }
@@ -514,7 +527,6 @@ START_TEST(test_workloadapi_Client_FetchX509Bundles)
 
     EXPECT_CALL(*cr, Read(_))
         .WillOnce(DoAll(WithArg<0>(set_single_SVID_response()), Return(true)));
-    //   .WillOnce(Return(false));
 
     x509bundle_Set *set = workloadapi_Client_FetchX509Bundles(client, &err);
     workloadapi_Client_Close(client);
@@ -916,8 +928,6 @@ START_TEST(test_workloadapi_Client_WatchJWTBundles)
 
     MockSpiffeWorkloadAPIStub *stub = new MockSpiffeWorkloadAPIStub();
     workloadapi_Client_SetStub(client, stub);
-    // workloadapi_Client_setDefaultAddressOption(client, NULL);
-    // workloadapi_Client_setDefaultHeaderOption(client, NULL);
 
     ck_assert_ptr_eq(client->stub, stub);
 
@@ -939,7 +949,7 @@ START_TEST(test_workloadapi_Client_WatchJWTBundles)
     config.client_options = NULL;
 
     jwtbundle_Set **sets = NULL;
-    // arrsetcap(ctxs, 5);
+
     workloadapi_JWTCallback callback;
     callback.args = &sets;
     callback.func = callback_Watch_Jwtbundle_test;
