@@ -35,6 +35,19 @@ typedef struct {
     x509util_CertPool *roots;
 } spiffetls_DialMode;
 
+typedef struct {
+    spiffetls_serverMode mode;
+
+    bool unneeded_source;
+
+    tlsconfig_Authorizer *authorizer;
+
+    workloadapi_X509Source *source;
+
+    x509bundle_Source *bundle;
+    x509svid_Source *svid;
+} spiffetls_ListenMode;
+
 spiffetls_DialMode *spiffetls_TLSClient(tlsconfig_Authorizer *authorizer);
 spiffetls_DialMode *
 spiffetls_TLSClientWithSource(tlsconfig_Authorizer *authorizer,

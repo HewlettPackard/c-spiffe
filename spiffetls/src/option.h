@@ -12,6 +12,12 @@ typedef struct {
     // SSL_CTX *TLS_options;
 } spiffetls_dialConfig;
 
+typedef struct {
+    SSL_CTX *base_TLS_conf;
+    int listener_fd;
+    // SSL_CTX *TLS_options;
+} spiffetls_listenConfig;
+
 typedef void (*spiffetls_DialOption)(spiffetls_dialConfig *);
 
 void spiffetls_DialOption_apply(spiffetls_DialOption option,
