@@ -134,6 +134,16 @@ bool tlsconfig_HookMTLSClientConfig(SSL_CTX *ctx, x509svid_Source *svid,
     return true;
 }
 
+void tlsconfig_HookTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
+                                   tlsconfig_Option **opts)
+{}
+
+void tlsconfig_HookMTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
+                                    x509bundle_Source *bundle,
+                                    tlsconfig_Authorizer *authorizer,
+                                    tlsconfig_Option **opts)
+{}
+
 void tlsconfig_resetAuthFields(SSL_CTX *ctx)
 {
     // config.Certificates = nil - ok

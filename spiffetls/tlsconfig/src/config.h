@@ -39,9 +39,13 @@ bool tlsconfig_HookMTLSClientConfig(SSL_CTX *ctx, x509svid_Source *svid,
 // tlsconfig_MTLSWebClientConfig();
 // void tlsconfig_HookMTLSWebClientConfig();
 // tlsconfig_TLSServerConfig();
-// tlsconfig_HookTLSServerConfig();
+void tlsconfig_HookTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
+                                   tlsconfig_Option **opts);
 // tlsconfig_MTLSServerConfig();
-// tlsconfig_HookMTLSServerConfig();
+void tlsconfig_HookMTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
+                                    x509bundle_Source *bundle,
+                                    tlsconfig_Authorizer *authorizer,
+                                    tlsconfig_Option **opts);
 // tlsconfig_MTLSWebServerConfig();
 // tlsconfig_HookMTLSWebServerConfig();
 // tlsconfig_getTLSCertificate();
