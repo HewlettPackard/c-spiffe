@@ -438,10 +438,12 @@ START_TEST(test_workloadapi_parseJWTSVID_null_or_empty)
     /// check with an empty response (no svid)
     JWTSVIDResponse *resp = new JWTSVIDResponse();
     resp->clear_svids();
-    jwtsvid_Params params = { "audience1", NULL, NULL }; // empty params
+    string_t aud = string_new("audience1");
+    jwtsvid_Params params = { aud, NULL, NULL }; // incomplete params
     svid = workloadapi_parseJWTSVID(resp, &params, &err);
     ck_assert_ptr_eq(svid, NULL);
     ck_assert_int_eq(err, ERROR2);
+    util_string_t_Free(aud);
 }
 END_TEST
 
