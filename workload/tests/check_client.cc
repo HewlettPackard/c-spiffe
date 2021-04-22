@@ -308,7 +308,6 @@ START_TEST(test_workloadapi_Client_Close)
 
     err_t err = NO_ERROR;
     workloadapi_Client *client = workloadapi_NewClient(&err);
-    // auto cr = new grpc::testing::MockClientReader<X509SVIDResponse>();
 
     MockSpiffeWorkloadAPIStub *stub = new MockSpiffeWorkloadAPIStub();
     workloadapi_Client_SetStub(client, stub);
@@ -436,7 +435,13 @@ START_TEST(test_workloadapi_parseJWTSVID_null_or_empty)
     ck_assert_ptr_eq(svid, NULL);
     ck_assert_int_eq(err, ERROR1); // NULL pointer error
 
-    ///TODO: check with an empty response (no svid)
+    ///check with an empty response (no svid)
+    JWTSVIDResponse* resp = new JWTSVIDResponse();
+    resp->clear_svids();
+    jwtsvid_Params params = {"audience1",NULL,NULL}; //empty params
+    svid = workloadapi_parseJWTSVID(resp, &params, &err);
+    ck_assert_ptr_eq(svid,NULL);
+    ck_assert_int_eq(err,ERROR2);
 
 }
 END_TEST
