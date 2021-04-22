@@ -2,8 +2,6 @@
 #include "spiffetls/tlsconfig/src/authorizer.h"
 #include "svid/x509svid/src/verify.h"
 
-// tlsconfig_Trace *__trace;
-
 void tlsconfig_Option_apply(tlsconfig_Option *op, tlsconfig_options *options)
 {
     if(op->type == TLSCONFIG_FUNC) {
@@ -134,15 +132,48 @@ bool tlsconfig_HookMTLSClientConfig(SSL_CTX *ctx, x509svid_Source *svid,
     return true;
 }
 
+x509svid_Source *__svid;
+static int hookTLSServerConfig_cb(SSL *ssl, X509 **cert, EVP_PKEY **pkey)
+{
+    err_t err;
+    x509svid_SVID *svid = x509svid_Source_GetX509SVID(__svid, &err);
+
+    if(!err && svid) {
+        *cert = svid->certs[0];
+        *pkey = svid->private_key;
+
+        return 1;
+    }
+
+    return 0;
+}
+
 void tlsconfig_HookTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
                                    tlsconfig_Option **opts)
-{}
+{
+    tlsconfig_resetAuthFields(ctx);
+
+    __svid = svid;
+    SSL_CTX_set_client_cert_cb(ctx, hookTLSServerConfig_cb);
+}
 
 void tlsconfig_HookMTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
                                     x509bundle_Source *bundle,
                                     tlsconfig_Authorizer *authorizer,
                                     tlsconfig_Option **opts)
-{}
+{
+    tlsconfig_resetAuthFields(ctx);
+
+    __svid = svid;
+    SSL_CTX_set_client_cert_cb(ctx, hookTLSServerConfig_cb);
+
+    struct hookTLSClientConfig_st *safe_arg = malloc(sizeof *safe_arg);
+    safe_arg->bundle = bundle;
+    safe_arg->authorizer = authorizer;
+    safe_arg->opts = opts;
+
+    SSL_CTX_set_cert_verify_callback(ctx, hookTLSClientConfig_cb, safe_arg);
+}
 
 void tlsconfig_resetAuthFields(SSL_CTX *ctx)
 {

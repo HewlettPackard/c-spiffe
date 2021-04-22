@@ -83,10 +83,10 @@ SSL *spiffetls_ListenWithMode(in_port_t port, in_addr_t addr,
         *err = ERROR2;
         goto error;
     }
-    
-    struct sockaddr_in addr;
+
+    struct sockaddr_in addr_tmp;
     socklen_t len;
-    const int clientfd = accept(sockfd, (struct sockaddr *) &addr, &len);
+    const int clientfd = accept(sockfd, (struct sockaddr *) &addr_tmp, &len);
     if(clientfd < 0) {
         // could not accept client
         *err = ERROR3;
