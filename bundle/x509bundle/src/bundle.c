@@ -86,9 +86,19 @@ X509 **x509bundle_Bundle_X509Authorities(x509bundle_Bundle *b)
 void x509bundle_Bundle_AddX509Authority(x509bundle_Bundle *b, X509 *auth)
 {
     mtx_lock(&(b->mtx));
-    /// TODO: checks if auth is already in b->auths
-    X509_up_ref(auth);
-    arrput(b->auths, auth);
+    bool suc = false;
+    // searches for certificate
+    for(size_t i = 0, size = arrlenu(b->auths); i < size; ++i) {
+        if(!X509_cmp(b->auths[i], auth)) {
+            // b->auths[i] == auth
+            suc = true;
+            break;
+        }
+    }
+    if(!suc) {
+        X509_up_ref(auth);
+        arrput(b->auths, auth);
+    }
     mtx_unlock(&(b->mtx));
 }
 

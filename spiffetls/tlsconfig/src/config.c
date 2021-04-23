@@ -37,7 +37,6 @@ struct hookTLSClientConfig_st {
     tlsconfig_Option **opts;
 };
 
-/// TODO: change function name
 static int hookTLSClientConfig_cb(X509_STORE_CTX *store_ctx, void *arg)
 {
     struct hookTLSClientConfig_st *config = arg;
@@ -62,7 +61,6 @@ bool tlsconfig_HookTLSClientConfig(SSL_CTX *ctx, x509bundle_Source *bundle,
     tlsconfig_resetAuthFields(ctx);
     // dummy call
     SSL_CTX_set_ecdh_auto(ctx, 1);
-    /// WARNING: temporary solution
 
     struct hookTLSClientConfig_st *safe_arg = malloc(sizeof *safe_arg);
     safe_arg->bundle = bundle;
@@ -82,16 +80,14 @@ struct hookMTLSClientConfig_st {
 };
 
 struct hookMTLSClientConfig_st *__config = NULL;
-/// TODO: change function name
+
 static int hookMTLSClientConfig_cb(SSL *ssl, X509 **cert, EVP_PKEY **pkey)
 {
     err_t err;
     x509svid_SVID *svid = x509svid_Source_GetX509SVID(__config->svid, &err);
 
     if(!err && svid) {
-        /// TODO: check if it is needed to up the reference
         *cert = svid->certs[0];
-        /// TODO: check if it is needed to up the reference
         *pkey = svid->private_key;
 
         return 1;

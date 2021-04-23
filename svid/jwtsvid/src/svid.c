@@ -238,9 +238,7 @@ static map_string_claim *json_to_map(json_t *obj)
             json_t *value;
             map_string_claim *claims_map = NULL;
 
-            json_object_foreach(obj, key, value)
-            {
-                /// TODO: check if it is needed to make a deep copy
+            json_object_foreach(obj, key, value) {
                 shput(claims_map, key, value);
             }
 
@@ -580,7 +578,6 @@ void jwtsvid_SVID_Free(jwtsvid_SVID *svid)
         // free array of strings
         util_string_arr_t_Free(svid->audience);
         // free each json object
-        /// TODO: verify if it is necessary
         for(size_t i = 0, size = shlenu(svid->claims); i < size; ++i) {
             free(svid->claims[i].value);
         }

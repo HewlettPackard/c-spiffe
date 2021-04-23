@@ -58,33 +58,57 @@ jwtbundle_Bundle *jwtbundle_Load(const spiffeid_TrustDomain td,
 jwtbundle_Bundle *jwtbundle_Parse(const spiffeid_TrustDomain td,
                                   const char *bundle_bytes, err_t *err)
 {
-
-    jwtbundle_Bundle *bundle = jwtbundle_New(td);
+    jwtbundle_Bundle *bundle = NULL;
 
     json_error_t j_err;
     json_t *root = json_loads(bundle_bytes, 0, &j_err);
+    if(!root) {
+        goto error2;
+    }
+
     json_t *keys = json_object_get(root, "keys");
+    if(!keys) {
+        goto error1;
+    } else if(json_typeof(keys) != JSON_ARRAY) {
+        goto error1;
+    }
+
     const size_t n_keys = json_array_size(keys);
 
+    bundle = jwtbundle_New(td);
     *err = NO_ERROR;
+    bool err_flag = false;
 
-    for(size_t i = 0; i < n_keys; ++i) {
+    for(size_t i = 0; i < n_keys && !err_flag; ++i) {
         // get i-th element of the JWKS
-
         json_t *elem_obj = json_array_get(keys, i);
+        if(!elem_obj) {
+            err_flag = true;
+            continue;
+        }
 
         cjose_err cj_err;
         // import json object into a JWK object
-        const cjose_jwk_t *jwk = cjose_jwk_import_json(elem_obj, &cj_err);
+        cjose_jwk_t *jwk = cjose_jwk_import_json(elem_obj, &cj_err);
+        if(!jwk) {
+            err_flag = true;
+            continue;
+        }
         // get key id field
         const char *kid = cjose_jwk_get_kid(jwk, &cj_err);
+        if(!kid) {
+            err_flag = true;
+            continue;
+        }
         // get key type
         const cjose_jwk_kty_t kty = cjose_jwk_get_kty(jwk, &cj_err);
         // get key data
         void *keydata = cjose_jwk_get_keydata(jwk, &cj_err);
-        // get key size in bits
-        // const long keysize =
-        //     cjose_jwk_get_keysize(jwk, &cj_err);
+        if(!keydata) {
+            err_flag = true;
+            continue;
+        }
+
         EVP_PKEY *pkey = EVP_PKEY_new();
         RSA *rsa = NULL;
         EC_KEY *ec_key = NULL;
@@ -92,27 +116,30 @@ jwtbundle_Bundle *jwtbundle_Parse(const spiffeid_TrustDomain td,
         switch(kty) {
         case CJOSE_JWK_KTY_RSA:
             rsa = (RSA *) keydata;
+            RSA_up_ref(rsa);
             EVP_PKEY_set1_RSA(pkey, rsa);
             break;
         case CJOSE_JWK_KTY_EC:
             ec_key = ((ec_keydata *) keydata)->key;
+            EC_KEY_up_ref(ec_key);
             EVP_PKEY_set1_EC_KEY(pkey, ec_key);
             break;
         default:
             // type not supported currently
-            /// TODO: handle unexpected key type
-            break;
+            EVP_PKEY_free(pkey);
+            pkey = NULL;
+            err_flag = true;
         }
-        // cjose_jwk_release(jwk);
 
         if(pkey) {
             // insert id and its public key on the map
-            shput(bundle->auths, kid, pkey);
+            shput(bundle->auths, string_new(kid), pkey);
         }
+        // cjose_jwk_release(jwk);
     }
-
+error1:
     free(root);
-
+error2:
     return bundle;
 }
 
