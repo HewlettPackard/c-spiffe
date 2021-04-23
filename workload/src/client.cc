@@ -401,7 +401,8 @@ err_t workloadapi_Client_WatchX509Context(workloadapi_Client *client,
             = workloadapi_Client_watchX509Context(client, watcher, &backoff);
         workloadapi_Watcher_OnX509ContextWatchError(watcher, err);
         err = workloadapi_Client_HandleWatchError(client, err, &backoff);
-        if(err == grpc::CANCELLED || err == grpc::INVALID_ARGUMENT) {
+        if(err == (int) grpc::CANCELLED
+           || err == (int) grpc::INVALID_ARGUMENT) {
             return err;
         } else if(err != NO_ERROR) {
             return err;
@@ -448,10 +449,11 @@ err_t workloadapi_Client_watchX509Context(workloadapi_Client *client,
         bool ok = c_reader->Read(&response);
         if(!ok) {
             auto status = c_reader->Finish();
-            if(status.error_code() == grpc::StatusCode::CANCELLED) {
+            if(status.error_code() == (int) grpc::StatusCode::CANCELLED) {
                 return ERROR1;
             }
-            if(status.error_code() == grpc::StatusCode::INVALID_ARGUMENT) {
+            if(status.error_code()
+               == (int) grpc::StatusCode::INVALID_ARGUMENT) {
                 return ERROR3;
             }
             return ERROR4; // no more messages.
@@ -474,10 +476,10 @@ err_t workloadapi_Client_HandleWatchError(workloadapi_Client *client,
                                           workloadapi_Backoff *backoff)
 {
 
-    if(error == grpc::StatusCode::CANCELLED) {
+    if(error == (int) grpc::StatusCode::CANCELLED) {
         return error;
     }
-    if(error == grpc::StatusCode::INVALID_ARGUMENT) {
+    if(error == (int) grpc::StatusCode::INVALID_ARGUMENT) {
         return error;
     }
 
@@ -754,7 +756,8 @@ err_t workloadapi_Client_WatchJWTBundles(workloadapi_Client *client,
             = workloadapi_Client_watchJWTBundles(client, watcher, &backoff);
         workloadapi_JWTWatcher_OnJWTBundlesWatchError(watcher, err);
         err = workloadapi_Client_HandleWatchError(client, err, &backoff);
-        if(err == grpc::CANCELLED || err == grpc::INVALID_ARGUMENT) {
+        if(err == (int) grpc::CANCELLED
+           || err == (int) grpc::INVALID_ARGUMENT) {
             return err;
         } else if(err != NO_ERROR) {
             return err;
@@ -785,10 +788,11 @@ err_t workloadapi_Client_watchJWTBundles(workloadapi_Client *client,
         bool ok = c_reader->Read(&resp);
         if(!ok) {
             auto status = c_reader->Finish();
-            if(status.error_code() == grpc::StatusCode::CANCELLED) {
+            if(status.error_code() == (int) grpc::StatusCode::CANCELLED) {
                 return ERROR1;
             }
-            if(status.error_code() == grpc::StatusCode::INVALID_ARGUMENT) {
+            if(status.error_code()
+               == (int) grpc::StatusCode::INVALID_ARGUMENT) {
                 return ERROR3;
             }
             return ERROR4; // no more messages.
