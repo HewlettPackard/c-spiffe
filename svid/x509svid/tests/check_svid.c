@@ -62,9 +62,20 @@ START_TEST(test_x509svid_Parse)
     ck_assert_str_eq(svid->id.path, "/workload-1");
     ck_assert_ptr_ne(svid->private_key, NULL);
 
+    x509svid_SVID_Free(svid);
+
+    svid = x509svid_Parse(NULL, raw_key, &err);
+
+    ck_assert_uint_ne(err, NO_ERROR);
+    ck_assert_ptr_eq(svid, NULL);
+
+    svid = x509svid_Parse(raw_certs, NULL, &err);
+
+    ck_assert_uint_ne(err, NO_ERROR);
+    ck_assert_ptr_eq(svid, NULL);
+
     arrfree(raw_certs);
     arrfree(raw_key);
-    x509svid_SVID_Free(svid);
 }
 END_TEST
 
@@ -126,6 +137,11 @@ START_TEST(test_x509svid_ParseRaw)
     arrfree(certs);
     EVP_PKEY_free(pkey);
     x509svid_SVID_Free(svid);
+
+    svid = x509svid_ParseRaw(NULL, 10, NULL, 10, &err);
+
+    ck_assert_uint_ne(err, NO_ERROR);
+    ck_assert_ptr_eq(svid, NULL);
 }
 END_TEST
 
@@ -169,10 +185,22 @@ START_TEST(test_x509svid_newSVID)
     ck_assert_str_eq(svid->id.path, "/workload-1");
     ck_assert_ptr_ne(svid->private_key, NULL);
 
+    x509svid_SVID_Free(svid);
+    
+    svid = x509svid_newSVID(NULL, pkey, &err);
+
+    ck_assert_uint_ne(err, NO_ERROR);
+    ck_assert_ptr_eq(svid, NULL);
+
+    svid = x509svid_newSVID(certs, NULL, &err);
+
+    ck_assert_uint_ne(err, NO_ERROR);
+    ck_assert_ptr_eq(svid, NULL);
+
     for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
         X509_free(certs[i]);
     }
-    x509svid_SVID_Free(svid);
+    EVP_PKEY_free(pkey);
 }
 END_TEST
 
@@ -358,11 +386,18 @@ END_TEST
 
 START_TEST(test_x509svid_validatePrivateKey)
 {
-    FILE *f = fopen("./resources/good-cert-and-key.pem", "r");
+    FILE *f = fopen("./resources/good-leaf-only.pem", "r");
+    ck_assert_ptr_ne(f, NULL);
 
     X509 *cert1 = PEM_read_X509(f, NULL, NULL, NULL);
+    fclose(f);
+    ck_assert_ptr_ne(cert1, NULL);
+
+    f = fopen("./resources/key-pkcs8-rsa.pem", "r");
     EVP_PKEY *pkey1 = PEM_read_PrivateKey(f, NULL, NULL, NULL);
     fclose(f);
+    ck_assert_ptr_ne(pkey1, NULL);
+
     ck_assert_ptr_ne(cert1, NULL);
     ck_assert_ptr_ne(pkey1, NULL);
 
@@ -400,6 +435,11 @@ START_TEST(test_x509svid_validatePrivateKey)
 
     ck_assert_uint_ne(err, NO_ERROR);
     ck_assert_ptr_eq(signer4, NULL);
+
+    EVP_PKEY *signer5 = x509svid_validatePrivateKey(NULL, cert1, &err);
+
+    ck_assert_uint_ne(err, NO_ERROR);
+    ck_assert_ptr_eq(signer5, NULL);
 
     X509_free(cert1);
     EVP_PKEY_free(pkey1);
@@ -469,6 +509,14 @@ START_TEST(test_x509svid_keyMatches)
 }
 END_TEST
 
+START_TEST(test_x509svid_SVID_GetDefaultX509SVID)
+{
+    x509svid_SVID *svid = x509svid_SVID_GetDefaultX509SVID(NULL);
+
+    ck_assert_ptr_eq(svid, NULL);
+}
+END_TEST
+
 Suite *svid_suite(void)
 {
     Suite *s = suite_create("svid");
@@ -485,6 +533,7 @@ Suite *svid_suite(void)
     tcase_add_test(tc_core, test_x509svid_SVID_GetX509SVID);
     tcase_add_test(tc_core, test_x509svid_validatePrivateKey);
     tcase_add_test(tc_core, test_x509svid_keyMatches);
+    tcase_add_test(tc_core, test_x509svid_SVID_GetDefaultX509SVID);
 
     suite_add_tcase(s, tc_core);
 
