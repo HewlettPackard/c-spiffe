@@ -183,9 +183,18 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>TODO: create source config</p>
-<p>TODO: handle source creation error</p>
-<p>TODO: set config</p>
+<p>Establishes a TLS connection with given port, address, mode and configuration. If successful, returns a pointer to a established TLS connection object.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">port</td><td>[in] Port number. </td></tr>
+    <tr><td class="paramname">addr</td><td>[in] Address code. </td></tr>
+    <tr><td class="paramname">mode</td><td>[in] Connection mode. </td></tr>
+    <tr><td class="paramname">config</td><td>[in] Connection configuration. </td></tr>
+    <tr><td class="paramname">err</td><td>[out] Variable to get information in the event of error. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Connected TLS object pointer if successful, NULL otherwise. </dd></dl>
 
 </div>
 </div>
