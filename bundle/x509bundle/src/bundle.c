@@ -96,6 +96,7 @@ void x509bundle_Bundle_AddX509Authority(x509bundle_Bundle *b, X509 *auth)
         }
     }
     if(!suc) {
+        X509_up_ref(auth);
         arrput(b->auths, auth);
     }
     mtx_unlock(&(b->mtx));
