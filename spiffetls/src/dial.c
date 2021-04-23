@@ -35,14 +35,13 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
     if(!mode->unneeded_source) {
         workloadapi_X509Source *source = mode->source;
         if(!source) {
-            /// TODO: create source config
             source = workloadapi_NewX509Source(NULL, err);
 
             if(*err) {
-                /// TODO: handle source creation error
+                goto error;
             }
         }
-
+        mode->source = source;
         mode->bundle = x509bundle_SourceFromSource(source);
         mode->svid = x509svid_SourceFromSource(source);
     }
@@ -59,7 +58,7 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
         tlsconfig_HookMTLSClientConfig(tls_config, mode->svid, mode->bundle,
                                        mode->authorizer, NULL);
         break;
-    case MTLS_WEBCLIENT_MODE: /// TODO: set config
+    case MTLS_WEBCLIENT_MODE:
     default:
         // unknown mode
         *err = ERROR1;

@@ -756,6 +756,7 @@ err_t workloadapi_Client_WatchJWTBundles(workloadapi_Client *client,
             = workloadapi_Client_watchJWTBundles(client, watcher, &backoff);
         workloadapi_JWTWatcher_OnJWTBundlesWatchError(watcher, err);
         err = workloadapi_Client_HandleWatchError(client, err, &backoff);
+
         if(err == (int) grpc::CANCELLED
            || err == (int) grpc::INVALID_ARGUMENT) {
             return err;

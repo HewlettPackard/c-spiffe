@@ -46,8 +46,6 @@ The project folder structure is described as follows:
 * [BUILDING.md](BUILDING.md) Instructions on how to build c-spiffe in your system.
 * [CONTRIBUTING.md](CONTRIBUTING.md) Guidelines for contributing to c-spiffe project.
 
-<!--TODO: List all folders with its contents -->
-
 ## Using C-Spiffe
 
 ### Installing

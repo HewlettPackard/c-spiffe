@@ -28,7 +28,6 @@ typedef struct {
     tlsconfig_Authorizer *authorizer;
 
     workloadapi_X509Source *source;
-    /// TODO: add X509 source options
 
     x509bundle_Source *bundle;
     x509svid_Source *svid;
