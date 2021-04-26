@@ -138,8 +138,7 @@ void connection_destroy(ssl_server_connection *connection)
 }
 
 void init_server_connection(ssl_server_connection *connection, SSL_CTX *ctx,
-                            int client,
-                            void (*service)(SSL *))
+                            int client, void (*service)(SSL *))
 {
     printf("Initiating server connection\n");
     connection->client = client;
@@ -183,4 +182,6 @@ int main(int argc, char *argv[])
     close(sock);
     SSL_CTX_free(ctx);
     cleanup_openssl();
+
+    return 0;
 }
