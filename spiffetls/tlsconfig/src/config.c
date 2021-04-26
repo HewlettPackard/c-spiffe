@@ -147,10 +147,14 @@ void tlsconfig_HookTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
                                    tlsconfig_Option **opts)
 {
     tlsconfig_resetAuthFields(ctx);
+
     err_t err;
     x509svid_SVID *my_svid = x509svid_Source_GetX509SVID(svid, &err);
 
-    hookTLSServerConfig(ctx, svid);
+    if(!err && my_svid) {
+        SSL_CTX_use_certificate(ctx, my_svid->certs[0]);
+        SSL_CTX_use_PrivateKey(ctx, my_svid->private_key);
+    }
 }
 
 void tlsconfig_HookMTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
@@ -160,7 +164,7 @@ void tlsconfig_HookMTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
 {
     tlsconfig_resetAuthFields(ctx);
 
-    hookTLSServerConfig(ctx, svid);
+
 
     struct hookTLSClientConfig_st *safe_arg = malloc(sizeof *safe_arg);
     safe_arg->bundle = bundle;
