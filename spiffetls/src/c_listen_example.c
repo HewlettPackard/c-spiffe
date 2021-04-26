@@ -18,9 +18,8 @@ int main(void)
         = { .base_TLS_conf = NULL, .listener_fd = 0 };
 
     int sock_fd;
-    SSL *conn = spiffetls_ListenWithMode((in_port_t) 4433,
-                                         /*127.0.0.1*/ (in_addr_t) 0x7F000001,
-                                         mode, &config, &sock_fd, &err);
+    SSL *conn = spiffetls_ListenWithMode((in_port_t) 4433, mode, &config,
+                                         &sock_fd, &err);
 
     if(err != NO_ERROR) {
         printf("could not create TLS connection!");
