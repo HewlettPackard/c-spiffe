@@ -1,10 +1,23 @@
 #include "spiffetls/src/dial.h"
 #include <unistd.h>
 
-int main(void)
+int main(int argc, char **argv)
 {
+
+
     err_t err;
     workloadapi_Client *client = workloadapi_NewClient(&err);
+    const buffer_length = 14 * 1024;
+    char buffer[buffer_length];
+    char *message;
+    if(argc < 2) {
+        message = NULL;
+    } else {
+        message = argv[1];
+    }
+
+    
+   
 
     if(err != NO_ERROR) {
         printf("client error! %d\n", (int) err);
@@ -38,10 +51,25 @@ int main(void)
                                        /*127.0.0.1*/ (in_addr_t) 0x7F000001,
                                        mode, &config, &err);
 
+    
     if(err != NO_ERROR) {
         printf("could not create TLS connection!");
         exit(-1);
     }
+
+
+    const write = SSL_write(conn, message, strlen(message));
+
+    printf("Write value: %d\n", write);
+    if (write < 0)
+    {
+       
+        ERR_load_CRYPTO_strings();
+        SSL_load_error_strings();
+        printf("Error: %d\n", SSL_get_error(conn, write));
+    }
+    SSL_read(conn, buffer, buffer_length);
+    printf("reply from server: %s", buffer);
 
     err = workloadapi_Client_Close(client);
     if(err != NO_ERROR) {

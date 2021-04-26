@@ -22,7 +22,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libcjose-dev \
         libgtest-dev \
         libgmock-dev \
-        golang-go
+        golang-go \
+        openssh-server
 RUN apt-get clean
 
 # gRPC
