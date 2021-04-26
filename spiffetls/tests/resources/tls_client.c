@@ -110,7 +110,7 @@ void destroy_client_connection(ssl_client_connection *ssl_client_connection)
 
 void say_hello(ssl_client_connection *connection)
 {
-    char *greet = "hello, from client!\n";
+    char greet[] = "hello, from client!\n";
     const int length = 14 * 1024;
     char buffer[length];
     int write;
@@ -123,8 +123,8 @@ void say_hello(ssl_client_connection *connection)
         ERR_load_CRYPTO_strings();
         SSL_load_error_strings();
     }
-    SSL_read(connection->ssl, buffer, length);
-    printf("reply from server: %s", buffer);
+    // SSL_read(connection->ssl, buffer, length);
+    // printf("reply from server: %s", buffer);
 }
 
 int main(int argc, char *argv[])

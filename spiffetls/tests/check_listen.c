@@ -6,7 +6,7 @@
 int call_client(void *unused)
 {
     sleep(2);
-    system("./tls_client &");
+    system("./tls_client");
     return 0;
 }
 
@@ -37,7 +37,7 @@ START_TEST(test_spiffetls_ListenWithMode)
     const int len = 1024;
     char buffer[len];
     const int ret = SSL_read(conn, buffer, len);
-
+    // buffer[ret] = 0;
     if(ret > 0) {
         printf("Client sent: %s\n", buffer);
     }
