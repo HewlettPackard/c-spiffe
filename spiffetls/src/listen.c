@@ -102,7 +102,7 @@ SSL *spiffetls_ListenWithMode(in_port_t port, in_addr_t addr,
         SSL_shutdown(conn);
         SSL_free(conn);
         close(sockfd);
-        *err = ERROR2;
+        *err = ERROR4;
         goto error;
     }
     // successful handshake
