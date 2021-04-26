@@ -3,10 +3,14 @@
 
 #include "bundle/x509bundle/src/source.h"
 #include "internal/x509util/src/certpool.h"
+#include "spiffetls/tlsconfig/src/authorizer.h"
 #include "svid/x509svid/src/source.h"
 #include "svid/x509svid/src/svid.h"
 #include "workload/src/x509source.h"
-#include "spiffetls/tlsconfig/src/authorizer.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef enum {
     TLS_CLIENT_MODE,
@@ -72,5 +76,24 @@ spiffetls_MTLSWebClientWithRawConfig(x509util_CertPool *roots,
                                      x509svid_Source *svid);
 
 void spiffetls_DialMode_Free(spiffetls_DialMode *mode);
+
+spiffetls_ListenMode *spiffetls_TLSServer();
+spiffetls_ListenMode *
+spiffetls_TLSServerWithSource(workloadapi_X509Source *source);
+spiffetls_ListenMode *spiffetls_TLSServerWithRawConfig(x509svid_Source *svid);
+spiffetls_ListenMode *spiffetls_MTLSServer(tlsconfig_Authorizer *authorizer);
+spiffetls_ListenMode *
+spiffetls_MTLSServerWithSource(tlsconfig_Authorizer *authorizer,
+                               workloadapi_X509Source *source);
+spiffetls_ListenMode *
+spiffetls_MTLSServerWithRawConfig(tlsconfig_Authorizer *authorizer,
+                                  x509svid_Source *svid,
+                                  x509bundle_Source *bundle);
+
+void spiffetls_ListenMode_Free(spiffetls_ListenMode *mode);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // INCLUDE_SPIFFETLS_MODE_H

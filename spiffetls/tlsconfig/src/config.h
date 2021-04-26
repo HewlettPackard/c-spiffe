@@ -6,6 +6,10 @@
 #include "svid/x509svid/src/source.h"
 #include <openssl/ssl.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct {
     void *trace;
     // tlsconfig_Trace *trace;
@@ -52,5 +56,9 @@ void tlsconfig_HookMTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
 void tlsconfig_resetAuthFields(SSL_CTX *ctx);
 
 void tlsconfig_Option_Free(tlsconfig_Option *option);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // INCLUDE_SPIFFETLS_TLSCONFIG_CONFIG_H
