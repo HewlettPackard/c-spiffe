@@ -6,29 +6,7 @@
 
 version: '3'
 services:
-  spire-server:
-    image: alg4/infra_spire-server
-    hostname: spire-server
+  spiffetls-test:
+    build: ./spiffetls-test
     tty: true
-    ports:
-      - "8081:8081"
-
-  workload:
-    image: alg4/infra_workload
-    tty: true
-    hostname: workload
-    links:
-      - spire-server
-    ports:
-      - "8000:8000"
-
-  # Todo: Create sceneries for spire-server test; script python; "getRequestor" {generate, get, (entrys, token)}
-  tests:
-    image: alg4/infra_tests
-    tty: true
-    hostname: tests
-    links:
-      - spire-server
-      - workload
-      
-
+    
