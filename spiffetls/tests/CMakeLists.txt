@@ -80,4 +80,3 @@ add_executable(tls_client resources/tls_client.c)
 target_link_libraries(tls_client
   OpenSSL::SSL
   crypto)
-  
