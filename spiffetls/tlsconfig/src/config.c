@@ -132,29 +132,25 @@ bool tlsconfig_HookMTLSClientConfig(SSL_CTX *ctx, x509svid_Source *svid,
     return true;
 }
 
-x509svid_Source *__svid;
-static int hookTLSServerConfig_cb(SSL *ssl, X509 **cert, EVP_PKEY **pkey)
+static void hookTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid)
 {
     err_t err;
-    x509svid_SVID *svid = x509svid_Source_GetX509SVID(__svid, &err);
+    x509svid_SVID *my_svid = x509svid_Source_GetX509SVID(svid, &err);
 
-    if(!err && svid) {
-        *cert = svid->certs[0];
-        *pkey = svid->private_key;
-
-        return 1;
+    if(!err && my_svid) {
+        SSL_CTX_use_certificate(ctx, my_svid->certs[0]);
+        SSL_CTX_use_PrivateKey(ctx, my_svid->private_key);
     }
-
-    return 0;
 }
 
 void tlsconfig_HookTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
                                    tlsconfig_Option **opts)
 {
     tlsconfig_resetAuthFields(ctx);
+    err_t err;
+    x509svid_SVID *my_svid = x509svid_Source_GetX509SVID(svid, &err);
 
-    __svid = svid;
-    SSL_CTX_set_client_cert_cb(ctx, hookTLSServerConfig_cb);
+    hookTLSServerConfig(ctx, svid);
 }
 
 void tlsconfig_HookMTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
@@ -164,8 +160,7 @@ void tlsconfig_HookMTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
 {
     tlsconfig_resetAuthFields(ctx);
 
-    __svid = svid;
-    SSL_CTX_set_client_cert_cb(ctx, hookTLSServerConfig_cb);
+    hookTLSServerConfig(ctx, svid);
 
     struct hookTLSClientConfig_st *safe_arg = malloc(sizeof *safe_arg);
     safe_arg->bundle = bundle;
