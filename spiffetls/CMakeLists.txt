@@ -18,6 +18,12 @@ set(C_DIAL
 add_executable(c_dial "${C_DIAL}")
 target_link_libraries(c_dial spiffetls)
 
+set(C_LISTEN
+    src/c_listen_example.c
+)
+add_executable(c_listen "${C_LISTEN}")
+target_link_libraries(c_listen spiffetls)
+
 add_library(${TARGET_NAME} SHARED ${LIB_SPIFFETLS})
 
 target_link_libraries(${TARGET_NAME}

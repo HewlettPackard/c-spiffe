@@ -5,7 +5,7 @@
 
 int call_client(void *unused)
 {
-    sleep(1);
+    sleep(2);
     system("./tls_client &");
     return 0;
 }
