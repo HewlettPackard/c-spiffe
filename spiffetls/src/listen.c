@@ -23,7 +23,7 @@ static int createSocket(in_port_t port)
         return -1;
     }
 
-    const int listen_ret = listen(sockfd, /*backlog*/ 1);
+    const int listen_ret = listen(sockfd, /*backlog*/ 2);
     if(listen_ret < 0) {
         // could not listen from socket
         return -1;
@@ -89,6 +89,7 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
     const int clientfd = accept(sockfd, (struct sockaddr *) &addr_tmp, &len);
     if(clientfd < 0) {
         // could not accept client
+        close(sockfd);
         *err = ERROR3;
         goto error;
     }
@@ -98,10 +99,11 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
     SSL_set_fd(conn, clientfd);
     SSL_set_accept_state(conn);
 
-    if(SSL_accept(conn) != 1) {
+    if(SSL_accept(conn) < 1) {
         // could not build a SSL session
         SSL_shutdown(conn);
         SSL_free(conn);
+        close(clientfd);
         close(sockfd);
         *err = ERROR4;
         goto error;
