@@ -21,12 +21,14 @@ extern "C" {
  * \param addr [in] Address code.
  * \param mode [in] Connection mode.
  * \param config [in] Connection configuration.
+ * \param sock [out] Server socket fd.
  * \param err [out] Variable to get information in the event of error.
  * \returns Connected server TLS object pointer if successful, NULL otherwise.
  */
 SSL *spiffetls_ListenWithMode(in_port_t port, in_addr_t addr,
                               spiffetls_ListenMode *mode,
-                              spiffetls_listenConfig *config, err_t *err);
+                              spiffetls_listenConfig *config, int *sock,
+                              err_t *err);
 
 #ifdef __cplusplus
 }

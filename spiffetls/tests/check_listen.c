@@ -27,10 +27,11 @@ START_TEST(test_spiffetls_ListenWithMode)
 
     spiffetls_listenConfig config
         = { .base_TLS_conf = NULL, .listener_fd = 0 };
+    int serverfd;
     SSL *conn = spiffetls_ListenWithMode((in_port_t) 4433,
                                          /*127.0.0.1*/ (in_addr_t) 0x7F000001,
-                                         mode, &config, &err);
-
+                                         mode, &config, &serverfd, &err);
+    
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_ne(conn, NULL);
 
@@ -48,6 +49,7 @@ START_TEST(test_spiffetls_ListenWithMode)
     SSL_shutdown(conn);
     SSL_free(conn);
     close(fd);
+    close(serverfd);
 }
 END_TEST
 

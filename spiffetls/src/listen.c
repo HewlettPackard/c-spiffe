@@ -42,7 +42,8 @@ static SSL_CTX *createTLSContext()
 
 SSL *spiffetls_ListenWithMode(in_port_t port, in_addr_t addr,
                               spiffetls_ListenMode *mode,
-                              spiffetls_listenConfig *config, err_t *err)
+                              spiffetls_listenConfig *config, int *sock,
+                              err_t *err)
 {
     if(!mode->unneeded_source) {
         workloadapi_X509Source *source = mode->source;
@@ -93,6 +94,7 @@ SSL *spiffetls_ListenWithMode(in_port_t port, in_addr_t addr,
         goto error;
     }
 
+    *sock = sockfd;
     SSL *conn = SSL_new(tls_config);
     SSL_set_fd(conn, clientfd);
     SSL_set_accept_state(conn);
