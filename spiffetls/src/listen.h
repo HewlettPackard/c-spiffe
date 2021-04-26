@@ -18,15 +18,13 @@ extern "C" {
  * server object.
  *
  * \param port [in] Port number.
- * \param addr [in] Address code.
  * \param mode [in] Connection mode.
  * \param config [in] Connection configuration.
  * \param sock [out] Server socket fd.
  * \param err [out] Variable to get information in the event of error.
  * \returns Connected server TLS object pointer if successful, NULL otherwise.
  */
-SSL *spiffetls_ListenWithMode(in_port_t port, in_addr_t addr,
-                              spiffetls_ListenMode *mode,
+SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
                               spiffetls_listenConfig *config, int *sock,
                               err_t *err);
 

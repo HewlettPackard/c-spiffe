@@ -17,7 +17,7 @@ START_TEST(test_spiffetls_DialWithMode)
     spiffetls_DialMode *mode
         = spiffetls_TLSClientWithRawConfig(authorizer, bundle_src);
 
-    spiffetls_dialConfig config = { .base_TLS_conf = NULL, .dialer_fd = 0 };
+    spiffetls_dialConfig config = { .base_TLS_conf = NULL, .dialer_fd = -1 };
 
     SSL *conn = spiffetls_DialWithMode((in_port_t) 4433,
                                        /*127.0.0.1*/ (in_addr_t) 0x7F000001,

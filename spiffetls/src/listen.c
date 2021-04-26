@@ -40,8 +40,7 @@ static SSL_CTX *createTLSContext()
     return ctx;
 }
 
-SSL *spiffetls_ListenWithMode(in_port_t port, in_addr_t addr,
-                              spiffetls_ListenMode *mode,
+SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
                               spiffetls_listenConfig *config, int *sock,
                               err_t *err)
 {
