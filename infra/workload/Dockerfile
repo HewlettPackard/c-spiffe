@@ -1,7 +1,5 @@
 FROM alg4/infra_spire-agent
 
-# ARG GRPC_VERSION=1.34.0
-# ARG NUM_JOBS=8
 ARG C_SPIFFE_DIR=/mnt/c-spiffe
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -28,21 +26,10 @@ RUN apt-get clean
 
 ARG BRANCH=test/198-Spiffetls-dial+listen-integration-test
 RUN cd /mnt && git clone -b ${BRANCH} https://github.com/arianalima/c-spiffe.git
+RUN cd ${C_SPIFFE_DIR} && git pull
 RUN mkdir -p ${C_SPIFFE_DIR}/build/
-
-# gRPC
-# https://github.com/grpc/grpc/tree/master/src/cpp
-# https://github.com/grpc/grpc/blob/master/BUILDING.md
-
-# RUN cd /tmp && git clone --recurse-submodules -b v${GRPC_VERSION} https://github.com/grpc/grpc
-# RUN mkdir -p /tmp/grpc/cmake/build
-# RUN cd /tmp/grpc/cmake/build && cmake -DgRPC_INSTALL=ON -DgRPC_BUILD_TESTS=ON ../..
-# RUN sed -i '7,13d' /tmp/grpc/third_party/benchmark/test/cxx03_test.cc 
-# RUN cd /tmp/grpc/cmake/build && make -j${NUM_JOBS} && make install
-
-# failed to build : ADD failed: forbidden path outside the build context:
-### ADD ../../infra ${C_SPIFFE_DIR}
+RUN chmod +x -R ${C_SPIFFE_DIR}/integration_test
+RUN chmod +x -R ${C_SPIFFE_DIR}/infra
 
 WORKDIR ${C_SPIFFE_DIR}/build
 COPY build-tests-workload.sh .
-RUN chmod +x build-tests-workload.sh

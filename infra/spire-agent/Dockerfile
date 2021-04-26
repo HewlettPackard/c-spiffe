@@ -45,11 +45,6 @@ RUN cd /tmp/grpc/cmake/build && cmake -DgRPC_INSTALL=ON -DgRPC_BUILD_TESTS=ON ..
 RUN sed -i '7,13d' /tmp/grpc/third_party/benchmark/test/cxx03_test.cc 
 RUN cd /tmp/grpc/cmake/build && make -j${NUM_JOBS} && make install
 
-# Todo: Improve
-# ARG BRANCH=test/198-Spiffetls-dial+listen-integration-test
-# RUN cd /mnt && git clone -b ${BRANCH} https://github.com/arianalima/c-spiffe.git
-# RUN mkdir -p ${C_SPIFFE_DIR}/build/
-
 # Configure Spire
 WORKDIR ${SPIRE_DIR}
 COPY agent.conf conf/agent/agent.conf
