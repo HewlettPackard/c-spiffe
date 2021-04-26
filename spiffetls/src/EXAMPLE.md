@@ -1,3 +1,42 @@
+## SPIFFE TLS Listen
+
+SPIFFE TLS Listen for C example.
+
+### Load SVID
+``` C++
+err_t err;
+x509svid_SVID *svid
+    = x509svid_Load("server_cert.pem", "server_key.pem", &err);
+```
+### Parameters
+``` C++
+x509svid_Source *svid_src = x509svid_SourceFromSVID(svid);
+spiffetls_ListenMode *mode = spiffetls_TLSServerWithRawConfig(svid_src);
+spiffetls_listenConfig config
+    = { .base_TLS_conf = NULL, .listener_fd = 0 };
+```
+Set up listen mode and empty configuration.
+### Dial and create TLS connection
+``` C++
+int sockfd;
+SSL *conn = spiffetls_ListenWithMode((in_port_t) 4433,
+                                     /*127.0.0.1*/ (in_addr_t) 0x7F000001,
+                                     mode, &config, &sockfd, &err);
+```
+Listen with port, address with the given mode and configuration. Get a connection object and server socket.
+### Free
+Don't forget to free allocated objects and close resources.
+``` C++
+x509svid_Source_Free(svid_src);
+spiffetls_ListenMode_Free(mode);
+
+const int fd = SSL_get_fd(conn);
+SSL_shutdown(conn);
+SSL_free(conn);
+close(fd);
+close(sock_fd);
+```
+
 ## SPIFFE TLS Dial
 
 SPIFFE TLS Dial for C example.
@@ -49,10 +88,11 @@ SSL_shutdown(conn);
 SSL_free(conn);
 close(fd);
 ```
-### Compiling
+## Compiling
 Always compile with make.
 
 Run example: 
 ``` bash
 ./c_dial
+./c_listen
 ```
