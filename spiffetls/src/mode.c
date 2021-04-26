@@ -125,3 +125,85 @@ void spiffetls_DialMode_Free(spiffetls_DialMode *mode)
         free(mode);
     }
 }
+
+spiffetls_ListenMode *spiffetls_TLSServer()
+{
+    spiffetls_ListenMode *mode = malloc(sizeof *mode);
+    memset(mode, 0, sizeof *mode);
+    mode->mode = TLS_SERVER_MODE;
+
+    return mode;
+}
+
+spiffetls_ListenMode *
+spiffetls_TLSServerWithSource(workloadapi_X509Source *source)
+{
+    spiffetls_ListenMode *mode = malloc(sizeof *mode);
+    memset(mode, 0, sizeof *mode);
+    mode->mode = TLS_SERVER_MODE;
+    mode->source = source;
+
+    return mode;
+}
+
+spiffetls_ListenMode *spiffetls_TLSServerWithRawConfig(x509svid_Source *svid)
+{
+    spiffetls_ListenMode *mode = malloc(sizeof *mode);
+    memset(mode, 0, sizeof *mode);
+    mode->mode = TLS_SERVER_MODE;
+    mode->unneeded_source = true;
+    mode->svid = svid;
+
+    return mode;
+}
+
+spiffetls_ListenMode *spiffetls_MTLSServer(tlsconfig_Authorizer *authorizer)
+{
+    spiffetls_ListenMode *mode = malloc(sizeof *mode);
+    memset(mode, 0, sizeof *mode);
+    mode->mode = MTLS_SERVER_MODE;
+    mode->authorizer = authorizer;
+
+    return mode;
+}
+
+spiffetls_ListenMode *
+spiffetls_MTLSServerWithSource(tlsconfig_Authorizer *authorizer,
+                               workloadapi_X509Source *source)
+{
+    spiffetls_ListenMode *mode = malloc(sizeof *mode);
+    memset(mode, 0, sizeof *mode);
+    mode->mode = MTLS_SERVER_MODE;
+    mode->authorizer = authorizer;
+    mode->source = source;
+
+    return mode;
+}
+
+spiffetls_ListenMode *
+spiffetls_MTLSServerWithRawConfig(tlsconfig_Authorizer *authorizer,
+                                  x509svid_Source *svid,
+                                  x509bundle_Source *bundle)
+{
+    spiffetls_ListenMode *mode = malloc(sizeof *mode);
+    memset(mode, 0, sizeof *mode);
+    mode->mode = MTLS_SERVER_MODE;
+    mode->unneeded_source = true;
+    mode->authorizer = authorizer;
+    mode->svid = svid;
+    mode->bundle = bundle;
+
+    return mode;
+}
+
+void spiffetls_ListenMode_Free(spiffetls_ListenMode *mode)
+{
+    if(mode) {
+        tlsconfig_Authorizer_Free(mode->authorizer);
+        x509bundle_Source_Free(mode->bundle);
+        workloadapi_X509Source_Free(mode->source);
+        x509svid_Source_Free(mode->svid);
+
+        free(mode);
+    }
+}
