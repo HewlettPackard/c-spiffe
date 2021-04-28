@@ -123,8 +123,6 @@ void say_hello(ssl_client_connection *connection)
         ERR_load_CRYPTO_strings();
         SSL_load_error_strings();
     }
-    // SSL_read(connection->ssl, buffer, length);
-    // printf("reply from server: %s", buffer);
 }
 
 int main(int argc, char *argv[])
