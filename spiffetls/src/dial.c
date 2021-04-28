@@ -12,6 +12,7 @@ static int createSocket(in_addr_t addr, in_port_t port)
 
     const int sockfd = socket(/*IPv4*/ AF_INET, /*TCP*/ SOCK_STREAM, /*IP*/ 0);
     if(sockfd < 0) {
+        // could not create socket
         return -1;
     }
     if(connect(sockfd, (const struct sockaddr *) &address, sizeof(address))
@@ -73,6 +74,7 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
         = config->dialer_fd > 0 ? config->dialer_fd : createSocket(addr, port);
 
     if(sockfd < 0) {
+        // could not create socket with given address and port
         *err = ERROR1;
         goto error;
     }
@@ -86,10 +88,10 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
         goto error;
     }
 
-    SSL_set_fd(conn, sockfd);
     SSL_set_connect_state(conn);
 
     if(SSL_connect(conn) != 1) {
+        // could not build a SSL session
         SSL_shutdown(conn);
         SSL_free(conn);
         close(sockfd);
