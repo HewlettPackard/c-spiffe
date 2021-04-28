@@ -31,9 +31,10 @@ services:
       - spire-server
       - workload
 
-  spiffetls-test:
-    build: ./spiffetls-test
-    hostname: spiffetls-test
-    tty: true
+  # For tests
+  # spiffetls-test:
+  #   build: ./spiffetls-test
+  #   hostname: spiffetls-test
+  #   tty: true
       
 

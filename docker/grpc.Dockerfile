@@ -40,7 +40,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         checkinstall \
         zlib1g-dev \
         doxygen \
-        graphviz
+        graphviz \
+        docker-compose
 
 RUN pip3 install behave PyHamcrest pathlib2
 RUN apt-get clean
