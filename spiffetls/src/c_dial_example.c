@@ -45,8 +45,7 @@ int main(void)
                                        /*127.0.0.1*/ (in_addr_t) 0x7F000001,
                                        mode, &config, &err);
 
-    if (conn == NULL)
-    {
+    if(conn == NULL) {
         printf("spiffetls_DialWithMode() failed\n");
         exit(-1);
     }

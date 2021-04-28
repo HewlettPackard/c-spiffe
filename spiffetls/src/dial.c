@@ -11,11 +11,12 @@ static int createSocket(in_addr_t addr, in_port_t port)
                                    .sin_port = htons(port) };
 
     const int sockfd = socket(/*IPv4*/ AF_INET, /*TCP*/ SOCK_STREAM, /*IP*/ 0);
-    if (sockfd < 0) {
+    if(sockfd < 0) {
         printf("ERROR opening socket\n");
         return -1;
     }
-    if (connect(sockfd, (const struct sockaddr *) &address, sizeof(address)) < 0) {
+    if(connect(sockfd, (const struct sockaddr *) &address, sizeof(address))
+       < 0) {
         printf("ERROR connecting\n");
         return -1;
     }
@@ -27,8 +28,7 @@ static SSL_CTX *createTLSContext()
 {
     const SSL_METHOD *method = TLS_method();
     SSL_CTX *ctx = SSL_CTX_new(method);
-    if (!ctx)
-    {
+    if(!ctx) {
         printf("Unable to create SSL context\n");
         return NULL;
     }
@@ -82,14 +82,12 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
     }
     SSL *conn = SSL_new(tls_config);
 
-    if (!conn)
-    {
+    if(!conn) {
         printf("SSL_new() failed\n");
         goto error;
     }
 
-    if (SSL_set_fd(conn, sockfd) != 1)
-    {
+    if(SSL_set_fd(conn, sockfd) != 1) {
         printf("Failed to SSL_set_fd\n");
         goto error;
     }
