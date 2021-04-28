@@ -19,7 +19,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         vim \
         unzip \
         wget \
-        cmake
+        cmake \
+        libssl-dev
 
 RUN apt-get clean
 
@@ -41,7 +42,7 @@ ARG NUM_JOBS=8
 
 RUN cd /tmp && git clone --recurse-submodules -b v${GRPC_VERSION} https://github.com/grpc/grpc
 RUN mkdir -p /tmp/grpc/cmake/build
-RUN cd /tmp/grpc/cmake/build && cmake -DgRPC_INSTALL=ON -DgRPC_BUILD_TESTS=ON ../../
+RUN cd /tmp/grpc/cmake/build && cmake -DgRPC_INSTALL=ON -DgRPC_SSL_PROVIDER=package -DgRPC_BUILD_TESTS=ON ../../ 
 RUN sed -i '7,13d' /tmp/grpc/third_party/benchmark/test/cxx03_test.cc 
 RUN cd /tmp/grpc/cmake/build && make -j${NUM_JOBS} && make install
 
