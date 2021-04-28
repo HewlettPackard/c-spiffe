@@ -13,13 +13,13 @@ int main(void)
     init_openssl();
     err_t err;
     workloadapi_Client *client = workloadapi_NewClient(&err);
+
     if(err != NO_ERROR) {
         printf("client error! %d\n", (int) err);
         exit(-1);
     }
 
     workloadapi_Client_defaultOptions(client, NULL);
-
     err = workloadapi_Client_Connect(client);
     if(err != NO_ERROR) {
         printf("conn error! %d\n", (int) err);
@@ -40,7 +40,6 @@ int main(void)
 
     spiffetls_DialMode *mode
         = spiffetls_TLSClientWithRawConfig(authorizer, bundle_src);
-
     spiffetls_dialConfig config = { .base_TLS_conf = NULL, .dialer_fd = 0 };
 
     SSL *conn = spiffetls_DialWithMode((in_port_t) 4433,
@@ -57,7 +56,6 @@ int main(void)
         printf("could not create TLS connection\n");
         exit(-1);
     }
-
 
     char buff[1024];
     int bytes;
@@ -81,7 +79,6 @@ int main(void)
 
     const int fd = SSL_get_fd(conn);
     SSL_shutdown(conn);
-
     SSL_free(conn);
     close(fd);
 

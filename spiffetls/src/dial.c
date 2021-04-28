@@ -56,6 +56,7 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
 
     SSL_CTX *tls_config
         = config->base_TLS_conf ? config->base_TLS_conf : createTLSContext();
+
     switch(mode->mode) {
     case TLS_CLIENT_MODE:
         tlsconfig_HookTLSClientConfig(tls_config, mode->bundle,
@@ -101,10 +102,10 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
         SSL_shutdown(conn);
         SSL_free(conn);
         close(sockfd);
-        *err = ERROR3;
+        *err = ERROR2;
         goto error;
     }
-     // successful handshake
+    // successful handshake
     return conn;
 
 error:
