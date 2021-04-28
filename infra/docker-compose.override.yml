@@ -6,6 +6,9 @@
 
 version: '3'
 services:
+  spire-server:
+  workload:
+  tests:
   spiffetls-test:
     volumes:
       - "../../c-spiffe:/mnt/"
