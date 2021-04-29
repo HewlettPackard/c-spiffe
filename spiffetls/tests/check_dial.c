@@ -20,7 +20,7 @@ START_TEST(test_spiffetls_DialWithMode)
     spiffetls_dialConfig config
         = { .base_TLS_conf = NULL, .dialer_fd = /*invalid dialer*/ -1 };
 
-    SSL *conn = spiffetls_DialWithMode((in_port_t) 4433,
+    SSL *conn = spiffetls_DialWithMode((in_port_t) 40001,
                                        /*127.0.0.1*/ (in_addr_t) 0x7F000001,
                                        mode, &config, &err);
 
@@ -54,7 +54,7 @@ int main(void)
     Suite *s = dial_suite();
     SRunner *sr = srunner_create(s);
 
-    system("./tls_server &");
+    system("./tls_server 40001 &");
     sleep(1);
 
     srunner_run_all(sr, CK_NORMAL);
