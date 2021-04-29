@@ -42,23 +42,3 @@ integration-tests:
 	docker exec infra_spire-server_1 spire-server token generate -spiffeID spiffe://example.org/myagent > myagentWlB.token && docker cp myagentWlB.token infra_workload_1:/mnt/c-spiffe/integration_test
 	docker exec -w /mnt/c-spiffe/integration_test/helpers/bash-general-scripts infra_tests_1 ./run-behave-tests.sh
 	docker-compose down
-
-spiffetls-run:
-#	microservices up
-	docker-compose up -d
-
-#	spire-server up
-	docker exec infra_spiffetls-test_1 spire-server run &
-	sleep 1
-
-#	create entries
-	docker exec infra_spiffetls-test_1 spire-server entry create -spiffeID spiffe://example.org/server -parentID spiffe://example.org/host -selector unix:user:server-workload
-	docker exec infra_spiffetls-test_1 spire-server entry create -spiffeID spiffe://example.org/client -parentID spiffe://example.org/host -selector unix:user:client-workload
-
-spiffetls-generate-token:
-#	generate token
-	docker exec infra_spiffetls-test_1 spire-server token generate -spiffeID spiffe://example.org/host
-
-spiffetls-join-token:
-#	connect with server
-	docker exec infra_spiffetls-test_1 spire-agent run -joinToken $(TOKEN) &

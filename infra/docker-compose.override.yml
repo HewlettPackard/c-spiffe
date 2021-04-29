@@ -9,7 +9,3 @@ services:
   spire-server:
   workload:
   tests:
-  # For tests
-  # spiffetls-test:
-  #   volumes:
-  #     - "../../c-spiffe:/mnt/"
