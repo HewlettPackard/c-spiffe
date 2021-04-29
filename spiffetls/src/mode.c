@@ -1,4 +1,4 @@
-#include "mode.h"
+#include "spiffetls/src/mode.h"
 
 spiffetls_DialMode *spiffetls_TLSClient(tlsconfig_Authorizer *authorizer)
 {
