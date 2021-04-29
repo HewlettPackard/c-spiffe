@@ -14,7 +14,7 @@ int main(int argc, char **argv)
     char *message = NULL;
 
     if(argc < 2) {
-        printf("Too few arguments!\nUsage:\n\t./c_dial 'message'");
+        printf("Too few arguments!\nUsage:\n\t./c_dial 'message'\n");
         exit(-1);
     }
 
@@ -65,7 +65,16 @@ int main(int argc, char **argv)
         printf("could not create TLS connection\n");
         exit(-1);
     }
-    SSL_write(conn, message, sizeof(message));
+
+    int write = SSL_write(conn, message, sizeof(message));
+    printf("Write value: %d\n", write);
+    if (write < 0) {
+
+        ERR_load_CRYPTO_strings();
+        SSL_load_error_strings();
+        printf("Error: %d\n", SSL_get_error(conn, write));
+    }
+
     bytes = SSL_read(conn, buff, sizeof(buff)); /* get reply & decrypt */
 
     buff[bytes] = 0;
