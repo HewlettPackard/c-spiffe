@@ -12,7 +12,7 @@ typedef struct ssl_server_connection {
     void (*service)(SSL *);
 } ssl_server_connection;
 
-int create_socket(int port)
+int create_socket(uint16_t port)
 {
     int s;
     struct sockaddr_in addr;
@@ -66,21 +66,18 @@ SSL_CTX *create_context()
     return ctx;
 }
 
-void configure_context(SSL_CTX *ctx)
+void configure_context(SSL_CTX *ctx, const char *cert_path,
+                       const char *key_path)
 {
     SSL_CTX_set_ecdh_auto(ctx, 1);
 
     // Set the key and cert
-    if(SSL_CTX_use_certificate_file(ctx, "resources/server.crt",
-                                    SSL_FILETYPE_PEM)
-       <= 0) {
+    if(SSL_CTX_use_certificate_file(ctx, cert_path, SSL_FILETYPE_PEM) <= 0) {
         ERR_print_errors_fp(stderr);
         exit(EXIT_FAILURE);
     }
 
-    if(SSL_CTX_use_PrivateKey_file(ctx, "resources/server.key",
-                                   SSL_FILETYPE_PEM)
-       <= 0) {
+    if(SSL_CTX_use_PrivateKey_file(ctx, key_path, SSL_FILETYPE_PEM) <= 0) {
         ERR_print_errors_fp(stderr);
         exit(EXIT_FAILURE);
     }
@@ -154,10 +151,22 @@ int main(int argc, char *argv[])
     ssl_server_connection connection;
     init_openssl();
     ctx = create_context();
+    uint16_t port = 4433;
 
-    configure_context(ctx);
+    if(argc >= 2) {
+        uint16_t tmp_port;
+        if(sscanf(argv[1], "%hu", &tmp_port) > 0) {
+            port = tmp_port;
+        }
+    }
+    
+    if(argc >= 4) {
+        configure_context(ctx, /*certificate*/ argv[2], /*key*/ argv[3]);
+    } else {
+        configure_context(ctx, "resources/server.crt", "resources/server.key");
+    }
 
-    sock = create_socket(4433);
+    sock = create_socket(port);
 
     /* Handle connections */
     while(1) {
@@ -177,6 +186,8 @@ int main(int argc, char *argv[])
         init_server_connection(&connection, ctx, client, echo_service);
         ssl_serve(&connection);
         connection_destroy(&connection);
+
+        break;
     }
 
     close(sock);

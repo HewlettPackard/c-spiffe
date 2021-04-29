@@ -6,7 +6,7 @@ file(COPY ../tests/resources/ DESTINATION ${PROJECT_BINARY_DIR}/spiffetls/tlscon
 add_executable(check_authorizer check_authorizer.c)
 
 target_link_libraries(check_authorizer spiffetls ${CHECK_LIBRARIES}
-  OpenSSL::SSL
+  ssl
   spiffeid
   internal
   svid
@@ -27,7 +27,7 @@ add_test(check_authorizer check_authorizer)
 add_executable(check_config check_config.c)
 
 target_link_libraries(check_config spiffetls ${CHECK_LIBRARIES}
-  OpenSSL::SSL
+  ssl
   spiffeid
   internal
   svid

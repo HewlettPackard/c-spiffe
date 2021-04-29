@@ -35,8 +35,6 @@ else()
   set(_GRPC_CPP_PLUGIN_EXECUTABLE $<TARGET_FILE:gRPC::grpc_cpp_plugin>)
 endif()
 
-find_package(OpenSSL REQUIRED)
-
 # Enable Coverage Tests
 set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fprofile-arcs -ftest-coverage -g -O0")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage -g -O0")
@@ -123,7 +121,7 @@ if (ENABLE_TESTS)
       COMMAND find .. -type f -name *pb.cc.gcno -exec rm -r {} "\;"
 
       COMMAND ${LCOV} --directory .. --capture -o lcov.info
-      COMMAND ${LCOV} --remove lcov.info -o lcov.info '/usr/*' '*/build/workload/*' '*/include/*' '*stb_ds*'
+      COMMAND ${LCOV} --remove lcov.info -o lcov.info '/usr/*' '*/build/workload/*' '*/include/*' '*stb_ds*' '*/resources/*'
       COMMAND echo "lcov.info generated."
       COMMAND ${GENHTML} lcov.info --output-directory ${CMAKE_BINARY_DIR}/Coverage/Reports 
       COMMAND echo "Command lcov - Coverage reports generated."
