@@ -3,21 +3,25 @@ import sys
 import time
 
 from hamcrest import assert_that, is_, is_not
+from behave.matchers import register_type
+from utils import parse_optional
 
 
-PARENT_PATH = os.path.abspath("..")
-if PARENT_PATH not in sys.path:
-    sys.path.insert(0, PARENT_PATH)
+parse_optional.pattern = r'\s?\w*\s?'
+register_type(optional=parse_optional)
 
 
-@when('I fetch "{profile}" "{document}"')
-def step_impl(context, profile, document):
+@when('I fetch{external:optional}"{profile}" "{document}"')
+def step_impl(context, external, profile, document):
+    host = ""
+    if external == "external":
+        host = "workload"
+
     if document == "SVID":
         bin_file = "c_client"
     else:
         bin_file = "c_client_bundle"
-
-    c_client_bin = os.popen("/mnt/c-spiffe/build/workload/%s %s_type=%s" % (bin_file, document.lower(), profile.lower()))
+    c_client_bin = os.popen("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-fetch.sh %s %s %s %s" % (bin_file, document.lower(), profile.lower(), host))
     context.result = c_client_bin.read()
 
 
@@ -55,5 +59,5 @@ def step_impl(context):
 
 @when('The agent is turned on')
 def step_impl(context):
-    os.system("./grpc_connect_agent.sh")
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/grpc_connect_agent.sh")
     time.sleep(5)

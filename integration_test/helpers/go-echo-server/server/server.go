@@ -1,76 +1,72 @@
 package main
 
 import (
-	"crypto/rand"
-	"crypto/tls"
-	"crypto/x509"
-	"io"
+	"bufio"
+	"context"
 	"log"
 	"net"
+
+	"github.com/spiffe/go-spiffe/v2/spiffeid"
+	"github.com/spiffe/go-spiffe/v2/spiffetls"
+	"github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
+	"github.com/spiffe/go-spiffe/v2/workloadapi"
 )
 
 const (
-	CONN_HOST = "0.0.0.0"
-	CONN_PORT = "8000"
-	CONN_TYPE = "tcp"
+	socketPath    = "unix:///tmp/agent.sock"
+	serverAddress = "0.0.0.0:4433"
 )
 
 func main() {
-	cert, err := tls.LoadX509KeyPair("../certs/server.pem", "../certs/server.key")
+	// Setup context
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
+	// Allowed SPIFFE ID
+	clientID := spiffeid.Must("example.org", "myworkloadA")
+
+	// Creates a TLS listener
+	// The server expects the client to present an SVID with the spiffeID: 'spiffe://example.org/client'
+	//
+	// An alternative when creating Listen is using `spiffetls.Listen` that uses environment variable `SPIFFE_ENDPOINT_SOCKET`
+	listener, err := spiffetls.ListenWithMode(ctx, "tcp", serverAddress,
+		spiffetls.MTLSServerWithSourceOptions(
+			tlsconfig.AuthorizeID(clientID),
+			workloadapi.WithClientOptions(workloadapi.WithAddr(socketPath)),
+		))
 	if err != nil {
-		log.Fatalf("server: loadkeys: %s", err)
+		log.Fatalf("Unable to create TLS listener: %v", err)
 	}
-	config := tls.Config{Certificates: []tls.Certificate{cert}}
-	config.Rand = rand.Reader
-	listener, err := tls.Listen(CONN_TYPE, CONN_HOST+":"+CONN_PORT, &config)
-	if err != nil {
-		log.Fatalf("server: listen: %s", err)
-	}
-	log.Print("server: listening on port ", CONN_PORT)
+	defer listener.Close()
+
+	// Handle connections
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
-			log.Printf("server: accept: %s", err)
-			break
+			go handleError(err)
 		}
-		defer conn.Close()
-		log.Printf("server: accepted from %s -> %s \n", conn.RemoteAddr(), conn.LocalAddr())
-		tlscon, ok := conn.(*tls.Conn)
-		if ok {
-			state := tlscon.ConnectionState()
-			for _, v := range state.PeerCertificates {
-				log.Print(x509.MarshalPKIXPublicKey(v.PublicKey))
-			}
-		}
-		// Handle connections in a new goroutine.
-		go handleClient(conn)
+		go handleConnection(conn)
 	}
 }
 
-// Handles incoming requests.
-func handleClient(conn net.Conn) {
+func handleConnection(conn net.Conn) {
 	defer conn.Close()
-	buf := make([]byte, 100)
-	for {
-		log.Print("server: conn: waiting")
-		n, err := conn.Read(buf)
-		if err != nil {
-			if err != io.EOF {
-				log.Printf("server: conn: read: %s", err)
-			}
-			break
-		}
 
-		log.Printf("server: conn: received %q (%d bytes)\n", string(buf[:n]), n)
-
-		n, err = conn.Write(buf[:n])
-		log.Printf("server: conn: replied  %q (%d bytes)", string(buf[:n]), n)
-
-		if err != nil {
-			log.Printf("server: write: %s", err)
-			break
-		}
+	// Read incoming data into buffer
+	req, err := bufio.NewReader(conn).ReadString('\n')
+	if err != nil {
+		log.Printf("Error reading incoming data: %v", err)
+		return
 	}
-	log.Println("server: conn: closed")
+	log.Printf("Received from client: %q", req)
+
+	// Send a response back to the client
+	if _, err = conn.Write([]byte(req + "\n")); err != nil {
+		log.Printf("Unable to send response: %v", err)
+		return
+	}
+}
+
+func handleError(err error) {
+	log.Printf("Unable to accept connection: %v", err)
 }
