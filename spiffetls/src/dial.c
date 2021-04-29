@@ -11,9 +11,14 @@ static int createSocket(in_addr_t addr, in_port_t port)
                                    .sin_port = htons(port) };
 
     const int sockfd = socket(/*IPv4*/ AF_INET, /*TCP*/ SOCK_STREAM, /*IP*/ 0);
-    const int connect_ret = connect(sockfd, (const struct sockaddr *) &address, sizeof address);
-    if(connect_ret < 0 || sockfd < 0) {
+    if(sockfd < 0) {
         // could not create socket
+        return -1;
+    } 
+    
+    const int connect_ret = connect(sockfd, (const struct sockaddr *) &address, sizeof address);
+    if(connect_ret < 0) {
+        // could not connect socket with given address and port
         return -1;
     }
 
