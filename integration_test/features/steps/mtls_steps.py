@@ -31,5 +31,5 @@ def step_impl(context, container_name):
 
 @when('I send "{message}" message to echo-server')
 def step_impl(context, message):
-    os.system("cd /mnt/c-spiffe/integration_test/helpers/go-echo-server/client && go run client.go '%s'" % message)
+    os.system("cd /mnt/c-spiffe/integration_test/helpers/go-echo-server/client && su - client-workload -c './go-client '%s'" % message)
     time.sleep(1)
