@@ -1,5 +1,7 @@
 FROM ubuntu:focal
 
+ENV DEBIAN_FRONTEND noninteractive
+
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -16,7 +18,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         gzip \
         vim \
         unzip \
-        wget
+        wget \
+        cmake \
+        libssl-dev
 
 RUN apt-get clean
 
@@ -33,10 +37,14 @@ RUN mv spire-${SPIRE_VERSION} ${SPIRE_DIR}
 RUN ln -s /opt/spire/bin/spire-server /usr/bin/spire-server
 RUN ln -s /opt/spire/bin/spire-agent /usr/bin/spire-agent
 
-# Todo: Improve
-ARG BRANCH=test/286-refactor-test-code-to-use-new-infrastructure
-RUN cd /mnt && git clone -b ${BRANCH} https://github.com/arianalima/c-spiffe.git
-RUN mkdir -p ${C_SPIFFE_DIR}/build/
+ARG GRPC_VERSION=1.34.0
+ARG NUM_JOBS=8
+
+RUN cd /tmp && git clone --recurse-submodules -b v${GRPC_VERSION} https://github.com/grpc/grpc
+RUN mkdir -p /tmp/grpc/cmake/build
+RUN cd /tmp/grpc/cmake/build && cmake -DgRPC_INSTALL=ON -DgRPC_SSL_PROVIDER=package -DgRPC_BUILD_TESTS=ON ../../ 
+RUN sed -i '7,13d' /tmp/grpc/third_party/benchmark/test/cxx03_test.cc 
+RUN cd /tmp/grpc/cmake/build && make -j${NUM_JOBS} && make install
 
 # Configure Spire
 WORKDIR ${SPIRE_DIR}
