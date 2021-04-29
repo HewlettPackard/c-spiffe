@@ -7,8 +7,19 @@ void init_openssl()
     SSL_library_init();
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
+    char buff[1024];
+    int bytes;
+    char *message = NULL;
+
+    if(argc < 2) {
+        printf("Too few arguments!\nUsage:\n\t./c_dial 'message'");
+        exit(-1);
+    }
+
+    message = argv[1];
+
     init_openssl();
     err_t err;
     workloadapi_Client *client = workloadapi_NewClient(&err);
@@ -54,10 +65,6 @@ int main(void)
         printf("could not create TLS connection\n");
         exit(-1);
     }
-
-    char buff[1024];
-    int bytes;
-    char *message = "Hi Server!";
     SSL_write(conn, message, sizeof(message));
     bytes = SSL_read(conn, buff, sizeof(buff)); /* get reply & decrypt */
 
