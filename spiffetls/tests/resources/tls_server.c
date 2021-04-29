@@ -66,21 +66,18 @@ SSL_CTX *create_context()
     return ctx;
 }
 
-void configure_context(SSL_CTX *ctx)
+void configure_context(SSL_CTX *ctx, const char *cert_path,
+                       const char *key_path)
 {
     SSL_CTX_set_ecdh_auto(ctx, 1);
 
     // Set the key and cert
-    if(SSL_CTX_use_certificate_file(ctx, "resources/server.crt",
-                                    SSL_FILETYPE_PEM)
-       <= 0) {
+    if(SSL_CTX_use_certificate_file(ctx, cert_path, SSL_FILETYPE_PEM) <= 0) {
         ERR_print_errors_fp(stderr);
         exit(EXIT_FAILURE);
     }
 
-    if(SSL_CTX_use_PrivateKey_file(ctx, "resources/server.key",
-                                   SSL_FILETYPE_PEM)
-       <= 0) {
+    if(SSL_CTX_use_PrivateKey_file(ctx, key_path, SSL_FILETYPE_PEM) <= 0) {
         ERR_print_errors_fp(stderr);
         exit(EXIT_FAILURE);
     }
@@ -155,7 +152,11 @@ int main(int argc, char *argv[])
     init_openssl();
     ctx = create_context();
 
-    configure_context(ctx);
+    if(argc >= 3) {
+        configure_context(ctx, /*certificate*/ argv[1], /*key*/ argv[2]);
+    } else {
+        configure_context(ctx, "resources/server.crt", "resources/server.key");
+    }
 
     sock = create_socket(4433);
 
@@ -177,6 +178,8 @@ int main(int argc, char *argv[])
         init_server_connection(&connection, ctx, client, echo_service);
         ssl_serve(&connection);
         connection_destroy(&connection);
+
+        break;
     }
 
     close(sock);
