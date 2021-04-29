@@ -11,9 +11,12 @@ static int createSocket(in_addr_t addr, in_port_t port)
                                    .sin_port = htons(port) };
 
     const int sockfd = socket(/*IPv4*/ AF_INET, /*TCP*/ SOCK_STREAM, /*IP*/ 0);
-    const int connect_ret = connect(sockfd, (const struct sockaddr *) &address, sizeof address);
-    if(connect_ret < 0 || sockfd < 0) {
+    if(sockfd < 0) {
         // could not create socket
+        return -1;
+    }
+    if(connect(sockfd, (const struct sockaddr *) &address, sizeof(address))
+       < 0) {
         return -1;
     }
 
@@ -24,6 +27,9 @@ static SSL_CTX *createTLSContext()
 {
     const SSL_METHOD *method = TLS_method();
     SSL_CTX *ctx = SSL_CTX_new(method);
+    if(!ctx) {
+        return NULL;
+    }
 
     return ctx;
 }
@@ -64,9 +70,6 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
         *err = ERROR1;
         goto error;
     }
-
-    SSL *conn = SSL_new(tls_config);
-
     const int sockfd
         = config->dialer_fd > 0 ? config->dialer_fd : createSocket(addr, port);
 
@@ -75,8 +78,16 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
         *err = ERROR1;
         goto error;
     }
+    SSL *conn = SSL_new(tls_config);
 
-    SSL_set_fd(conn, sockfd);
+    if(!conn) {
+        goto error;
+    }
+
+    if(SSL_set_fd(conn, sockfd) != 1) {
+        goto error;
+    }
+
     SSL_set_connect_state(conn);
 
     if(SSL_connect(conn) != 1) {

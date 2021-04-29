@@ -6,7 +6,6 @@ file(COPY ../tests/resources/ DESTINATION ${PROJECT_BINARY_DIR}/svid/jwtsvid/tes
 add_executable(check_jwtsvid check_svid.c)
 
 target_link_libraries(check_jwtsvid svid ${CHECK_LIBRARIES}
-  OpenSSL::SSL
   spiffeid
   internal
   uriparser

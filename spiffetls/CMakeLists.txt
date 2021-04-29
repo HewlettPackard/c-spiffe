@@ -25,7 +25,6 @@ target_link_libraries(${TARGET_NAME}
     internal
     bundle
     source
-    OpenSSL::SSL
     uriparser
     jansson
     cjose

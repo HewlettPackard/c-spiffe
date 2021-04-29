@@ -43,7 +43,6 @@ bundle
 )
 
 set(EXT_LIBS
-OpenSSL::SSL
 uriparser
 jansson
 cjose
