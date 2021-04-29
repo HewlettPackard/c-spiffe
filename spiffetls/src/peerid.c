@@ -17,7 +17,7 @@ spiffeid_ID spiffetls_PeerIDFromConn(SSL *conn, err_t *err)
         } else {
             // no peer certificate
             *err = ERROR2;
-        }        
+        }
     } else {
         // connection is NULL
         *err = ERROR1;
