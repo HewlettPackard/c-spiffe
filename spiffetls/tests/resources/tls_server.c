@@ -12,7 +12,7 @@ typedef struct ssl_server_connection {
     void (*service)(SSL *);
 } ssl_server_connection;
 
-int create_socket(int port)
+int create_socket(uint16_t port)
 {
     int s;
     struct sockaddr_in addr;
@@ -151,14 +151,22 @@ int main(int argc, char *argv[])
     ssl_server_connection connection;
     init_openssl();
     ctx = create_context();
+    uint16_t port = 4433;
 
-    if(argc >= 3) {
-        configure_context(ctx, /*certificate*/ argv[1], /*key*/ argv[2]);
+    if(argc >= 2) {
+        uint16_t tmp_port;
+        if(sscanf(argv[1], "%hu", &tmp_port) > 0) {
+            port = tmp_port;
+        }
+    }
+    
+    if(argc >= 4) {
+        configure_context(ctx, /*certificate*/ argv[2], /*key*/ argv[3]);
     } else {
         configure_context(ctx, "resources/server.crt", "resources/server.key");
     }
 
-    sock = create_socket(4433);
+    sock = create_socket(port);
 
     /* Handle connections */
     while(1) {
