@@ -10,6 +10,9 @@ ENV DEBIAN_FRONTEND noninteractive
 # Install package dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
+        apt-transport-https \
+        gnupg \
+        lsb-release \
         software-properties-common \
         autoconf \
         automake \
@@ -40,10 +43,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         checkinstall \
         zlib1g-dev \
         doxygen \
-        graphviz
+        graphviz \
+        docker-compose
 
 RUN pip3 install behave PyHamcrest pathlib2
 RUN apt-get clean
+
+# Install Docker Enginer
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+RUN echo \
+  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+RUN apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # Install OpenSSL
 ARG OPENSSL_VERSION=1.1.1k
@@ -61,7 +72,7 @@ RUN cd /opt/openssl-${OPENSSL_VERSION} && ./config --prefix=/usr --openssldir=/u
 # RUN apt-get install -y build-essential autoconf libtool pkg-config && \
 RUN cd /tmp && git clone --recurse-submodules -b v${GRPC_VERSION} https://github.com/grpc/grpc
 RUN mkdir -p /tmp/grpc/cmake/build
-RUN cd /tmp/grpc/cmake/build && cmake -DgRPC_INSTALL=ON -DgRPC_BUILD_TESTS=ON ../..
+RUN cd /tmp/grpc/cmake/build && cmake -DgRPC_INSTALL=ON -DgRPC_BUILD_TESTS=ON -DgRPC_SSL_PROVIDER=package ../..
 RUN sed -i '7,13d' /tmp/grpc/third_party/benchmark/test/cxx03_test.cc 
 RUN cd /tmp/grpc/cmake/build && make -j${NUM_JOBS} && make install
 
