@@ -22,6 +22,7 @@ add_library(${TARGET_NAME} SHARED ${LIB_SPIFFETLS})
 
 target_link_libraries(${TARGET_NAME}
     svid
+    ssl
     spiffeid
     internal
     bundle
