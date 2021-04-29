@@ -1,13 +1,20 @@
 #include "spiffetls/src/listen.h"
 #include <unistd.h>
 
+void init_openssl()
+{
+    SSL_load_error_strings();
+    SSL_library_init();
+}
+
 int main(void)
 {
+    init_openssl();
     err_t err;
     x509svid_SVID *svid
         = x509svid_Load("server_cert.pem", "server_key.pem", &err);
 
-    if(err != NO_ERROR) {
+    if (svid == NULL || err != NO_ERROR) {
         printf("Could not load svid!\n");
         exit(-1);
     }
@@ -20,6 +27,11 @@ int main(void)
     int sock_fd;
     SSL *conn = spiffetls_ListenWithMode((in_port_t) 4433, mode, &config,
                                          &sock_fd, &err);
+
+    if(conn == NULL) {
+        printf("spiffetls_ListenWithMode() failed\n");
+        exit(-1);
+    }
 
     if(err != NO_ERROR) {
         printf("could not create TLS connection!");
