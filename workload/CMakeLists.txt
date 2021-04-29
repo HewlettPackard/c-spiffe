@@ -43,7 +43,6 @@ bundle
 )
 
 set(EXT_LIBS
-ssl
 uriparser
 jansson
 cjose

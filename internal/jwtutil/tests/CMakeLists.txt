@@ -11,7 +11,6 @@ set(SOURCES_CHECK
 add_executable(check_jwtutil ${SOURCES_CHECK})
 
 target_link_libraries(check_jwtutil internal ${CHECK_LIBRARIES}
-  ssl
   spiffeid
   uriparser
   bundle
