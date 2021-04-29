@@ -6,7 +6,7 @@ file(COPY ../tests/resources/ DESTINATION ${PROJECT_BINARY_DIR}/bundle/x509bundl
 add_executable(check_x509bundle check_bundle.c)
 
 target_link_libraries(check_x509bundle bundle ${CHECK_LIBRARIES}
-  OpenSSL::SSL
+  ssl
   spiffeid
   internal
   uriparser
@@ -25,7 +25,7 @@ add_test(check_x509bundle check_x509bundle)
 add_executable(check_x509set check_set.c)
 
 target_link_libraries(check_x509set bundle ${CHECK_LIBRARIES}
-  OpenSSL::SSL
+  ssl
   spiffeid
   internal
   uriparser

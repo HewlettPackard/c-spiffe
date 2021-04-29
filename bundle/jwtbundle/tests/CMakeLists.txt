@@ -6,7 +6,7 @@ file(COPY ../tests/resources/ DESTINATION ${PROJECT_BINARY_DIR}/bundle/jwtbundle
 add_executable(check_jwtbundle check_bundle.c)
 
 target_link_libraries(check_jwtbundle bundle ${CHECK_LIBRARIES}
-  OpenSSL::SSL
+  ssl
   spiffeid
   internal
   uriparser
@@ -25,7 +25,7 @@ add_test(check_jwtbundle check_jwtbundle)
 add_executable(check_jwtset check_set.c)
 
 target_link_libraries(check_jwtset bundle ${CHECK_LIBRARIES}
-  OpenSSL::SSL
+  ssl
   spiffeid
   internal
   uriparser

@@ -13,7 +13,7 @@ set(SOURCES_CHECK
 add_executable(check_x509util ${SOURCES_CHECK})
 
 target_link_libraries(check_x509util internal ${CHECK_LIBRARIES}
-  OpenSSL::SSL
+  ssl
   spiffeid
   uriparser
   bundle
@@ -39,7 +39,7 @@ set(SOURCES_CHECK
 add_executable(check_certpool ${SOURCES_CHECK})
 
 target_link_libraries(check_certpool svid ${CHECK_LIBRARIES}
-  OpenSSL::SSL
+  ssl
   spiffeid
   internal
   uriparser

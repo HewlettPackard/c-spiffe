@@ -43,7 +43,7 @@ bundle
 )
 
 set(EXT_LIBS
-OpenSSL::SSL
+ssl
 uriparser
 jansson
 cjose
@@ -51,7 +51,6 @@ subunit
 rt
 m
 pthread
-ssl
 crypto)
 
 set(LIB_SOURCE

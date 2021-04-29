@@ -6,7 +6,7 @@ file(COPY ../tests/resources/ DESTINATION ${PROJECT_BINARY_DIR}/internal/pemutil
 add_executable(check_pem check_pem.c )
 
 target_link_libraries(check_pem internal ${CHECK_LIBRARIES}
-  OpenSSL::SSL
+  ssl
   spiffeid
   uriparser
   bundle
