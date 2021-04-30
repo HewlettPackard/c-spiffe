@@ -29,9 +29,6 @@ static SSL_CTX *createTLSContext()
 {
     const SSL_METHOD *method = TLS_method();
     SSL_CTX *ctx = SSL_CTX_new(method);
-    if(!ctx) {
-        return NULL;
-    }
 
     return ctx;
 }
@@ -84,9 +81,7 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
 
     if(!conn) {
         goto error;
-    }
-
-    if(SSL_set_fd(conn, sockfd) != 1) {
+    } else if(SSL_set_fd(conn, sockfd) != 1) {
         goto error;
     }
 

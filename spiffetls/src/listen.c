@@ -16,6 +16,14 @@ static int createSocket(in_port_t port)
         return -1;
     }
 
+    const int opt = 1;
+    if(setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt,
+                  sizeof opt)
+       < 0) {
+        // could not set socket option
+        return -1;
+    }
+
     const int bind_ret
         = bind(sockfd, (const struct sockaddr *) &address, sizeof address);
     if(bind_ret < 0) {
@@ -23,7 +31,7 @@ static int createSocket(in_port_t port)
         return -1;
     }
 
-    const int listen_ret = listen(sockfd, /*backlog*/ 2);
+    const int listen_ret = listen(sockfd, /*backlog*/ 1);
     if(listen_ret < 0) {
         // could not listen from socket
         return -1;
@@ -36,9 +44,6 @@ static SSL_CTX *createTLSContext()
 {
     const SSL_METHOD *method = TLS_method();
     SSL_CTX *ctx = SSL_CTX_new(method);
-    if(!ctx) {
-        return NULL;
-    }
 
     return ctx;
 }
@@ -102,15 +107,15 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
 
     if(!conn) {
         goto error;
-    }
-
-    if(SSL_set_fd(conn, clientfd) != 1) {
+    } else if(SSL_set_fd(conn, clientfd) != 1) {
+        goto error;
+    } else if(SSL_set_num_tickets(conn, 0) != 1) {
         goto error;
     }
 
     SSL_set_accept_state(conn);
-
-    if(SSL_accept(conn) < 1) {
+    const int ret = SSL_accept(conn);
+    if(ret != 1) {
         // could not build a SSL session
         SSL_shutdown(conn);
         SSL_free(conn);
