@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE Library: SPIFFE TLS Dial</title>
+<title>C-SPIFFE Library: SPIFFE TLS Listen</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,11 +64,43 @@ $(function() {
 </div><!-- top -->
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">SPIFFE TLS Dial </div>  </div>
+<div class="title">SPIFFE TLS Listen </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>SPIFFE TLS Dial for C example. </p>
+<div class="textblock"><p>SPIFFE TLS Listen for C example.</p>
 <h2><a class="anchor" id="autotoc_md63"></a>
+Load SVID</h2>
+<div class="fragment"><div class="line">err_t err;</div>
+<div class="line">x509svid_SVID *svid</div>
+<div class="line">    = x509svid_Load(&quot;server_cert.pem&quot;, &quot;server_key.pem&quot;, &amp;err);</div>
+</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md64"></a>
+Parameters</h2>
+<div class="fragment"><div class="line">x509svid_Source *svid_src = x509svid_SourceFromSVID(svid);</div>
+<div class="line">spiffetls_ListenMode *mode = spiffetls_TLSServerWithRawConfig(svid_src);</div>
+<div class="line">spiffetls_listenConfig config</div>
+<div class="line">    = { .base_TLS_conf = NULL, .listener_fd = 0 };</div>
+</div><!-- fragment --><p> Set up listen mode and empty configuration. </p>
+<h2><a class="anchor" id="autotoc_md65"></a>
+Dial and create TLS connection</h2>
+<div class="fragment"><div class="line">int sockfd;</div>
+<div class="line">SSL *conn = spiffetls_ListenWithMode((in_port_t) 4433,</div>
+<div class="line">                                     /*127.0.0.1*/ (in_addr_t) 0x7F000001,</div>
+<div class="line">                                     mode, &amp;config, &amp;sockfd, &amp;err);</div>
+</div><!-- fragment --><p> Listen with port, address with the given mode and configuration. Get a connection object and server socket. </p>
+<h2><a class="anchor" id="autotoc_md66"></a>
+Free</h2>
+<p>Don't forget to free allocated objects and close resources. </p><div class="fragment"><div class="line">x509svid_Source_Free(svid_src);</div>
+<div class="line">spiffetls_ListenMode_Free(mode);</div>
+<div class="line"> </div>
+<div class="line">const int fd = SSL_get_fd(conn);</div>
+<div class="line">SSL_shutdown(conn);</div>
+<div class="line">SSL_free(conn);</div>
+<div class="line">close(fd);</div>
+<div class="line">close(sock_fd);</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md67"></a>
+SPIFFE TLS Dial</h1>
+<p>SPIFFE TLS Dial for C example. </p>
+<h2><a class="anchor" id="autotoc_md68"></a>
 Client object</h2>
 <div class="fragment"><div class="line">err_t err;</div>
 <div class="line">workloadapi_Client *client = workloadapi_NewClient(&amp;err);</div>
@@ -77,7 +109,7 @@ Client object</h2>
 <div class="line">// ...</div>
 <div class="line">x509bundle_Set *set = workloadapi_Client_FetchX509Bundles(client, &amp;err);</div>
 </div><!-- fragment --><p> Initialize client and fetch set of X.509 bundles.</p>
-<h2><a class="anchor" id="autotoc_md64"></a>
+<h2><a class="anchor" id="autotoc_md69"></a>
 Parameters</h2>
 <div class="fragment"><div class="line">x509bundle_Source *bundle_src = x509bundle_SourceFromSet(set);</div>
 <div class="line"> </div>
@@ -88,13 +120,13 @@ Parameters</h2>
 <div class="line">    = spiffetls_TLSClientWithRawConfig(authorizer, bundle_src);</div>
 <div class="line">spiffetls_dialConfig config = { .base_TLS_conf = NULL, .dialer_fd = 0 };</div>
 </div><!-- fragment --><p> Set up dial mode and empty configuration.</p>
-<h2><a class="anchor" id="autotoc_md65"></a>
+<h2><a class="anchor" id="autotoc_md70"></a>
 Dial and create TLS connection</h2>
 <div class="fragment"><div class="line">SSL *conn = spiffetls_DialWithMode((in_port_t) 4433,</div>
 <div class="line">                                    /*127.0.0.1*/ (in_addr_t) 0x7F000001,</div>
 <div class="line">                                    mode, &amp;config, &amp;err);</div>
 </div><!-- fragment --><p> Dial with port, address with the given mode and configuration. Get a connection object. </p>
-<h2><a class="anchor" id="autotoc_md66"></a>
+<h2><a class="anchor" id="autotoc_md71"></a>
 Free</h2>
 <p>Don't forget to free allocated objects and close resources. </p><div class="fragment"><div class="line">err = workloadapi_Client_Close(client);</div>
 <div class="line">// ...</div>
@@ -108,10 +140,11 @@ Free</h2>
 <div class="line">SSL_shutdown(conn);</div>
 <div class="line">SSL_free(conn);</div>
 <div class="line">close(fd);</div>
-</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md67"></a>
-Compiling</h2>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md72"></a>
+Compiling</h1>
 <p>Always compile with make.</p>
 <p>Run example: </p><div class="fragment"><div class="line">./c_dial</div>
+<div class="line">./c_listen</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->

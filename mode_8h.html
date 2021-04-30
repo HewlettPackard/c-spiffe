@@ -77,10 +77,10 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="bundle_2x509bundle_2src_2source_8h_source.html">bundle/x509bundle/src/source.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="certpool_8h_source.html">internal/x509util/src/certpool.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="authorizer_8h_source.html">spiffetls/tlsconfig/src/authorizer.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="svid_2x509svid_2src_2source_8h_source.html">svid/x509svid/src/source.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="x509svid_2src_2svid_8h_source.html">svid/x509svid/src/svid.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="x509source_8h_source.html">workload/src/x509source.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="authorizer_8h_source.html">spiffetls/tlsconfig/src/authorizer.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for mode.h:</div>
 <div class="dyncontent">
@@ -91,8 +91,8 @@ Include dependency graph for mode.h:</div>
 <area shape="rect" href="x509source_8h.html" title=" " alt="" coords="1077,169,1253,196"/>
 <area shape="rect" href="x509svid_2src_2svid_8h.html" title=" " alt="" coords="1186,475,1347,502"/>
 <area shape="rect" href="certpool_8h.html" title=" " alt="" coords="1726,721,1861,763"/>
-<area shape="rect" href="svid_2x509svid_2src_2source_8h.html" title=" " alt="" coords="1191,87,1367,114"/>
 <area shape="rect" href="authorizer_8h.html" title=" " alt="" coords="1158,721,1277,763"/>
+<area shape="rect" href="svid_2x509svid_2src_2source_8h.html" title=" " alt="" coords="1191,87,1367,114"/>
 <area shape="rect" href="x509bundle_2src_2bundle_8h.html" title=" " alt="" coords="862,721,1013,763"/>
 <area shape="rect" href="x509bundle_2src_2set_8h.html" title=" " alt="" coords="670,468,821,509"/>
 <area shape="rect" href="trustdomain_8h.html" title=" " alt="" coords="821,818,987,845"/>
@@ -133,11 +133,12 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="mode_8h__dep__incl.png" border="0" usemap="#aspiffetls_2src_2mode_8hdep" alt=""/></div>
 <map name="aspiffetls_2src_2mode_8hdep" id="aspiffetls_2src_2mode_8hdep">
-<area shape="rect" title=" " alt="" coords="211,5,346,32"/>
+<area shape="rect" title=" " alt="" coords="326,5,461,32"/>
 <area shape="rect" href="dial_8c.html" title=" " alt="" coords="5,177,128,203"/>
-<area shape="rect" href="dial_8h.html" title=" " alt="" coords="141,87,264,114"/>
-<area shape="rect" href="mode_8c.html" title=" " alt="" coords="289,87,423,114"/>
-<area shape="rect" href="check__mode_8c.html" title=" " alt="" coords="448,80,587,121"/>
+<area shape="rect" href="dial_8h.html" title=" " alt="" coords="233,87,356,114"/>
+<area shape="rect" href="check__peerid_8c.html" title=" " alt="" coords="467,169,605,211"/>
+<area shape="rect" href="mode_8c.html" title=" " alt="" coords="431,87,566,114"/>
+<area shape="rect" href="check__mode_8c.html" title=" " alt="" coords="591,80,729,121"/>
 <area shape="rect" href="c__dial__example_8c.html" title=" " alt="" coords="153,169,279,211"/>
 <area shape="rect" href="check__dial_8c.html" title=" " alt="" coords="304,169,443,211"/>
 </map>
@@ -148,6 +149,8 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structspiffetls__DialMode.html">spiffetls_DialMode</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
@@ -185,6 +188,20 @@ Functions</h2></td></tr>
 <tr class="separator:a35858e8de9730d8992d40d26203d97c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add59cc1f58290e48f6048c98ca813305"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mode_8h.html#add59cc1f58290e48f6048c98ca813305">spiffetls_DialMode_Free</a> (<a class="el" href="structspiffetls__DialMode.html">spiffetls_DialMode</a> *mode)</td></tr>
 <tr class="separator:add59cc1f58290e48f6048c98ca813305"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9761bf8b50ff2d5f619c39b3d20609d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mode_8h.html#a9761bf8b50ff2d5f619c39b3d20609d3">spiffetls_TLSServer</a> ()</td></tr>
+<tr class="separator:a9761bf8b50ff2d5f619c39b3d20609d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada2529bb9f6d714833ae633fd7bc159d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mode_8h.html#ada2529bb9f6d714833ae633fd7bc159d">spiffetls_TLSServerWithSource</a> (<a class="el" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *source)</td></tr>
+<tr class="separator:ada2529bb9f6d714833ae633fd7bc159d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf0154f7ed7cdab1d0a510e190b1df30"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mode_8h.html#abf0154f7ed7cdab1d0a510e190b1df30">spiffetls_TLSServerWithRawConfig</a> (<a class="el" href="structx509svid__Source.html">x509svid_Source</a> *<a class="el" href="check__jwtsource_8c.html#a7dc8f87a6d2bcbcb06f9f58b42155676">svid</a>)</td></tr>
+<tr class="separator:abf0154f7ed7cdab1d0a510e190b1df30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14a2db7eb501a3281a79ca92eb7d8ef5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mode_8h.html#a14a2db7eb501a3281a79ca92eb7d8ef5">spiffetls_MTLSServer</a> (<a class="el" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *authorizer)</td></tr>
+<tr class="separator:a14a2db7eb501a3281a79ca92eb7d8ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86c0f52d273172cb817f86a79ef39ad0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mode_8h.html#a86c0f52d273172cb817f86a79ef39ad0">spiffetls_MTLSServerWithSource</a> (<a class="el" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *authorizer, <a class="el" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *source)</td></tr>
+<tr class="separator:a86c0f52d273172cb817f86a79ef39ad0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a021c2d019c95ab06fee0ca4f4f965ebf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mode_8h.html#a021c2d019c95ab06fee0ca4f4f965ebf">spiffetls_MTLSServerWithRawConfig</a> (<a class="el" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *authorizer, <a class="el" href="structx509svid__Source.html">x509svid_Source</a> *<a class="el" href="check__jwtsource_8c.html#a7dc8f87a6d2bcbcb06f9f58b42155676">svid</a>, <a class="el" href="structx509bundle__Source.html">x509bundle_Source</a> *<a class="el" href="check__x509source_8c.html#aa45c85b913b301570dfbec1bf1a0a4b5">bundle</a>)</td></tr>
+<tr class="separator:a021c2d019c95ab06fee0ca4f4f965ebf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a877136df4bcee19580e6f708bd77cc57"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mode_8h.html#a877136df4bcee19580e6f708bd77cc57">spiffetls_ListenMode_Free</a> (<a class="el" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a> *mode)</td></tr>
+<tr class="separator:a877136df4bcee19580e6f708bd77cc57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a8a655dfcca53fbd030e1600104da3b8a"></a>
@@ -236,6 +253,24 @@ Functions</h2></td></tr>
           <td class="memname">void spiffetls_DialMode_Free </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structspiffetls__DialMode.html">spiffetls_DialMode</a> *&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a877136df4bcee19580e6f708bd77cc57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a877136df4bcee19580e6f708bd77cc57">&#9670;&nbsp;</a></span>spiffetls_ListenMode_Free()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spiffetls_ListenMode_Free </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a> *&#160;</td>
           <td class="paramname"><em>mode</em></td><td>)</td>
           <td></td>
         </tr>
@@ -304,6 +339,86 @@ Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structspiffetls__DialMode.html">spiffetls_DialMode</a>* spiffetls_MTLSClientWithSource </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *&#160;</td>
+          <td class="paramname"><em>authorizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *&#160;</td>
+          <td class="paramname"><em>source</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a14a2db7eb501a3281a79ca92eb7d8ef5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14a2db7eb501a3281a79ca92eb7d8ef5">&#9670;&nbsp;</a></span>spiffetls_MTLSServer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a>* spiffetls_MTLSServer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *&#160;</td>
+          <td class="paramname"><em>authorizer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a021c2d019c95ab06fee0ca4f4f965ebf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a021c2d019c95ab06fee0ca4f4f965ebf">&#9670;&nbsp;</a></span>spiffetls_MTLSServerWithRawConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a>* spiffetls_MTLSServerWithRawConfig </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *&#160;</td>
+          <td class="paramname"><em>authorizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structx509svid__Source.html">x509svid_Source</a> *&#160;</td>
+          <td class="paramname"><em>svid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structx509bundle__Source.html">x509bundle_Source</a> *&#160;</td>
+          <td class="paramname"><em>bundle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a86c0f52d273172cb817f86a79ef39ad0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86c0f52d273172cb817f86a79ef39ad0">&#9670;&nbsp;</a></span>spiffetls_MTLSServerWithSource()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a>* spiffetls_MTLSServerWithSource </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *&#160;</td>
           <td class="paramname"><em>authorizer</em>, </td>
@@ -466,6 +581,59 @@ Functions</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9761bf8b50ff2d5f619c39b3d20609d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9761bf8b50ff2d5f619c39b3d20609d3">&#9670;&nbsp;</a></span>spiffetls_TLSServer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a>* spiffetls_TLSServer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abf0154f7ed7cdab1d0a510e190b1df30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf0154f7ed7cdab1d0a510e190b1df30">&#9670;&nbsp;</a></span>spiffetls_TLSServerWithRawConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a>* spiffetls_TLSServerWithRawConfig </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structx509svid__Source.html">x509svid_Source</a> *&#160;</td>
+          <td class="paramname"><em>svid</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ada2529bb9f6d714833ae633fd7bc159d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada2529bb9f6d714833ae633fd7bc159d">&#9670;&nbsp;</a></span>spiffetls_TLSServerWithSource()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a>* spiffetls_TLSServerWithSource </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a> *&#160;</td>
+          <td class="paramname"><em>source</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">

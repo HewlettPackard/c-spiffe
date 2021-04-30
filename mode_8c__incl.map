@@ -1,12 +1,12 @@
 <map id="spiffetls/src/mode.c" name="spiffetls/src/mode.c">
 <area shape="rect" id="node1" title=" " alt="" coords="1274,5,1409,32"/>
-<area shape="rect" id="node2" href="$mode_8h.html" title=" " alt="" coords="1309,80,1373,107"/>
+<area shape="rect" id="node2" href="$mode_8h.html" title=" " alt="" coords="1274,80,1409,107"/>
 <area shape="rect" id="node3" href="$bundle_2x509bundle_2src_2source_8h.html" title=" " alt="" coords="965,155,1115,196"/>
 <area shape="rect" id="node18" href="$x509source_8h.html" title=" " alt="" coords="1077,244,1253,271"/>
 <area shape="rect" id="node19" href="$x509svid_2src_2svid_8h.html" title=" " alt="" coords="1186,550,1347,577"/>
 <area shape="rect" id="node24" href="$certpool_8h.html" title=" " alt="" coords="1726,796,1861,837"/>
-<area shape="rect" id="node39" href="$svid_2x509svid_2src_2source_8h.html" title=" " alt="" coords="1191,162,1367,189"/>
-<area shape="rect" id="node40" href="$authorizer_8h.html" title=" " alt="" coords="1158,796,1277,837"/>
+<area shape="rect" id="node39" href="$authorizer_8h.html" title=" " alt="" coords="1158,796,1277,837"/>
+<area shape="rect" id="node41" href="$svid_2x509svid_2src_2source_8h.html" title=" " alt="" coords="1191,162,1367,189"/>
 <area shape="rect" id="node4" href="$x509bundle_2src_2bundle_8h.html" title=" " alt="" coords="862,796,1013,837"/>
 <area shape="rect" id="node17" href="$x509bundle_2src_2set_8h.html" title=" " alt="" coords="670,543,821,584"/>
 <area shape="rect" id="node5" href="$trustdomain_8h.html" title=" " alt="" coords="821,893,987,919"/>
@@ -39,5 +39,5 @@
 <area shape="rect" id="node31" href="$jwtbundle_2src_2bundle_8h.html" title=" " alt="" coords="197,885,339,927"/>
 <area shape="rect" id="node32" href="$jwtbundle_2src_2set_8h.html" title=" " alt="" coords="151,796,292,837"/>
 <area shape="rect" id="node37" href="$jwtcallback_8h.html" title=" " alt="" coords="351,550,526,577"/>
-<area shape="rect" id="node41" href="$match_8h.html" title=" " alt="" coords="1063,893,1198,919"/>
+<area shape="rect" id="node40" href="$match_8h.html" title=" " alt="" coords="1063,893,1198,919"/>
 </map>
