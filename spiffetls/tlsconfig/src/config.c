@@ -2,8 +2,6 @@
 #include "spiffetls/tlsconfig/src/authorizer.h"
 #include "svid/x509svid/src/verify.h"
 
-// tlsconfig_Trace *__trace;
-
 void tlsconfig_Option_apply(tlsconfig_Option *op, tlsconfig_options *options)
 {
     if(op->type == TLSCONFIG_FUNC) {

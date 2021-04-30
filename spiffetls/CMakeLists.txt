@@ -9,7 +9,8 @@ set(LIB_SPIFFETLS
 ${PROJECT_SOURCE_DIR}/tlsconfig/src/config.c
 ${PROJECT_SOURCE_DIR}/tlsconfig/src/authorizer.c
 ${PROJECT_SOURCE_DIR}/src/dial.c
-${PROJECT_SOURCE_DIR}/src/mode.c)
+${PROJECT_SOURCE_DIR}/src/mode.c
+${PROJECT_SOURCE_DIR}/src/peerid.c)
 
 set(C_DIAL
     src/c_dial_example.c
@@ -21,6 +22,7 @@ add_library(${TARGET_NAME} SHARED ${LIB_SPIFFETLS})
 
 target_link_libraries(${TARGET_NAME}
     svid
+    ssl
     spiffeid
     internal
     bundle
@@ -32,5 +34,4 @@ target_link_libraries(${TARGET_NAME}
     rt
     m
     pthread
-    ssl
     crypto)

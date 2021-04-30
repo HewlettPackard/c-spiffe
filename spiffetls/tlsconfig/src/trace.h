@@ -5,6 +5,10 @@
 #include <openssl/ssl.h>
 #include <openssl/x509.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct {
     X509 *cert;
     err_t err;
@@ -17,5 +21,9 @@ typedef struct {
 void *tlsconfig_GetCertificate(tlsconfig_Trace *trace);
 void tlsconfig_GotCertificate(tlsconfig_Trace *trace, const void *any,
                               const tlsconfig_GotCertificateInfo *info);
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #endif // INCLUDE_SPIFFETLS_TLSCONFIG_TRACE_H
