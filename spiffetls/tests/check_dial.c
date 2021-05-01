@@ -23,7 +23,7 @@ START_TEST(test_spiffetls_DialWithMode)
     SSL *conn = spiffetls_DialWithMode((in_port_t) 40001,
                                        /*127.0.0.1*/ (in_addr_t) 0x7F000001,
                                        mode, &config, &err);
-
+    
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_ne(conn, NULL);
 
