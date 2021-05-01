@@ -22,8 +22,8 @@ START_TEST(test_spiffetls_ListenWithMode)
 
     spiffetls_ListenMode *mode = spiffetls_TLSServerWithRawConfig(svid_src);
 
-    // thrd_t thread;
-    // thrd_create(&thread, call_client, NULL);
+    thrd_t thread;
+    thrd_create(&thread, call_client, NULL);
 
     spiffetls_listenConfig config
         = { .base_TLS_conf = NULL, .listener_fd = -1 };
