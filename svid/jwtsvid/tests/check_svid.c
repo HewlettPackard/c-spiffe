@@ -35,10 +35,6 @@ jwtsvid_<function name> function.
 // token without claims map
 START_TEST(test_jwtsvid_parse)
 {
-    // spiffeid_TrustDomain td = {"example.com"};
-    // jwtbundle_Bundle *bundle = jwtbundle_Load(td,
-    // "./resources/jwk_keys.json", &err);
-
     char token[] = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LT"
                    "M5MmUtNDZlZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
                    "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW"
