@@ -575,16 +575,16 @@ START_TEST(test_workloadapi_Client_FetchJWTBundles)
 END_TEST
 
 const char token1[]
-    = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZ"
-      "lZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
-      "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9"
-      "obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTYyMDAwMDAwMH0."
-      "sbbqzgX6d3gH2O2tBAHdmehfHBv3QH29WOIDrPmuyOl6FfFxJaBmo6D3jX3Fm7_"
-      "Wh0gM7GagbC5hkPBKZlUYR-DYg5lvp9QbHP9r1BLIqB-zfhHGYgfq_"
-      "cbCh0ud1ytv9AjQw9k1oUyJUZfkB8kC1IfTZPVQQIgnKFeauT3lmPxIpEjueyn-"
-      "98Qbbnv705wKlrU0KMGK7ac1Sj78yclqdmcfnT7oEE8zDdSs27Uh4lEIsO58zW6fEe_"
-      "NE_M6BnaubI35eOoegwSkfCWT54fWa8jwn1OjLF_"
-      "K0e5FxF4i8YJHlpY54rge6grAPAJiKKRei__-ZC8osYOEpmhGltu2BQ";
+    = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZlZi1"
+      "hODM5LTZmZjE2MDI3YWY3OCJ9."
+      "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9obiB"
+      "Eb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6OTk5MDAwMDAwMH0.GaVfjoPAKmc991DEl-"
+      "Su5uYNvzYMBn2mzTxbWsQjVowNBVa4M6m91no7zX0l0pGBN31kP1xT3MwUae5JZGajx_"
+      "J05HzvkHJrF9VoFj7iJncHYQjz_"
+      "IlEXDL8smNRzazIES9PD3Zq39D0pt9PdCLDDZRoKRPyTC9LzpUoa0nVvXWGIECwH0DRnKks"
+      "_HFVIlrIkV8PVIE-A8wl3QiC9TRdvnav4DGlYlO3y3Bz3oGN2y-iBD8yBNhdw9Dkmw0T-"
+      "lQq01wUJRR84GXblBoB9TL3aIxVpJnfDADoDy4iD0kZ-"
+      "ne0v5W62tSEx8mT0dvBEwE8PWm0xCKR2uxM2jlICKADIw";
 
 ACTION(set_JWTSVID_response)
 {
@@ -634,7 +634,7 @@ START_TEST(test_workloadapi_Client_FetchJWTSVID)
     ck_assert_int_ge(shgeti(svid->claims, "name"), 0);
     ck_assert_int_ge(shgeti(svid->claims, "iat"), 0);
     ck_assert_int_ge(shgeti(svid->claims, "exp"), 0);
-    ck_assert_int_eq(svid->expiry, 1620000000);
+    ck_assert_int_eq(svid->expiry, 9990000000);
     ck_assert_ptr_ne(svid->id.path, NULL);
     ck_assert_str_eq(svid->id.path, "/workload1");
     ck_assert_ptr_ne(svid->id.td.name, NULL);
@@ -655,13 +655,12 @@ const char token2[]
       "hODM5LTZmZjE2MDI3YWY3OCJ9."
       "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJhdWQiOiJzcGlmZmU"
       "6Ly9leGFtcGxlLm9yZy9hdWRpZW5jZTEiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MT"
-      "YyMzkwMjIsImV4cCI6MTYyMDAwMDAwMH0.fU-XY-AwR_BjKkvR3yafygceTB1AUP3xsp_"
-      "6KLn2MZBlA-LPalbayXZxYasR_t7Fc6cRHtYpNof4341BxgFPuzXIM_"
-      "3kPw5Bno9ij4M5hKr7vvpuDfB2Bhl6UzPWI_"
-      "BJQWB18wc7L2L7kUVdWCavEU8Jv6JwVPsyQufruMHCbBOpJRaL-"
-      "4YEPOWLUOLlJxMgHNfnAdXy15GTODDO3Y5DlC_BjTcMdYB6aS_"
-      "8QiFplVjwJ0YvKalj7wB2hdlSYdB8C9exWqQn9xUZhTK_IJ_Yc1DQG9LhKMEjVls0Lwnv3-"
-      "eb7o58PTneMGYjTwsD4Ladf3L94izRK0FCfINfwvL2TA";
+      "YyMzkwMjIsImV4cCI6OTk5MDAwMDAwMH0.H-dc-Gft31v3WF_JGt3c-O49t5QszKr2dvV-"
+      "FwPRDQWdenk3oq9opBd-ZAZlT8fyL2srFvuRlVrqX8Bz9qFXJCpDigsNJD47qu8ihNDmUO-"
+      "Banlw6Lr7DUpyndO0pLKU2GeQ4toMspO7314PDL-USXs38__"
+      "b45utWN7DUGMlxFpv7kQrwE3H2G_MHBPp8zlMz7qYGTzziFeTzvuwwWx4gI1KsJC_"
+      "cIBnSfE22E1SRhW7CNOlL2lrQhirNpnWbksWREAo5PR27WTzThq69d-"
+      "7rxH1IkSErbXLYyycaeRfxCNwawii79PqtF3nUr7b8SyeAJwczeuriS0T-KzbXiyvXA";
 
 START_TEST(test_workloadapi_Client_ValidateJWTSVID)
 {
@@ -701,7 +700,7 @@ START_TEST(test_workloadapi_Client_ValidateJWTSVID)
     ck_assert_int_ge(shgeti(svid->claims, "name"), 0);
     ck_assert_int_ge(shgeti(svid->claims, "iat"), 0);
     ck_assert_int_ge(shgeti(svid->claims, "exp"), 0);
-    ck_assert_int_eq(svid->expiry, 1620000000);
+    ck_assert_int_eq(svid->expiry, 9990000000);
     ck_assert_ptr_ne(svid->id.path, NULL);
     ck_assert_str_eq(svid->id.path, "/workload1");
     ck_assert_ptr_ne(svid->id.td.name, NULL);
