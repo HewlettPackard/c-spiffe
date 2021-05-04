@@ -1,8 +1,15 @@
 import os
 import sys
 import time
+import subprocess
 
 from hamcrest import assert_that, is_, is_not
+from behave.matchers import register_type
+from utils import parse_nullable_string
+
+
+parse_nullable_string.pattern = r'.*'
+register_type(NullableString=parse_nullable_string)
 
 
 @then('The second agent is turned off inside "{container_name}" container')
@@ -29,15 +36,15 @@ def step_impl(context, container_name):
     time.sleep(1)
 
 
-@when('I send "{message}" through go-tls-dial')
+@when('I send "{message:NullableString}" through go-tls-dial')
 def step_impl(context, message):
-    result = os.popen("cd /mnt/c-spiffe/integration_test/helpers/go-echo-server/client && su - client-workload -c './go-client '%s'" % message)
+    client = subprocess.run(["/mnt/c-spiffe/integration_test/helpers/bash-general-scripts/run-go-client.sh '%s'" % message], stderr=subprocess.PIPE, text=True, shell=True)
     time.sleep(1)
-    context.tls_status = result.read()
+    result = client.stderr.replace("\"","").split("Server replied:")
+    context.tls_answer = result[-1].strip().replace("\\n","")
 
 
-@then('I check that "{message}" was the answer from go-tls-listen')
+@then('I check that "{message:NullableString}" was the answer from go-tls-listen')
 def step_impl(context, message):
-    result = context.tls_status.replace("\"","").split("Server replied:")
-    actual_message = result[-1].strip().replace("\\n","")
+    actual_message = context.tls_answer
     assert_that(actual_message, is_(message))
