@@ -158,8 +158,6 @@ void tlsconfig_HookMTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
 {
     tlsconfig_resetAuthFields(ctx);
 
-
-
     struct hookTLSClientConfig_st *safe_arg = malloc(sizeof *safe_arg);
     safe_arg->bundle = bundle;
     safe_arg->authorizer = authorizer;
