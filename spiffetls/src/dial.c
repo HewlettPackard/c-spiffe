@@ -14,9 +14,11 @@ static int createSocket(in_addr_t addr, in_port_t port)
     if(sockfd < 0) {
         // could not create socket
         return -1;
-    }
-    if(connect(sockfd, (const struct sockaddr *) &address, sizeof(address))
-       < 0) {
+    } 
+    
+    const int connect_ret = connect(sockfd, (const struct sockaddr *) &address, sizeof address);
+    if(connect_ret < 0) {
+        // could not connect socket with given address and port
         return -1;
     }
 
@@ -75,7 +77,7 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
 
     if(sockfd < 0) {
         // could not create socket with given address and port
-        *err = ERROR1;
+        *err = ERROR2;
         goto error;
     }
     SSL *conn = SSL_new(tls_config);
@@ -95,7 +97,7 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
         SSL_shutdown(conn);
         SSL_free(conn);
         close(sockfd);
-        *err = ERROR2;
+        *err = ERROR3;
         goto error;
     }
     // successful handshake

@@ -50,7 +50,6 @@ subunit
 rt
 m
 pthread
-ssl
 crypto)
 
 set(LIB_SOURCE
