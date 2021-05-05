@@ -3,11 +3,12 @@
 #include <threads.h>
 #include <unistd.h>
 
-void call_client(void *unused)
+void *call_client(void *unused)
 {
-    sleep(2);
+    sleep(1);
     system("./tls_client 20001 &");
     pthread_exit(NULL);
+    return NULL;
 }
 
 START_TEST(test_spiffetls_ListenWithMode)
@@ -23,7 +24,7 @@ START_TEST(test_spiffetls_ListenWithMode)
     spiffetls_ListenMode *mode = spiffetls_TLSServerWithRawConfig(svid_src);
 
     pthread_t thread;
-    pthread_create(&thread, NULL, (void *) call_client, NULL);
+    pthread_create(&thread, NULL, call_client, NULL);
 
     spiffetls_listenConfig config
         = { .base_TLS_conf = NULL, .listener_fd = -1 };
