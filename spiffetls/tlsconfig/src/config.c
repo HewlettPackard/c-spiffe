@@ -106,7 +106,7 @@ bool tlsconfig_HookMTLSClientConfig(SSL_CTX *ctx, x509svid_Source *svid,
     err_t err;
     x509svid_SVID *my_svid = x509svid_Source_GetX509SVID(svid, &err);
 
-    if(!err && svid) {
+    if(!err && my_svid) {
         if(arrlenu(my_svid->certs) > 0 && my_svid->private_key) {
             const int ret1 = SSL_CTX_use_certificate(ctx, my_svid->certs[0]);
             const int ret2 = SSL_CTX_use_PrivateKey(ctx, my_svid->private_key);

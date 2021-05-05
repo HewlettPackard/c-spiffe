@@ -10,6 +10,8 @@ void *call_client(void *unused)
     return NULL;
 }
 
+// precondition: valid x509 svid, available port and thread running client
+// postcondition: valid TLS connection able to read from client
 START_TEST(test_spiffetls_ListenWithMode)
 {
     err_t err;
