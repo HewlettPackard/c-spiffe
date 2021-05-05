@@ -1,6 +1,5 @@
 #include "spiffetls/src/listen.h"
 #include <check.h>
-#include <threads.h>
 #include <unistd.h>
 
 void *call_client(void *unused)
