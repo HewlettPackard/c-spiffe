@@ -10,9 +10,7 @@ void *call_client(void *unused)
     return NULL;
 }
 
-// precondition: valid x509 svid, available port and thread running client
-// postcondition: valid TLS connection able to read from client
-START_TEST(test_spiffetls_ListenWithMode)
+void test_TLSServerWithRawConfig(void)
 {
     err_t err;
     x509svid_SVID *svid
@@ -51,6 +49,53 @@ START_TEST(test_spiffetls_ListenWithMode)
     SSL_free(conn);
     close(fd);
     close(serverfd);
+}
+
+void test_MTLSServerWithRawConfig(void)
+{
+    spiffeid_TrustDomain td = { string_new("example.org") };
+    tlsconfig_Authorizer *authorizer = tlsconfig_AuthorizeMemberOf(td);
+
+    spiffetls_ListenMode *mode = spiffetls_MTLSServer(authorizer);
+
+    pthread_t thread;
+    pthread_create(&thread, NULL, call_client, NULL);
+
+    spiffetls_listenConfig config
+        = { .base_TLS_conf = NULL, .listener_fd = -1 };
+    int serverfd;
+    err_t err;
+    SSL *conn = spiffetls_ListenWithMode((in_port_t) 20001, mode, &config,
+                                         &serverfd, &err);
+
+    ck_assert_uint_eq(err, NO_ERROR);
+    ck_assert_ptr_ne(conn, NULL);
+
+    const int len = 1024;
+    char buffer[len];
+    const int ret = SSL_read(conn, buffer, len);
+    buffer[ret] = 0;
+    if(ret > 0) {
+        printf("Client sent: %s\n", buffer);
+    }
+
+    spiffeid_TrustDomain_Free(&td);
+    spiffetls_ListenMode_Free(mode);
+
+    const int fd = SSL_get_fd(conn);
+    SSL_shutdown(conn);
+    SSL_free(conn);
+    close(fd);
+    close(serverfd);
+}
+
+// precondition: valid x509 svid, available port and thread running client
+// postcondition: valid TLS connection able to read from client
+START_TEST(test_spiffetls_ListenWithMode)
+{
+    test_TLSServerWithRawConfig();
+
+    test_MTLSServerWithRawConfig();
 }
 END_TEST
 
