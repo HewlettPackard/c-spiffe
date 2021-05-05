@@ -16,7 +16,7 @@ void test_fields_verify(jwtsvid_SVID *svid, err_t err, char *token)
     ck_assert_int_ge(shgeti(svid->claims, "name"), 0);
     ck_assert_int_ge(shgeti(svid->claims, "iat"), 0);
     ck_assert_int_ge(shgeti(svid->claims, "exp"), 0);
-    ck_assert_int_eq(svid->expiry, 1620000000);
+    ck_assert_int_eq(svid->expiry, 9990000000);
     ck_assert_ptr_ne(svid->id.path, NULL);
     ck_assert_str_eq(svid->id.path, "/workload1");
     ck_assert_ptr_ne(svid->id.td.name, NULL);
@@ -35,28 +35,24 @@ jwtsvid_<function name> function.
 // token without claims map
 START_TEST(test_jwtsvid_parse)
 {
-    // spiffeid_TrustDomain td = {"example.com"};
-    // jwtbundle_Bundle *bundle = jwtbundle_Load(td,
-    // "./resources/jwk_keys.json", &err);
-
-    char token[]
-        = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZ"
-          "lZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
-          "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9"
-          "obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTYyMDAwMDAwMH0."
-          "sbbqzgX6d3gH2O2tBAHdmehfHBv3QH29WOIDrPmuyOl6FfFxJaBmo6D3jX3Fm7_"
-          "Wh0gM7GagbC5hkPBKZlUYR-DYg5lvp9QbHP9r1BLIqB-zfhHGYgfq_"
-          "cbCh0ud1ytv9AjQw9k1oUyJUZfkB8kC1IfTZPVQQIgnKFeauT3lmPxIpEjueyn-"
-          "98Qbbnv705wKlrU0KMGK7ac1Sj78yclqdmcfnT7oEE8zDdSs27Uh4lEIsO58zW6fEe_"
-          "NE_M6BnaubI35eOoegwSkfCWT54fWa8jwn1OjLF_"
-          "K0e5FxF4i8YJHlpY54rge6grAPAJiKKRei__-ZC8osYOEpmhGltu2BQ";
+    char token[] = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LT"
+                   "M5MmUtNDZlZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
+                   "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW"
+                   "1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6OTk5MDAw"
+                   "MDAwMH0.dkXaAoLz9E54JGwgW5stxOF9oi79ineUVrsjllNjfKtOV_GN-"
+                   "S6V9VutS6uQuC5ncqyeUOh8TczPoJpJbVRcGatGuapVdGVTlYWd0_"
+                   "dWyhE3nre2D5YqJYI4HaSy6-fz-"
+                   "5q5b7eo4e5UvdIwqoXv8yAViddD3x9nafx3oifDTeEJ2k0xQPuHIf60rnW"
+                   "1sQuIP8210GNKlmQT5H07dT7yOXm8RabmQ5arO6LY0bsy0gRQzimF6J3Sy"
+                   "rOB7qrf4tVj4_1G-d-_vYe8dHmQsYOe3-AwZfTAfCKZYARiUm4tO8-"
+                   "t1ur7Oy14SlM79FQExohAPzbAPJ02_Zg-9s6DknmNDg";
     err_t err;
     jwtsvid_SVID *svid = jwtsvid_parse(token, NULL, NULL, &err);
 
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_eq(svid->audience, NULL);
     ck_assert_ptr_eq(svid->claims, NULL);
-    ck_assert_int_eq(svid->expiry, 1620000000);
+    ck_assert_int_eq(svid->expiry, 9990000000);
     ck_assert_ptr_ne(svid->id.path, NULL);
     ck_assert_str_eq(svid->id.path, "/workload1");
     ck_assert_ptr_ne(svid->id.td.name, NULL);
@@ -73,17 +69,17 @@ END_TEST
 // token with valid claims map
 START_TEST(test_jwtsvid_ParseInsecure)
 {
-    char token[]
-        = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZ"
-          "lZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
-          "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9"
-          "obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTYyMDAwMDAwMH0."
-          "sbbqzgX6d3gH2O2tBAHdmehfHBv3QH29WOIDrPmuyOl6FfFxJaBmo6D3jX3Fm7_"
-          "Wh0gM7GagbC5hkPBKZlUYR-DYg5lvp9QbHP9r1BLIqB-zfhHGYgfq_"
-          "cbCh0ud1ytv9AjQw9k1oUyJUZfkB8kC1IfTZPVQQIgnKFeauT3lmPxIpEjueyn-"
-          "98Qbbnv705wKlrU0KMGK7ac1Sj78yclqdmcfnT7oEE8zDdSs27Uh4lEIsO58zW6fEe_"
-          "NE_M6BnaubI35eOoegwSkfCWT54fWa8jwn1OjLF_"
-          "K0e5FxF4i8YJHlpY54rge6grAPAJiKKRei__-ZC8osYOEpmhGltu2BQ";
+    char token[] = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LT"
+                   "M5MmUtNDZlZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
+                   "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW"
+                   "1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6OTk5MDAw"
+                   "MDAwMH0.dkXaAoLz9E54JGwgW5stxOF9oi79ineUVrsjllNjfKtOV_GN-"
+                   "S6V9VutS6uQuC5ncqyeUOh8TczPoJpJbVRcGatGuapVdGVTlYWd0_"
+                   "dWyhE3nre2D5YqJYI4HaSy6-fz-"
+                   "5q5b7eo4e5UvdIwqoXv8yAViddD3x9nafx3oifDTeEJ2k0xQPuHIf60rnW"
+                   "1sQuIP8210GNKlmQT5H07dT7yOXm8RabmQ5arO6LY0bsy0gRQzimF6J3Sy"
+                   "rOB7qrf4tVj4_1G-d-_vYe8dHmQsYOe3-AwZfTAfCKZYARiUm4tO8-"
+                   "t1ur7Oy14SlM79FQExohAPzbAPJ02_Zg-9s6DknmNDg";
 
     err_t err;
     jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, NULL, &err);
@@ -111,17 +107,17 @@ START_TEST(test_jwtsvid_ParseAndValidate)
 
     ck_assert_uint_eq(err, NO_ERROR);
 
-    char token[]
-        = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZ"
-          "lZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
-          "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9"
-          "obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTYyMDAwMDAwMH0."
-          "sbbqzgX6d3gH2O2tBAHdmehfHBv3QH29WOIDrPmuyOl6FfFxJaBmo6D3jX3Fm7_"
-          "Wh0gM7GagbC5hkPBKZlUYR-DYg5lvp9QbHP9r1BLIqB-zfhHGYgfq_"
-          "cbCh0ud1ytv9AjQw9k1oUyJUZfkB8kC1IfTZPVQQIgnKFeauT3lmPxIpEjueyn-"
-          "98Qbbnv705wKlrU0KMGK7ac1Sj78yclqdmcfnT7oEE8zDdSs27Uh4lEIsO58zW6fEe_"
-          "NE_M6BnaubI35eOoegwSkfCWT54fWa8jwn1OjLF_"
-          "K0e5FxF4i8YJHlpY54rge6grAPAJiKKRei__-ZC8osYOEpmhGltu2BQ";
+    char token[] = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LT"
+                   "M5MmUtNDZlZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
+                   "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW"
+                   "1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6OTk5MDAw"
+                   "MDAwMH0.dkXaAoLz9E54JGwgW5stxOF9oi79ineUVrsjllNjfKtOV_GN-"
+                   "S6V9VutS6uQuC5ncqyeUOh8TczPoJpJbVRcGatGuapVdGVTlYWd0_"
+                   "dWyhE3nre2D5YqJYI4HaSy6-fz-"
+                   "5q5b7eo4e5UvdIwqoXv8yAViddD3x9nafx3oifDTeEJ2k0xQPuHIf60rnW"
+                   "1sQuIP8210GNKlmQT5H07dT7yOXm8RabmQ5arO6LY0bsy0gRQzimF6J3Sy"
+                   "rOB7qrf4tVj4_1G-d-_vYe8dHmQsYOe3-AwZfTAfCKZYARiUm4tO8-"
+                   "t1ur7Oy14SlM79FQExohAPzbAPJ02_Zg-9s6DknmNDg";
     jwtbundle_Source *source = jwtbundle_SourceFromBundle(bundle);
     jwtsvid_SVID *svid = jwtsvid_ParseAndValidate(token, source, NULL, &err);
 
@@ -151,13 +147,13 @@ START_TEST(test_jwtsvid_EC)
 
     ck_assert_uint_eq(err, NO_ERROR);
 
-    char token[]
-        = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LT"
-          "M5MmUtNDZlZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
-          "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW"
-          "1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTYyMDAwMDAwMH0."
-          "WA7x2GiNZvh5BoLkvS7BBGIHz6ULTCsX7DBJo8kDoPla4wbo4G2157WWCZ"
-          "Lx6zPE8Qpvvb11kMk0Ivk_G0gMeA";
+    char token[] = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LT"
+                   "M5MmUtNDZlZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
+                   "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW"
+                   "1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6OTk5MDAw"
+                   "MDAwMH0.z-azwJt3UzuaL1x0g-"
+                   "pGbQOnXXYphAUeBMV3FlVtS53gBBsWLaWWGaJPcLTRdZ50TPTTxh3xlPyv"
+                   "P5H-YTP_kQ";
     jwtbundle_Source *source = jwtbundle_SourceFromBundle(bundle);
     jwtsvid_SVID *svid = jwtsvid_ParseAndValidate(token, source, NULL, &err);
 
@@ -187,13 +183,13 @@ START_TEST(test_jwtsvid_Marshal)
 
     ck_assert_uint_eq(err, NO_ERROR);
 
-    char token[]
-        = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LTM5MmUtNDZ"
-          "lZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
-          "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW1lIjoiSm9"
-          "obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTYyMDAwMDAwMH0."
-          "WA7x2GiNZvh5BoLkvS7BBGIHz6ULTCsX7DBJo8kDoPla4wbo4G2157WWCZLx6zPE8Qp"
-          "vvb11kMk0Ivk_G0gMeA";
+    char token[] = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZmM2M1Yzk2LT"
+                   "M5MmUtNDZlZi1hODM5LTZmZjE2MDI3YWY3OCJ9."
+                   "eyJzdWIiOiJzcGlmZmU6Ly9leGFtcGxlLmNvbS93b3JrbG9hZDEiLCJuYW"
+                   "1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6OTk5MDAw"
+                   "MDAwMH0.z-azwJt3UzuaL1x0g-"
+                   "pGbQOnXXYphAUeBMV3FlVtS53gBBsWLaWWGaJPcLTRdZ50TPTTxh3xlPyv"
+                   "P5H-YTP_kQ";
     jwtbundle_Source *source = jwtbundle_SourceFromBundle(bundle);
     jwtsvid_SVID *svid = jwtsvid_ParseAndValidate(token, source, NULL, &err);
 
