@@ -10,15 +10,18 @@ Feature: Mutual TLS
         When  I fetch "X509" "SVID"
         Then  I check that the "SVID" is returned correctly
         When  The go-tls-listen is activated inside "workload" container
-        And   I send "<message>" through go-tls-dial
+        And   I send "<message>" to "workload" container through "<dial_type>"-tls-dial
         Then  I check that "<message>" was the answer from go-tls-listen
         And   The second agent is turned off inside "workload" container
         And   The go-tls-listen is disabled inside "workload" container
         Examples:
-            |    message   |
-            | Hello World! |
-            |              |
-            |     12345    |
+            |    message   | dial_type |
+            | Hello World! |     go    |
+            |              |     go    |
+            |     12345    |     go    |
+            | Hello World! |     c     |
+            |              |     c     |
+            |     12345    |     c     |
 
 
     @Sprint11

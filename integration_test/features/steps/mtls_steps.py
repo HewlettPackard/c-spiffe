@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import subprocess
+import socket
 
 from hamcrest import assert_that, is_, is_not
 from behave.matchers import register_type
@@ -36,15 +37,22 @@ def step_impl(context, container_name):
     time.sleep(1)
 
 
-@when('I send "{message:NullableString}" through go-tls-dial')
-def step_impl(context, message):
-    client = subprocess.run(["/mnt/c-spiffe/integration_test/helpers/bash-general-scripts/run-go-client.sh '%s'" % message], stderr=subprocess.PIPE, text=True, shell=True)
-    time.sleep(1)
-    result = client.stderr.replace("\"","").split("Server replied:")
-    context.tls_answer = result[-1].strip().replace("\\n","")
+@when('I send "{message:NullableString}" to "{container_name}" container through "{language}"-tls-dial')
+def step_impl(context, message, container_name, language):
+    result = ""
+
+    if language == "go":
+        client = subprocess.run(["/mnt/c-spiffe/integration_test/helpers/bash-general-scripts/run-go-client.sh '%s'" % message], stderr=subprocess.PIPE, text=True, shell=True)
+        time.sleep(1)
+        result = client.stderr
+    elif language == "c":
+        client = os.popen("/mnt/c-spiffe/build/spiffetls/c_dial %s %s" % (message, socket.gethostbyname(container_name)))
+        result = client.read()
+
+    actual_message = result.replace("\"","").split("Server replied:")
+    context.tls_answer = actual_message[-1].strip().replace("\\n","")
 
 
 @then('I check that "{message:NullableString}" was the answer from go-tls-listen')
 def step_impl(context, message):
-    actual_message = context.tls_answer
-    assert_that(actual_message, is_(message))
+    assert_that(context.tls_answer, is_(message))
