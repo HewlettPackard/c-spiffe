@@ -1,7 +1,7 @@
 <map id="spiffetls" name="spiffetls">
 <area shape="rect" id="node2" href="dir_13592f3a8f2cc64c1540964816eeb6ba.html" title="src" alt="" coords="363,123,435,171"/>
 <area shape="rect" id="node4" href="dir_40abd05d40de6cb14fa4b28692091c2e.html" title="tlsconfig" alt="" coords="448,219,520,267"/>
-<area shape="rect" id="edge6-headlabel" href="dir_000051_000018.html" title="3" alt="" coords="453,192,461,207"/>
+<area shape="rect" id="edge6-headlabel" href="dir_000051_000018.html" title="5" alt="" coords="453,192,461,207"/>
 <area shape="rect" id="node5" href="dir_fb8c0163231dbde360c90b80ba233290.html" title="bundle" alt="" coords="248,315,320,363"/>
 <area shape="rect" id="edge11-headlabel" href="dir_000051_000000.html" title="1" alt="" coords="311,296,319,311"/>
 <area shape="rect" id="node6" href="dir_7374381ecdb819c64ee9b6ea2bd3370d.html" title="internal" alt="" coords="99,603,171,651"/>
@@ -15,7 +15,7 @@
 <area shape="rect" id="node10" href="dir_cbdb8362360e11eafe2fa3bc74cf0ffd.html" title="utils" alt="" coords="223,699,295,747"/>
 <area shape="rect" id="edge9-headlabel" href="dir_000051_000038.html" title="1" alt="" coords="203,692,211,707"/>
 <area shape="rect" id="node3" href="dir_c2252d7fc4f6268010ea750093454cb2.html" title="tests" alt="" coords="363,27,435,75"/>
-<area shape="rect" id="edge17-headlabel" href="dir_000017_000051.html" title="5" alt="" coords="403,97,411,112"/>
+<area shape="rect" id="edge17-headlabel" href="dir_000017_000051.html" title="6" alt="" coords="403,97,411,112"/>
 <area shape="rect" id="edge18-headlabel" href="dir_000017_000018.html" title="1" alt="" coords="479,191,487,206"/>
 <area shape="rect" id="edge16-headlabel" href="dir_000018_000000.html" title="1" alt="" coords="336,313,344,328"/>
 <area shape="rect" id="edge13-headlabel" href="dir_000018_000020.html" title="2" alt="" coords="384,502,392,516"/>

@@ -148,6 +148,10 @@ Functions</h2></td></tr>
 <tr class="separator:a4f54c96b21bdff3f8d2be3a0765ee396"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96444d9650157c3ed8a8d4baa3aad561"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8c.html#a96444d9650157c3ed8a8d4baa3aad561">tlsconfig_HookMTLSClientConfig</a> (SSL_CTX *<a class="el" href="check__x509source_8c.html#a6c3b78515067e51cbb30c326c3b908b2">ctx</a>, <a class="el" href="structx509svid__Source.html">x509svid_Source</a> *<a class="el" href="check__jwtsource_8c.html#a7dc8f87a6d2bcbcb06f9f58b42155676">svid</a>, <a class="el" href="structx509bundle__Source.html">x509bundle_Source</a> *<a class="el" href="check__x509source_8c.html#aa45c85b913b301570dfbec1bf1a0a4b5">bundle</a>, <a class="el" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *authorizer, <a class="el" href="structtlsconfig__Option.html">tlsconfig_Option</a> **opts)</td></tr>
 <tr class="separator:a96444d9650157c3ed8a8d4baa3aad561"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbc1cdd3b86ed297de7862772cb0bf90"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8c.html#adbc1cdd3b86ed297de7862772cb0bf90">tlsconfig_HookTLSServerConfig</a> (SSL_CTX *<a class="el" href="check__x509source_8c.html#a6c3b78515067e51cbb30c326c3b908b2">ctx</a>, <a class="el" href="structx509svid__Source.html">x509svid_Source</a> *<a class="el" href="check__jwtsource_8c.html#a7dc8f87a6d2bcbcb06f9f58b42155676">svid</a>, <a class="el" href="structtlsconfig__Option.html">tlsconfig_Option</a> **opts)</td></tr>
+<tr class="separator:adbc1cdd3b86ed297de7862772cb0bf90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af20fb5e0f46f29fb382f42133aec2e43"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8c.html#af20fb5e0f46f29fb382f42133aec2e43">tlsconfig_HookMTLSServerConfig</a> (SSL_CTX *<a class="el" href="check__x509source_8c.html#a6c3b78515067e51cbb30c326c3b908b2">ctx</a>, <a class="el" href="structx509svid__Source.html">x509svid_Source</a> *<a class="el" href="check__jwtsource_8c.html#a7dc8f87a6d2bcbcb06f9f58b42155676">svid</a>, <a class="el" href="structx509bundle__Source.html">x509bundle_Source</a> *<a class="el" href="check__x509source_8c.html#aa45c85b913b301570dfbec1bf1a0a4b5">bundle</a>, <a class="el" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *authorizer, <a class="el" href="structtlsconfig__Option.html">tlsconfig_Option</a> **opts)</td></tr>
+<tr class="separator:af20fb5e0f46f29fb382f42133aec2e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8c0dfba3f6e91950660f073a0a58ea8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8c.html#ab8c0dfba3f6e91950660f073a0a58ea8">tlsconfig_resetAuthFields</a> (SSL_CTX *<a class="el" href="check__x509source_8c.html#a6c3b78515067e51cbb30c326c3b908b2">ctx</a>)</td></tr>
 <tr class="separator:ab8c0dfba3f6e91950660f073a0a58ea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10f5afa585b60727b62054e5352be1af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8c.html#a10f5afa585b60727b62054e5352be1af">tlsconfig_Option_Free</a> (<a class="el" href="structtlsconfig__Option.html">tlsconfig_Option</a> *option)</td></tr>
@@ -167,6 +171,52 @@ Variables</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">bool tlsconfig_HookMTLSClientConfig </td>
+          <td>(</td>
+          <td class="paramtype">SSL_CTX *&#160;</td>
+          <td class="paramname"><em>ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structx509svid__Source.html">x509svid_Source</a> *&#160;</td>
+          <td class="paramname"><em>svid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structx509bundle__Source.html">x509bundle_Source</a> *&#160;</td>
+          <td class="paramname"><em>bundle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *&#160;</td>
+          <td class="paramname"><em>authorizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structtlsconfig__Option.html">tlsconfig_Option</a> **&#160;</td>
+          <td class="paramname"><em>opts</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af20fb5e0f46f29fb382f42133aec2e43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af20fb5e0f46f29fb382f42133aec2e43">&#9670;&nbsp;</a></span>tlsconfig_HookMTLSServerConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tlsconfig_HookMTLSServerConfig </td>
           <td>(</td>
           <td class="paramtype">SSL_CTX *&#160;</td>
           <td class="paramname"><em>ctx</em>, </td>
@@ -228,6 +278,40 @@ Variables</h2></td></tr>
           <td></td>
           <td class="paramtype"><a class="el" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a> *&#160;</td>
           <td class="paramname"><em>authorizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structtlsconfig__Option.html">tlsconfig_Option</a> **&#160;</td>
+          <td class="paramname"><em>opts</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adbc1cdd3b86ed297de7862772cb0bf90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbc1cdd3b86ed297de7862772cb0bf90">&#9670;&nbsp;</a></span>tlsconfig_HookTLSServerConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tlsconfig_HookTLSServerConfig </td>
+          <td>(</td>
+          <td class="paramtype">SSL_CTX *&#160;</td>
+          <td class="paramname"><em>ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structx509svid__Source.html">x509svid_Source</a> *&#160;</td>
+          <td class="paramname"><em>svid</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

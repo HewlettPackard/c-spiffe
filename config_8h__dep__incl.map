@@ -1,7 +1,8 @@
 <map id="spiffetls/tlsconfig/src/config.h" name="spiffetls/tlsconfig/src/config.h">
-<area shape="rect" id="node1" title=" " alt="" coords="238,5,357,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="322,5,441,47"/>
 <area shape="rect" id="node2" href="$dial_8c.html" title=" " alt="" coords="5,102,128,129"/>
-<area shape="rect" id="node3" href="$check__peerid_8c.html" title=" " alt="" coords="152,95,291,136"/>
-<area shape="rect" id="node4" href="$config_8c.html" title=" " alt="" coords="315,95,434,136"/>
-<area shape="rect" id="node5" href="$check__config_8c.html" title=" " alt="" coords="458,95,603,136"/>
+<area shape="rect" id="node3" href="$listen_8c.html" title=" " alt="" coords="153,102,287,129"/>
+<area shape="rect" id="node4" href="$check__peerid_8c.html" title=" " alt="" coords="312,95,451,136"/>
+<area shape="rect" id="node5" href="$config_8c.html" title=" " alt="" coords="475,95,594,136"/>
+<area shape="rect" id="node6" href="$check__config_8c.html" title=" " alt="" coords="618,95,763,136"/>
 </map>
