@@ -54,6 +54,11 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
     SSL_CTX *tls_config
         = config->base_TLS_conf ? config->base_TLS_conf : createTLSContext();
 
+    if(!tls_config) {
+        *err = ERROR4;
+        goto error;
+    }
+
     switch(mode->mode) {
     case TLS_CLIENT_MODE:
         tlsconfig_HookTLSClientConfig(tls_config, mode->bundle,
