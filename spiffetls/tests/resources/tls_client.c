@@ -12,7 +12,7 @@ typedef struct ssl_client_connection {
     void (*client)(struct ssl_client_connection *);
 } ssl_client_connection;
 
-int create_socket(char *address, int port)
+int create_socket(char *address, uint16_t port)
 {
     int socket_fd;
     struct sockaddr_in server_address;
@@ -128,10 +128,19 @@ void say_hello(ssl_client_connection *connection)
 int main(int argc, char *argv[])
 {
     char *server_address = "127.0.0.1";
-    int server_port = 4433;
+    uint16_t server_port = 4433;
     int socket;
     SSL_CTX *ssl_ctx;
     ssl_client_connection client_connection;
+
+    if(argc > 1) {
+        uint16_t tmp_port;
+        if(sscanf(argv[1], "%hd", &tmp_port) > 0) {
+            server_port = tmp_port;
+        } else {
+            printf("Could not parse port number. Going with default (4433)\n");
+        }
+    }
 
     init_openssl();
 
