@@ -30,13 +30,13 @@ x509svid_SVID *x509svid_Source_GetX509SVID(x509svid_Source *source, err_t *err)
 {
     x509svid_SVID *svid = NULL;
     *err = NO_ERROR;
-    
+
     if(source) {
         if(source->type == X509SVID_SVID) {
             svid = source->source.svid;
         } else if(source->type == X509SVID_WORKLOADAPI_X509SOURCE) {
-            // svid = workloadapi_X509Source_GetX509SVID(source->source.source,
-            //                                           err);
+            svid = workloadapi_X509Source_GetX509SVID(source->source.source,
+                                                      err);
         } else {
             // unknown type
             *err = ERROR2;
@@ -55,7 +55,7 @@ void x509svid_Source_Free(x509svid_Source *source)
         if(source->type == X509SVID_SVID) {
             x509svid_SVID_Free(source->source.svid);
         } else if(source->type == X509SVID_WORKLOADAPI_X509SOURCE) {
-            // workloadapi_X509Source_Free(source->source.source);
+            workloadapi_X509Source_Free(source->source.source);
         }
 
         free(source);
