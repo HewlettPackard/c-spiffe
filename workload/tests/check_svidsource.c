@@ -5,9 +5,11 @@ START_TEST(test_x509svid_SourceFromSource)
 {
     /* type puning from integer '1' to address 0x1, which is a placeholder for
      * the actual pointer. */
+    err_t err;
     x509svid_Source *source
-        = x509svid_SourceFromSource((workloadapi_X509Source *) 0x1);
+        = x509svid_SourceFromSource(workloadapi_NewX509Source(NULL, &err));
 
+    ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_ne(source, NULL);
 
     x509svid_Source_Free(source);
