@@ -56,3 +56,9 @@ def step_impl(context, message, container_name, language):
 @then('I check that "{message:NullableString}" was the answer from go-tls-listen')
 def step_impl(context, message):
     assert_that(context.tls_answer, is_(message))
+
+
+@given('The second agent is turned on inside "{container_name}" container with different key chain')
+def step_impl(context, container_name):
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect_agent.sh %s other" % container_name)
+    time.sleep(5)
