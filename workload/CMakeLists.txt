@@ -54,8 +54,8 @@ crypto)
 
 set(LIB_SOURCE
   ../svid/x509svid/src/verify.c
-  src/bundlesource.c
-  src/svidsource.c
+  ../bundle/x509bundle/src/source.c
+  ../svid/x509svid/src/source.c
   src/x509source.c
   src/jwtsource.c
 )
