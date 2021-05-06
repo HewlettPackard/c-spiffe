@@ -232,22 +232,24 @@ END_TEST
 START_TEST(test_workloadapi_X509Source_GetX509BundleForTrustDomain);
 {
     err_t err;
-    workloadapi_X509Source *tested =  workloadapi_NewX509Source(NULL, &err);
+    workloadapi_X509Source *tested = workloadapi_NewX509Source(NULL, &err);
     string_t td_url = string_new("example.org");
-    spiffeid_TrustDomain td = spiffeid_TrustDomainFromString(td_url,&err);
+    spiffeid_TrustDomain td = spiffeid_TrustDomainFromString(td_url, &err);
 
-    x509bundle_Bundle* bundle = workloadapi_X509Source_GetX509BundleForTrustDomain(tested,&td,&err);
+    x509bundle_Bundle *bundle
+        = workloadapi_X509Source_GetX509BundleForTrustDomain(tested, td, &err);
 
-    ck_assert_ptr_eq(bundle,NULL);
-    ck_assert_int_eq(err,ERROR1); //source closed
+    ck_assert_ptr_eq(bundle, NULL);
+    ck_assert_int_eq(err, ERROR1); // source closed
 
     tested->closed = false;
     tested->bundles = x509bundle_NewSet(0);
-    bundle = workloadapi_X509Source_GetX509BundleForTrustDomain(tested,&td,&err);
+    bundle
+        = workloadapi_X509Source_GetX509BundleForTrustDomain(tested, td, &err);
 
-    ck_assert_ptr_eq(bundle,NULL);
-    ck_assert_int_eq(err,ERROR2); //trust domain not available
-    
+    ck_assert_ptr_eq(bundle, NULL);
+    ck_assert_int_eq(err, ERROR2); // trust domain not available
+
     x509bundle_Set_Free(tested->bundles);
     tested->bundles = NULL;
     tested->closed = true;
@@ -272,8 +274,9 @@ Suite *watcher_suite(void)
         tc_core,
         test_workloadapi_X509Source_Start_waits_and_sets_closed_false);
     tcase_add_test(tc_core, test_workloadapi_X509Source_Closes_watcher);
-    tcase_add_test(tc_core, test_workloadapi_X509Source_GetX509BundleForTrustDomain);
-    
+    tcase_add_test(tc_core,
+                   test_workloadapi_X509Source_GetX509BundleForTrustDomain);
+
     suite_add_tcase(s, tc_core);
 
     return s;
