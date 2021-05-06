@@ -53,6 +53,9 @@ pthread
 crypto)
 
 set(LIB_SOURCE
+  ../svid/x509svid/src/verify.c
+  src/bundlesource.c
+  src/svidsource.c
   src/x509source.c
   src/jwtsource.c
 )
