@@ -11,7 +11,6 @@ ${PROJECT_SOURCE_DIR}/jwtbundle/src/set.c
 ${PROJECT_SOURCE_DIR}/jwtbundle/src/source.c
 ${PROJECT_SOURCE_DIR}/x509bundle/src/bundle.c
 ${PROJECT_SOURCE_DIR}/x509bundle/src/set.c
-${PROJECT_SOURCE_DIR}/x509bundle/src/source.c
 )
 
 add_library(${TARGET_NAME} SHARED ${LIB_BUNDLE})
