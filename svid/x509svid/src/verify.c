@@ -1,3 +1,4 @@
+#include "svid/x509svid/src/svid.h"
 #include "svid/x509svid/src/verify.h"
 #include "internal/x509util/src/util.h"
 #include <openssl/pem.h>
@@ -187,37 +188,4 @@ X509 ***x509svid_Verify(X509 **certs, x509bundle_Source *source,
     }
 
     return NULL;
-}
-
-spiffeid_ID x509svid_IDFromCert(X509 *cert, err_t *err)
-{
-    spiffeid_ID id = { NULL, NULL };
-    if(cert) {
-        const int nid = NID_subject_alt_name;
-        STACK_OF(GENERAL_NAME) *san_names
-            = X509_get_ext_d2i(cert, nid, NULL, NULL);
-        int san_name_num = sk_GENERAL_NAME_num(san_names);
-
-        if(san_name_num == 1) {
-            const GENERAL_NAME *name = sk_GENERAL_NAME_value(san_names, 0);
-            string_t uri_name = string_new(
-                (const char *) name->d.uniformResourceIdentifier->data);
-
-            id = spiffeid_FromString(uri_name, err);
-            arrfree(uri_name);
-        } else if(san_name_num == 0) {
-            // certificate contains no URI SAN
-            *err = ERROR1;
-        } else {
-            // certificate contains more than one URI SAN
-            *err = ERROR2;
-        }
-
-        sk_GENERAL_NAME_pop_free(san_names, GENERAL_NAME_free);
-    } else {
-        // null certificate
-        *err = ERROR3;
-    }
-
-    return id;
 }

@@ -50,17 +50,6 @@ X509 ***x509svid_Verify(X509 **certs, x509bundle_Source *bundles,
 bool x509svid_Verify_cb(X509_STORE_CTX *store_ctx, x509bundle_Source *source,
                         spiffeid_ID *id);
 
-/**
- * Extracts the SPIFFE ID from the URI SAN of the provided certificate. It
- * will return an an error if the certificate does not have exactly one URI
- * SAN with a well-formed SPIFFE ID.
- *
- * \param cert [in] X.509 certificate object pointer.
- * \param err [out] Variable to get information in the event of error.
- * \returns SPIFFE ID of the leaf certificate.
- */
-spiffeid_ID x509svid_IDFromCert(X509 *cert, err_t *err);
-
 #ifdef __cplusplus
 }
 #endif
