@@ -1,4 +1,4 @@
-@mtls @wip
+@mtls
 Feature: Mutual TLS
 
 
@@ -19,12 +19,12 @@ Feature: Mutual TLS
             | Hello World! |     go    |
             |              |     go    |
             |     12345    |     go    |
-            | Hello World! |     c     |
-            |              |     c     |
-            |     12345    |     c     |
+            # | Hello World! |     c     |
+            # |              |     c     |
+            # |     12345    |     c     |
 
 
-    @Sprint13 @wip2
+    @Sprint12 @wip
     Scenario: MT_002 - Check that it is not possible to establish mtls connection with different key chains in the servers
         Given The second agent is turned on inside "workload" container with different key chain
         When  I fetch external "X509" "SVID"
