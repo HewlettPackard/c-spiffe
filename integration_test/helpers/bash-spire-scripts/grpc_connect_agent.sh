@@ -2,7 +2,6 @@
 if [ $2 ];
 then 
 PREFIX=$2
-echo $PREFIX
 else
 PREFIX="my"
 fi
