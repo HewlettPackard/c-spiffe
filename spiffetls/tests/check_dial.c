@@ -20,7 +20,7 @@ void test_TLSClientWithRawConfig(void)
     spiffetls_dialConfig config
         = { .base_TLS_conf = NULL, .dialer_fd = /*invalid dialer*/ -1 };
 
-    SSL *conn = spiffetls_DialWithMode((in_port_t) 40001,
+    SSL *conn = spiffetls_DialWithMode(NULL, (in_port_t) 40001,
                                        /*127.0.0.1*/ (in_addr_t) 0x7F000001,
                                        mode, &config, &err);
     ck_assert_uint_eq(err, NO_ERROR);
@@ -40,14 +40,13 @@ void test_MTLSClient(void)
     spiffeid_TrustDomain td = { string_new("example.org") };
     tlsconfig_Authorizer *authorizer = tlsconfig_AuthorizeMemberOf(td);
 
-    spiffetls_DialMode *mode
-        = spiffetls_MTLSClient(authorizer);
+    spiffetls_DialMode *mode = spiffetls_MTLSClient(authorizer);
 
     spiffetls_dialConfig config
         = { .base_TLS_conf = NULL, .dialer_fd = /*invalid dialer*/ -1 };
 
     err_t err;
-    SSL *conn = spiffetls_DialWithMode((in_port_t) 40002,
+    SSL *conn = spiffetls_DialWithMode(NULL, (in_port_t) 40002,
                                        /*127.0.0.1*/ (in_addr_t) 0x7F000001,
                                        mode, &config, &err);
 
@@ -68,13 +67,12 @@ void test_MTLSWebClient(void)
     spiffeid_TrustDomain td = { string_new("example.org") };
     tlsconfig_Authorizer *authorizer = tlsconfig_AuthorizeMemberOf(td);
     err_t err;
-    
-    spiffetls_DialMode *mode
-        = spiffetls_MTLSWebClient(NULL);
+
+    spiffetls_DialMode *mode = spiffetls_MTLSWebClient(NULL);
 
     spiffetls_dialConfig config
         = { .base_TLS_conf = NULL, .dialer_fd = /*invalid dialer*/ -1 };
-    SSL *conn = spiffetls_DialWithMode((in_port_t) 40003,
+    SSL *conn = spiffetls_DialWithMode(NULL, (in_port_t) 40003,
                                        /*127.0.0.1*/ (in_addr_t) 0x7F000001,
                                        mode, &config, &err);
 

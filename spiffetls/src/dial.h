@@ -17,6 +17,7 @@ extern "C" {
  * configuration. If successful, returns a pointer to a established TLS
  * connection object.
  *
+ * \param ctx [in] workloadapi x509 context object.
  * \param port [in] Port number.
  * \param addr [in] Address code.
  * \param mode [in] Connection mode.
@@ -24,8 +25,8 @@ extern "C" {
  * \param err [out] Variable to get information in the event of error.
  * \returns Connected TLS object pointer if successful, NULL otherwise.
  */
-SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
-                            spiffetls_DialMode *mode,
+SSL *spiffetls_DialWithMode(workloadapi_X509Context *x509ctx, in_port_t port,
+                            in_addr_t addr, spiffetls_DialMode *mode,
                             spiffetls_dialConfig *config, err_t *err);
 
 #ifdef __cplusplus

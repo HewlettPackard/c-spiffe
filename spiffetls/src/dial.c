@@ -14,9 +14,10 @@ static int createSocket(in_addr_t addr, in_port_t port)
     if(sockfd < 0) {
         // could not create socket
         return -1;
-    } 
-    
-    const int connect_ret = connect(sockfd, (const struct sockaddr *) &address, sizeof address);
+    }
+
+    const int connect_ret
+        = connect(sockfd, (const struct sockaddr *) &address, sizeof address);
     if(connect_ret < 0) {
         // could not connect socket with given address and port
         return -1;
@@ -33,17 +34,20 @@ static SSL_CTX *createTLSContext()
     return ctx;
 }
 
-SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
-                            spiffetls_DialMode *mode,
+SSL *spiffetls_DialWithMode(workloadapi_X509Context *x509ctx, in_port_t port,
+                            in_addr_t addr, spiffetls_DialMode *mode,
                             spiffetls_dialConfig *config, err_t *err)
 {
     if(!mode->unneeded_source) {
         workloadapi_X509Source *source = mode->source;
         if(!source) {
             source = workloadapi_NewX509Source(NULL, err);
-
             if(*err) {
                 goto error;
+            }
+
+            if(x509ctx) {
+                workloadapi_X509Source_applyX509Context(source, x509ctx);
             }
         }
         mode->source = source;

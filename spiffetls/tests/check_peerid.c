@@ -19,7 +19,7 @@ START_TEST(test_spiffetls_PeerIDFromConn)
     spiffetls_dialConfig config = { .base_TLS_conf = NULL, .dialer_fd = -1 };
 
     err_t err;
-    SSL *conn = spiffetls_DialWithMode((in_port_t) 40002,
+    SSL *conn = spiffetls_DialWithMode(NULL, (in_port_t) 40002,
                                        /*127.0.0.1*/ (in_addr_t) 0x7F000001,
                                        mode, &config, &err);
 
@@ -42,7 +42,7 @@ START_TEST(test_spiffetls_PeerIDFromConn)
     system("./tls_server 40003 &");
     sleep(1);
 
-    conn = spiffetls_DialWithMode((in_port_t) 40003,
+    conn = spiffetls_DialWithMode(NULL, (in_port_t) 40003,
                                   /*127.0.0.1*/ (in_addr_t) 0x7F000001, mode,
                                   &config, &err);
     id = spiffetls_PeerIDFromConn(conn, &err);
