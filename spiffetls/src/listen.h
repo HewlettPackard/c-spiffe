@@ -16,7 +16,7 @@ extern "C" {
  * Establishes a TLS server with given port, address, mode and
  * configuration. If successful, returns a pointer to a established TLS
  * server object.
- *
+ * \param ctx [in] workloadapi x509 context object.
  * \param port [in] Port number.
  * \param mode [in] Connection mode.
  * \param config [in] Connection configuration.
@@ -24,7 +24,8 @@ extern "C" {
  * \param err [out] Variable to get information in the event of error.
  * \returns Connected server TLS object pointer if successful, NULL otherwise.
  */
-SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
+SSL *spiffetls_ListenWithMode(workloadapi_X509Context *x509ctx, in_port_t port,
+                              spiffetls_ListenMode *mode,
                               spiffetls_listenConfig *config, int *sock,
                               err_t *err);
 

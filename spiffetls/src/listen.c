@@ -48,7 +48,8 @@ static SSL_CTX *createTLSContext()
     return ctx;
 }
 
-SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
+SSL *spiffetls_ListenWithMode(workloadapi_X509Context *x509ctx, in_port_t port,
+                              spiffetls_ListenMode *mode,
                               spiffetls_listenConfig *config, int *sock,
                               err_t *err)
 {
@@ -56,9 +57,12 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
         workloadapi_X509Source *source = mode->source;
         if(!source) {
             source = workloadapi_NewX509Source(NULL, err);
-
             if(*err) {
                 goto error;
+            }
+
+            if(x509ctx) {
+                workloadapi_X509Source_applyX509Context(source, x509ctx);
             }
         }
         mode->source = source;
@@ -68,6 +72,11 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
 
     SSL_CTX *tls_config
         = config->base_TLS_conf ? config->base_TLS_conf : createTLSContext();
+
+    if(!tls_config) {
+        *err = ERROR4;
+        goto error;
+    }
 
     switch(mode->mode) {
     case TLS_SERVER_MODE:

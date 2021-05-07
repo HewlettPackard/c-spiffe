@@ -14,7 +14,7 @@ int main(void)
     x509svid_SVID *svid
         = x509svid_Load("server_cert.pem", "server_key.pem", &err);
 
-    if (svid == NULL || err != NO_ERROR) {
+    if(svid == NULL || err != NO_ERROR) {
         printf("Could not load svid!\n");
         exit(-1);
     }
@@ -25,7 +25,7 @@ int main(void)
         = { .base_TLS_conf = NULL, .listener_fd = 0 };
 
     int sock_fd;
-    SSL *conn = spiffetls_ListenWithMode((in_port_t) 4433, mode, &config,
+    SSL *conn = spiffetls_ListenWithMode(NULL, (in_port_t) 4433, mode, &config,
                                          &sock_fd, &err);
 
     if(conn == NULL) {
