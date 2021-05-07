@@ -7,10 +7,6 @@ Suite *verify_suite(void)
     Suite *s = suite_create("verify");
     TCase *tc_core = tcase_create("core");
 
-    // tcase_add_test(tc_core, test_x509svid_IDFromCert);
-    // tcase_add_test(tc_core, test_x509svid_Verify);
-    // tcase_add_test(tc_core, test_x509svid_ParseAndVerify);
-
     suite_add_tcase(s, tc_core);
 
     return s;
