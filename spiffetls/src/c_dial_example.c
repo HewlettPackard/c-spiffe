@@ -73,7 +73,7 @@ int main(int argc, char **argv)
     spiffetls_DialMode *mode = spiffetls_MTLSClient(authorizer);
     spiffetls_dialConfig config = { .base_TLS_conf = NULL, .dialer_fd = -1 };
     err_t err;
-    SSL *conn = spiffetls_DialWithMode(x509context, (in_port_t) 20001U, addr,
+    SSL *conn = spiffetls_DialWithMode(x509context, (in_port_t) 4433U, addr,
                                        mode, &config, &err);
     if(conn == NULL || err != NO_ERROR) {
         printf("spiffetls_DialWithMode() failed\n");
