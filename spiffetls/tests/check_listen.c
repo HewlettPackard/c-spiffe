@@ -28,8 +28,8 @@ void test_TLSServerWithRawConfig(void)
     spiffetls_listenConfig config
         = { .base_TLS_conf = NULL, .listener_fd = -1 };
     int serverfd;
-    SSL *conn = spiffetls_ListenWithMode(NULL, (in_port_t) 20001, mode,
-                                         &config, &serverfd, &err);
+    SSL *conn = spiffetls_ListenWithMode((in_port_t) 20001, mode, &config,
+                                         &serverfd, &err);
 
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_ne(conn, NULL);
@@ -65,8 +65,8 @@ void test_MTLSServerWithRawConfig(void)
         = { .base_TLS_conf = NULL, .listener_fd = -1 };
     int serverfd;
     err_t err;
-    SSL *conn = spiffetls_ListenWithMode(NULL, (in_port_t) 20001, mode,
-                                         &config, &serverfd, &err);
+    SSL *conn = spiffetls_ListenWithMode((in_port_t) 20001, mode, &config,
+                                         &serverfd, &err);
 
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_ne(conn, NULL);

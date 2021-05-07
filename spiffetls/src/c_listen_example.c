@@ -25,7 +25,7 @@ int main(void)
         = { .base_TLS_conf = NULL, .listener_fd = 0 };
 
     int sock_fd;
-    SSL *conn = spiffetls_ListenWithMode(NULL, (in_port_t) 4433, mode, &config,
+    SSL *conn = spiffetls_ListenWithMode((in_port_t) 4433, mode, &config,
                                          &sock_fd, &err);
 
     if(conn == NULL) {

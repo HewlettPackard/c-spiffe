@@ -167,7 +167,8 @@ bool tlsconfig_HookMTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
         safe_arg->authorizer = authorizer;
         safe_arg->opts = opts;
 
-        SSL_CTX_set_cert_verify_callback(ctx, hookTLSClientConfig_cb, safe_arg);
+        SSL_CTX_set_cert_verify_callback(ctx, hookTLSClientConfig_cb,
+                                         safe_arg);
 
         return true;
     }

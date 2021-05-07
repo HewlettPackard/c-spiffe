@@ -34,8 +34,8 @@ static SSL_CTX *createTLSContext()
     return ctx;
 }
 
-SSL *spiffetls_DialWithMode(workloadapi_X509Context *x509ctx, in_port_t port,
-                            in_addr_t addr, spiffetls_DialMode *mode,
+SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
+                            spiffetls_DialMode *mode,
                             spiffetls_dialConfig *config, err_t *err)
 {
     if(!mode->unneeded_source) {
@@ -43,12 +43,17 @@ SSL *spiffetls_DialWithMode(workloadapi_X509Context *x509ctx, in_port_t port,
         if(!source) {
             source = workloadapi_NewX509Source(NULL, err);
             if(*err) {
+                // could not create source
+                *err = ERROR1;
                 goto error;
             }
 
-            if(x509ctx) {
-                workloadapi_X509Source_applyX509Context(source, x509ctx);
-            }
+            /**err = workloadapi_X509Source_Start(source);
+            if(*err) {
+                // could not start source
+                *err = ERROR1;
+                goto error;
+            }*/
         }
         mode->source = source;
         mode->bundle = x509bundle_SourceFromSource(source);
@@ -59,7 +64,7 @@ SSL *spiffetls_DialWithMode(workloadapi_X509Context *x509ctx, in_port_t port,
         = config->base_TLS_conf ? config->base_TLS_conf : createTLSContext();
 
     if(!tls_config) {
-        *err = ERROR4;
+        *err = ERROR2;
         goto error;
     }
 
@@ -75,7 +80,7 @@ SSL *spiffetls_DialWithMode(workloadapi_X509Context *x509ctx, in_port_t port,
     case MTLS_WEBCLIENT_MODE:
     default:
         // unknown mode
-        *err = ERROR1;
+        *err = ERROR3;
         goto error;
     }
     const int sockfd
@@ -83,14 +88,16 @@ SSL *spiffetls_DialWithMode(workloadapi_X509Context *x509ctx, in_port_t port,
 
     if(sockfd < 0) {
         // could not create socket with given address and port
-        *err = ERROR2;
+        *err = ERROR4;
         goto error;
     }
     SSL *conn = SSL_new(tls_config);
 
     if(!conn) {
+        *err = ERROR5;
         goto error;
     } else if(SSL_set_fd(conn, sockfd) != 1) {
+        *err = ERROR5;
         goto error;
     }
 
@@ -101,7 +108,7 @@ SSL *spiffetls_DialWithMode(workloadapi_X509Context *x509ctx, in_port_t port,
         SSL_shutdown(conn);
         SSL_free(conn);
         close(sockfd);
-        *err = ERROR3;
+        *err = ERROR5;
         goto error;
     }
     // successful handshake
