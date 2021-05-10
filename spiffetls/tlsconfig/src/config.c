@@ -79,21 +79,6 @@ struct hookMTLSClientConfig_st {
 
 struct hookMTLSClientConfig_st *__config = NULL;
 
-static int hookMTLSClientConfig_cb(SSL *ssl, X509 **cert, EVP_PKEY **pkey)
-{
-    err_t err;
-    x509svid_SVID *svid = x509svid_Source_GetX509SVID(__config->svid, &err);
-
-    if(!err && svid) {
-        *cert = svid->certs[0];
-        *pkey = svid->private_key;
-
-        return 1;
-    }
-
-    return 0;
-}
-
 bool tlsconfig_HookMTLSClientConfig(SSL_CTX *ctx, x509svid_Source *svid,
                                     x509bundle_Source *bundle,
                                     tlsconfig_Authorizer *authorizer,
