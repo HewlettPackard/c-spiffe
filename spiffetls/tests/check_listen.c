@@ -68,25 +68,11 @@ void test_MTLSServerWithRawConfig(void)
     SSL *conn = spiffetls_ListenWithMode((in_port_t) 20001, mode, &config,
                                          &serverfd, &err);
 
-    ck_assert_uint_eq(err, NO_ERROR);
-    ck_assert_ptr_ne(conn, NULL);
-
-    const int len = 1024;
-    char buffer[len];
-    const int ret = SSL_read(conn, buffer, len);
-    buffer[ret] = 0;
-    if(ret > 0) {
-        printf("Client sent: %s\n", buffer);
-    }
+    ck_assert_uint_ne(err, NO_ERROR);
+    ck_assert_ptr_eq(conn, NULL);
 
     spiffeid_TrustDomain_Free(&td);
     spiffetls_ListenMode_Free(mode);
-
-    const int fd = SSL_get_fd(conn);
-    SSL_shutdown(conn);
-    SSL_free(conn);
-    close(fd);
-    close(serverfd);
 }
 
 // precondition: valid x509 svid, available port and thread running client
@@ -95,7 +81,7 @@ START_TEST(test_spiffetls_ListenWithMode)
 {
     test_TLSServerWithRawConfig();
 
-    // test_MTLSServerWithRawConfig();
+    test_MTLSServerWithRawConfig();
 }
 END_TEST
 
