@@ -17,7 +17,7 @@ spiffebundle_Bundle *spiffebundle_New(const spiffeid_TrustDomain td)
 }
 
 spiffebundle_Bundle *spiffebundle_Load(const spiffeid_TrustDomain td,
-                                       const string_t path, err_t *err)
+                                       const char *path, err_t *err)
 {
     spiffebundle_Bundle *bundleptr = NULL;
     FILE *fsb = fopen(path, "r");
@@ -165,7 +165,7 @@ map_string_EVP_PKEY *spiffebundle_Bundle_JWTAuthorities(spiffebundle_Bundle *b)
 }
 
 EVP_PKEY *spiffebundle_Bundle_FindJWTAuthority(spiffebundle_Bundle *b,
-                                               const string_t keyID, bool *suc)
+                                               const char *keyID, bool *suc)
 {
     mtx_lock(&(b->mtx));
     EVP_PKEY *pkey = NULL;
@@ -181,7 +181,7 @@ EVP_PKEY *spiffebundle_Bundle_FindJWTAuthority(spiffebundle_Bundle *b,
 }
 
 bool spiffebundle_Bundle_HasJWTAuthority(spiffebundle_Bundle *b,
-                                         const string_t keyID)
+                                         const char *keyID)
 {
     mtx_lock(&(b->mtx));
     const bool present = shgeti(b->jwtAuths, keyID) >= 0 ? true : false;
@@ -191,7 +191,7 @@ bool spiffebundle_Bundle_HasJWTAuthority(spiffebundle_Bundle *b,
 }
 
 err_t spiffebundle_Bundle_AddJWTAuthority(spiffebundle_Bundle *b,
-                                          const string_t keyID, EVP_PKEY *auth)
+                                          const char *keyID, EVP_PKEY *auth)
 {
     // empty string error
     err_t err = ERROR1;
@@ -207,7 +207,7 @@ err_t spiffebundle_Bundle_AddJWTAuthority(spiffebundle_Bundle *b,
 }
 
 void spiffebundle_Bundle_RemoveJWTAuthority(spiffebundle_Bundle *b,
-                                            const string_t keyID)
+                                            const char *keyID)
 {
     mtx_lock(&(b->mtx));
     shdel(b->jwtAuths, keyID);

@@ -43,7 +43,7 @@ x509bundle_Bundle *
 x509bundle_FromX509Authorities(const spiffeid_TrustDomain td, X509 **auths);
 
 /**
- * Loads a bundle from a file on disk. The file must contain PEM-encoded 
+ * Loads a bundle from a file on disk. The file must contain PEM-encoded
  * certificate blocks.
  *
  * \param td [in] Trust Domain object.
@@ -65,7 +65,7 @@ x509bundle_Bundle *x509bundle_Load(const spiffeid_TrustDomain td,
  * x509bundle_Bundle_Free function.
  */
 x509bundle_Bundle *x509bundle_Parse(const spiffeid_TrustDomain td,
-                                    const string_t bundle_bytes, err_t *err);
+                                    const char *bundle_bytes, err_t *err);
 
 /**
  * Gets the Trust Domain that the bundle belongs to.

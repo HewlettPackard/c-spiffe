@@ -237,8 +237,10 @@ static map_string_claim *json_to_map(json_t *obj)
             const char *key;
             json_t *value;
             map_string_claim *claims_map = NULL;
+            sh_new_strdup(claims_map);
 
-            json_object_foreach(obj, key, value) {
+            json_object_foreach(obj, key, value)
+            {
                 shput(claims_map, key, value);
             }
 
@@ -526,6 +528,8 @@ jwtsvid_SVID *jwtsvid_parse(char *token, string_arr_t audience,
                 }
 
                 map_string_claim *claims_map = NULL;
+                sh_new_strdup(claims_map);
+
                 if(validator)
                     claims_map
                         = validator(jwt, spiffeid_ID_TrustDomain(id), &err2);
@@ -581,6 +585,7 @@ void jwtsvid_SVID_Free(jwtsvid_SVID *svid)
         for(size_t i = 0, size = shlenu(svid->claims); i < size; ++i) {
             free(svid->claims[i].value);
         }
+        shfree(svid->claims);
         // free token string
         arrfree(svid->token);
     }

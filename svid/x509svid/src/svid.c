@@ -15,8 +15,13 @@ x509svid_SVID *x509svid_Load(const char *certfile, const char *keyfile,
             byte *keybytes = FILE_to_bytes(fkey);
             fclose(fkey);
 
-            return x509svid_Parse(certbytes, keybytes, err);
+            x509svid_SVID *svid = x509svid_Parse(certbytes, keybytes, err);
+            arrfree(certbytes);
+            arrfree(keybytes);
+
+            return svid;
         } else {
+            arrfree(certbytes);
             *err = ERROR2;
             return NULL;
         }
@@ -29,6 +34,7 @@ x509svid_SVID *x509svid_Load(const char *certfile, const char *keyfile,
 x509svid_SVID *x509svid_Parse(const byte *certbytes, const byte *keybytes,
                               err_t *err)
 {
+    x509svid_SVID *svid = NULL;
     X509 **certs = pemutil_ParseCertificates(certbytes, err);
 
     // could not parse certificates
@@ -39,33 +45,41 @@ x509svid_SVID *x509svid_Parse(const byte *certbytes, const byte *keybytes,
     EVP_PKEY *pkey = pemutil_ParsePrivateKey(keybytes, err);
 
     // could not parse private key info
-    if(*err) {
-        for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
-            X509_free(certs[i]);
-        }
-        arrfree(certs);
-            
-        return NULL;
+    if(!(*err)) {
+        svid = x509svid_newSVID(certs, pkey, err);
     }
 
-    return x509svid_newSVID(certs, pkey, err);
+    for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
+        X509_free(certs[i]);
+    }
+    arrfree(certs);
+    EVP_PKEY_free(pkey);
+
+    return svid;
 }
 
 x509svid_SVID *x509svid_ParseRaw(const byte *certbytes, const size_t certlen,
                                  const byte *keybytes, const size_t keylen,
                                  err_t *err)
 {
+    x509svid_SVID *svid = NULL;
     X509 **certs = x509util_ParseCertificates(certbytes, certlen, err);
 
     if(!(*err)) {
         EVP_PKEY *pkey = x509util_ParsePrivateKey(keybytes, keylen, err);
 
         if(!(*err)) {
-            return x509svid_newSVID(certs, pkey, err);
+            svid = x509svid_newSVID(certs, pkey, err);
         }
+
+        for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
+            X509_free(certs[i]);
+        }
+        arrfree(certs);
+        EVP_PKEY_free(pkey);
     }
 
-    return NULL;
+    return svid;
 }
 
 x509svid_SVID *x509svid_newSVID(X509 **certs, EVP_PKEY *pkey, err_t *err)

@@ -163,6 +163,7 @@ START_TEST(test_jwtbundle_FromJWTAuthorities)
         BIO_free(bio_mems[i]);
         EVP_PKEY_free(evp_pubkeys[i]);
     }
+    shfree(jwt_auths);
     jwtbundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
@@ -290,6 +291,7 @@ START_TEST(test_jwtbundle_Bundle_FindJWTAuthority)
     ck_assert(pkey == NULL);
     ck_assert(!suc);
 
+    shfree(jwt_auths);
     for(int i = 0; i < ITERS; ++i) {
         BIO_free(bio_mems[i]);
         EVP_PKEY_free(evp_pubkeys[i]);
@@ -536,6 +538,7 @@ START_TEST(test_jwtbundle_Bundle_AddJWTAuthority)
         BIO_free(bio_mems[i]);
         EVP_PKEY_free(evp_pubkeys[i]);
     }
+    shfree(jwt_auths);
     jwtbundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
@@ -674,6 +677,7 @@ START_TEST(test_jwtbundle_Bundle_RemoveJWTAuthority)
         BIO_free(bio_mems[i]);
         EVP_PKEY_free(evp_pubkeys[i]);
     }
+    shfree(jwt_auths);
     jwtbundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
@@ -758,6 +762,7 @@ START_TEST(test_jwtbundle_Bundle_SetJWTAuthorities)
         BIO_free(bio_mems[i]);
         EVP_PKEY_free(evp_pubkeys[i]);
     }
+    shfree(jwt_auths);
     jwtbundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
@@ -843,6 +848,7 @@ START_TEST(test_jwtbundle_Bundle_Empty)
         BIO_free(bio_mems[i]);
         EVP_PKEY_free(evp_pubkeys[i]);
     }
+    shfree(jwt_auths);
     jwtbundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
@@ -966,7 +972,7 @@ START_TEST(test_jwtbundle_Bundle_Print_Errors)
     ck_assert_int_eq(err, ERROR1);
 
     // NULL BIO* error
-    bundle_ptr = (jwtbundle_Bundle*) 1; //"valid" bundle
+    bundle_ptr = (jwtbundle_Bundle *) 1; //"valid" bundle
     err = jwtbundle_Bundle_print_BIO(bundle_ptr, offset, out);
     ck_assert_int_eq(err, ERROR2);
 }

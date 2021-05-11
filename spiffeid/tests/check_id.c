@@ -57,7 +57,7 @@ END_TEST
 START_TEST(test_spiffeid_FromString)
 {
     const size_t ITERS = 4;
-    const string_t strs[]
+    string_t strs[]
         = { string_new("spiffe://example.br/path1/p3"),
             string_new("https://example.us/path2/path3"),
             string_new("example.gov/path1"),

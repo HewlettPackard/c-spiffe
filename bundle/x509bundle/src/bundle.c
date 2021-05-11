@@ -48,7 +48,7 @@ x509bundle_Bundle *x509bundle_Load(const spiffeid_TrustDomain td,
 }
 
 x509bundle_Bundle *x509bundle_Parse(const spiffeid_TrustDomain td,
-                                    const string_t bundle_bytes, err_t *err)
+                                    const char *bundle_bytes, err_t *err)
 {
     x509bundle_Bundle *bundle = x509bundle_New(td);
 

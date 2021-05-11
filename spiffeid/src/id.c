@@ -1,6 +1,6 @@
 #include "spiffeid/src/id.h"
-#include "utils/src/stb_ds.h"
 #include "spiffeid/src/trustdomain.h"
+#include "utils/src/stb_ds.h"
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
@@ -88,7 +88,7 @@ static UriUriA URL_parse(const char *str, err_t *err)
     return uri;
 }
 
-static string_t tolower_str(const string_t str)
+static string_t tolower_str(string_t str)
 {
     string_t curr_str = str;
     for(; *curr_str; ++curr_str)

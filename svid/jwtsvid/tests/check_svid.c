@@ -51,7 +51,7 @@ START_TEST(test_jwtsvid_parse)
 
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_eq(svid->audience, NULL);
-    ck_assert_ptr_eq(svid->claims, NULL);
+    ck_assert_ptr_ne(svid->claims, NULL);
     ck_assert_int_eq(svid->expiry, 9990000000);
     ck_assert_ptr_ne(svid->id.path, NULL);
     ck_assert_str_eq(svid->id.path, "/workload1");
