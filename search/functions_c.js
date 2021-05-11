@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['option_5fdummy_1179',['option_dummy',['../check__config_8c.html#a76d09c31ef6653dc9e1a8718795a7400',1,'check_config.c']]],
-  ['option_5fdummy2_1180',['option_dummy2',['../check__config_8c.html#a19f07fcf59b98105c1e26874f4a4c9fd',1,'check_config.c']]]
+  ['option_5fdummy_1188',['option_dummy',['../check__config_8c.html#a76d09c31ef6653dc9e1a8718795a7400',1,'check_config.c']]],
+  ['option_5fdummy2_1189',['option_dummy2',['../check__config_8c.html#a19f07fcf59b98105c1e26874f4a4c9fd',1,'check_config.c']]]
 ];

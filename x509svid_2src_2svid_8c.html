@@ -151,8 +151,47 @@ Functions</h2></td></tr>
 <tr class="separator:a86bb0aab37f97488bf2dadfbd672e58f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65d6f203d0eeacd144e974e8d2616854"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structx509svid__SVID.html">x509svid_SVID</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x509svid_2src_2svid_8c.html#a65d6f203d0eeacd144e974e8d2616854">x509svid_SVID_GetDefaultX509SVID</a> (<a class="el" href="structx509svid__SVID.html">x509svid_SVID</a> **<a class="el" href="check__x509source_8c.html#afddf11b35962192583095189618f0562">svids</a>)</td></tr>
 <tr class="separator:a65d6f203d0eeacd144e974e8d2616854"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a71833432762f29b35b7c0807a65195"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structspiffeid__ID.html">spiffeid_ID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x509svid_2src_2svid_8c.html#a3a71833432762f29b35b7c0807a65195">x509svid_IDFromCert</a> (X509 *cert, <a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err)</td></tr>
+<tr class="separator:a3a71833432762f29b35b7c0807a65195"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a3a71833432762f29b35b7c0807a65195"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a71833432762f29b35b7c0807a65195">&#9670;&nbsp;</a></span>x509svid_IDFromCert()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structspiffeid__ID.html">spiffeid_ID</a> x509svid_IDFromCert </td>
+          <td>(</td>
+          <td class="paramtype">X509 *&#160;</td>
+          <td class="paramname"><em>cert</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *&#160;</td>
+          <td class="paramname"><em>err</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Extracts the SPIFFE ID from the URI SAN of the provided certificate. It will return an an error if the certificate does not have exactly one URI SAN with a well-formed SPIFFE ID.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cert</td><td>[in] X.509 certificate object pointer. </td></tr>
+    <tr><td class="paramname">err</td><td>[out] Variable to get information in the event of error. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>SPIFFE ID of the leaf certificate. </dd></dl>
+
+</div>
+</div>
 <a id="a9b54ccd57184989d06e15d2bdc654306"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9b54ccd57184989d06e15d2bdc654306">&#9670;&nbsp;</a></span>x509svid_keyMatches()</h2>
 

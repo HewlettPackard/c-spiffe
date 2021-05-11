@@ -132,7 +132,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <area shape="rect" href="config_8c.html" title=" " alt="" coords="250,80,369,121"/>
 <area shape="rect" href="x509svid_2src_2svid_8c.html" title=" " alt="" coords="393,87,554,114"/>
 <area shape="rect" href="verify_8c.html" title=" " alt="" coords="579,87,747,114"/>
-<area shape="rect" href="check__verify_8c.html" title=" " alt="" coords="771,80,906,121"/>
+<area shape="rect" href="check__verify_8c.html" title=" " alt="" coords="771,80,917,121"/>
 <area shape="rect" href="peerid_8c.html" title=" " alt="" coords="5,177,144,203"/>
 <area shape="rect" href="check__peerid_8c.html" title=" " alt="" coords="168,169,307,211"/>
 </map>
@@ -142,155 +142,10 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a798383cf79d5d8c6c1ad243b4c2bc153"><td class="memItemLeft" align="right" valign="top">X509 ***&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="verify_8h.html#a798383cf79d5d8c6c1ad243b4c2bc153">x509svid_ParseAndVerify</a> (<a class="el" href="utils_2src_2util_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> **raw_certs, <a class="el" href="structx509bundle__Source.html">x509bundle_Source</a> *<a class="el" href="check__x509source_8c.html#a95f3984ad60de7e41bd0dad78d43e84d">bundles</a>, <a class="el" href="structspiffeid__ID.html">spiffeid_ID</a> *<a class="el" href="check__x509source_8c.html#a18e879925a8388a49ac3638e4ecca669">id</a>, <a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err)</td></tr>
-<tr class="separator:a798383cf79d5d8c6c1ad243b4c2bc153"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a834285f7cbfb429b444c1c82c9cebbf2"><td class="memItemLeft" align="right" valign="top">X509 ***&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="verify_8h.html#a834285f7cbfb429b444c1c82c9cebbf2">x509svid_Verify</a> (X509 **<a class="el" href="check__x509source_8c.html#a86cc65f14198e068d60b43bcf233a074">certs</a>, <a class="el" href="structx509bundle__Source.html">x509bundle_Source</a> *<a class="el" href="check__x509source_8c.html#a95f3984ad60de7e41bd0dad78d43e84d">bundles</a>, <a class="el" href="structspiffeid__ID.html">spiffeid_ID</a> *<a class="el" href="check__x509source_8c.html#a18e879925a8388a49ac3638e4ecca669">id</a>, <a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err)</td></tr>
-<tr class="separator:a834285f7cbfb429b444c1c82c9cebbf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a4515620398f5163d229e37b70d9c51"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="verify_8h.html#a1a4515620398f5163d229e37b70d9c51">x509svid_Verify_cb</a> (X509_STORE_CTX *store_ctx, <a class="el" href="structx509bundle__Source.html">x509bundle_Source</a> *source, <a class="el" href="structspiffeid__ID.html">spiffeid_ID</a> *<a class="el" href="check__x509source_8c.html#a18e879925a8388a49ac3638e4ecca669">id</a>)</td></tr>
 <tr class="separator:a1a4515620398f5163d229e37b70d9c51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a71833432762f29b35b7c0807a65195"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structspiffeid__ID.html">spiffeid_ID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="verify_8h.html#a3a71833432762f29b35b7c0807a65195">x509svid_IDFromCert</a> (X509 *cert, <a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err)</td></tr>
-<tr class="separator:a3a71833432762f29b35b7c0807a65195"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a3a71833432762f29b35b7c0807a65195"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a71833432762f29b35b7c0807a65195">&#9670;&nbsp;</a></span>x509svid_IDFromCert()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structspiffeid__ID.html">spiffeid_ID</a> x509svid_IDFromCert </td>
-          <td>(</td>
-          <td class="paramtype">X509 *&#160;</td>
-          <td class="paramname"><em>cert</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *&#160;</td>
-          <td class="paramname"><em>err</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Extracts the SPIFFE ID from the URI SAN of the provided certificate. It will return an an error if the certificate does not have exactly one URI SAN with a well-formed SPIFFE ID.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cert</td><td>[in] X.509 certificate object pointer. </td></tr>
-    <tr><td class="paramname">err</td><td>[out] Variable to get information in the event of error. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>SPIFFE ID of the leaf certificate. </dd></dl>
-
-</div>
-</div>
-<a id="a798383cf79d5d8c6c1ad243b4c2bc153"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a798383cf79d5d8c6c1ad243b4c2bc153">&#9670;&nbsp;</a></span>x509svid_ParseAndVerify()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">X509*** x509svid_ParseAndVerify </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="utils_2src_2util_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> **&#160;</td>
-          <td class="paramname"><em>raw_certs</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structx509bundle__Source.html">x509bundle_Source</a> *&#160;</td>
-          <td class="paramname"><em>bundles</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structspiffeid__ID.html">spiffeid_ID</a> *&#160;</td>
-          <td class="paramname"><em>id</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *&#160;</td>
-          <td class="paramname"><em>err</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Parses and verifies an X509-SVID chain using the X.509 bundle source. It returns the SPIFFE ID of the X509-SVID and one or more chains back to a root in the bundle.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">raw_certs</td><td>[in] stb array of raw DER format of X.509 certificates as stb arrays. </td></tr>
-    <tr><td class="paramname">bundles</td><td>[in] Source of bundles. </td></tr>
-    <tr><td class="paramname">id</td><td>[out] SPIFFE ID of the leaf certificate. </td></tr>
-    <tr><td class="paramname">err</td><td>[out] Variable to get information in the event of error. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>stb array of possible chains as stb arrays of X.509 certificate object pointers. </dd></dl>
-
-</div>
-</div>
-<a id="a834285f7cbfb429b444c1c82c9cebbf2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a834285f7cbfb429b444c1c82c9cebbf2">&#9670;&nbsp;</a></span>x509svid_Verify()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">X509*** x509svid_Verify </td>
-          <td>(</td>
-          <td class="paramtype">X509 **&#160;</td>
-          <td class="paramname"><em>certs</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structx509bundle__Source.html">x509bundle_Source</a> *&#160;</td>
-          <td class="paramname"><em>bundles</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structspiffeid__ID.html">spiffeid_ID</a> *&#160;</td>
-          <td class="paramname"><em>id</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *&#160;</td>
-          <td class="paramname"><em>err</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Verifies an X509-SVID chain using the X.509 bundle source. It returns the SPIFFE ID of the X509-SVID and one or more chains back to a root in the bundle.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">certs</td><td>[in] stb array of X.509 certificate pointers. </td></tr>
-    <tr><td class="paramname">bundles</td><td>[in] Source of bundles. </td></tr>
-    <tr><td class="paramname">id</td><td>[out] SPIFFE ID of the leaf certificate. </td></tr>
-    <tr><td class="paramname">err</td><td>[out] Variable to get information in the event of error. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>stb array of possible chains as stb arrays of X.509 certificate object pointers. </dd></dl>
-
-</div>
-</div>
 <a id="a1a4515620398f5163d229e37b70d9c51"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1a4515620398f5163d229e37b70d9c51">&#9670;&nbsp;</a></span>x509svid_Verify_cb()</h2>
 
@@ -322,7 +177,16 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>... </p>
+<p>Verifies a certificate store using the X.509 bundle source. It returns the SPIFFE ID of the leaf certificate.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">store_ctx</td><td>[in] X.509 certificate store. </td></tr>
+    <tr><td class="paramname">source</td><td>[in] Source of bundles. </td></tr>
+    <tr><td class="paramname">id</td><td>[out] SPIFFE ID of the leaf certificate. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the verification is successful, false otherwise. </dd></dl>
 
 </div>
 </div>
