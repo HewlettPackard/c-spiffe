@@ -60,6 +60,13 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
                 *err = ERROR1;
                 goto error;
             }
+
+            /**err = workloadapi_X509Source_Start(source);
+            if(*err) {
+                // could not start source
+                *err = ERROR1;
+                goto error;
+            }*/
         }
         mode->source = source;
         mode->bundle = x509bundle_SourceFromSource(source);
@@ -68,7 +75,6 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
 
     SSL_CTX *tls_config
         = config->base_TLS_conf ? config->base_TLS_conf : createTLSContext();
-
     if(!tls_config) {
         *err = ERROR2;
         goto error;
