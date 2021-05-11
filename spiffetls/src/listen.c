@@ -60,6 +60,13 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
                 *err = ERROR1;
                 goto error;
             }
+
+            /**err = workloadapi_X509Source_Start(source);
+            if(*err) {
+                // could not start source
+                *err = ERROR1;
+                goto error;
+            }*/
         }
         mode->source = source;
         mode->bundle = x509bundle_SourceFromSource(source);
@@ -68,7 +75,6 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
 
     SSL_CTX *tls_config
         = config->base_TLS_conf ? config->base_TLS_conf : createTLSContext();
-
     if(!tls_config) {
         *err = ERROR2;
         goto error;
@@ -106,10 +112,9 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
         *err = ERROR5;
         goto error;
     }
-
     *sock = sockfd;
-    SSL *conn = SSL_new(tls_config);
 
+    SSL *conn = SSL_new(tls_config);
     if(!conn) {
         *err = ERROR6;
         goto error;
@@ -122,8 +127,7 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
     }
 
     SSL_set_accept_state(conn);
-    const int ret = SSL_accept(conn);
-    if(ret != 1) {
+    if(SSL_accept(conn) != 1) {
         // could not build a SSL session
         SSL_shutdown(conn);
         SSL_free(conn);
