@@ -6,7 +6,6 @@ import socket
 
 from hamcrest import assert_that, is_, is_not
 from behave.matchers import register_type
-from behave import fail
 from utils import parse_nullable_string
 
 
@@ -72,7 +71,7 @@ def step_impl(context,field_alias, new_value, container_name):
     elif field_alias == "trust domain":
         field_name = "trust_domain"
     else:
-        fail("Invalid field to update in the server.conf file")
+        raise Exception("Invalid field to update in the server.conf file")
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-update-server-conf.sh %s %s %s" % (field_name, new_value, container_name))
 
 
