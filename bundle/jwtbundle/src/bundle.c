@@ -20,6 +20,7 @@ jwtbundle_Bundle *jwtbundle_New(const spiffeid_TrustDomain td)
     if(bundleptr) {
         bundleptr->td.name = string_new(td.name);
         bundleptr->auths = NULL;
+        sh_new_strdup(bundleptr->auths);
         mtx_init(&(bundleptr->mtx), mtx_plain);
     }
 

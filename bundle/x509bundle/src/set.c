@@ -6,6 +6,7 @@ x509bundle_Set *x509bundle_NewSet(const int n_args, ...)
     x509bundle_Set *set = malloc(sizeof *set);
     mtx_init(&(set->mtx), mtx_plain);
     set->bundles = NULL;
+    sh_new_strdup(set->bundles);
 
     va_list args;
     va_start(args, n_args);
