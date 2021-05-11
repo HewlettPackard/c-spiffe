@@ -114,6 +114,17 @@ void x509svid_SVID_Free(x509svid_SVID *svid);
  */
 x509svid_SVID *x509svid_SVID_GetDefaultX509SVID(x509svid_SVID **svids);
 
+/**
+ * Extracts the SPIFFE ID from the URI SAN of the provided certificate. It
+ * will return an an error if the certificate does not have exactly one URI
+ * SAN with a well-formed SPIFFE ID.
+ *
+ * \param cert [in] X.509 certificate object pointer.
+ * \param err [out] Variable to get information in the event of error.
+ * \returns SPIFFE ID of the leaf certificate.
+ */
+spiffeid_ID x509svid_IDFromCert(X509 *cert, err_t *err);
+
 #ifdef __cplusplus
 }
 #endif

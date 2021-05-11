@@ -1,6 +1,14 @@
 #include "spiffetls/src/dial.h"
 #include <unistd.h>
 
+/* returns 1 if little endian, 0 otherwise */
+int is_little_endian(void)
+{
+    uint32_t x = 1;
+    uint8_t c = *((uint8_t *) &x);
+    return c;
+}
+
 void init_openssl()
 {
     SSL_load_error_strings();
@@ -9,88 +17,73 @@ void init_openssl()
 
 int main(int argc, char **argv)
 {
-    char buff[1024];
-    int bytes;
-    char *message = NULL;
-
     if(argc < 2) {
         printf("Too few arguments!\nUsage:\n\t./c_dial 'message'\n");
         exit(-1);
     }
 
-    message = argv[1];
+    char *message = argv[1];
+    in_addr_t addr = /*127.0.0.1*/ 0x7F000001U;
+    if(argc >= 3) {
+        uint8_t ip[4];
+        const int dir[2][4] = { /*big endian*/ { 0, 1, 2, 3 },
+                                /*little endian*/ { 3, 2, 1, 0 } };
+        const int *my_dir = dir[is_little_endian()];
+        const int ret = sscanf(argv[2], "%hhd.%hhd.%hhd.%hhd", ip + my_dir[0],
+                               ip + my_dir[1], ip + my_dir[2], ip + my_dir[3]);
+        if(ret == 4) {
+            addr = *((in_addr_t *) ip);
+        }
+    }
 
     init_openssl();
+
     err_t err;
-    workloadapi_Client *client = workloadapi_NewClient(&err);
-
+    workloadapi_X509Source *x509source = workloadapi_NewX509Source(NULL, &err);
     if(err != NO_ERROR) {
-        printf("client error! %d\n", (int) err);
+        printf("workloadapi_NewX509Source() failed\n");
+        printf("err: %u\n", err);
         exit(-1);
     }
 
-    workloadapi_Client_defaultOptions(client, NULL);
-    err = workloadapi_Client_Connect(client);
+    err = workloadapi_X509Source_Start(x509source);
     if(err != NO_ERROR) {
-        printf("conn error! %d\n", (int) err);
+        printf("workloadapi_X509Source_Start() failed\n");
+        printf("err: %u\n", err);
         exit(-1);
     }
-
-    x509bundle_Set *set = workloadapi_Client_FetchX509Bundles(client, &err);
-
-    if(err != NO_ERROR) {
-        printf("fetch error! %d\n", (int) err);
-        exit(-1);
-    }
-
-    x509bundle_Source *bundle_src = x509bundle_SourceFromSet(set);
 
     spiffeid_TrustDomain td = { "example.org" };
     tlsconfig_Authorizer *authorizer = tlsconfig_AuthorizeMemberOf(td);
-
     spiffetls_DialMode *mode
-        = spiffetls_TLSClientWithRawConfig(authorizer, bundle_src);
-    spiffetls_dialConfig config = { .base_TLS_conf = NULL, .dialer_fd = 0 };
-
-    SSL *conn = spiffetls_DialWithMode((in_port_t) 4433,
-                                       /*127.0.0.1*/ (in_addr_t) 0x7F000001,
-                                       mode, &config, &err);
-
-    if(conn == NULL) {
+        = spiffetls_MTLSClientWithSource(authorizer, x509source);
+    spiffetls_dialConfig config = { .base_TLS_conf = NULL, .dialer_fd = -1 };
+    SSL *conn
+        = spiffetls_DialWithMode((in_port_t) 4433U, addr, mode, &config, &err);
+    if(conn == NULL || err != NO_ERROR) {
         printf("spiffetls_DialWithMode() failed\n");
-        exit(-1);
-    }
-
-    if(err != NO_ERROR) {
         printf("could not create TLS connection\n");
+        printf("err: %u\n", err);
         exit(-1);
     }
 
-    int write = SSL_write(conn, message, sizeof(message));
-    printf("Write value: %d\n", write);
-    if (write < 0) {
-
+    const int write = SSL_write(conn, message, strlen(message));
+    if(write >= 0) {
+        printf("Write value: %d\n", write);
+        printf("Write content: %s\n", message);
+    } else {
         ERR_load_CRYPTO_strings();
         SSL_load_error_strings();
-        printf("Error: %d\n", SSL_get_error(conn, write));
+        printf("SSL error: %d\n", SSL_get_error(conn, write));
     }
 
-    bytes = SSL_read(conn, buff, sizeof(buff)); /* get reply & decrypt */
-
+    /* get reply & decrypt */
+    char buff[1024];
+    const int bytes = SSL_read(conn, buff, sizeof(buff));
     buff[bytes] = 0;
     printf("Received: \"%s\"\n", buff);
 
-    err = workloadapi_Client_Close(client);
-    if(err != NO_ERROR) {
-        printf("close error! %d\n", (int) err);
-    }
-    workloadapi_Client_Free(client);
-    if(err != NO_ERROR) {
-        printf("client free error! %d\n", (int) err);
-    }
-
     spiffetls_DialMode_Free(mode);
-
     const int fd = SSL_get_fd(conn);
     SSL_shutdown(conn);
     SSL_free(conn);

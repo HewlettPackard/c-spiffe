@@ -7,8 +7,6 @@ project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C)
 
 set(LIB_SVID 
 ${PROJECT_SOURCE_DIR}/x509svid/src/svid.c
-${PROJECT_SOURCE_DIR}/x509svid/src/verify.c
-${PROJECT_SOURCE_DIR}/x509svid/src/source.c
 ${PROJECT_SOURCE_DIR}/jwtsvid/src/svid.c
 ${PROJECT_SOURCE_DIR}/../utils/src/util.c)
 

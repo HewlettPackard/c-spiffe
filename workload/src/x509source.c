@@ -90,12 +90,12 @@ workloadapi_X509Source_GetX509SVID(workloadapi_X509Source *source, err_t *err)
 }
 
 x509bundle_Bundle *workloadapi_X509Source_GetX509BundleForTrustDomain(
-    workloadapi_X509Source *source, spiffeid_TrustDomain *td, err_t *err)
+    workloadapi_X509Source *source, const spiffeid_TrustDomain td, err_t *err)
 {
     *err = workloadapi_X509Source_checkClosed(source);
     if(!(*err)) {
         x509bundle_Bundle *bundle = x509bundle_Set_GetX509BundleForTrustDomain(
-            source->bundles, *td, err);
+            source->bundles, td, err);
         if(*err == ERROR1) {
             *err = ERROR2;
         }

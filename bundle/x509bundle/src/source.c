@@ -9,6 +9,12 @@ x509bundle_Bundle *x509bundle_Source_GetX509BundleForTrustDomain(
     } else if(s->type == X509BUNDLE_SET) {
         return x509bundle_Set_GetX509BundleForTrustDomain(s->source.set, td,
                                                           err);
+    } else if(s->type == X509BUNDLE_WORKLOADAPI_X509SOURCE) {
+        return workloadapi_X509Source_GetX509BundleForTrustDomain(
+            s->source.source, td, err);
+    } else {
+        // unknown type
+        *err = ERROR2;
     }
 
     return NULL;
@@ -45,7 +51,7 @@ x509bundle_Source *x509bundle_SourceFromSource(workloadapi_X509Source *source)
 {
     if(source) {
         x509bundle_Source *my_source = malloc(sizeof *my_source);
-        my_source->type = WORKLOADAPI_X509SOURCE;
+        my_source->type = X509BUNDLE_WORKLOADAPI_X509SOURCE;
         my_source->source.source = source;
 
         return my_source;
@@ -54,7 +60,6 @@ x509bundle_Source *x509bundle_SourceFromSource(workloadapi_X509Source *source)
     return NULL;
 }
 
-
 void x509bundle_Source_Free(x509bundle_Source *s)
 {
     if(s) {
@@ -62,6 +67,8 @@ void x509bundle_Source_Free(x509bundle_Source *s)
             x509bundle_Bundle_Free(s->source.bundle);
         } else if(s->type == X509BUNDLE_SET) {
             x509bundle_Set_Free(s->source.set);
+        } else if(s->type == X509BUNDLE_WORKLOADAPI_X509SOURCE) {
+            workloadapi_X509Source_Free(s->source.source);
         }
 
         free(s);

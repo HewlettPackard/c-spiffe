@@ -14,7 +14,7 @@ typedef struct {
     enum x509bundle_Source_Cardinality {
         X509BUNDLE_BUNDLE,
         X509BUNDLE_SET,
-        WORKLOADAPI_X509SOURCE
+        X509BUNDLE_WORKLOADAPI_X509SOURCE
     } type;
     union {
         x509bundle_Bundle *bundle;

@@ -137,10 +137,26 @@ void spiffetls_DialMode_Free(spiffetls_DialMode *mode)
 {
     if(mode) {
         tlsconfig_Authorizer_Free(mode->authorizer);
-        x509bundle_Source_Free(mode->bundle);
         x509util_CertPool_Free(mode->roots);
-        workloadapi_X509Source_Free(mode->source);
-        x509svid_Source_Free(mode->svid);
+        workloadapi_X509Source *source
+            = mode->bundle ? mode->bundle->source.source : NULL;
+        x509bundle_Source_Free(mode->bundle);
+        if(mode->svid) {
+            workloadapi_X509Source *const tmp_source
+                = mode->svid->source.source;
+            if(tmp_source != source) {
+                x509svid_Source_Free(mode->svid);
+            } else {
+                // source is already freed
+                free(mode->svid);
+            }
+            source = tmp_source;
+        }
+        if(mode->source) {
+            if(mode->source != source) {
+                workloadapi_X509Source_Free(mode->source);
+            }
+        }
 
         free(mode);
     }
@@ -220,9 +236,25 @@ void spiffetls_ListenMode_Free(spiffetls_ListenMode *mode)
 {
     if(mode) {
         tlsconfig_Authorizer_Free(mode->authorizer);
+        workloadapi_X509Source *source
+            = mode->bundle ? mode->bundle->source.source : NULL;
         x509bundle_Source_Free(mode->bundle);
-        workloadapi_X509Source_Free(mode->source);
-        x509svid_Source_Free(mode->svid);
+        if(mode->svid) {
+            workloadapi_X509Source *const tmp_source
+                = mode->svid->source.source;
+            if(tmp_source != source) {
+                x509svid_Source_Free(mode->svid);
+            } else {
+                // source is already freed
+                free(mode->svid);
+            }
+            source = tmp_source;
+        }
+        if(mode->source) {
+            if(mode->source != source) {
+                workloadapi_X509Source_Free(mode->source);
+            }
+        }
 
         free(mode);
     }
