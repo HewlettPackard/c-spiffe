@@ -7,7 +7,6 @@ ENV DEBIAN_FRONTEND noninteractive
 # Install package dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
         gdb \
-        valgrind \
         cmake \
         libssl-dev \
         liburiparser1 liburiparser-dev \
@@ -24,7 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         openssh-server
 RUN apt-get clean
 
-ARG BRANCH=test/198-Spiffetls-dial+listen-integration-test
+ARG BRANCH=test/198-implement-test-cases
 RUN cd /mnt && git clone -b ${BRANCH} https://github.com/arianalima/c-spiffe.git
 RUN cd ${C_SPIFFE_DIR} && git pull
 RUN mkdir -p ${C_SPIFFE_DIR}/build/
