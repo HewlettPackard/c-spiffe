@@ -62,7 +62,6 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
 
     SSL_CTX *tls_config
         = config->base_TLS_conf ? config->base_TLS_conf : createTLSContext();
-
     if(!tls_config) {
         *err = ERROR2;
         goto error;
@@ -83,16 +82,16 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
         *err = ERROR3;
         goto error;
     }
+
     const int sockfd
         = config->dialer_fd > 0 ? config->dialer_fd : createSocket(addr, port);
-
     if(sockfd < 0) {
         // could not create socket with given address and port
         *err = ERROR4;
         goto error;
     }
-    SSL *conn = SSL_new(tls_config);
 
+    SSL *conn = SSL_new(tls_config);
     if(!conn) {
         *err = ERROR5;
         goto error;
@@ -102,7 +101,6 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
     }
 
     SSL_set_connect_state(conn);
-
     if(SSL_connect(conn) != 1) {
         // could not build a SSL session
         SSL_shutdown(conn);
