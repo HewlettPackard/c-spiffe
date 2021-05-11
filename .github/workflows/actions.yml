@@ -64,3 +64,13 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs/html
+
+      - name: Build & push Docker image
+        uses: mr-smithers-excellent/docker-build-push@v3
+        with:
+          image: c-spiffe-build
+          tags: v1, latest
+          registry: docker.io
+          dockerfile: docker/test.Dockerfile
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
