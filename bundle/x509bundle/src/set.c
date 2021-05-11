@@ -114,6 +114,7 @@ void x509bundle_Set_Free(x509bundle_Set *s)
         for(size_t i = 0, size = shlenu(s->bundles); i < size; ++i) {
             x509bundle_Bundle_Free(s->bundles[i].value);
         }
+        shfree(s->bundles);
 
         free(s);
     }
