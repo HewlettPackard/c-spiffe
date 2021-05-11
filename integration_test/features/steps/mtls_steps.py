@@ -6,6 +6,7 @@ import socket
 
 from hamcrest import assert_that, is_, is_not
 from behave.matchers import register_type
+from behave import fail
 from utils import parse_nullable_string
 
 
@@ -61,4 +62,21 @@ def step_impl(context, message):
 @given('The second agent is turned on inside "{container_name}" container with different key chain')
 def step_impl(context, container_name):
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect_agent.sh %s other" % container_name)
+    time.sleep(5)
+
+
+@given('I set the server "{field_alias}" to "{new_value}" inside "{container_name}" container')
+def step_impl(context,field_alias, new_value, container_name):
+    if field_alias == "port":
+        field_name = "bind_port"
+    elif field_alias == "trust domain":
+        field_name = "trust_domain"
+    else:
+        fail("Invalid field to update in the server.conf file")
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-update-server-conf.sh %s %s %s" % (field_name, new_value, container_name))
+
+
+@given('The second server is turned on inside "{container_name}" container')
+def step_impl(context, container_name):
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/grpc_start_server.sh %s" % container_name)
     time.sleep(5)
