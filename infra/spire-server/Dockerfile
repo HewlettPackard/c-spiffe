@@ -3,7 +3,7 @@ FROM ubuntu:focal
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends ca-certificates curl tar gzip
+  && apt-get install -y --no-install-recommends ca-certificates curl tar gzip openssh-server
 
 # Install Spire Server
 ARG SPIRE_VERSION=0.12.0
@@ -21,6 +21,7 @@ WORKDIR ${SPIRE_DIR}
 COPY server.conf conf/server/server.conf
 COPY init-server.sh .
 COPY create-entries.sh .
+COPY ssh-copy-pub.sh .
 RUN chmod +x init-server.sh
 RUN chmod +x create-entries.sh
-
+RUN chmod +x ssh-copy-pub.sh
