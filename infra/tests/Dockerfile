@@ -13,8 +13,8 @@ WORKDIR ${TEST_DIR}/integration_test
 RUN pip3 install -r requirements.txt
 
 # Create user for test workloads
-RUN useradd tests -u 1002
-RUN useradd client-workload
+RUN useradd tests -u 1003
+RUN useradd client-workload -u 1004
 
 # We can added any user for tests but must be sudo
 #USER tests
