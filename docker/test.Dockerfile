@@ -8,11 +8,11 @@ RUN useradd tests -u 1002
 RUN useradd client-workload -u 1003
 
 ARG C_SPIFFE_DIR=/mnt/c-spiffe
-RUN mkdir -p ${TEST_DIR}
+RUN mkdir -p ${C_SPIFFE_DIR}
 
 COPY . ${C_SPIFFE_DIR}/
 
-WORKDIR ${TEST_DIR}/integration_test
+WORKDIR ${C_SPIFFE_DIR}/integration_test
 
 RUN pip3 install -r requirements.txt
 
