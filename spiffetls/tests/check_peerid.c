@@ -9,7 +9,7 @@
 START_TEST(test_spiffetls_PeerIDFromConn)
 {
     /* Hot path */
-    system("./tls_server 40002 resources/good-leaf-only.pem "
+    system("./tls_server 40004 resources/good-leaf-only.pem "
            "resources/key-pkcs8-rsa.pem &");
     sleep(1);
 
@@ -19,7 +19,7 @@ START_TEST(test_spiffetls_PeerIDFromConn)
     spiffetls_dialConfig config = { .base_TLS_conf = NULL, .dialer_fd = -1 };
 
     err_t err;
-    SSL *conn = spiffetls_DialWithMode((in_port_t) 40002,
+    SSL *conn = spiffetls_DialWithMode((in_port_t) 40004,
                                        /*127.0.0.1*/ (in_addr_t) 0x7F000001,
                                        mode, &config, &err);
 
@@ -39,10 +39,10 @@ START_TEST(test_spiffetls_PeerIDFromConn)
     spiffeid_ID_Free(&id);
 
     /* certificate with no spiffe ID */
-    system("./tls_server 40003 &");
+    system("./tls_server 40005 &");
     sleep(1);
 
-    conn = spiffetls_DialWithMode((in_port_t) 40003,
+    conn = spiffetls_DialWithMode((in_port_t) 40005,
                                   /*127.0.0.1*/ (in_addr_t) 0x7F000001, mode,
                                   &config, &err);
     id = spiffetls_PeerIDFromConn(conn, &err);

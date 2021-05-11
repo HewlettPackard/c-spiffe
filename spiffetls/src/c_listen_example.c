@@ -14,7 +14,7 @@ int main(void)
     x509svid_SVID *svid
         = x509svid_Load("server_cert.pem", "server_key.pem", &err);
 
-    if (svid == NULL || err != NO_ERROR) {
+    if(svid == NULL || err != NO_ERROR) {
         printf("Could not load svid!\n");
         exit(-1);
     }

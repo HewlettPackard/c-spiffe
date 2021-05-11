@@ -14,9 +14,10 @@ static int createSocket(in_addr_t addr, in_port_t port)
     if(sockfd < 0) {
         // could not create socket
         return -1;
-    } 
-    
-    const int connect_ret = connect(sockfd, (const struct sockaddr *) &address, sizeof address);
+    }
+
+    const int connect_ret
+        = connect(sockfd, (const struct sockaddr *) &address, sizeof address);
     if(connect_ret < 0) {
         // could not connect socket with given address and port
         return -1;
@@ -41,10 +42,18 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
         workloadapi_X509Source *source = mode->source;
         if(!source) {
             source = workloadapi_NewX509Source(NULL, err);
-
             if(*err) {
+                // could not create source
+                *err = ERROR1;
                 goto error;
             }
+
+            /**err = workloadapi_X509Source_Start(source);
+            if(*err) {
+                // could not start source
+                *err = ERROR1;
+                goto error;
+            }*/
         }
         mode->source = source;
         mode->bundle = x509bundle_SourceFromSource(source);
@@ -53,9 +62,8 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
 
     SSL_CTX *tls_config
         = config->base_TLS_conf ? config->base_TLS_conf : createTLSContext();
-
     if(!tls_config) {
-        *err = ERROR4;
+        *err = ERROR2;
         goto error;
     }
 
@@ -71,33 +79,34 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
     case MTLS_WEBCLIENT_MODE:
     default:
         // unknown mode
-        *err = ERROR1;
+        *err = ERROR3;
         goto error;
     }
+
     const int sockfd
         = config->dialer_fd > 0 ? config->dialer_fd : createSocket(addr, port);
-
     if(sockfd < 0) {
         // could not create socket with given address and port
-        *err = ERROR2;
+        *err = ERROR4;
         goto error;
     }
-    SSL *conn = SSL_new(tls_config);
 
+    SSL *conn = SSL_new(tls_config);
     if(!conn) {
+        *err = ERROR5;
         goto error;
     } else if(SSL_set_fd(conn, sockfd) != 1) {
+        *err = ERROR5;
         goto error;
     }
 
     SSL_set_connect_state(conn);
-
     if(SSL_connect(conn) != 1) {
         // could not build a SSL session
         SSL_shutdown(conn);
         SSL_free(conn);
         close(sockfd);
-        *err = ERROR3;
+        *err = ERROR5;
         goto error;
     }
     // successful handshake

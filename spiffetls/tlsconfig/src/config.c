@@ -79,21 +79,6 @@ struct hookMTLSClientConfig_st {
 
 struct hookMTLSClientConfig_st *__config = NULL;
 
-static int hookMTLSClientConfig_cb(SSL *ssl, X509 **cert, EVP_PKEY **pkey)
-{
-    err_t err;
-    x509svid_SVID *svid = x509svid_Source_GetX509SVID(__config->svid, &err);
-
-    if(!err && svid) {
-        *cert = svid->certs[0];
-        *pkey = svid->private_key;
-
-        return 1;
-    }
-
-    return 0;
-}
-
 bool tlsconfig_HookMTLSClientConfig(SSL_CTX *ctx, x509svid_Source *svid,
                                     x509bundle_Source *bundle,
                                     tlsconfig_Authorizer *authorizer,
@@ -132,38 +117,48 @@ bool tlsconfig_HookMTLSClientConfig(SSL_CTX *ctx, x509svid_Source *svid,
     return true;
 }
 
-static void hookTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid)
+static bool hookTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid)
 {
     err_t err;
     x509svid_SVID *my_svid = x509svid_Source_GetX509SVID(svid, &err);
 
     if(!err && my_svid) {
-        SSL_CTX_use_certificate(ctx, my_svid->certs[0]);
-        SSL_CTX_use_PrivateKey(ctx, my_svid->private_key);
+        int ret = SSL_CTX_use_certificate(ctx, my_svid->certs[0]);
+        ret = ret && SSL_CTX_use_PrivateKey(ctx, my_svid->private_key);
+        return ret != 0;
     }
+
+    return false;
 }
 
-void tlsconfig_HookTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
+bool tlsconfig_HookTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
                                    tlsconfig_Option **opts)
 {
     tlsconfig_resetAuthFields(ctx);
 
-    hookTLSServerConfig(ctx, svid);
+    return hookTLSServerConfig(ctx, svid);
 }
 
-void tlsconfig_HookMTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
+bool tlsconfig_HookMTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
                                     x509bundle_Source *bundle,
                                     tlsconfig_Authorizer *authorizer,
                                     tlsconfig_Option **opts)
 {
     tlsconfig_resetAuthFields(ctx);
 
-    struct hookTLSClientConfig_st *safe_arg = malloc(sizeof *safe_arg);
-    safe_arg->bundle = bundle;
-    safe_arg->authorizer = authorizer;
-    safe_arg->opts = opts;
+    if(hookTLSServerConfig(ctx, svid)) {
+        struct hookTLSClientConfig_st *safe_arg = malloc(sizeof *safe_arg);
+        safe_arg->bundle = bundle;
+        safe_arg->authorizer = authorizer;
+        safe_arg->opts = opts;
 
-    SSL_CTX_set_cert_verify_callback(ctx, hookTLSClientConfig_cb, safe_arg);
+        SSL_CTX_set_cert_verify_callback(ctx, hookTLSClientConfig_cb,
+                                         safe_arg);
+
+        return true;
+    }
+
+    return false;
 }
 
 void tlsconfig_resetAuthFields(SSL_CTX *ctx)

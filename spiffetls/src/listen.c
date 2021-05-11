@@ -56,10 +56,17 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
         workloadapi_X509Source *source = mode->source;
         if(!source) {
             source = workloadapi_NewX509Source(NULL, err);
-
             if(*err) {
+                *err = ERROR1;
                 goto error;
             }
+
+            /**err = workloadapi_X509Source_Start(source);
+            if(*err) {
+                // could not start source
+                *err = ERROR1;
+                goto error;
+            }*/
         }
         mode->source = source;
         mode->bundle = x509bundle_SourceFromSource(source);
@@ -68,6 +75,10 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
 
     SSL_CTX *tls_config
         = config->base_TLS_conf ? config->base_TLS_conf : createTLSContext();
+    if(!tls_config) {
+        *err = ERROR2;
+        goto error;
+    }
 
     switch(mode->mode) {
     case TLS_SERVER_MODE:
@@ -80,7 +91,7 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
     case MTLS_WEBSERVER_MODE:
     default:
         // unknown mode
-        *err = ERROR1;
+        *err = ERROR3;
         goto error;
     }
 
@@ -88,7 +99,7 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
         = config->listener_fd > 0 ? config->listener_fd : createSocket(port);
     if(sockfd < 0) {
         // could not create socket with given address and port
-        *err = ERROR2;
+        *err = ERROR4;
         goto error;
     }
 
@@ -98,30 +109,31 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
     if(clientfd < 0) {
         // could not accept client
         close(sockfd);
-        *err = ERROR3;
+        *err = ERROR5;
         goto error;
     }
-
     *sock = sockfd;
-    SSL *conn = SSL_new(tls_config);
 
+    SSL *conn = SSL_new(tls_config);
     if(!conn) {
+        *err = ERROR6;
         goto error;
     } else if(SSL_set_fd(conn, clientfd) != 1) {
+        *err = ERROR6;
         goto error;
     } else if(SSL_set_num_tickets(conn, 0) != 1) {
+        *err = ERROR6;
         goto error;
     }
 
     SSL_set_accept_state(conn);
-    const int ret = SSL_accept(conn);
-    if(ret != 1) {
+    if(SSL_accept(conn) != 1) {
         // could not build a SSL session
         SSL_shutdown(conn);
         SSL_free(conn);
         close(clientfd);
         close(sockfd);
-        *err = ERROR4;
+        *err = ERROR6;
         goto error;
     }
     // successful handshake

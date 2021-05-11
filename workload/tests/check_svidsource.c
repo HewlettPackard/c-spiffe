@@ -3,20 +3,20 @@
 
 START_TEST(test_x509svid_SourceFromSource)
 {
-    /* type puning from integer '1' to address 0x1, which is a placeholder for
-     * the actual pointer. */
+    err_t err;
     x509svid_Source *source
-        = x509svid_SourceFromSource((workloadapi_X509Source *) 0x1);
+        = x509svid_SourceFromSource(workloadapi_NewX509Source(NULL, &err));
 
+    ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_ne(source, NULL);
 
     x509svid_Source_Free(source);
 }
 END_TEST
 
-Suite *source_suite(void)
+Suite *svidsource_suite(void)
 {
-    Suite *s = suite_create("source");
+    Suite *s = suite_create("svid source");
     TCase *tc_core = tcase_create("core");
 
     tcase_add_test(tc_core, test_x509svid_SourceFromSource);
@@ -28,7 +28,7 @@ Suite *source_suite(void)
 
 int main(void)
 {
-    Suite *s = source_suite();
+    Suite *s = svidsource_suite();
     SRunner *sr = srunner_create(s);
 
     srunner_run_all(sr, CK_NORMAL);

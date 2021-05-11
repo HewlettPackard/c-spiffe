@@ -53,6 +53,9 @@ pthread
 crypto)
 
 set(LIB_SOURCE
+  ${PROJECT_SOURCE_DIR}/../svid/x509svid/src/verify.c
+  ${PROJECT_SOURCE_DIR}/../bundle/x509bundle/src/source.c
+  ${PROJECT_SOURCE_DIR}/../svid/x509svid/src/source.c
   src/x509source.c
   src/jwtsource.c
 )
