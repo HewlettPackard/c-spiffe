@@ -1,9 +1,10 @@
 #!/bin/bash
-if [ $3 ];
+#arguments: $1 = field to be updated; $2 = new value for the field; $3 = 'server' or 'agent'; $4 = hostname (optional)
+if [ $4 ];
 then
-    ssh root@$3 <<EOL 
-    sed -i 's/'$1' = "\([^"]\)*"/'$1' = "'$2'"/' /opt/spire/conf/server/server.conf
+    ssh root@$4 <<EOL 
+    sed -i 's/'$1' = "\([^"]\)*"/'$1' = "'$2'"/' /opt/spire/conf/'$3'/'$3'.conf
 EOL
 else
-    sed -i 's/'$1' = "\([^"]\)*"/'$1' = "'$2'"/' /opt/spire/conf/server/server.conf
+    sed -i 's/'$1' = "\([^"]\)*"/'$1' = "'$2'"/' /opt/spire/conf/$3/$3.conf
 fi
