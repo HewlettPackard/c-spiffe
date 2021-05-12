@@ -49,7 +49,7 @@ START_TEST(test_jwtbundle_Parse)
         const int key_type = EVP_PKEY_base_id(pkey);
         ck_assert(key_type == EVP_PKEY_RSA || key_type == EVP_PKEY_EC);
     }
-    ck_assert_srt_eq(bundle_ptr->td.name, "example.com");
+    ck_assert_str_eq(bundle_ptr->td.name, "example.com");
 
     jwtbundle_Bundle_Free(bundle_ptr);
 }
@@ -75,7 +75,7 @@ START_TEST(test_jwtbundle_Load)
         const int key_type = EVP_PKEY_base_id(pkey);
         ck_assert(key_type == EVP_PKEY_RSA || key_type == EVP_PKEY_EC);
     }
-    ck_assert_srt_eq(bundle_ptr->td.name, "example.com");
+    ck_assert_str_eq(bundle_ptr->td.name, "example.com");
 
     jwtbundle_Bundle_Free(bundle_ptr);
 }
@@ -157,7 +157,7 @@ START_TEST(test_jwtbundle_FromJWTAuthorities)
     jwtbundle_Bundle *bundle_ptr = jwtbundle_FromJWTAuthorities(td, jwt_auths);
 
     ck_assert(jwtutil_JWTAuthoritiesEqual(jwt_auths, bundle_ptr->auths));
-    ck_assert_srt_eq(bundle_ptr->td.name, "example.com");
+    ck_assert_str_eq(bundle_ptr->td.name, "example.com");
 
     for(int i = 0; i < ITERS; ++i) {
         BIO_free(bio_mems[i]);
