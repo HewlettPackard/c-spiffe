@@ -2,10 +2,15 @@
 #include <check.h>
 #include <unistd.h>
 
-void *call_client(void *unused)
+void *call_client(void *arg)
 {
     sleep(1);
-    system("./tls_client 20001 &");
+    const char *port = arg;
+    string_t run = string_new("./tls_client ");
+    run = string_push(run, port);
+    run = string_push(run, " &");
+    system(run);
+    arrfree(run);
     pthread_exit(NULL);
     return NULL;
 }
@@ -23,7 +28,7 @@ void test_TLSServerWithRawConfig(void)
     spiffetls_ListenMode *mode = spiffetls_TLSServerWithRawConfig(svid_src);
 
     pthread_t thread;
-    pthread_create(&thread, NULL, call_client, NULL);
+    pthread_create(&thread, NULL, call_client, "20001");
 
     spiffetls_listenConfig config
         = { .base_TLS_conf = NULL, .listener_fd = -1 };
@@ -59,13 +64,13 @@ void test_MTLSServerWithRawConfig(void)
     spiffetls_ListenMode *mode = spiffetls_MTLSServer(authorizer);
 
     pthread_t thread;
-    pthread_create(&thread, NULL, call_client, NULL);
+    pthread_create(&thread, NULL, call_client, "20002");
 
     spiffetls_listenConfig config
         = { .base_TLS_conf = NULL, .listener_fd = -1 };
     int serverfd;
     err_t err;
-    SSL *conn = spiffetls_ListenWithMode((in_port_t) 20001, mode, &config,
+    SSL *conn = spiffetls_ListenWithMode((in_port_t) 20002, mode, &config,
                                          &serverfd, &err);
 
     ck_assert_uint_ne(err, NO_ERROR);
