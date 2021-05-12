@@ -15,13 +15,13 @@ register_type(NullableString=parse_nullable_string)
 
 @then('The second agent is turned off inside "{container_name}" container')
 def step_impl(context, container_name):
-    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-stop_agent.sh %s" % container_name)
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-stop-agent.sh %s" % container_name)
     time.sleep(5)
 
 
 @given('The second agent is turned on inside "{container_name}" container')
 def step_impl(context, container_name):
-    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect_agent.sh %s" % container_name)
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect-agent.sh WlB %s" % container_name)
     time.sleep(5)
 
 
@@ -60,22 +60,25 @@ def step_impl(context, message):
 
 @given('The second agent is turned on inside "{container_name}" container with different key chain')
 def step_impl(context, container_name):
-    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect_agent.sh %s other" % container_name)
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect-agent.sh WlC %s" % container_name)
     time.sleep(5)
 
 
-@given('I set the server "{field_alias}" to "{new_value}" inside "{container_name}" container')
-def step_impl(context,field_alias, new_value, container_name):
+@given('I set the "{process}" "{field_alias}" to "{new_value}" inside "{container_name}" container')
+def step_impl(context, process, field_alias, new_value, container_name):
+    if process != ("agent" or "server"):
+        raise Exception("Invalid process to update the conf file. Choose 'agent' or 'server'.")
     if field_alias == "port":
         field_name = "bind_port"
     elif field_alias == "trust domain":
         field_name = "trust_domain"
     else:
-        raise Exception("Invalid field to update in the server.conf file")
-    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-update-server-conf.sh %s %s %s" % (field_name, new_value, container_name))
+        raise Exception("Invalid field to update in the server.conf/agent.conf file.")
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-update-server-conf.sh %s %s %s %s" % (field_name, new_value, process, container_name))
 
 
 @given('The second server is turned on inside "{container_name}" container')
 def step_impl(context, container_name):
-    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/grpc_start_server.sh %s" % container_name)
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-start-server.sh %s" % container_name)
     time.sleep(5)
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-create-entries.sh %s" % container_name)
