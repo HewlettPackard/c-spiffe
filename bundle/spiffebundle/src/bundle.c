@@ -9,6 +9,7 @@ spiffebundle_Bundle *spiffebundle_New(const spiffeid_TrustDomain td)
         bundle->td.name = string_new(td.name);
         mtx_init(&(bundle->mtx), mtx_plain);
         bundle->jwtAuths = NULL;
+        sh_new_strdup(bundle->jwtAuths);
         bundle->x509Auths = NULL;
         bundle->refreshHint = NULL;
         bundle->seqNumber = NULL;
