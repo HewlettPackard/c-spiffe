@@ -54,7 +54,8 @@ typedef struct jwtsvid_SVID {
 
 /** Validates the token and returns the claims. */
 typedef map_string_claim *(*token_validator_t)(jwtsvid_JWT *,
-                                               spiffeid_TrustDomain, err_t *);
+                                               spiffeid_TrustDomain, void *,
+                                               err_t *);
 
 /**
  * Parses and validates a JWT-SVID token and returns the JWT-SVID. The
@@ -88,14 +89,15 @@ jwtsvid_SVID *jwtsvid_ParseInsecure(char *token, string_arr_t audience,
  * validation step is defined by the validator function.
  *
  * \param token [in] string JWT token.
- * \param validator [in] Validator function.
  * \param audience [in] stb array of audiences.
+ * \param validator [in] Validator function.
+ * \param arg [in] argument to pass to the validator.
  * \param err [out] Variable to get information in the event of error.
  * \returns Parsed JWT-SVID object pointer. Must be freed using
  * jwtsvid_SVID_Free function.
  */
 jwtsvid_SVID *jwtsvid_parse(char *token, string_arr_t audience,
-                            token_validator_t validator, err_t *err);
+                            token_validator_t validator, void *arg, err_t *err);
 
 /**
  * Marshal returns the JWT-SVID marshaled to a string.

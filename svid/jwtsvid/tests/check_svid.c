@@ -47,7 +47,7 @@ START_TEST(test_jwtsvid_parse)
                    "rOB7qrf4tVj4_1G-d-_vYe8dHmQsYOe3-AwZfTAfCKZYARiUm4tO8-"
                    "t1ur7Oy14SlM79FQExohAPzbAPJ02_Zg-9s6DknmNDg";
     err_t err;
-    jwtsvid_SVID *svid = jwtsvid_parse(token, NULL, NULL, &err);
+    jwtsvid_SVID *svid = jwtsvid_parse(token, NULL, NULL, NULL, &err);
 
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_eq(svid->audience, NULL);

@@ -7,8 +7,6 @@
 // one minute leeway
 const time_t DEFAULT_LEEWAY = 60L;
 
-jwtbundle_Source *__bundles;
-
 typedef struct {
     string_t issuer;
     string_t subject;
@@ -18,6 +16,19 @@ typedef struct {
     time_t issued_at;
     string_t id;
 } jwtsvid_Claims;
+
+static void jwtsvid_JWT_Free(jwtsvid_JWT *jwt)
+{
+    if(jwt) {
+        free(jwt->header);
+        free(jwt->payload);
+        arrfree(jwt->header_str);
+        arrfree(jwt->payload_str);
+        arrfree(jwt->signature);
+
+        free(jwt);
+    }
+}
 
 static jwtsvid_JWT *token_to_jwt(char *token, err_t *err)
 {
@@ -60,6 +71,7 @@ static jwtsvid_JWT *token_to_jwt(char *token, err_t *err)
                     return jwt;
                 }
                 // error parsing
+                jwtsvid_JWT_Free(jwt);
                 *err = ERROR3;
                 return NULL;
             }
@@ -168,10 +180,9 @@ static err_t validate_jwt(jwtsvid_JWT *jwt, EVP_PKEY *pkey)
                     ret = EVP_DigestVerifyFinal(
                         ctx, (const unsigned char *) buffer, buffer_size);
                 } else if(key_type == EVP_PKEY_EC) {
-                    EC_KEY *ec_key = EVP_PKEY_get1_EC_KEY(pkey);
+                    EC_KEY *ec_key = EVP_PKEY_get0_EC_KEY(pkey);
                     const int deg
                         = EC_GROUP_get_degree(EC_KEY_get0_group(ec_key));
-                    EC_KEY_free(ec_key);
 
                     bool suc;
                     string_t sig
@@ -179,10 +190,10 @@ static err_t validate_jwt(jwtsvid_JWT *jwt, EVP_PKEY *pkey)
                     if(suc && sig) {
                         ret = EVP_DigestVerifyFinal(
                             ctx, (const unsigned char *) sig, arrlenu(sig));
-                        arrfree(sig);
                     } else {
                         ret = 0;
                     }
+                    arrfree(sig);
                 }
 
                 EVP_MD_CTX_free(ctx);
@@ -202,19 +213,6 @@ static err_t validate_jwt(jwtsvid_JWT *jwt, EVP_PKEY *pkey)
     }
     // jwt is NULL
     return ERROR1;
-}
-
-static void jwtsvid_JWT_Free(jwtsvid_JWT *jwt)
-{
-    if(jwt) {
-        free(jwt->header);
-        free(jwt->payload);
-        arrfree(jwt->header_str);
-        arrfree(jwt->payload_str);
-        arrfree(jwt->signature);
-
-        free(jwt);
-    }
 }
 
 static void jwtsvid_Claims_Free(jwtsvid_Claims *claims)
@@ -252,7 +250,8 @@ static map_string_claim *json_to_map(json_t *obj)
 }
 
 static map_string_claim *parseAndValidate(jwtsvid_JWT *jwt,
-                                          spiffeid_TrustDomain td, err_t *err)
+                                          spiffeid_TrustDomain td, void *arg,
+                                          err_t *err)
 {
     if(jwt) {
         json_t *kid_json = json_object_get(jwt->header, "kid");
@@ -278,8 +277,9 @@ static map_string_claim *parseAndValidate(jwtsvid_JWT *jwt,
         }
 
         if(!empty_str(kid_str) && type_correct) {
+            jwtbundle_Bundle *bundles = arg;
             jwtbundle_Bundle *bundle
-                = jwtbundle_Source_GetJWTBundleForTrustDomain(__bundles, td,
+                = jwtbundle_Source_GetJWTBundleForTrustDomain(bundles, td,
                                                               err);
             if(*err) {
                 // could not find bundle for given trust domain
@@ -321,7 +321,8 @@ static map_string_claim *parseAndValidate(jwtsvid_JWT *jwt,
 }
 
 static map_string_claim *parseInsecure(jwtsvid_JWT *jwt,
-                                       spiffeid_TrustDomain td, err_t *err)
+                                       spiffeid_TrustDomain td, void *unused,
+                                       err_t *err)
 {
     if(jwt) {
         map_string_claim *claims = json_to_map(jwt->payload);
@@ -481,14 +482,13 @@ static err_t jwtsvid_validateTokenAlgorithm(jwtsvid_JWT *jwt)
 jwtsvid_SVID *jwtsvid_ParseAndValidate(char *token, jwtbundle_Source *bundles,
                                        string_arr_t audience, err_t *err)
 {
-    __bundles = bundles;
-    return jwtsvid_parse(token, audience, parseAndValidate, err);
+    return jwtsvid_parse(token, audience, parseAndValidate, bundles, err);
 }
 
 jwtsvid_SVID *jwtsvid_ParseInsecure(char *token, string_arr_t audience,
                                     err_t *err)
 {
-    return jwtsvid_parse(token, audience, parseInsecure, err);
+    return jwtsvid_parse(token, audience, parseInsecure, NULL, err);
 }
 
 const char *jwtsvid_SVID_Marshal(jwtsvid_SVID *svid)
@@ -499,7 +499,7 @@ const char *jwtsvid_SVID_Marshal(jwtsvid_SVID *svid)
 }
 
 jwtsvid_SVID *jwtsvid_parse(char *token, string_arr_t audience,
-                            token_validator_t validator, err_t *err)
+                            token_validator_t validator, void *arg, err_t *err)
 {
     jwtsvid_JWT *jwt = NULL;
     jwtsvid_Claims *claims = NULL;
@@ -532,7 +532,7 @@ jwtsvid_SVID *jwtsvid_parse(char *token, string_arr_t audience,
 
                 if(validator)
                     claims_map
-                        = validator(jwt, spiffeid_ID_TrustDomain(id), &err2);
+                        = validator(jwt, spiffeid_ID_TrustDomain(id), arg, &err2);
                 if(err2) {
                     // could not validate jwt object
                     *err = ERROR5;
