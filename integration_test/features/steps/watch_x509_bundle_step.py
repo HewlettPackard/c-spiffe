@@ -28,5 +28,5 @@ def step_impl(context):
 
 @when('The server is turned on')
 def step_impl(context):
-    os.system("./grpc_start_server.sh")
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/grpc_start_server.sh")
     time.sleep(5)
