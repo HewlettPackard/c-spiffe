@@ -1,7 +1,6 @@
 #include "internal/jwtutil/src/util.h"
 #include "internal/cryptoutil/src/keys.h"
 #include <cjose/cjose.h>
-#include <jansson.h>
 #include <openssl/x509.h>
 
 typedef struct _ec_keydata_int {
@@ -60,7 +59,8 @@ bool jwtutil_JWTAuthoritiesEqual(map_string_EVP_PKEY *hash1,
 
 jwtutil_JWKS jwtutil_ParseJWKS(const char *bytes, err_t *err)
 {
-    jwtutil_JWKS pair = { .jwt_auths = NULL, .x509_auths = NULL };
+    jwtutil_JWKS jwks
+        = { .jwt_auths = NULL, .x509_auths = NULL, .root = NULL };
     *err = NO_ERROR;
 
     if(bytes) {
@@ -82,8 +82,9 @@ jwtutil_JWKS jwtutil_ParseJWKS(const char *bytes, err_t *err)
             *err = ERROR3;
             goto error1;
         }
+        jwks.root = root;
 
-        sh_new_strdup(pair.jwt_auths);
+        sh_new_strdup(jwks.jwt_auths);
         const int n_keys = json_array_size(keys);
         bool err_flag = false;
         for(int i = 0; i < n_keys && !err_flag; ++i) {
@@ -141,7 +142,7 @@ jwtutil_JWKS jwtutil_ParseJWKS(const char *bytes, err_t *err)
                 }
                 if(pkey) {
                     // insert id and its public key on the map
-                    shput(pair.jwt_auths, kid, pkey);
+                    shput(jwks.jwt_auths, kid, pkey);
                 }
             } else {
                 json_t *certs_json = json_object_get(elem_obj, "x5c");
@@ -158,11 +159,11 @@ jwtutil_JWKS jwtutil_ParseJWKS(const char *bytes, err_t *err)
 
                 json_t *leaf_json = json_array_get(certs_json, 0);
                 const char *leaf_str = NULL;
-                if(leaf_json)
+                if(leaf_json) {
                     leaf_str = json_typeof(leaf_json) == JSON_STRING
                                    ? json_string_value(leaf_json)
                                    : NULL;
-
+                }
                 uint8_t *buffer;
                 size_t buffer_len;
                 cjose_base64_decode(leaf_str, strlen(leaf_str), &buffer,
@@ -170,7 +171,7 @@ jwtutil_JWKS jwtutil_ParseJWKS(const char *bytes, err_t *err)
                 const uint8_t *buffer_out = buffer;
                 X509 *cert = d2i_X509(NULL, &buffer_out, buffer_len);
                 if(cert) {
-                    arrput(pair.x509_auths, cert);
+                    arrput(jwks.x509_auths, cert);
                 }
 
                 free(buffer);
@@ -181,19 +182,20 @@ error2:
 
         if(err_flag) {
             *err = ERROR4;
-            jwtutil_JWKS_Free(&pair);
+            jwtutil_JWKS_Free(&jwks);
+            root = NULL;
         }
 error1:
-        if(root) {
+        if(root && !jwks.root) {
             free(root);
         }
 
-        return pair;
+        return jwks;
     }
 
     // null pointer error
     *err = ERROR1;
-    return pair;
+    return jwks;
 }
 
 void jwtutil_JWKS_Free(jwtutil_JWKS *jwks)
@@ -207,5 +209,9 @@ void jwtutil_JWKS_Free(jwtutil_JWKS *jwks)
             EVP_PKEY_free(jwks->jwt_auths[i].value);
         }
         shfree(jwks->jwt_auths);
+        if(jwks->root) {
+            free(jwks->root);
+            jwks->root = NULL;
+        }
     }
 }

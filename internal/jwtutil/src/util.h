@@ -2,6 +2,7 @@
 #define INCLUDE_INTERNAL_JWTUTIL_UTIL_H
 
 #include "utils/src/util.h"
+#include <jansson.h>
 #include <stdbool.h>
 
 #ifdef __cplusplus
@@ -11,6 +12,7 @@ extern "C" {
 typedef struct {
     map_string_EVP_PKEY *jwt_auths;
     X509 **x509_auths;
+    json_t *root;
 } jwtutil_JWKS;
 
 /**
