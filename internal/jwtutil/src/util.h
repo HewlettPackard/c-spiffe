@@ -8,6 +8,11 @@
 extern "C" {
 #endif
 
+typedef struct {
+    map_string_EVP_PKEY *jwt_auths;
+    X509 **x509_auths;
+} jwtutil_JWKS;
+
 /**
  * Copy a stb string hash map of jwt authorities.
  *
@@ -27,6 +32,17 @@ map_string_EVP_PKEY *jwtutil_CopyJWTAuthorities(map_string_EVP_PKEY *hash);
  */
 bool jwtutil_JWTAuthoritiesEqual(map_string_EVP_PKEY *hash1,
                                  map_string_EVP_PKEY *hash2);
+
+/**
+ * Parses a JWKS in raw bytes format
+ *
+ * \param bytes [in] ...
+ * \param err [out] ...
+ * \returns ...
+ */
+jwtutil_JWKS jwtutil_ParseJWKS(const char *bytes, err_t *err);
+
+void jwtutil_JWKS_Free(jwtutil_JWKS *jwks);
 
 #ifdef __cplusplus
 }
