@@ -233,7 +233,7 @@ START_TEST(test_workloadapi_X509Source_GetX509BundleForTrustDomain);
 {
     err_t err;
     workloadapi_X509Source *tested = workloadapi_NewX509Source(NULL, &err);
-    string_t td_url = string_new("example.org");
+    const char td_url[] = "example.org";
     spiffeid_TrustDomain td = spiffeid_TrustDomainFromString(td_url, &err);
 
     x509bundle_Bundle *bundle
