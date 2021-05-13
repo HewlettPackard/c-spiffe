@@ -24,8 +24,10 @@ int main(int argc, char **argv)
 
     string_t message = string_new(argv[1]);
     message = string_push(message, "\n");
+    // default address
     in_addr_t addr = /*127.0.0.1*/ 0x7F000001U;
     if(argc >= 3) {
+        // get IP
         uint8_t ip[4];
         const int dir[2][4] = { /*big endian*/ { 0, 1, 2, 3 },
                                 /*little endian*/ { 3, 2, 1, 0 } };
@@ -34,6 +36,18 @@ int main(int argc, char **argv)
                                ip + my_dir[1], ip + my_dir[2], ip + my_dir[3]);
         if(ret == 4) {
             addr = *((in_addr_t *) ip);
+        }
+    }
+    // default trust domain
+    spiffeid_TrustDomain td = { string_new("example.org") };
+    if(argc >= 4) {
+        err_t err;
+        spiffeid_TrustDomain new_td
+            = spiffeid_TrustDomainFromString(argv[3], &err);
+
+        if(!err) {
+            spiffeid_TrustDomain_Free(&td);
+            td = new_td;
         }
     }
 
@@ -54,7 +68,6 @@ int main(int argc, char **argv)
         exit(-1);
     }
 
-    spiffeid_TrustDomain td = { "example.org" };
     tlsconfig_Authorizer *authorizer = tlsconfig_AuthorizeMemberOf(td);
     spiffetls_DialMode *mode
         = spiffetls_MTLSClientWithSource(authorizer, x509source);
@@ -85,6 +98,7 @@ int main(int argc, char **argv)
     buff[bytes] = 0;
     printf("Server replied: \"%s\"", buff);
 
+    spiffeid_TrustDomain_Free(&td);
     spiffetls_DialMode_Free(mode);
     const int fd = SSL_get_fd(conn);
     SSL_shutdown(conn);
