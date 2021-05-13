@@ -277,7 +277,7 @@ static map_string_claim *parseAndValidate(jwtsvid_JWT *jwt,
         }
 
         if(!empty_str(kid_str) && type_correct) {
-            jwtbundle_Bundle *bundles = arg;
+            jwtbundle_Source *bundles = arg;
             jwtbundle_Bundle *bundle
                 = jwtbundle_Source_GetJWTBundleForTrustDomain(bundles, td,
                                                               err);
