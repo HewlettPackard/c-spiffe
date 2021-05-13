@@ -39,7 +39,7 @@ Feature: Mutual TLS
         Then  I check that the "SVID" is returned correctly
         # When  The go-tls-listen is activated inside "workload" container
         # And   I send "Hello World!" to "workload" container through "go"-tls-dial
-        # # Then  I check that "Hello World!" was the answer from go-tls-listen
+        # Then  I check that mTLS connection did not succeed
         Then   The second "agent" is turned off inside "workload" container
         Then    The second "server" is turned off inside "spire-server2" container
         # And   The go-tls-listen is disabled inside "workload" container

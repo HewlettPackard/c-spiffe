@@ -48,14 +48,14 @@ def step_impl(context, message, container_name, language):
     elif language == "c":
         client = os.popen("/mnt/c-spiffe/build/spiffetls/c_dial %s %s" % (message, socket.gethostbyname(container_name)))
         result = client.read()
-
-    actual_message = result.replace("\"","").split("Server replied:")
-    context.tls_answer = actual_message[-1].strip().replace("\\n","")
+    context.result = result
 
 
 @then('I check that "{message:NullableString}" was the answer from go-tls-listen')
 def step_impl(context, message):
-    assert_that(context.tls_answer, is_(message))
+    tls_answer = context.result.replace("\"","").split("Server replied:")
+    actual_message = tls_answer[-1].strip().replace("\\n","")
+    assert_that(actual_message, is_(message))
 
 
 @given('The second agent is turned on inside "{container_name}" container with the second trust domain')
@@ -89,3 +89,8 @@ def step_impl(context, container_name):
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-start-server.sh 2")
     time.sleep(5)
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-create-entries.sh 2")
+
+
+@then('I check that mTLS connection did not succeed')
+def step_impl(context):
+    pass
