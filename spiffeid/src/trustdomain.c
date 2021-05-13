@@ -1,9 +1,12 @@
 #include "spiffeid/src/trustdomain.h"
 
-spiffeid_TrustDomain spiffeid_TrustDomainFromString(string_t str, err_t *err)
+spiffeid_TrustDomain spiffeid_TrustDomainFromString(const char *uri,
+                                                    err_t *err)
 {
     const char spiffe_scheme[] = "spiffe://";
     const size_t spiffe_scheme_len = sizeof spiffe_scheme - 1;
+
+    string_t str = string_new(uri);
 
     if(!string_contains(str, "://")) {
         // inserts spiffe scheme at beginning of the string
@@ -12,6 +15,7 @@ spiffeid_TrustDomain spiffeid_TrustDomainFromString(string_t str, err_t *err)
     }
 
     spiffeid_ID id = spiffeid_FromString(str, err);
+    arrfree(str);
 
     if(!(*err)) {
         arrfree(id.path);
