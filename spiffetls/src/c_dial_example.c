@@ -38,12 +38,22 @@ int main(int argc, char **argv)
             addr = *((in_addr_t *) ip);
         }
     }
+    // default port
+    in_port_t port = 4433U;
+    if(argc >= 4) {
+        in_port_t new_port;
+        const int ret = sscanf(argv[3], "%hd", &new_port);
+
+        if(ret == 1) {
+            port = new_port;
+        }
+    }
     // default trust domain
     spiffeid_TrustDomain td = { string_new("example.org") };
-    if(argc >= 4) {
+    if(argc >= 5) {
         err_t err;
         spiffeid_TrustDomain new_td
-            = spiffeid_TrustDomainFromString(argv[3], &err);
+            = spiffeid_TrustDomainFromString(argv[4], &err);
 
         if(!err) {
             spiffeid_TrustDomain_Free(&td);
@@ -72,8 +82,7 @@ int main(int argc, char **argv)
     spiffetls_DialMode *mode
         = spiffetls_MTLSClientWithSource(authorizer, x509source);
     spiffetls_dialConfig config = { .base_TLS_conf = NULL, .dialer_fd = -1 };
-    SSL *conn
-        = spiffetls_DialWithMode((in_port_t) 4433U, addr, mode, &config, &err);
+    SSL *conn = spiffetls_DialWithMode(port, addr, mode, &config, &err);
     if(conn == NULL || err != NO_ERROR) {
         printf("spiffetls_DialWithMode() failed\n");
         printf("could not create TLS connection\n");
