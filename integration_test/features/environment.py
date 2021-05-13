@@ -1,8 +1,5 @@
 import os
 import time
-import sys
-
-from pathlib2 import Path
 
 
 PARENT_PATH = os.path.abspath("..") + "/integration_test/helpers/"
@@ -24,9 +21,10 @@ def after_all(context):
 
 def after_scenario(context, scenario):
     if "updated-conf" in scenario.tags:
-        context.excute_steps('''
+        context.execute_steps('''
             Given I set the "server" "port" to "8081" inside "spire-server2" container
             And   I set the "server" "trust domain" to "example.org" inside "spire-server2" container
             And   I set the "agent" "port" to "8081" inside "workload" container
             And   I set the "agent" "trust domain" to "example.org" inside "workload" container
+            And   I set the "agent" "server address" to "spire-server" inside "workload" container
         ''')
