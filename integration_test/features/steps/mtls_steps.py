@@ -46,7 +46,7 @@ def step_impl(context, message, container_name, language):
         time.sleep(1)
         result = client.stderr
     elif language == "c":
-        client = os.popen("/mnt/c-spiffe/build/spiffetls/c_dial %s %s" % (message, socket.gethostbyname(container_name)))
+        client = os.popen("/mnt/c-spiffe/build/spiffetls/c_dial %s %s 4433 example.org" % (message, socket.gethostbyname(container_name)))
         result = client.read()
     context.result = result
 
@@ -93,4 +93,5 @@ def step_impl(context, container_name):
 
 @then('I check that mTLS connection did not succeed')
 def step_impl(context):
-    pass
+    assert_that(context.result.find("Server replied:"), is_(-1))
+    assert_that(context.result.find("could not create TLS connection"), is_not(-1))

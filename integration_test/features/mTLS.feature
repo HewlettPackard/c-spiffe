@@ -37,9 +37,9 @@ Feature: Mutual TLS
         # Then  I check that the "SVID" is returned correctly
         When  I fetch "X509" "SVID"
         Then  I check that the "SVID" is returned correctly
-        # When  The go-tls-listen is activated inside "workload" container
-        # And   I send "Hello World!" to "workload" container through "go"-tls-dial
-        # Then  I check that mTLS connection did not succeed
-        Then   The second "agent" is turned off inside "workload" container
-        Then    The second "server" is turned off inside "spire-server2" container
-        # And   The go-tls-listen is disabled inside "workload" container
+        When  The go-tls-listen is activated inside "workload" container
+        And   I send "Hello World!" to "workload" container through "c"-tls-dial
+        Then  I check that mTLS connection did not succeed
+        And   The second "agent" is turned off inside "workload" container
+        And   The second "server" is turned off inside "spire-server2" container
+        And   The go-tls-listen is disabled inside "workload" container
