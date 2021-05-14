@@ -15,8 +15,6 @@ def before_all(context):
 def after_all(context):
     os.system("pkill spire-agent")
     time.sleep(5)
-    os.system(PARENT_PATH + "bash-general-scripts/clean.sh")
-    time.sleep(1)
 
 
 def after_scenario(context, scenario):
@@ -28,3 +26,5 @@ def after_scenario(context, scenario):
             And   I set the "agent" "trust domain" to "example.org" inside "workload" container
             And   I set the "agent" "server address" to "spire-server" inside "workload" container
         ''')
+    os.system(PARENT_PATH + "bash-general-scripts/clean.sh")
+    time.sleep(1)
