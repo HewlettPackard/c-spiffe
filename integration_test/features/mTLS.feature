@@ -2,7 +2,7 @@
 Feature: Mutual TLS
 
 
-    @Sprint11
+    @Sprint11 @wip
     Scenario Outline: MT_001 - Check that it is possible to establish mtls connection between two WLs connected to the same server
         Given The second agent is turned on inside "workload" container
         When  I fetch external "X509" "SVID"
@@ -19,9 +19,9 @@ Feature: Mutual TLS
             | Hello World! |     go    |
             |              |     go    |
             |     12345    |     go    |
-            # | Hello World! |     c     |
-            # |              |     c     |
-            # |     12345    |     c     |
+            | Hello World! |     c     |
+            |              |     c     |
+            |     12345    |     c     |
 
 
     @Sprint12 @updated-conf
