@@ -7,6 +7,8 @@ PARENT_PATH = os.path.abspath("..") + "/integration_test/helpers/"
 
 def before_all(context):
     context.spiffe_id = context.config.userdata['spiffe_id']
+    context.default_trust_domain = context.config.userdata['default_trust_domain']
+    context.default_echo_server_port = context.config.userdata['default_echo_server_port']
     
     os.system(PARENT_PATH + "bash-spire-scripts/ssh-connect-agent.sh")
     time.sleep(5)
