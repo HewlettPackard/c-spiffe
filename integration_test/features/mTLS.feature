@@ -24,7 +24,7 @@ Feature: Mutual TLS
             # |     12345    |     c     |
 
 
-    @Sprint12 @updated-conf @wip
+    @Sprint12 @updated-conf
     Scenario: MT_002 - Check that it is not possible to establish mtls connection with different key chains in the servers
         Given I set the "server" "port" to "9090" inside "spire-server2" container
         And   I set the "server" "trust domain" to "example2.org" inside "spire-server2" container
