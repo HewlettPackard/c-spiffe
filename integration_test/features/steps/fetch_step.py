@@ -1,5 +1,4 @@
 import os
-import sys
 import time
 
 from hamcrest import assert_that, is_, is_not
