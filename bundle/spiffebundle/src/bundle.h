@@ -32,7 +32,7 @@ spiffebundle_Bundle *spiffebundle_New(const spiffeid_TrustDomain td);
 spiffebundle_Bundle *spiffebundle_Load(const spiffeid_TrustDomain td,
                                        const char *path, err_t *err);
 spiffebundle_Bundle *spiffebundle_Parse(const spiffeid_TrustDomain td,
-                                        const char *bundleBytes, err_t *err);
+                                        const char *bundle_bytes, err_t *err);
 spiffebundle_Bundle *spiffebundle_FromX509Bundle(x509bundle_Bundle *bundle);
 spiffebundle_Bundle *spiffebundle_FromJWTBundle(jwtbundle_Bundle *bundle);
 spiffebundle_Bundle *
@@ -84,10 +84,11 @@ jwtbundle_Bundle *spiffebundle_Bundle_GetJWTBundleForTrustDomain(
     spiffebundle_Bundle *b, const spiffeid_TrustDomain td, err_t *err);
 bool spiffebundle_Bundle_Equal(const spiffebundle_Bundle *b1,
                                const spiffebundle_Bundle *b2);
-bool spiffebundle_refresh_hintEqual(const struct timespec *t1,
-                                    const struct timespec *t2);
+bool spiffebundle_refreshHintEqual(const struct timespec *t1,
+                                   const struct timespec *t2);
 bool spiffebundle_sequenceNumberEqual(const int64_t a, const int64_t b);
 struct timespec spiffebundle_copyRefreshHint(const struct timespec *ts);
+void spiffebundle_Bundle_Free(spiffebundle_Bundle *b);
 
 #ifdef __cplusplus
 }

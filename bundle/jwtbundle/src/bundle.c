@@ -119,8 +119,10 @@ err_t jwtbundle_Bundle_AddJWTAuthority(jwtbundle_Bundle *b, const char *keyID,
 
     if(!empty_str(keyID)) {
         mtx_lock(&(b->mtx));
-        EVP_PKEY_up_ref(pkey);
-        shput(b->auths, keyID, pkey);
+        if(shgeti(b->auths, keyID) < 0) {
+            EVP_PKEY_up_ref(pkey);
+            shput(b->auths, keyID, pkey);
+        }
         err = NO_ERROR;
         mtx_unlock(&(b->mtx));
     }
