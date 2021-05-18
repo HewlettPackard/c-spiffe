@@ -825,7 +825,7 @@ START_TEST(test_spiffebundle_Bundle_Equal)
 }
 END_TEST
 
-START_TEST(test_spiffebundle_TrustDomain)
+START_TEST(test_spiffebundle_Bundle_TrustDomain)
 {
     spiffeid_TrustDomain td = { "example.com" };
     err_t err;
@@ -877,6 +877,7 @@ Suite *bundle_suite(void)
     tcase_add_test(tc_core,
                    test_spiffebundle_Bundle_GetJWTBundleForTrustDomain);
     tcase_add_test(tc_core, test_spiffebundle_Bundle_Equal);
+    tcase_add_test(tc_core, test_spiffebundle_Bundle_TrustDomain);
 
     suite_add_tcase(s, tc_core);
 
