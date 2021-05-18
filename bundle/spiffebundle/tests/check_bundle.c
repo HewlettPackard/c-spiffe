@@ -30,9 +30,9 @@ START_TEST(test_spiffebundle_Load)
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_ne(bundle, NULL);
     ck_assert_ptr_ne(bundle->x509_auths, NULL);
-    /// TODO: check for array length and content
+    ck_assert_uint_eq(arrlenu(bundle->x509_auths), 1);
     ck_assert_ptr_ne(bundle->jwt_auths, NULL);
-    /// TODO: check for map length and content
+    ck_assert_uint_eq(shlenu(bundle->jwt_auths), 1);
     ck_assert_ptr_ne(bundle->td.name, NULL);
     ck_assert_str_eq(bundle->td.name, td.name);
 
@@ -55,9 +55,9 @@ START_TEST(test_spiffebundle_Parse)
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_ne(bundle, NULL);
     ck_assert_ptr_ne(bundle->x509_auths, NULL);
-    /// TODO: check for array length and content
+    ck_assert_uint_eq(arrlenu(bundle->x509_auths), 1);
     ck_assert_ptr_ne(bundle->jwt_auths, NULL);
-    /// TODO: check for map length and content
+    ck_assert_uint_eq(shlenu(bundle->jwt_auths), 1);
     ck_assert_ptr_ne(bundle->td.name, NULL);
     ck_assert_str_eq(bundle->td.name, td.name);
 
@@ -80,7 +80,7 @@ START_TEST(test_spiffebundle_FromX509Bundle)
 
     ck_assert_ptr_ne(bundle, NULL);
     ck_assert_ptr_ne(bundle->x509_auths, NULL);
-    /// TODO: check for array length and content
+    ck_assert_uint_eq(arrlenu(bundle->x509_auths), 2);
     ck_assert_ptr_ne(bundle->jwt_auths, NULL);
     ck_assert_uint_eq(shlenu(bundle->jwt_auths), 0);
     ck_assert_ptr_ne(bundle->td.name, NULL);
@@ -106,7 +106,7 @@ START_TEST(test_spiffebundle_FromJWTBundle)
     ck_assert_ptr_ne(bundle, NULL);
     ck_assert_ptr_eq(bundle->x509_auths, NULL);
     ck_assert_ptr_ne(bundle->jwt_auths, NULL);
-    /// TODO: check for map length and content
+    ck_assert_uint_eq(shlenu(bundle->jwt_auths), 3);
     ck_assert_ptr_ne(bundle->td.name, NULL);
     ck_assert_str_eq(bundle->td.name, td.name);
 
@@ -134,7 +134,7 @@ START_TEST(test_spiffebundle_FromX509Authorities)
 
     ck_assert_ptr_ne(bundle, NULL);
     ck_assert_ptr_ne(bundle->x509_auths, NULL);
-    /// TODO: check for array length and content
+    ck_assert_uint_eq(arrlenu(bundle->x509_auths), 2);
     ck_assert_ptr_ne(bundle->jwt_auths, NULL);
     ck_assert_uint_eq(shlenu(bundle->jwt_auths), 0);
     ck_assert_ptr_ne(bundle->td.name, NULL);
@@ -172,7 +172,7 @@ START_TEST(test_spiffebundle_FromJWTAuthorities)
     ck_assert_ptr_ne(bundle, NULL);
     ck_assert_ptr_eq(bundle->x509_auths, NULL);
     ck_assert_ptr_ne(bundle->jwt_auths, NULL);
-    /// TODO: check for map length and content
+    ck_assert_uint_eq(shlenu(bundle->jwt_auths), 3);
     ck_assert_ptr_ne(bundle->td.name, NULL);
     ck_assert_str_eq(bundle->td.name, td.name);
 
