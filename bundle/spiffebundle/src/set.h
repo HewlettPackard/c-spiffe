@@ -33,6 +33,7 @@ x509bundle_Bundle *spiffebundle_Set_GetX509BundleForTrustDomain(
     spiffebundle_Set *s, const spiffeid_TrustDomain td, err_t *err);
 jwtbundle_Bundle *spiffebundle_Set_GetJWTBundleForTrustDomain(
     spiffebundle_Set *s, const spiffeid_TrustDomain td, err_t *err);
+void spiffebundle_Set_Free(spiffebundle_Set *s);
 
 #ifdef __cplusplus
 }
