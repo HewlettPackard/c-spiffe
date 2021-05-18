@@ -21,20 +21,20 @@ target_link_libraries(check_spiffebundle bundle ${CHECK_LIBRARIES}
 
 add_test(check_spiffebundle check_spiffebundle)
 
-# add_executable(check_x509set check_set.c)
+add_executable(check_spiffeset check_set.c)
 
-# target_link_libraries(check_x509set bundle ${CHECK_LIBRARIES}
-#   spiffeid
-#   internal
-#   uriparser
-#   jansson
-#   cjose
-#   subunit
-#   check_pic
-#   check
-#   rt
-#   m
-#   crypto
-#   pthread)
+target_link_libraries(check_spiffeset bundle ${CHECK_LIBRARIES}
+  spiffeid
+  internal
+  uriparser
+  jansson
+  cjose
+  subunit
+  check_pic
+  check
+  rt
+  m
+  crypto
+  pthread)
 
-# add_test(check_x509set check_x509set)
+add_test(check_spiffeset check_spiffeset)
