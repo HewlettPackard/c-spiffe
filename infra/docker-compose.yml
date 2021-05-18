@@ -12,6 +12,13 @@ services:
     tty: true
     ports:
       - "8081:8081"
+  
+  spire-server2:
+    image: alg4/infra_spire-server
+    hostname: spire-server2
+    tty: true
+    ports:
+      - "9090:9090"
 
   workload:
     image: alg4/infra_workload
@@ -19,6 +26,7 @@ services:
     hostname: workload
     links:
       - spire-server
+      - spire-server2
     ports:
       - "4433:4433"
       - "443:443"
@@ -30,4 +38,5 @@ services:
     hostname: tests
     links:
       - spire-server
+      - spire-server2
       - workload

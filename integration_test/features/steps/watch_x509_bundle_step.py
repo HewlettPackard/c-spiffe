@@ -2,12 +2,11 @@ import os
 import time
 
 from hamcrest import assert_that, is_not
-from utils import update_server_conf
 
 
 @given('I set the server to rotate the Bundle up to "{time}"')
 def step_impl(context, time):
-    update_server_conf(context.server_conf, "default_svid_ttl", time)
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-update-server-conf.sh default_svid_ttl %s server" % time)
 
 
 @when('I store the Bundle')
@@ -29,5 +28,5 @@ def step_impl(context):
 
 @when('The server is turned on')
 def step_impl(context):
-    os.system("./grpc_start_server.sh")
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-start-server.sh")
     time.sleep(5)
