@@ -72,6 +72,7 @@ if (ENABLE_TESTS)
     add_subdirectory(${PROJECT_SOURCE_DIR}/internal/x509util/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/bundle/x509bundle/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/bundle/jwtbundle/tests)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/bundle/spiffebundle/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/svid/x509svid/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/svid/jwtsvid/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/workload/tests)
@@ -121,7 +122,7 @@ if (ENABLE_TESTS)
       COMMAND find .. -type f -name *pb.cc.gcno -exec rm -r {} "\;"
 
       COMMAND ${LCOV} --directory .. --capture -o lcov.info
-      COMMAND ${LCOV} --remove lcov.info -o lcov.info '/usr/*' '*/build/workload/*' '*/include/*' '*stb_ds*' '*/resources/*' '*/spiffebundle/*'
+      COMMAND ${LCOV} --remove lcov.info -o lcov.info '/usr/*' '*/build/workload/*' '*/include/*' '*stb_ds*' '*/resources/*'
       COMMAND echo "lcov.info generated."
       COMMAND ${GENHTML} lcov.info --output-directory ${CMAKE_BINARY_DIR}/Coverage/Reports 
       COMMAND echo "Command lcov - Coverage reports generated."

@@ -46,3 +46,14 @@ install(
     FILES ${HEADERS_BUNDLE_X509}
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/x509bundle/src"
 )
+
+# Install Headers:
+set(HEADERS_BUNDLE_X509
+${PROJECT_SOURCE_DIR}/spiffebundle/src/bundle.h
+${PROJECT_SOURCE_DIR}/spiffebundle/src/set.h
+)
+#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+install(
+    FILES ${HEADERS_BUNDLE_X509}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/spiffebundle/src"
+)
