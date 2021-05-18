@@ -8,8 +8,10 @@ START_TEST(test_spiffebundle_NewSet)
     spiffeid_TrustDomain td[] = { "example.com", "example.org" };
     err_t err;
     spiffebundle_Bundle *bundles[ITERS];
-    bundles[0] = spiffebundle_Load(td[0], "./resources/jwks_valid_1.json", &err);
-    bundles[1] = spiffebundle_Load(td[1], "./resources/jwks_valid_2.json", &err);
+    bundles[0]
+        = spiffebundle_Load(td[0], "./resources/jwks_valid_1.json", &err);
+    bundles[1]
+        = spiffebundle_Load(td[1], "./resources/jwks_valid_2.json", &err);
     spiffebundle_Set *set = spiffebundle_NewSet(2, bundles[0], bundles[1]);
 
     ck_assert_uint_eq(shlenu(set->bundles), ITERS);
@@ -28,8 +30,10 @@ START_TEST(test_spiffebundle_Set_Add)
     spiffeid_TrustDomain td[] = { "example.com", "example.org" };
     err_t err;
     spiffebundle_Bundle *bundles[ITERS];
-    bundles[0] = spiffebundle_Load(td[0], "./resources/jwks_valid_1.json", &err);
-    bundles[1] = spiffebundle_Load(td[1], "./resources/jwks_valid_2.json", &err);
+    bundles[0]
+        = spiffebundle_Load(td[0], "./resources/jwks_valid_1.json", &err);
+    bundles[1]
+        = spiffebundle_Load(td[1], "./resources/jwks_valid_2.json", &err);
     spiffebundle_Set *set = spiffebundle_NewSet(0);
 
     ck_assert_uint_eq(shlenu(set->bundles), 0);
@@ -45,7 +49,7 @@ START_TEST(test_spiffebundle_Set_Add)
     ck_assert_uint_eq(shlenu(set->bundles), 2);
     ck_assert(spiffebundle_Set_Has(set, td[0]));
     ck_assert(spiffebundle_Set_Has(set, td[1]));
-    
+
     spiffebundle_Set_Free(set);
 }
 END_TEST
@@ -57,8 +61,10 @@ START_TEST(test_spiffebundle_Set_Remove)
     spiffeid_TrustDomain td[] = { "example.com", "example.org" };
     err_t err;
     spiffebundle_Bundle *bundles[ITERS];
-    bundles[0] = spiffebundle_Load(td[0], "./resources/jwks_valid_1.json", &err);
-    bundles[1] = spiffebundle_Load(td[1], "./resources/jwks_valid_2.json", &err);
+    bundles[0]
+        = spiffebundle_Load(td[0], "./resources/jwks_valid_1.json", &err);
+    bundles[1]
+        = spiffebundle_Load(td[1], "./resources/jwks_valid_2.json", &err);
     spiffebundle_Set *set = spiffebundle_NewSet(2, bundles[0], bundles[1]);
 
     spiffebundle_Set_Remove(set, td[0]);
@@ -85,8 +91,10 @@ START_TEST(test_spiffebundle_Set_Get)
     spiffeid_TrustDomain td[] = { "example.com", "example.org" };
     err_t err;
     spiffebundle_Bundle *bundles[ITERS];
-    bundles[0] = spiffebundle_Load(td[0], "./resources/jwks_valid_1.json", &err);
-    bundles[1] = spiffebundle_Load(td[1], "./resources/jwks_valid_2.json", &err);
+    bundles[0]
+        = spiffebundle_Load(td[0], "./resources/jwks_valid_1.json", &err);
+    bundles[1]
+        = spiffebundle_Load(td[1], "./resources/jwks_valid_2.json", &err);
     spiffebundle_Set *set = spiffebundle_NewSet(2, bundles[0], bundles[1]);
 
     bool suc;
@@ -98,7 +106,8 @@ START_TEST(test_spiffebundle_Set_Get)
     ck_assert(suc);
     ck_assert(spiffebundle_Bundle_Equal(bundle, bundles[1]));
 
-    bundle = spiffebundle_Set_Get(set, (spiffeid_TrustDomain){ "example.edu" }, &suc);
+    bundle = spiffebundle_Set_Get(set, (spiffeid_TrustDomain){ "example.edu" },
+                                  &suc);
     ck_assert(!suc);
     ck_assert_ptr_eq(bundle, NULL);
 
@@ -113,11 +122,14 @@ START_TEST(test_spiffebundle_Set_GetBundleForTrustDomain)
     spiffeid_TrustDomain td[] = { "example.com", "example.org" };
     err_t err;
     spiffebundle_Bundle *bundles[ITERS];
-    bundles[0] = spiffebundle_Load(td[0], "./resources/jwks_valid_1.json", &err);
-    bundles[1] = spiffebundle_Load(td[1], "./resources/jwks_valid_2.json", &err);
+    bundles[0]
+        = spiffebundle_Load(td[0], "./resources/jwks_valid_1.json", &err);
+    bundles[1]
+        = spiffebundle_Load(td[1], "./resources/jwks_valid_2.json", &err);
     spiffebundle_Set *set = spiffebundle_NewSet(2, bundles[0], bundles[1]);
 
-    spiffebundle_Bundle *bundle = spiffebundle_Set_GetBundleForTrustDomain(set, td[0], &err);
+    spiffebundle_Bundle *bundle
+        = spiffebundle_Set_GetBundleForTrustDomain(set, td[0], &err);
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert(spiffebundle_Bundle_Equal(bundle, bundles[0]));
 
@@ -125,7 +137,8 @@ START_TEST(test_spiffebundle_Set_GetBundleForTrustDomain)
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert(spiffebundle_Bundle_Equal(bundle, bundles[1]));
 
-    bundle = spiffebundle_Set_GetBundleForTrustDomain(set, (spiffeid_TrustDomain){ "example.edu" }, &err);
+    bundle = spiffebundle_Set_GetBundleForTrustDomain(
+        set, (spiffeid_TrustDomain){ "example.edu" }, &err);
     ck_assert_uint_ne(err, NO_ERROR);
     ck_assert_ptr_eq(bundle, NULL);
 
@@ -140,19 +153,24 @@ START_TEST(test_spiffebundle_Set_GetX509BundleForTrustDomain)
     spiffeid_TrustDomain td[] = { "example.com", "example.org" };
     err_t err;
     spiffebundle_Bundle *bundles[ITERS];
-    bundles[0] = spiffebundle_Load(td[0], "./resources/jwks_valid_1.json", &err);
-    bundles[1] = spiffebundle_Load(td[1], "./resources/jwks_valid_2.json", &err);
+    bundles[0]
+        = spiffebundle_Load(td[0], "./resources/jwks_valid_1.json", &err);
+    bundles[1]
+        = spiffebundle_Load(td[1], "./resources/jwks_valid_2.json", &err);
     spiffebundle_Set *set = spiffebundle_NewSet(2, bundles[0], bundles[1]);
 
-    x509bundle_Bundle *x509bundle = spiffebundle_Set_GetX509BundleForTrustDomain(set, td[0], &err);
-    x509bundle_Bundle *copy_x509bundle = spiffebundle_Bundle_X509Bundle(bundles[0]);
+    x509bundle_Bundle *x509bundle
+        = spiffebundle_Set_GetX509BundleForTrustDomain(set, td[0], &err);
+    x509bundle_Bundle *copy_x509bundle
+        = spiffebundle_Bundle_X509Bundle(bundles[0]);
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_ne(x509bundle, NULL);
     ck_assert(x509bundle_Bundle_Equal(x509bundle, copy_x509bundle));
     x509bundle_Bundle_Free(x509bundle);
     x509bundle_Bundle_Free(copy_x509bundle);
 
-    x509bundle = spiffebundle_Set_GetX509BundleForTrustDomain(set, td[1], &err);
+    x509bundle
+        = spiffebundle_Set_GetX509BundleForTrustDomain(set, td[1], &err);
     copy_x509bundle = spiffebundle_Bundle_X509Bundle(bundles[1]);
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_ne(x509bundle, NULL);
@@ -160,7 +178,8 @@ START_TEST(test_spiffebundle_Set_GetX509BundleForTrustDomain)
     x509bundle_Bundle_Free(x509bundle);
     x509bundle_Bundle_Free(copy_x509bundle);
 
-    x509bundle = spiffebundle_Set_GetX509BundleForTrustDomain(set, (spiffeid_TrustDomain){ "example.edu" }, &err);
+    x509bundle = spiffebundle_Set_GetX509BundleForTrustDomain(
+        set, (spiffeid_TrustDomain){ "example.edu" }, &err);
     ck_assert_uint_ne(err, NO_ERROR);
     ck_assert_ptr_eq(x509bundle, NULL);
 
@@ -175,12 +194,16 @@ START_TEST(test_spiffebundle_Set_GetJWTBundleForTrustDomain)
     spiffeid_TrustDomain td[] = { "example.com", "example.org" };
     err_t err;
     spiffebundle_Bundle *bundles[ITERS];
-    bundles[0] = spiffebundle_Load(td[0], "./resources/jwks_valid_1.json", &err);
-    bundles[1] = spiffebundle_Load(td[1], "./resources/jwks_valid_2.json", &err);
+    bundles[0]
+        = spiffebundle_Load(td[0], "./resources/jwks_valid_1.json", &err);
+    bundles[1]
+        = spiffebundle_Load(td[1], "./resources/jwks_valid_2.json", &err);
     spiffebundle_Set *set = spiffebundle_NewSet(2, bundles[0], bundles[1]);
 
-    jwtbundle_Bundle *jwtbundle = spiffebundle_Set_GetJWTBundleForTrustDomain(set, td[0], &err);
-    jwtbundle_Bundle *copy_jwtbundle = spiffebundle_Bundle_JWTBundle(bundles[0]);
+    jwtbundle_Bundle *jwtbundle
+        = spiffebundle_Set_GetJWTBundleForTrustDomain(set, td[0], &err);
+    jwtbundle_Bundle *copy_jwtbundle
+        = spiffebundle_Bundle_JWTBundle(bundles[0]);
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_ne(jwtbundle, NULL);
     ck_assert(jwtbundle_Bundle_Equal(jwtbundle, copy_jwtbundle));
@@ -195,7 +218,8 @@ START_TEST(test_spiffebundle_Set_GetJWTBundleForTrustDomain)
     jwtbundle_Bundle_Free(jwtbundle);
     jwtbundle_Bundle_Free(copy_jwtbundle);
 
-    jwtbundle = spiffebundle_Set_GetJWTBundleForTrustDomain(set, (spiffeid_TrustDomain){ "example.edu" }, &err);
+    jwtbundle = spiffebundle_Set_GetJWTBundleForTrustDomain(
+        set, (spiffeid_TrustDomain){ "example.edu" }, &err);
     ck_assert_uint_ne(err, NO_ERROR);
     ck_assert_ptr_eq(jwtbundle, NULL);
 
