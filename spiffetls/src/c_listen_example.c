@@ -17,7 +17,7 @@ void init_openssl()
 
 int main(int argc, char **argv)
 {
-    // default address
+    // default port
     in_port_t port = 4433U;
     if(argc >= 2) {
         in_port_t new_port;
