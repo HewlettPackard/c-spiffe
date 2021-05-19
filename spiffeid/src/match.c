@@ -1,4 +1,5 @@
 #include "spiffeid/src/match.h"
+#include "spiffeid/src/trustdomain.h"
 
 match_err_t spiffeid_ApplyMatcher(const spiffeid_Matcher *matcher,
                                   const spiffeid_ID id)
@@ -95,7 +96,7 @@ void spiffeid_Matcher_Free(spiffeid_Matcher *matcher)
             spiffeid_ID_Free(matcher->ids + i);
         }
         arrfree(matcher->ids);
-        arrfree(matcher->td.name);
+        spiffeid_TrustDomain_Free(&(matcher->td));
 
         free(matcher);
     }

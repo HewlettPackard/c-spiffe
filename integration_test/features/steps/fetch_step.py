@@ -1,5 +1,4 @@
 import os
-import sys
 import time
 
 from hamcrest import assert_that, is_, is_not
@@ -59,5 +58,5 @@ def step_impl(context):
 
 @when('The agent is turned on')
 def step_impl(context):
-    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/grpc_connect_agent.sh")
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect-agent.sh")
     time.sleep(5)

@@ -42,7 +42,7 @@ string_t join(string_arr_t str_arr);
  * The fields are NULL in case of error. Must be freed using
  * spiffeid_ID_Free function.
  */
-spiffeid_ID spiffeid_ID_New(string_t td_str, const string_arr_t segments,
+spiffeid_ID spiffeid_ID_New(const char *td_str, const string_arr_t segments,
                             err_t *err);
 
 /**
@@ -55,7 +55,7 @@ spiffeid_ID spiffeid_ID_New(string_t td_str, const string_arr_t segments,
  * The fields are NULL in case of error. Must be freed using arrfree
  * function.
  */
-string_t spiffeid_Join(string_t td_str, const string_arr_t segments,
+string_t spiffeid_Join(const char *td_str, const string_arr_t segments,
                        err_t *err);
 
 /**

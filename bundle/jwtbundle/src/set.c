@@ -7,6 +7,7 @@ jwtbundle_Set *jwtbundle_NewSet(const int n_args, ...)
     jwtbundle_Set *set = malloc(sizeof *set);
     mtx_init(&(set->mtx), mtx_plain);
     set->bundles = NULL;
+    sh_new_strdup(set->bundles);
 
     va_list args;
     va_start(args, n_args);
@@ -179,6 +180,7 @@ void jwtbundle_Set_Free(jwtbundle_Set *s)
         for(size_t i = 0, size = shlenu(s->bundles); i < size; ++i) {
             jwtbundle_Bundle_Free(s->bundles[i].value);
         }
+        shfree(s->bundles);
 
         free(s);
     }
