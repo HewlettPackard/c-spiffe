@@ -38,7 +38,7 @@ func main() {
 			workloadapi.WithClientOptions(workloadapi.WithAddr(socketPath)),
 		))
 	if err != nil {
-		log.Fatalf("Unable to create TLS connection: %v", err)
+		log.Fatalf("could not create TLS connection: %v", err)
 	}
 	defer conn.Close()
 

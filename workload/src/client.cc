@@ -9,7 +9,7 @@
 #include <grpc/grpc.h>
 #include <grpcpp/grpcpp.h>
 
-x509bundle_Bundle *workloadapi_parseX509Bundle(string_t id,
+x509bundle_Bundle *workloadapi_parseX509Bundle(const char *id,
                                                const byte *bundle_bytes,
                                                const size_t len, err_t *err)
 {
@@ -41,22 +41,20 @@ x509bundle_Set *workloadapi_parseX509Bundles(const X509SVIDResponse *rep,
         auto ids = rep->svids();
         for(auto &&id : ids) {
             err_t err;
-            string_t td_str = string_new(id.spiffe_id().c_str());
             x509bundle_Bundle *b = workloadapi_parseX509Bundle(
-                td_str, reinterpret_cast<const byte *>(id.bundle().data()),
+                id.spiffe_id().c_str(),
+                reinterpret_cast<const byte *>(id.bundle().data()),
                 id.bundle().length(), &err);
-            arrfree(td_str);
             x509bundle_Set_Add(set, b);
         }
 
         auto map_td_bytes = rep->federated_bundles();
         for(auto const &td_byte : map_td_bytes) {
             err_t err;
-            string_t td_str = string_new(td_byte.first.c_str());
             x509bundle_Bundle *b = workloadapi_parseX509Bundle(
-                td_str, reinterpret_cast<const byte *>(td_byte.second.data()),
+                td_byte.first.c_str(),
+                reinterpret_cast<const byte *>(td_byte.second.data()),
                 td_byte.second.length(), &err);
-            arrfree(td_str);
             x509bundle_Set_Add(set, b);
         }
 
@@ -163,9 +161,8 @@ jwtbundle_Set *workloadapi_parseJWTBundles(const JWTBundlesResponse *resp,
 
         auto map_td_bytes = resp->bundles();
         for(auto const &td_byte : map_td_bytes) {
-            string_t td_str = string_new(td_byte.first.c_str());
             spiffeid_TrustDomain td
-                = spiffeid_TrustDomainFromString(td_str, err);
+                = spiffeid_TrustDomainFromString(td_byte.first.c_str(), err);
             if(!(*err)) {
                 jwtbundle_Bundle *bundle
                     = jwtbundle_Parse(td, td_byte.second.c_str(), err);
@@ -173,7 +170,6 @@ jwtbundle_Set *workloadapi_parseJWTBundles(const JWTBundlesResponse *resp,
                     jwtbundle_Set_Add(set, bundle);
                 }
             }
-            arrfree(td_str);
             spiffeid_TrustDomain_Free(&td);
         }
 

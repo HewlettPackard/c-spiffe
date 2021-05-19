@@ -64,7 +64,7 @@ string_t spiffeid_normalizePath(string_t str)
     return str;
 }
 
-string_t spiffeid_Join(string_t td_str, const string_arr_t segments,
+string_t spiffeid_Join(const char *td_str, const string_arr_t segments,
                        err_t *err)
 {
     spiffeid_ID id = spiffeid_ID_New(td_str, segments, err);
@@ -195,7 +195,7 @@ spiffeid_ID spiffeid_FromURI(const UriUriA *uri, err_t *err)
     return id;
 }
 
-spiffeid_ID spiffeid_ID_New(string_t td_str, const string_arr_t segments,
+spiffeid_ID spiffeid_ID_New(const char *td_str, const string_arr_t segments,
                             err_t *err)
 {
     spiffeid_TrustDomain td = spiffeid_TrustDomainFromString(td_str, err);

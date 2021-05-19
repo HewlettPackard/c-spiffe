@@ -106,6 +106,7 @@ START_TEST(test_jwtbundle_Set_Remove)
     for(int i = 0; i < ITERS; ++i) {
         jwtbundle_Set_Remove(set, td[i]);
         ck_assert_int_lt(shgeti(set->bundles, td[i].name), 0);
+        jwtbundle_Bundle_Free(bundle_ptr[i]);
     }
 
     jwtbundle_Set_Free(set);

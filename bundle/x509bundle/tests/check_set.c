@@ -90,6 +90,7 @@ START_TEST(test_x509bundle_Set_Remove)
     for(int i = 0; i < ITERS; ++i) {
         x509bundle_Set_Remove(set, td[i]);
         ck_assert_int_lt(shgeti(set->bundles, td[i].name), 0);
+        x509bundle_Bundle_Free(bundle_ptr[i]);
     }
 
     x509bundle_Set_Free(set);
