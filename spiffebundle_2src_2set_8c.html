@@ -79,24 +79,24 @@ Include dependency graph for set.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="spiffebundle_2src_2set_8c__incl.png" border="0" usemap="#abundle_2spiffebundle_2src_2set_8c" alt=""/></div>
 <map name="abundle_2spiffebundle_2src_2set_8c" id="abundle_2spiffebundle_2src_2set_8c">
-<area shape="rect" title=" " alt="" coords="431,5,564,47"/>
-<area shape="rect" href="spiffebundle_2src_2set_8h.html" title=" " alt="" coords="431,95,564,136"/>
-<area shape="rect" href="utils_2src_2util_8h.html" title=" " alt="" coords="361,512,460,539"/>
-<area shape="rect" href="spiffebundle_2src_2bundle_8h.html" title=" " alt="" coords="339,184,472,225"/>
-<area shape="rect" href="stb__ds_8h.html" title=" " alt="" coords="377,587,498,613"/>
-<area shape="rect" title=" " alt="" coords="501,661,565,688"/>
-<area shape="rect" title=" " alt="" coords="250,587,353,613"/>
-<area shape="rect" title=" " alt="" coords="151,587,225,613"/>
-<area shape="rect" title=" " alt="" coords="405,661,473,688"/>
-<area shape="rect" title=" " alt="" coords="318,661,381,688"/>
-<area shape="rect" href="jwtbundle_2src_2bundle_8h.html" title=" " alt="" coords="5,273,147,315"/>
-<area shape="rect" title=" " alt="" coords="108,363,183,389"/>
-<area shape="rect" href="x509bundle_2src_2bundle_8h.html" title=" " alt="" coords="273,273,423,315"/>
-<area shape="rect" href="trustdomain_8h.html" title=" " alt="" coords="206,363,373,389"/>
-<area shape="rect" title=" " alt="" coords="449,363,557,389"/>
-<area shape="rect" title=" " alt="" coords="499,281,557,307"/>
-<area shape="rect" href="id_8h.html" title=" " alt="" coords="213,437,323,464"/>
-<area shape="rect" title=" " alt="" coords="226,512,329,539"/>
+<area shape="rect" title=" " alt="" coords="446,5,579,47"/>
+<area shape="rect" href="spiffebundle_2src_2set_8h.html" title=" " alt="" coords="446,95,579,136"/>
+<area shape="rect" href="spiffebundle_2src_2bundle_8h.html" title=" " alt="" coords="313,184,446,225"/>
+<area shape="rect" href="utils_2src_2util_8h.html" title=" " alt="" coords="262,512,361,539"/>
+<area shape="rect" href="jwtbundle_2src_2bundle_8h.html" title=" " alt="" coords="501,273,642,315"/>
+<area shape="rect" title=" " alt="" coords="459,363,534,389"/>
+<area shape="rect" href="x509bundle_2src_2bundle_8h.html" title=" " alt="" coords="143,273,293,315"/>
+<area shape="rect" href="trustdomain_8h.html" title=" " alt="" coords="269,363,436,389"/>
+<area shape="rect" title=" " alt="" coords="85,363,193,389"/>
+<area shape="rect" title=" " alt="" coords="317,281,375,307"/>
+<area shape="rect" href="id_8h.html" title=" " alt="" coords="365,437,474,464"/>
+<area shape="rect" title=" " alt="" coords="387,587,462,613"/>
+<area shape="rect" title=" " alt="" coords="457,512,560,539"/>
+<area shape="rect" href="stb__ds_8h.html" title=" " alt="" coords="63,587,184,613"/>
+<area shape="rect" title=" " alt="" coords="189,661,253,688"/>
+<area shape="rect" title=" " alt="" coords="260,587,363,613"/>
+<area shape="rect" title=" " alt="" coords="92,661,160,688"/>
+<area shape="rect" title=" " alt="" coords="5,661,68,688"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -122,6 +122,8 @@ Functions</h2></td></tr>
 <tr class="separator:a58b9853a841195e9246a9e83a4e6abcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c17e32d8c51dda2c9da37cbdf49ee36"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structjwtbundle__Bundle.html">jwtbundle_Bundle</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spiffebundle_2src_2set_8c.html#a6c17e32d8c51dda2c9da37cbdf49ee36">spiffebundle_Set_GetJWTBundleForTrustDomain</a> (<a class="el" href="structspiffebundle__Set.html">spiffebundle_Set</a> *s, const <a class="el" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> <a class="el" href="check__x509source_8c.html#af961692354eb34b5aacc2fedfbdb664c">td</a>, <a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err)</td></tr>
 <tr class="separator:a6c17e32d8c51dda2c9da37cbdf49ee36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a116c33761d927713d514e825d98a67ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spiffebundle_2src_2set_8c.html#a116c33761d927713d514e825d98a67ec">spiffebundle_Set_Free</a> (<a class="el" href="structspiffebundle__Set.html">spiffebundle_Set</a> *s)</td></tr>
+<tr class="separator:a116c33761d927713d514e825d98a67ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="adb3549b77a358a41034747c16f120643"></a>
@@ -188,6 +190,24 @@ Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structspiffebundle__Bundle.html">spiffebundle_Bundle</a>** spiffebundle_Set_Bundles </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structspiffebundle__Set.html">spiffebundle_Set</a> *&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a116c33761d927713d514e825d98a67ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a116c33761d927713d514e825d98a67ec">&#9670;&nbsp;</a></span>spiffebundle_Set_Free()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spiffebundle_Set_Free </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structspiffebundle__Set.html">spiffebundle_Set</a> *&#160;</td>
           <td class="paramname"><em>s</em></td><td>)</td>

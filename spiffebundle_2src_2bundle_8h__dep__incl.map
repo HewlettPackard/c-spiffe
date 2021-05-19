@@ -1,6 +1,8 @@
 <map id="bundle/spiffebundle/src/bundle.h" name="bundle/spiffebundle/src/bundle.h">
-<area shape="rect" id="node1" title=" " alt="" coords="84,5,217,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="163,5,296,47"/>
 <area shape="rect" id="node2" href="$spiffebundle_2src_2bundle_8c.html" title=" " alt="" coords="5,95,139,136"/>
 <area shape="rect" id="node3" href="$spiffebundle_2src_2set_8h.html" title=" " alt="" coords="163,95,296,136"/>
-<area shape="rect" id="node4" href="$spiffebundle_2src_2set_8c.html" title=" " alt="" coords="163,184,296,225"/>
+<area shape="rect" id="node6" href="$spiffebundle_2tests_2check__bundle_8c.html" title=" " alt="" coords="320,95,469,136"/>
+<area shape="rect" id="node4" href="$spiffebundle_2src_2set_8c.html" title=" " alt="" coords="84,184,217,225"/>
+<area shape="rect" id="node5" href="$spiffebundle_2tests_2check__set_8c.html" title=" " alt="" coords="241,184,375,225"/>
 </map>

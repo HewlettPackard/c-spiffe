@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['refreshhint_1579',['refreshHint',['../structspiffebundle__Bundle.html#ae80700e8b35fe6d1d4562dbca95417d9',1,'spiffebundle_Bundle']]],
-  ['remaining_1580',['remaining',['../structstbds__string__arena.html#aabd3e4b954978c298d730e707d478c16',1,'stbds_string_arena']]],
-  ['roots_1581',['roots',['../structspiffetls__DialMode.html#a2634bb852de7c0588daaa3bff122122f',1,'spiffetls_DialMode']]]
+  ['refresh_5fhint_1588',['refresh_hint',['../structspiffebundle__Bundle.html#a4294c52d2279b6f185577b3f70654f93',1,'spiffebundle_Bundle']]],
+  ['remaining_1589',['remaining',['../structstbds__string__arena.html#aabd3e4b954978c298d730e707d478c16',1,'stbds_string_arena']]],
+  ['root_1590',['root',['../structjwtutil__JWKS.html#a9feaf8b7969e7413e5b88388e652cd5c',1,'jwtutil_JWKS']]],
+  ['roots_1591',['roots',['../structspiffetls__DialMode.html#a2634bb852de7c0588daaa3bff122122f',1,'spiffetls_DialMode']]]
 ];
