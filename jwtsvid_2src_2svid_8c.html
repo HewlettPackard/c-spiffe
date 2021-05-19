@@ -121,8 +121,8 @@ Functions</h2></td></tr>
 <tr class="separator:ae261547e44e53d13401ea9c951d85f8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d9077099776aa81bad26946f5bb7b5a"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jwtsvid_2src_2svid_8c.html#a6d9077099776aa81bad26946f5bb7b5a">jwtsvid_SVID_Marshal</a> (<a class="el" href="structjwtsvid__SVID.html">jwtsvid_SVID</a> *<a class="el" href="check__jwtsource_8c.html#a7dc8f87a6d2bcbcb06f9f58b42155676">svid</a>)</td></tr>
 <tr class="separator:a6d9077099776aa81bad26946f5bb7b5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a867352cd4610bb50b3afb025fc49340a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structjwtsvid__SVID.html">jwtsvid_SVID</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jwtsvid_2src_2svid_8c.html#a867352cd4610bb50b3afb025fc49340a">jwtsvid_parse</a> (char *token, <a class="el" href="utils_2src_2util_8h.html#a58051424487a21d6ef4f0894b2bcc4a9">string_arr_t</a> audience, <a class="el" href="jwtsvid_2src_2svid_8h.html#a8e5920b4267765f63e78fce69d5629d0">token_validator_t</a> validator, <a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err)</td></tr>
-<tr class="separator:a867352cd4610bb50b3afb025fc49340a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78d58dcb1eb8531ee30bdd307591e251"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structjwtsvid__SVID.html">jwtsvid_SVID</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jwtsvid_2src_2svid_8c.html#a78d58dcb1eb8531ee30bdd307591e251">jwtsvid_parse</a> (char *token, <a class="el" href="utils_2src_2util_8h.html#a58051424487a21d6ef4f0894b2bcc4a9">string_arr_t</a> audience, <a class="el" href="jwtsvid_2src_2svid_8h.html#a2e0c1ae41d53cd7602920c82646179e4">token_validator_t</a> validator, void *arg, <a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err)</td></tr>
+<tr class="separator:a78d58dcb1eb8531ee30bdd307591e251"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc261f179c443e4f8f5eb81960cca2d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jwtsvid_2src_2svid_8c.html#abc261f179c443e4f8f5eb81960cca2d6">jwtsvid_SVID_Free</a> (<a class="el" href="structjwtsvid__SVID.html">jwtsvid_SVID</a> *<a class="el" href="check__jwtsource_8c.html#a7dc8f87a6d2bcbcb06f9f58b42155676">svid</a>)</td></tr>
 <tr class="separator:abc261f179c443e4f8f5eb81960cca2d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -130,12 +130,10 @@ Functions</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:a6ac28427f3d8744cac757766ed800808"><td class="memItemLeft" align="right" valign="top">const time_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jwtsvid_2src_2svid_8c.html#a6ac28427f3d8744cac757766ed800808">DEFAULT_LEEWAY</a> = 60L</td></tr>
 <tr class="separator:a6ac28427f3d8744cac757766ed800808"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0fd036dba311d369b5104a16680104b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structjwtbundle__Source.html">jwtbundle_Source</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="jwtsvid_2src_2svid_8c.html#a0fd036dba311d369b5104a16680104b8">__bundles</a></td></tr>
-<tr class="separator:a0fd036dba311d369b5104a16680104b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a867352cd4610bb50b3afb025fc49340a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a867352cd4610bb50b3afb025fc49340a">&#9670;&nbsp;</a></span>jwtsvid_parse()</h2>
+<a id="a78d58dcb1eb8531ee30bdd307591e251"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78d58dcb1eb8531ee30bdd307591e251">&#9670;&nbsp;</a></span>jwtsvid_parse()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -155,8 +153,14 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="jwtsvid_2src_2svid_8h.html#a8e5920b4267765f63e78fce69d5629d0">token_validator_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="jwtsvid_2src_2svid_8h.html#a2e0c1ae41d53cd7602920c82646179e4">token_validator_t</a>&#160;</td>
           <td class="paramname"><em>validator</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -175,8 +179,9 @@ Variables</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">token</td><td>[in] string JWT token. </td></tr>
-    <tr><td class="paramname">validator</td><td>[in] Validator function. </td></tr>
     <tr><td class="paramname">audience</td><td>[in] stb array of audiences. </td></tr>
+    <tr><td class="paramname">validator</td><td>[in] Validator function. </td></tr>
+    <tr><td class="paramname">arg</td><td>[in] argument to pass to the validator. </td></tr>
     <tr><td class="paramname">err</td><td>[out] Variable to get information in the event of error. </td></tr>
   </table>
   </dd>
@@ -332,20 +337,6 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a0fd036dba311d369b5104a16680104b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0fd036dba311d369b5104a16680104b8">&#9670;&nbsp;</a></span>__bundles</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structjwtbundle__Source.html">jwtbundle_Source</a>* __bundles</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a6ac28427f3d8744cac757766ed800808"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6ac28427f3d8744cac757766ed800808">&#9670;&nbsp;</a></span>DEFAULT_LEEWAY</h2>
 
