@@ -25,7 +25,9 @@ RUN apt-get clean
 
 RUN mkdir -p ${C_SPIFFE_DIR}/build/
 
-COPY /github/workspace/ ${C_SPIFFE_DIR}
+COPY . ${C_SPIFFE_DIR}
+
+RUN pwd
 
 RUN chmod +x -R ${C_SPIFFE_DIR}/integration_test
 RUN chmod +x -R ${C_SPIFFE_DIR}/infra
