@@ -76,7 +76,6 @@ spiffebundle_Bundle *spiffebundle_Parse(const spiffeid_TrustDomain td,
         } else {
             // could not parse jwks
             *err = ERROR1;
-            /// TODO: check if it is needed to free jwks
         }
     } else {
         // NULL error
