@@ -143,3 +143,15 @@ jwtbundle_Bundle *spiffebundle_Set_GetJWTBundleForTrustDomain(
 
     return bundle;
 }
+
+void spiffebundle_Set_Free(spiffebundle_Set *s)
+{
+    if(s) {
+        for(size_t i = 0, size = shlenu(s->bundles); i < size; ++i) {
+            spiffebundle_Bundle_Free(s->bundles[i].value);
+        }
+        shfree(s->bundles);
+
+        free(s);
+    }
+}
