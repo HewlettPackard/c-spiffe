@@ -182,7 +182,11 @@ START_TEST(test_jwtutil_CopyJWTAuthorities)
 
     for(int i = 0; i < ITERS; ++i) {
         BIO_free(bio_mems[i]);
-        EVP_PKEY_free(evp_pubkeys[i]);
+    }
+
+    for(size_t i = 0, size = shlenu(str_evp0); i < size; ++i) {
+        EVP_PKEY_free(str_evp0[i].value);
+        EVP_PKEY_free(str_evp1[i].value);
     }
     shfree(str_evp0);
     shfree(str_evp1);

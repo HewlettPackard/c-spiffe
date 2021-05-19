@@ -4,20 +4,17 @@
 START_TEST(test_spiffeid_TrustDomainFromString)
 {
     const size_t ITERS = 4;
-    string_t str_tds[]
-        = { string_new("EXAMPLE.com"), string_new("spiffe://EXAMPLE.com"),
-            string_new("EXAMPLE.com/path1/path2"),
-            string_new("spiffe://EXAMPLE.com/path1/path2") };
+    const char *str_tds[]
+        = { "EXAMPLE.com", "spiffe://EXAMPLE.com", "EXAMPLE.com/path1/path2",
+            "spiffe://EXAMPLE.com/path1/path2" };
 
-    string_t str_res[]
-        = { string_new("example.com"), string_new("example.com"),
-            string_new("example.com"), string_new("example.com") };
+    const char str_res[] = "example.com";
 
     for(size_t i = 0; i < ITERS; ++i) {
         err_t err;
         spiffeid_TrustDomain td
             = spiffeid_TrustDomainFromString(str_tds[i], &err);
-        ck_assert_str_eq(td.name, str_res[i]);
+        ck_assert_str_eq(td.name, str_res);
         ck_assert_uint_eq(err, 0);
         spiffeid_TrustDomain_Free(&td);
     }

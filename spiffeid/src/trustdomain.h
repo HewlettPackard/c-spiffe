@@ -1,8 +1,8 @@
 #ifndef INCLUDE_SPIFFEID_TRUSTDOMAIN_H
 #define INCLUDE_SPIFFEID_TRUSTDOMAIN_H
 
-#include "utils/src/util.h"
 #include "spiffeid/src/id.h"
+#include "utils/src/util.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -14,11 +14,12 @@ extern "C" {
  * SPIFFE ID URI (e.g. spiffe://example.org), otherwise an error is
  * returned.
  *
- * \param str [in] A stb string with the Trust Domain representation.
+ * \param str [in] A C string with the Trust Domain representation.
  * \param err [out] Variable to get information in the event of error.
  * \returns A Trust Domain object constructed with the parameter.
  */
-spiffeid_TrustDomain spiffeid_TrustDomainFromString(string_t str, err_t *err);
+spiffeid_TrustDomain spiffeid_TrustDomainFromString(const char *str,
+                                                    err_t *err);
 
 /**
  * Gets a Trust Domain object from an URI object. The URI must be a valid

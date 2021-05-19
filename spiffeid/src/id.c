@@ -1,6 +1,6 @@
 #include "spiffeid/src/id.h"
-#include "utils/src/stb_ds.h"
 #include "spiffeid/src/trustdomain.h"
+#include "utils/src/stb_ds.h"
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
@@ -54,22 +54,25 @@ string_t spiffeid_normalizePath(string_t str)
     // null check
     if(str) {
         if(arrlenu(str) > 0) {
-            if(str[0] != '/')
+            if(str[0] != '/') {
                 // inserts '/' at the beginning
                 arrins(str, 0, '/');
+            }
         }
     }
 
     return str;
 }
 
-string_t spiffeid_Join(string_t td_str, const string_arr_t segments,
+string_t spiffeid_Join(const char *td_str, const string_arr_t segments,
                        err_t *err)
 {
-    const spiffeid_ID id = spiffeid_ID_New(td_str, segments, err);
+    spiffeid_ID id = spiffeid_ID_New(td_str, segments, err);
 
     if(!(*err)) {
-        return spiffeid_ID_String(id);
+        string_t str_id = spiffeid_ID_String(id);
+        spiffeid_ID_Free(&id);
+        return str_id;
     } else {
         return NULL;
     }
@@ -88,18 +91,19 @@ static UriUriA URL_parse(const char *str, err_t *err)
     return uri;
 }
 
-static string_t tolower_str(const string_t str)
+static string_t tolower_str(string_t str)
 {
     string_t curr_str = str;
-    for(; *curr_str; ++curr_str)
+    for(; *curr_str; ++curr_str) {
+        // in-place change
         *curr_str = tolower(*curr_str);
+    }
     return str;
 }
 
 string_t spiffeid_normalizeTrustDomain(string_t str)
 {
-    str = tolower_str(str);
-    return str;
+    return tolower_str(str);
 }
 
 static string_t UriPathSegmentA_string(
@@ -162,9 +166,6 @@ spiffeid_ID spiffeid_FromURI(const UriUriA *uri, err_t *err)
     } else if(!empty_str(port)) // port info
     {
         *err = ERROR1;
-    } else if(false) // using colon
-    {
-
     } else if(!empty_str(fragment)) // fragment info
     {
         *err = ERROR1;
@@ -194,7 +195,7 @@ spiffeid_ID spiffeid_FromURI(const UriUriA *uri, err_t *err)
     return id;
 }
 
-spiffeid_ID spiffeid_ID_New(string_t td_str, const string_arr_t segments,
+spiffeid_ID spiffeid_ID_New(const char *td_str, const string_arr_t segments,
                             err_t *err)
 {
     spiffeid_TrustDomain td = spiffeid_TrustDomainFromString(td_str, err);
