@@ -62,7 +62,6 @@ def step_impl(context, message, container_name, language):
     context.result = result
 
 
-
 @then('I check that "{message:NullableString}" was the answer from tls-listen')
 def step_impl(context, message):
     tls_answer = context.result.replace("\"","").split("Server replied:")
