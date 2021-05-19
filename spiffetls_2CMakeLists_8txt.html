@@ -76,8 +76,10 @@ Functions</h2></td></tr>
 <tr class="separator:af54e805da180b70431013e89690d2f28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7de637095ee34620571db689922065fa"><td class="memItemLeft" align="right" valign="top">VERSION LANGUAGES C&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spiffetls_2CMakeLists_8txt.html#a7de637095ee34620571db689922065fa">set</a> (LIB_SPIFFETLS ${PROJECT_SOURCE_DIR}/tlsconfig/src/config.c ${PROJECT_SOURCE_DIR}/tlsconfig/src/authorizer.c ${PROJECT_SOURCE_DIR}/src/dial.c ${PROJECT_SOURCE_DIR}/src/listen.c ${PROJECT_SOURCE_DIR}/src/mode.c ${PROJECT_SOURCE_DIR}/src/peerid.c) set(C_DIAL src/c_dial_example.c) <a class="el" href="workload_2tests_2CMakeLists_8txt.html#ade62988fdb0fd968186f3cf1a775f657">add_executable</a>(c_dial &quot;$</td></tr>
 <tr class="separator:a7de637095ee34620571db689922065fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c9b8592477f24870ad01644461c0614"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spiffetls_2CMakeLists_8txt.html#a8c9b8592477f24870ad01644461c0614">target_link_libraries</a> (c_dial spiffetls) add_library($</td></tr>
-<tr class="separator:a8c9b8592477f24870ad01644461c0614"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44603e8e9c2ddd550bd39c701cc0f825"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spiffetls_2CMakeLists_8txt.html#a44603e8e9c2ddd550bd39c701cc0f825">target_link_libraries</a> (c_dial spiffetls) <a class="el" href="workload_2CMakeLists_8txt.html#a9127ed30da9515f15ca6b2b79de373fc">set</a>(C_LISTEN src/c_listen_example.c) <a class="el" href="workload_2tests_2CMakeLists_8txt.html#ade62988fdb0fd968186f3cf1a775f657">add_executable</a>(c_listen &quot;$</td></tr>
+<tr class="separator:a44603e8e9c2ddd550bd39c701cc0f825"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9952f8f9a0ee084843201ecd4f29ed49"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spiffetls_2CMakeLists_8txt.html#a9952f8f9a0ee084843201ecd4f29ed49">target_link_libraries</a> (c_listen spiffetls) add_library($</td></tr>
+<tr class="separator:a9952f8f9a0ee084843201ecd4f29ed49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="af54e805da180b70431013e89690d2f28"></a>
@@ -116,8 +118,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a8c9b8592477f24870ad01644461c0614"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c9b8592477f24870ad01644461c0614">&#9670;&nbsp;</a></span>target_link_libraries()</h2>
+<a id="a44603e8e9c2ddd550bd39c701cc0f825"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44603e8e9c2ddd550bd39c701cc0f825">&#9670;&nbsp;</a></span>target_link_libraries() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -126,6 +128,24 @@ Functions</h2></td></tr>
           <td class="memname">target_link_libraries </td>
           <td>(</td>
           <td class="paramtype">c_dial&#160;</td>
+          <td class="paramname"><em>spiffetls</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9952f8f9a0ee084843201ecd4f29ed49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9952f8f9a0ee084843201ecd4f29ed49">&#9670;&nbsp;</a></span>target_link_libraries() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">target_link_libraries </td>
+          <td>(</td>
+          <td class="paramtype">c_listen&#160;</td>
           <td class="paramname"><em>spiffetls</em></td><td>)</td>
           <td></td>
         </tr>
