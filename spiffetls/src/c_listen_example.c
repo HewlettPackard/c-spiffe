@@ -17,18 +17,11 @@ void init_openssl()
 
 int main(int argc, char **argv)
 {
-    if(argc < 2) {
-        printf("Too few arguments!\nUsage:\n\t./c_listen 'message'\n");
-        exit(-1);
-    }
-
-    string_t message = string_new(argv[1]);
-    message = string_push(message, "\n");
     // default address
     in_port_t port = 4433U;
-    if(argc >= 3) {
+    if(argc >= 2) {
         in_port_t new_port;
-        const int ret = sscanf(argv[2], "%hd", &new_port);
+        const int ret = sscanf(argv[1], "%hd", &new_port);
 
         if(ret == 1) {
             port = new_port;
@@ -36,10 +29,10 @@ int main(int argc, char **argv)
     }
     // default trust domain
     spiffeid_TrustDomain td = { string_new("example.org") };
-    if(argc >= 4) {
+    if(argc >= 3) {
         err_t err;
         spiffeid_TrustDomain new_td
-            = spiffeid_TrustDomainFromString(argv[3], &err);
+            = spiffeid_TrustDomainFromString(argv[2], &err);
 
         if(!err) {
             spiffeid_TrustDomain_Free(&td);
@@ -87,9 +80,8 @@ int main(int argc, char **argv)
     buff[bytes] = 0;
     printf("Server received: %s\n", buff);
 
-    SSL_write(conn, message, strlen(message));
-    printf("Server replied: %s\n", message);
-    arrfree(message);
+    SSL_write(conn, buff, strlen(buff));
+    printf("Server replied: %s\n", buff);
 
     spiffeid_TrustDomain_Free(&td);
     spiffetls_ListenMode_Free(mode);
