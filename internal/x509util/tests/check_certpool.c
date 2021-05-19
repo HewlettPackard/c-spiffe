@@ -37,17 +37,22 @@ START_TEST(test_x509util_CertPool_contains)
         }
     }
 
-    for(int i = 0, size = arrlen(certs); i < size; ++i) {
+    for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
         ck_assert(!x509util_CertPool_contains(cp, certs[i]));
     }
 
-    for(int i = 0, size = arrlen(certs); i < size; ++i) {
+    for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
         x509util_CertPool_AddCert(cp, certs[i]);
     }
 
-    for(int i = 0, size = arrlen(certs); i < size; ++i) {
+    for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
         ck_assert(x509util_CertPool_contains(cp, certs[i]));
     }
+
+    for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
+        X509_free(certs[i]);
+    }
+    arrfree(certs);
 
     BIO_free(bio_mem);
     x509util_CertPool_Free(cp);

@@ -20,6 +20,7 @@ jwtbundle_Bundle *jwtbundle_New(const spiffeid_TrustDomain td)
     if(bundleptr) {
         bundleptr->td.name = string_new(td.name);
         bundleptr->auths = NULL;
+        sh_new_strdup(bundleptr->auths);
         mtx_init(&(bundleptr->mtx), mtx_plain);
     }
 
@@ -116,12 +117,10 @@ jwtbundle_Bundle *jwtbundle_Parse(const spiffeid_TrustDomain td,
         switch(kty) {
         case CJOSE_JWK_KTY_RSA:
             rsa = (RSA *) keydata;
-            RSA_up_ref(rsa);
             EVP_PKEY_set1_RSA(pkey, rsa);
             break;
         case CJOSE_JWK_KTY_EC:
             ec_key = ((ec_keydata *) keydata)->key;
-            EC_KEY_up_ref(ec_key);
             EVP_PKEY_set1_EC_KEY(pkey, ec_key);
             break;
         default:
@@ -133,7 +132,7 @@ jwtbundle_Bundle *jwtbundle_Parse(const spiffeid_TrustDomain td,
 
         if(pkey) {
             // insert id and its public key on the map
-            shput(bundle->auths, string_new(kid), pkey);
+            shput(bundle->auths, kid, pkey);
         }
         // cjose_jwk_release(jwk);
     }

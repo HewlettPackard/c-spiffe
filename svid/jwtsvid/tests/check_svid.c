@@ -47,11 +47,11 @@ START_TEST(test_jwtsvid_parse)
                    "rOB7qrf4tVj4_1G-d-_vYe8dHmQsYOe3-AwZfTAfCKZYARiUm4tO8-"
                    "t1ur7Oy14SlM79FQExohAPzbAPJ02_Zg-9s6DknmNDg";
     err_t err;
-    jwtsvid_SVID *svid = jwtsvid_parse(token, NULL, NULL, &err);
+    jwtsvid_SVID *svid = jwtsvid_parse(token, NULL, NULL, NULL, &err);
 
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_eq(svid->audience, NULL);
-    ck_assert_ptr_eq(svid->claims, NULL);
+    ck_assert_ptr_ne(svid->claims, NULL);
     ck_assert_int_eq(svid->expiry, 9990000000);
     ck_assert_ptr_ne(svid->id.path, NULL);
     ck_assert_str_eq(svid->id.path, "/workload1");

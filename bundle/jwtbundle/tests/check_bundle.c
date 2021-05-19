@@ -18,8 +18,8 @@ START_TEST(test_jwtbundle_New)
     spiffeid_TrustDomain td = { "example.com" };
     jwtbundle_Bundle *bundle_ptr = jwtbundle_New(td);
 
-    ck_assert(bundle_ptr->auths == NULL);
-    ck_assert(!strcmp(bundle_ptr->td.name, "example.com"));
+    ck_assert_ptr_ne(bundle_ptr->auths, NULL);
+    ck_assert_str_eq(bundle_ptr->td.name, "example.com");
 
     jwtbundle_Bundle_Free(bundle_ptr);
 }
@@ -45,11 +45,11 @@ START_TEST(test_jwtbundle_Parse)
     ck_assert_uint_eq(shlenu(bundle_ptr->auths), 3);
     for(size_t i = 0, size = shlenu(bundle_ptr->auths); i < size; ++i) {
         const EVP_PKEY *pkey = bundle_ptr->auths[i].value;
-        ck_assert(pkey != NULL);
+        ck_assert_ptr_ne(pkey, NULL);
         const int key_type = EVP_PKEY_base_id(pkey);
         ck_assert(key_type == EVP_PKEY_RSA || key_type == EVP_PKEY_EC);
     }
-    ck_assert(!strcmp(bundle_ptr->td.name, "example.com"));
+    ck_assert_str_eq(bundle_ptr->td.name, "example.com");
 
     jwtbundle_Bundle_Free(bundle_ptr);
 }
@@ -71,11 +71,11 @@ START_TEST(test_jwtbundle_Load)
     ck_assert_uint_eq(shlenu(bundle_ptr->auths), 3);
     for(size_t i = 0, size = shlenu(bundle_ptr->auths); i < size; ++i) {
         const EVP_PKEY *pkey = bundle_ptr->auths[i].value;
-        ck_assert(pkey != NULL);
+        ck_assert_ptr_ne(pkey, NULL);
         const int key_type = EVP_PKEY_base_id(pkey);
         ck_assert(key_type == EVP_PKEY_RSA || key_type == EVP_PKEY_EC);
     }
-    ck_assert(!strcmp(bundle_ptr->td.name, "example.com"));
+    ck_assert_str_eq(bundle_ptr->td.name, "example.com");
 
     jwtbundle_Bundle_Free(bundle_ptr);
 }
@@ -157,12 +157,13 @@ START_TEST(test_jwtbundle_FromJWTAuthorities)
     jwtbundle_Bundle *bundle_ptr = jwtbundle_FromJWTAuthorities(td, jwt_auths);
 
     ck_assert(jwtutil_JWTAuthoritiesEqual(jwt_auths, bundle_ptr->auths));
-    ck_assert(!strcmp(bundle_ptr->td.name, "example.com"));
+    ck_assert_str_eq(bundle_ptr->td.name, "example.com");
 
     for(int i = 0; i < ITERS; ++i) {
         BIO_free(bio_mems[i]);
         EVP_PKEY_free(evp_pubkeys[i]);
     }
+    shfree(jwt_auths);
     jwtbundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
@@ -267,29 +268,30 @@ START_TEST(test_jwtbundle_Bundle_FindJWTAuthority)
     EVP_PKEY *pkey;
 
     pkey = jwtbundle_Bundle_FindJWTAuthority(bundle_ptr, "key0", &suc);
-    ck_assert(pkey != NULL);
+    ck_assert_ptr_ne(pkey, NULL);
     ck_assert(suc);
     ck_assert(cryptoutil_PublicKeyEqual(pkey, evp_pubkeys[0]));
     ck_assert(!cryptoutil_PublicKeyEqual(pkey, evp_pubkeys[1]));
 
     pkey = jwtbundle_Bundle_FindJWTAuthority(bundle_ptr, "key1", &suc);
-    ck_assert(pkey != NULL);
+    ck_assert_ptr_ne(pkey, NULL);
     ck_assert(suc);
     ck_assert(!cryptoutil_PublicKeyEqual(pkey, evp_pubkeys[2]));
     ck_assert(cryptoutil_PublicKeyEqual(pkey, evp_pubkeys[1]));
     ck_assert(!cryptoutil_PublicKeyEqual(pkey, evp_pubkeys[3]));
 
     pkey = jwtbundle_Bundle_FindJWTAuthority(bundle_ptr, "key5", &suc);
-    ck_assert(pkey != NULL);
+    ck_assert_ptr_ne(pkey, NULL);
     ck_assert(suc);
     ck_assert(!cryptoutil_PublicKeyEqual(pkey, evp_pubkeys[3]));
     ck_assert(!cryptoutil_PublicKeyEqual(pkey, evp_pubkeys[4]));
     ck_assert(cryptoutil_PublicKeyEqual(pkey, evp_pubkeys[5]));
 
     pkey = jwtbundle_Bundle_FindJWTAuthority(bundle_ptr, "key", &suc);
-    ck_assert(pkey == NULL);
+    ck_assert_ptr_eq(pkey, NULL);
     ck_assert(!suc);
 
+    shfree(jwt_auths);
     for(int i = 0; i < ITERS; ++i) {
         BIO_free(bio_mems[i]);
         EVP_PKEY_free(evp_pubkeys[i]);
@@ -536,6 +538,7 @@ START_TEST(test_jwtbundle_Bundle_AddJWTAuthority)
         BIO_free(bio_mems[i]);
         EVP_PKEY_free(evp_pubkeys[i]);
     }
+    shfree(jwt_auths);
     jwtbundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
@@ -674,6 +677,7 @@ START_TEST(test_jwtbundle_Bundle_RemoveJWTAuthority)
         BIO_free(bio_mems[i]);
         EVP_PKEY_free(evp_pubkeys[i]);
     }
+    shfree(jwt_auths);
     jwtbundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
@@ -758,6 +762,7 @@ START_TEST(test_jwtbundle_Bundle_SetJWTAuthorities)
         BIO_free(bio_mems[i]);
         EVP_PKEY_free(evp_pubkeys[i]);
     }
+    shfree(jwt_auths);
     jwtbundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
@@ -843,6 +848,7 @@ START_TEST(test_jwtbundle_Bundle_Empty)
         BIO_free(bio_mems[i]);
         EVP_PKEY_free(evp_pubkeys[i]);
     }
+    shfree(jwt_auths);
     jwtbundle_Bundle_Free(bundle_ptr);
 }
 END_TEST
@@ -966,7 +972,7 @@ START_TEST(test_jwtbundle_Bundle_Print_Errors)
     ck_assert_int_eq(err, ERROR1);
 
     // NULL BIO* error
-    bundle_ptr = (jwtbundle_Bundle*) 1; //"valid" bundle
+    bundle_ptr = (jwtbundle_Bundle *) 1; //"valid" bundle
     err = jwtbundle_Bundle_print_BIO(bundle_ptr, offset, out);
     ck_assert_int_eq(err, ERROR2);
 }

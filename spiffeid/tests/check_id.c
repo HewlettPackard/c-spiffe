@@ -24,7 +24,7 @@ START_TEST(test_spiffeid_ID_New)
     arrput(str_arr, string_new("p333"));
 
     err_t err;
-    string_t str_td = string_new("example.com");
+    const char str_td[] = "example.com";
     spiffeid_ID id = spiffeid_ID_New(str_td, str_arr, &err);
 
     ck_assert_str_eq(id.td.name, "example.com");
@@ -36,7 +36,7 @@ END_TEST
 
 START_TEST(test_spiffeid_Join)
 {
-    string_t str_td = string_new("example.com");
+    const char str_td[] = "example.com";
     string_t *str_segs = NULL;
     arrput(str_segs, string_new("seg1"));
     arrput(str_segs, string_new("seg2"));
@@ -48,7 +48,6 @@ START_TEST(test_spiffeid_Join)
     ck_assert_str_eq(str_res, "spiffe://example.com/seg1/seg2/seg3");
     ck_assert_uint_eq(err, 0);
 
-    util_string_t_Free(str_td);
     util_string_t_Free(str_res);
     util_string_arr_t_Free(str_segs);
 }
@@ -57,7 +56,7 @@ END_TEST
 START_TEST(test_spiffeid_FromString)
 {
     const size_t ITERS = 4;
-    const string_t strs[]
+    string_t strs[]
         = { string_new("spiffe://example.br/path1/p3"),
             string_new("https://example.us/path2/path3"),
             string_new("example.gov/path1"),
@@ -160,9 +159,8 @@ START_TEST(test_spiffeid_normalizeTrustDomain)
         = { string_new("Example0.com"), string_new("EXAMPLE1.GOV"),
             string_new("eXaMpLe2.Br"), string_new("ExAmPlE33.GOV.br") };
 
-    string_t str_res[]
-        = { string_new("example0.com"), string_new("example1.gov"),
-            string_new("example2.br"), string_new("example33.gov.br") };
+    const char *str_res[] = { "example0.com", "example1.gov", "example2.br",
+                              "example33.gov.br" };
 
     for(size_t i = 0; i < ITERS; ++i) {
         str_td[i] = spiffeid_normalizeTrustDomain(str_td[i]);
@@ -171,7 +169,6 @@ START_TEST(test_spiffeid_normalizeTrustDomain)
 
     for(size_t i = 0; i < ITERS; ++i) {
         util_string_t_Free(str_td[i]);
-        util_string_t_Free(str_res[i]);
     }
 }
 END_TEST

@@ -1,10 +1,10 @@
 #ifndef INCLUDE_BUNDLE_SPIFFEBUNDLE_BUNDLE_H
 #define INCLUDE_BUNDLE_SPIFFEBUNDLE_BUNDLE_H
 
-#include "spiffeid/src/trustdomain.h"
-#include "utils/src/util.h"
 #include "bundle/jwtbundle/src/bundle.h"
 #include "bundle/x509bundle/src/bundle.h"
+#include "spiffeid/src/trustdomain.h"
+#include "utils/src/util.h"
 #include <openssl/x509.h>
 #include <threads.h>
 #include <time.h>
@@ -30,7 +30,7 @@ typedef struct {
 
 spiffebundle_Bundle *spiffebundle_New(const spiffeid_TrustDomain td);
 spiffebundle_Bundle *spiffebundle_Load(const spiffeid_TrustDomain td,
-                                       const string_t path, err_t *err);
+                                       const char *path, err_t *err);
 spiffebundle_Bundle *spiffebundle_Parse(const spiffeid_TrustDomain td,
                                         const byte *bundleBytes, err_t *err);
 spiffebundle_Bundle *spiffebundle_FromX509Bundle(x509bundle_Bundle *bundle);
@@ -53,15 +53,13 @@ void spiffebundle_Bundle_SetX509Authorities(spiffebundle_Bundle *b,
 map_string_EVP_PKEY *
 spiffebundle_Bundle_JWTAuthorities(spiffebundle_Bundle *b);
 EVP_PKEY *spiffebundle_Bundle_FindJWTAuthority(spiffebundle_Bundle *b,
-                                               const string_t keyID,
-                                               bool *suc);
+                                               const char *keyID, bool *suc);
 bool spiffebundle_Bundle_HasJWTAuthority(spiffebundle_Bundle *b,
-                                         const string_t keyID);
+                                         const char *keyID);
 err_t spiffebundle_Bundle_AddJWTAuthority(spiffebundle_Bundle *b,
-                                          const string_t keyID,
-                                          EVP_PKEY *auth);
+                                          const char *keyID, EVP_PKEY *auth);
 void spiffebundle_Bundle_RemoveJWTAuthority(spiffebundle_Bundle *b,
-                                            const string_t keyID);
+                                            const char *keyID);
 void spiffebundle_Bundle_SetJWTAuthorities(spiffebundle_Bundle *b,
                                            map_string_EVP_PKEY *auths);
 bool spiffebundle_Bundle_Empty(spiffebundle_Bundle *b);

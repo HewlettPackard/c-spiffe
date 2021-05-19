@@ -5,6 +5,7 @@ map_string_EVP_PKEY *jwtutil_CopyJWTAuthorities(map_string_EVP_PKEY *hash)
 {
     if(hash) {
         map_string_EVP_PKEY *new_hash = NULL;
+        sh_new_strdup(new_hash);
 
         for(size_t i = 0, size = shlenu(hash); i < size; ++i) {
             const char *str = hash[i].key;
