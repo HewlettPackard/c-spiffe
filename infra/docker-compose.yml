@@ -7,21 +7,21 @@
 version: '3'
 services:
   spire-server:
-    image: alg4/infra_spire-server
+    image: cspiffe/spire-server
     hostname: spire-server
     tty: true
     ports:
       - "8081:8081"
   
   spire-server2:
-    image: alg4/infra_spire-server
+    image: cspiffe/spire-agent
     hostname: spire-server2
     tty: true
     ports:
       - "9090:9090"
 
   workload:
-    image: alg4/infra_workload
+    image: cspiffe/workload:${TAG}
     tty: true
     hostname: workload
     links:
@@ -33,7 +33,7 @@ services:
 
   # Todo: Create sceneries for spire-server test; script python; "getRequestor" {generate, get, (entrys, token)}
   tests:
-    image: alg4/infra_tests
+    image: cspiffe/tests:${TAG}
     tty: true
     hostname: tests
     links:
