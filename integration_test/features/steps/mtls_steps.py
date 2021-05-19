@@ -25,16 +25,27 @@ def step_impl(context, container_name):
     time.sleep(5)
 
 
-@when('The go-tls-listen is activated inside "{container_name}" container')
-def step_impl(context, container_name):
-    os.system("/mnt/c-spiffe/integration_test/helpers/bash-general-scripts/ssh-run-go-server.sh %s" % container_name)
-    time.sleep(1)
+@when('The "{language}"-tls-listen is activated inside "{container_name}" container')
+def step_impl(context, language, container_name):
+    if language == "go":
+        os.system("/mnt/c-spiffe/integration_test/helpers/bash-general-scripts/ssh-run-go-server.sh %s" % container_name)
+        time.sleep(1)
+    elif language == "c":
+        os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-run-c-server.sh %s" % container_name)
+        time.sleep(1)
+    else:
+        raise Exception("'%s' is not an available language for tls-listen. Choose 'c' or 'go'." % language)
 
 
-@then('The go-tls-listen is disabled inside "{container_name}" container')
-def step_impl(context, container_name):
-    os.system("/mnt/c-spiffe/integration_test/helpers/bash-general-scripts/ssh-stop-go-server.sh %s" % container_name)
-    time.sleep(1)
+@then('The "{language}"-tls-listen is disabled inside "{container_name}" container')
+def step_impl(context, language, container_name):
+    if language == "go":
+        os.system("/mnt/c-spiffe/integration_test/helpers/bash-general-scripts/ssh-stop-go-server.sh %s" % container_name)
+        time.sleep(1)
+    elif language == "c":
+        os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-stop-c-server.sh %s" % container_name)
+    else:
+        raise Exception("'%s' is not an available language for tls-listen. Choose 'c' or 'go'." % language)
 
 
 @when('I send "{message:NullableString}" to "{container_name}" container through "{language}"-tls-dial')
@@ -46,12 +57,13 @@ def step_impl(context, message, container_name, language):
         time.sleep(1)
         result = client.stderr
     elif language == "c":
-        client = os.popen("/mnt/c-spiffe/build/spiffetls/c_dial %s %s %s %s" % (message, socket.gethostbyname(container_name), context.default_echo_server_port, context.default_trust_domain))
+        client = os.popen("/mnt/c-spiffe/build/spiffetls/c_dial '%s' %s 4433 example.org" % (message, socket.gethostbyname(container_name)))
         result = client.read()
     context.result = result
 
 
-@then('I check that "{message:NullableString}" was the answer from go-tls-listen')
+
+@then('I check that "{message:NullableString}" was the answer from tls-listen')
 def step_impl(context, message):
     tls_answer = context.result.replace("\"","").split("Server replied:")
     actual_message = tls_answer[-1].strip().replace("\\n","")
