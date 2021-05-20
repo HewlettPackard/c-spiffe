@@ -14,56 +14,56 @@ jobs:
       - name: Log the parent container ubuntu version
         run: lsb_release -a
 
-#      - name: Create Build Environment
-#        shell: bash
-#        run: mkdir build
+      - name: Create Build Environment
+        shell: bash
+        run: mkdir build
 
-#      - name: Configure CMake
-#        shell: bash
-#        run: cd build && cmake ..
+      - name: Configure CMake
+        shell: bash
+        run: cd build && cmake ..
 
-#      - name: Build
-#        shell: bash
-#        run:  cd build && make
+      - name: Build
+        shell: bash
+        run:  cd build && make
 
-#      - name: Unit Testing
-#        shell: bash
-#        run: cd build && make test
+      - name: Unit Testing
+        shell: bash
+        run: cd build && make test
 
-#      - name: Coverage Test
-#        shell: bash
-#        run: cd build && make gcov && make lcov && lcov --list Coverage/lcov.info > coverage
+      - name: Coverage Test
+        shell: bash
+        run: cd build && make gcov && make lcov && lcov --list Coverage/lcov.info > coverage
 
-#      - name: Integration Test
-#        shell: bash
-#        run: cd infra && make integration-tests
+      - name: Integration Test
+        shell: bash
+        run: cd infra && make integration-tests
 
-#      - name: Upload coverage to Codecov
-#        uses: codecov/codecov-action@v1
-#        with:
-#          fail_ci_if_error: true
-#          verbose: true
-#          file: build/Coverage/lcov.info
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+          verbose: true
+          file: build/Coverage/lcov.info
 
-#      - name: Lines Coverage Verify
-#        shell: bash
-#        run: cd build && target=60.9;lines=`awk '{print substr($1, 8, 4)}' coverage | tail -1`;if { echo $lines; echo $target ; } | sort -hu -c 2>/dev/null; then echo "This coverage is less than threshold"; exit 1; fi
+      - name: Lines Coverage Verify
+        shell: bash
+        run: cd build && target=60.9;lines=`awk '{print substr($1, 8, 4)}' coverage | tail -1`;if { echo $lines; echo $target ; } | sort -hu -c 2>/dev/null; then echo "This coverage is less than threshold"; exit 1; fi
 
-#      - name: Functions Coverage Verify
-#        shell: bash
-#        run: cd build && target=60.9;functions=`awk '{print substr($2, 6, 4)}' coverage | tail -1`;if { echo $functions; echo $target ; } | sort -hu -c 2>/dev/null; then echo "This coverage is less than threshold"; exit 1; fi
+      - name: Functions Coverage Verify
+        shell: bash
+        run: cd build && target=60.9;functions=`awk '{print substr($2, 6, 4)}' coverage | tail -1`;if { echo $functions; echo $target ; } | sort -hu -c 2>/dev/null; then echo "This coverage is less than threshold"; exit 1; fi
 
-#      - name: Generate documentation
-#        uses: mattnotmitt/doxygen-action@v1
-#        with:
-#            working-directory: '.'
-#            doxyfile-path: 'docs/Doxyfile'
+      - name: Generate documentation
+        uses: mattnotmitt/doxygen-action@v1
+        with:
+            working-directory: '.'
+            doxyfile-path: 'docs/Doxyfile'
 
-#      - name: Deploy
-#        uses: peaceiris/actions-gh-pages@v3
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          publish_dir: docs/html
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/html
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -77,12 +77,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-#      - name: Build & push Docker image
-#        uses: docker/build-push-action@v1
-#        with:
-#          dockerfile: docker/test.Dockerfile
-#          repository:  cspiffe/grpc-build
-#          tag_with_ref: true
+      - name: Build & push Docker image
+        uses: docker/build-push-action@v1
+        with:
+          dockerfile: docker/test.Dockerfile
+          repository:  cspiffe/grpc-build
+          tag_with_ref: true
 
       - name: Build & push  workload Docker image for infra tests
         uses: docker/build-push-action@v1
