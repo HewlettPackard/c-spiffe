@@ -31,6 +31,5 @@ RUN chmod +x -R ${C_SPIFFE_DIR}/integration_test
 RUN chmod +x -R ${C_SPIFFE_DIR}/infra
 
 WORKDIR ${C_SPIFFE_DIR}/build
-COPY build-tests-workload.sh .
 
 RUN useradd server-workload

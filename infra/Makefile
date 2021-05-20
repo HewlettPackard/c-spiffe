@@ -35,7 +35,7 @@ integration-tests:
 	docker exec -w /mnt/c-spiffe/integration_test/helpers/bash-general-scripts infra_workload_1 ./ssh-copy-pub.sh workload
 	docker exec -w /opt/spire infra_spire-server2_1 ./ssh-copy-pub.sh spire-server
 	docker exec -w /mnt/c-spiffe/integration_test/helpers/bash-general-scripts infra_tests_1 ./ssh-trusted-host.sh
-	docker exec -w /mnt/c-spiffe/infra/tests infra_workload_1 ./build-tests-workload.sh
+	docker exec -w /mnt/c-spiffe/infra/tests infra_workload_1 ./build-examples.sh
 
 	docker exec infra_spire-server_1 spire-server run &
 	sleep 1
