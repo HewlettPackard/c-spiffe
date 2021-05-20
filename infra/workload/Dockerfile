@@ -23,8 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         openssh-server
 RUN apt-get clean
 
-RUN mkdir -p ${C_SPIFFE_DIR}/build/
-RUN cd ${C_SPIFFE_DIR}/build/ && rm -rf
+RUN ls ${C_SPIFFE_DIR}
 
 RUN chmod +x -R ${C_SPIFFE_DIR}/integration_test
 RUN chmod +x -R ${C_SPIFFE_DIR}/infra
