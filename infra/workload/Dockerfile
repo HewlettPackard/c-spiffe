@@ -25,8 +25,6 @@ RUN apt-get clean
 
 RUN mkdir -p ${C_SPIFFE_DIR}/build/
 
-COPY . ${C_SPIFFE_DIR}
-
 RUN chmod +x -R ${C_SPIFFE_DIR}/integration_test
 RUN chmod +x -R ${C_SPIFFE_DIR}/infra
 
