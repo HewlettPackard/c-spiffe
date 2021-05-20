@@ -32,6 +32,8 @@ RUN pwd
 RUN chmod +x -R ${C_SPIFFE_DIR}/integration_test
 RUN chmod +x -R ${C_SPIFFE_DIR}/infra
 
+RUN ls ${C_SPIFFE_DIR}/infra
+
 WORKDIR ${C_SPIFFE_DIR}/build
 RUN ls ${C_SPIFFE_DIR}
 
