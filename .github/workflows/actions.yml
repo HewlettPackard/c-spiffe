@@ -34,9 +34,9 @@ jobs:
         shell: bash
         run: cd build && make gcov && make lcov && lcov --list Coverage/lcov.info > coverage
 
-#      - name: Integration Test
-#        shell: bash
-#        run: cd infra && make integration-tests
+      - name: Integration Test
+        shell: bash
+        run: cd infra && make integration-tests
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1

@@ -14,7 +14,7 @@ services:
       - "8081:8081"
   
   spire-server2:
-    image: cspiffe/spire-agent
+    image: cspiffe/spire-server
     hostname: spire-server2
     tty: true
     ports:
