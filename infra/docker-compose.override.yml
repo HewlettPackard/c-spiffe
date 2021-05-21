@@ -8,28 +8,4 @@ version: '3'
 services:
   spire-server:
   workload:
-    volumes:
-      - ../integration_test/:/mnt/c-spiffe/integration_test
-      - ../infra/:/mnt/c-spiffe/infra
-      - ../bundle/:/mnt/c-spiffe/bundle
-      - ../cmake/:/mnt/c-spiffe/cmake
-      - ../internal/:/mnt/c-spiffe/internal
-      - ../protos/:/mnt/c-spiffe/protos
-      - ../spiffeid/:/mnt/c-spiffe/spiffeid
-      - ../spiffetls/:/mnt/c-spiffe/spiffetls
-      - ../svid/:/mnt/c-spiffe/svid
-      - ../utils/:/mnt/c-spiffe/utils
-      - ../workload/:/mnt/c-spiffe/workload
   tests:
-    volumes:
-      - ../integration_test/:/mnt/c-spiffe/integration_test
-      - ../infra/:/mnt/c-spiffe/infra
-      - ../bundle/:/mnt/c-spiffe/bundle
-      - ../cmake/:/mnt/c-spiffe/cmake
-      - ../internal/:/mnt/c-spiffe/internal
-      - ../protos/:/mnt/c-spiffe/protos
-      - ../spiffeid/:/mnt/c-spiffe/spiffeid
-      - ../spiffetls/:/mnt/c-spiffe/spiffetls
-      - ../svid/:/mnt/c-spiffe/svid
-      - ../utils/:/mnt/c-spiffe/utils
-      - ../workload/:/mnt/c-spiffe/workload
