@@ -15,6 +15,8 @@ register_type(NullableString=parse_nullable_string)
 
 @then('The second "{process}" is turned off inside "{container_name}" container')
 def step_impl(context, process, container_name):
+    if process != "agent" and process != "server":
+        raise Exception("Invalid process '%s'. Choose 'agent' or 'server'." % process)
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-stop-process.sh %s %s" % (process, container_name))
     time.sleep(5)
 
@@ -60,6 +62,13 @@ def step_impl(context, message, container_name, language):
         client = os.popen("/mnt/c-spiffe/build/spiffetls/c_dial '%s' %s %s %s" % (message, socket.gethostbyname(container_name), context.default_echo_server_port, context.default_trust_domain))
         result = client.read()
     context.result = result
+    print("======================cliente executado====================\n\n")
+    f = open("/mnt/c-spiffe/integration_test/output.txt", "w")
+    f.write(context.result)
+    print("======================arquivo escrito====================\n\n")
+    f.close()
+    print("======================arquivo fechado====================\n\n")
+
 
 
 @then('I check that "{message:NullableString}" was the answer from tls-listen')
@@ -104,5 +113,6 @@ def step_impl(context, container_name):
 
 @then('I check that mTLS connection did not succeed')
 def step_impl(context):
+    print("======================checando resultado====================\n\n")
     assert_that(context.result.find("Server replied:"), is_(-1))
     assert_that(context.result.find("could not create TLS connection"), is_not(-1))

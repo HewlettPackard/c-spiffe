@@ -38,3 +38,5 @@ def after_scenario(context, scenario):
         ''')
         os.system(PARENT_PATH + "bash-general-scripts/clean.sh")
         time.sleep(1)
+    elif "Sprint11" in scenario.tags:
+        time.sleep(300)
