@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-#arguments: $1 hostname
+#arguments: $1 = message_to_send; $2 = hostname_IP_address; $3 = server_port; $4 = trust_domain 
 cd /mnt/c-spiffe/build/spiffetls
-su - server-workload -c "./c_listen" > /dev/null 2>&1 &
-/mnt/c-spiffe/build/spiffetls/c_dial '%s' %s %s %s
+su - server-workload -c "./c_dial '$1' $2 $3 $4" > /dev/null 2>&1 &
