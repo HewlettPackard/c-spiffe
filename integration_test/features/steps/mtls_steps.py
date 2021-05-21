@@ -1,5 +1,4 @@
 import os
-import sys
 import time
 import subprocess
 import socket
@@ -62,13 +61,6 @@ def step_impl(context, message, container_name, language):
         client = os.popen("/mnt/c-spiffe/build/spiffetls/c_dial '%s' %s %s %s" % (message, socket.gethostbyname(container_name), context.default_echo_server_port, context.default_trust_domain))
         result = client.read()
     context.result = result
-    print("======================cliente executado====================\n\n")
-    f = open("/mnt/c-spiffe/integration_test/output.txt", "w")
-    f.write(context.result)
-    print("======================arquivo escrito====================\n\n")
-    f.close()
-    print("======================arquivo fechado====================\n\n")
-
 
 
 @then('I check that "{message:NullableString}" was the answer from tls-listen')
@@ -81,6 +73,7 @@ def step_impl(context, message):
 @given('The second agent is turned on inside "{container_name}" container with the second trust domain')
 def step_impl(context, container_name):
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-generate-token.sh 2")
+    time.sleep(2)
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect-agent.sh WlC %s" % container_name)
     time.sleep(5)
 
@@ -113,6 +106,5 @@ def step_impl(context, container_name):
 
 @then('I check that mTLS connection did not succeed')
 def step_impl(context):
-    print("======================checando resultado====================\n\n")
     assert_that(context.result.find("Server replied:"), is_(-1))
     assert_that(context.result.find("could not create TLS connection"), is_not(-1))
