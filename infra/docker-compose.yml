@@ -31,6 +31,16 @@ services:
       - "4433:4433"
       - "443:443"
 
+  workload2:
+    image: alg4/infra_workload
+    tty: true
+    hostname: workload2
+    links:
+      - spire-server
+      - spire-server2
+    ports:
+      - "4434:4434"
+
   # Todo: Create sceneries for spire-server test; script python; "getRequestor" {generate, get, (entrys, token)}
   tests:
     image: alg4/infra_tests
