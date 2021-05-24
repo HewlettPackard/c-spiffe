@@ -319,6 +319,28 @@ void spiffebundle_Bundle_ClearRefreshHint(spiffebundle_Bundle *b)
     mtx_unlock(&(b->mtx));
 }
 
+string_t spiffebundle_Bundle_Marshal(spiffebundle_Bundle *b, err_t *err)
+{
+    mtx_lock(&(b->mtx));
+    jwtutil_JWKS jwks
+        = { .root = NULL,
+            .jwt_auths = jwtutil_CopyJWTAuthorities(b->jwt_auths),
+            .x509_auths = x509util_CopyX509Authorities(b->x509_auths) };
+    string_t str = jwtutil_JWKS_Marshal(&jwks, err);
+    if(jwks.root && !(*err)) {
+        arrfree(str);
+        json_object_set_new(jwks.root, "spiffe_refresh_hint",
+                            json_integer(b->refresh_hint.tv_sec));
+        json_object_set_new(jwks.root, "spiffe_sequence",
+                            json_integer(b->seq_number));
+        str = jwtutil_JWKS_Marshal(&jwks, err);
+    }
+    jwtutil_JWKS_Free(&jwks);
+    mtx_unlock(&(b->mtx));
+
+    return str;
+}
+
 int64_t spiffebundle_Bundle_SequenceNumber(spiffebundle_Bundle *b, bool *suc)
 {
     mtx_lock(&(b->mtx));
