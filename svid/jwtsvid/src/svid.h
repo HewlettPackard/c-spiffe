@@ -97,7 +97,8 @@ jwtsvid_SVID *jwtsvid_ParseInsecure(char *token, string_arr_t audience,
  * jwtsvid_SVID_Free function.
  */
 jwtsvid_SVID *jwtsvid_parse(char *token, string_arr_t audience,
-                            token_validator_t validator, void *arg, err_t *err);
+                            token_validator_t validator, void *arg,
+                            err_t *err);
 
 /**
  * Marshal returns the JWT-SVID marshaled to a string.

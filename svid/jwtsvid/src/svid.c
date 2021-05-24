@@ -531,8 +531,8 @@ jwtsvid_SVID *jwtsvid_parse(char *token, string_arr_t audience,
                 sh_new_strdup(claims_map);
 
                 if(validator)
-                    claims_map
-                        = validator(jwt, spiffeid_ID_TrustDomain(id), arg, &err2);
+                    claims_map = validator(jwt, spiffeid_ID_TrustDomain(id),
+                                           arg, &err2);
                 if(err2) {
                     // could not validate jwt object
                     *err = ERROR5;

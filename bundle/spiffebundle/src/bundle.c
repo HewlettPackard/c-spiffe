@@ -8,11 +8,11 @@ spiffebundle_Bundle *spiffebundle_New(const spiffeid_TrustDomain td)
     if(bundle) {
         bundle->td.name = string_new(td.name);
         mtx_init(&(bundle->mtx), mtx_plain);
-        bundle->jwtAuths = NULL;
-        sh_new_strdup(bundle->jwtAuths);
-        bundle->x509Auths = NULL;
-        bundle->refreshHint = NULL;
-        bundle->seqNumber = NULL;
+        bundle->jwt_auths = NULL;
+        sh_new_strdup(bundle->jwt_auths);
+        bundle->x509_auths = NULL;
+        bundle->refresh_hint = (struct timespec){ .tv_sec = -1, .tv_nsec = 0 };
+        bundle->seq_number = -1;
     }
     return bundle;
 }
@@ -25,26 +25,64 @@ spiffebundle_Bundle *spiffebundle_Load(const spiffeid_TrustDomain td,
     if(fsb) {
         string_t buffer = FILE_to_string(fsb);
         fclose(fsb);
-        // string end
-        // arrput(buffer, (byte) 0);
-        bundleptr = spiffebundle_Parse(td, (const byte *) buffer, err);
+
+        bundleptr = spiffebundle_Parse(td, buffer, err);
         arrfree(buffer);
-    } else
+    } else {
         *err = ERROR1;
+    }
 
     return bundleptr;
 }
 
 spiffebundle_Bundle *spiffebundle_Parse(const spiffeid_TrustDomain td,
-                                        const byte *bundleBytes, err_t *err)
+                                        const char *bundle_bytes, err_t *err)
 {
-    // dummy
-    *err = ERROR1;
-    if(td.name && bundleBytes) {
-        *err = NO_ERROR;
+    spiffebundle_Bundle *bundleptr = NULL;
+    if(td.name && bundle_bytes) {
+        jwtutil_JWKS jwks = jwtutil_ParseJWKS(bundle_bytes, err);
+
+        if(!(*err)) {
+            *err = NO_ERROR;
+
+            bundleptr = spiffebundle_New(td);
+            shfree(bundleptr->jwt_auths);
+            bundleptr->jwt_auths = jwks.jwt_auths;
+            bundleptr->x509_auths = jwks.x509_auths;
+
+            json_t *ref_hint_json
+                = json_object_get(jwks.root, "spiffe_refresh_hint");
+            json_t *seq_num_json
+                = json_object_get(jwks.root, "spiffe_sequence");
+
+            if(ref_hint_json) {
+                long long ref_hint = json_typeof(ref_hint_json) == JSON_INTEGER
+                                         ? json_integer_value(ref_hint_json)
+                                         : 0LL;
+                if(ref_hint >= 0LL) {
+                    bundleptr->refresh_hint.tv_sec = (time_t) ref_hint;
+                    bundleptr->refresh_hint.tv_nsec = 0L;
+                }
+            }
+            if(seq_num_json) {
+                long long seq_num = json_typeof(seq_num_json) == JSON_INTEGER
+                                        ? json_integer_value(seq_num_json)
+                                        : 0LL;
+                if(seq_num >= 0LL) {
+                    bundleptr->seq_number = seq_num;
+                }
+            }
+
+        } else {
+            // could not parse jwks
+            *err = ERROR1;
+        }
+    } else {
+        // NULL error
+        *err = ERROR2;
     }
 
-    return NULL;
+    return bundleptr;
 }
 
 spiffebundle_Bundle *spiffebundle_FromX509Bundle(x509bundle_Bundle *x509bundle)
@@ -53,7 +91,7 @@ spiffebundle_Bundle *spiffebundle_FromX509Bundle(x509bundle_Bundle *x509bundle)
         = spiffebundle_New(x509bundle_Bundle_TrustDomain(x509bundle));
 
     if(mbundle) {
-        mbundle->x509Auths = x509bundle_Bundle_X509Authorities(x509bundle);
+        mbundle->x509_auths = x509bundle_Bundle_X509Authorities(x509bundle);
     }
 
     return mbundle;
@@ -65,7 +103,8 @@ spiffebundle_Bundle *spiffebundle_FromJWTBundle(jwtbundle_Bundle *jwtbundle)
         = spiffebundle_New(jwtbundle_Bundle_TrustDomain(jwtbundle));
 
     if(mbundle) {
-        mbundle->jwtAuths = jwtbundle_Bundle_JWTAuthorities(jwtbundle);
+        shfree(mbundle->jwt_auths);
+        mbundle->jwt_auths = jwtbundle_Bundle_JWTAuthorities(jwtbundle);
     }
 
     return mbundle;
@@ -77,7 +116,7 @@ spiffebundle_FromX509Authorities(const spiffeid_TrustDomain td, X509 **auths)
     spiffebundle_Bundle *bundle = spiffebundle_New(td);
 
     if(bundle) {
-        bundle->x509Auths = x509util_CopyX509Authorities(auths);
+        bundle->x509_auths = x509util_CopyX509Authorities(auths);
     }
     return bundle;
 }
@@ -89,7 +128,8 @@ spiffebundle_FromJWTAuthorities(const spiffeid_TrustDomain td,
     spiffebundle_Bundle *bundle = spiffebundle_New(td);
 
     if(bundle) {
-        bundle->jwtAuths = jwtutil_CopyJWTAuthorities(auths);
+        shfree(bundle->jwt_auths);
+        bundle->jwt_auths = jwtutil_CopyJWTAuthorities(auths);
     }
 
     return bundle;
@@ -104,7 +144,7 @@ spiffebundle_Bundle_TrustDomain(const spiffebundle_Bundle *b)
 X509 **spiffebundle_Bundle_X509Authorities(spiffebundle_Bundle *b)
 {
     mtx_lock(&(b->mtx));
-    X509 **auths = x509util_CopyX509Authorities(b->x509Auths);
+    X509 **auths = x509util_CopyX509Authorities(b->x509_auths);
     mtx_unlock(&(b->mtx));
 
     return auths;
@@ -113,7 +153,19 @@ X509 **spiffebundle_Bundle_X509Authorities(spiffebundle_Bundle *b)
 void spiffebundle_Bundle_AddX509Authority(spiffebundle_Bundle *b, X509 *auth)
 {
     mtx_lock(&(b->mtx));
-    arrput(b->x509Auths, auth);
+    bool suc = false;
+    // searches for certificate
+    for(size_t i = 0, size = arrlenu(b->x509_auths); i < size; ++i) {
+        if(!X509_cmp(b->x509_auths[i], auth)) {
+            // b->auths[i] == auth
+            suc = true;
+            break;
+        }
+    }
+    if(!suc) {
+        X509_up_ref(auth);
+        arrput(b->x509_auths, auth);
+    }
     mtx_unlock(&(b->mtx));
 }
 
@@ -121,9 +173,12 @@ void spiffebundle_Bundle_RemoveX509Authority(spiffebundle_Bundle *b,
                                              const X509 *auth)
 {
     mtx_lock(&(b->mtx));
-    for(size_t i = 0, size = arrlenu(b->x509Auths); i < size; ++i) {
-        if(!X509_cmp(b->x509Auths[i], auth))
-            arrdel(b->x509Auths, i);
+    for(size_t i = 0, size = arrlenu(b->x509_auths); i < size; ++i) {
+        if(!X509_cmp(b->x509_auths[i], auth)) {
+            X509_free(b->x509_auths[i]);
+            arrdel(b->x509_auths, i);
+            break;
+        }
     }
     mtx_unlock(&(b->mtx));
 }
@@ -133,8 +188,8 @@ bool spiffebundle_Bundle_HasX509Authority(spiffebundle_Bundle *b,
 {
     mtx_lock(&(b->mtx));
     bool present = false;
-    for(size_t i = 0, size = arrlenu(b->x509Auths); i < size; ++i) {
-        if(!X509_cmp(b->x509Auths[i], auth)) {
+    for(size_t i = 0, size = arrlenu(b->x509_auths); i < size; ++i) {
+        if(!X509_cmp(b->x509_auths[i], auth)) {
             present = true;
             break;
         }
@@ -148,18 +203,18 @@ void spiffebundle_Bundle_SetX509Authorities(spiffebundle_Bundle *b,
                                             X509 **auths)
 {
     mtx_lock(&(b->mtx));
-    for(size_t i = 0, size = arrlenu(b->x509Auths); i < size; ++i) {
-        X509_free(b->x509Auths[i]);
+    for(size_t i = 0, size = arrlenu(b->x509_auths); i < size; ++i) {
+        X509_free(b->x509_auths[i]);
     }
-    arrfree(b->x509Auths);
-    b->x509Auths = x509util_CopyX509Authorities(auths);
+    arrfree(b->x509_auths);
+    b->x509_auths = x509util_CopyX509Authorities(auths);
     mtx_unlock(&(b->mtx));
 }
 
 map_string_EVP_PKEY *spiffebundle_Bundle_JWTAuthorities(spiffebundle_Bundle *b)
 {
     mtx_lock(&(b->mtx));
-    map_string_EVP_PKEY *copy_auths = jwtutil_CopyJWTAuthorities(b->jwtAuths);
+    map_string_EVP_PKEY *copy_auths = jwtutil_CopyJWTAuthorities(b->jwt_auths);
     mtx_unlock(&(b->mtx));
 
     return copy_auths;
@@ -171,9 +226,9 @@ EVP_PKEY *spiffebundle_Bundle_FindJWTAuthority(spiffebundle_Bundle *b,
     mtx_lock(&(b->mtx));
     EVP_PKEY *pkey = NULL;
     *suc = false;
-    int idx = shgeti(b->jwtAuths, keyID);
+    int idx = shgeti(b->jwt_auths, keyID);
     if(idx >= 0) {
-        pkey = b->jwtAuths[idx].value;
+        pkey = b->jwt_auths[idx].value;
         *suc = true;
     }
     mtx_unlock(&(b->mtx));
@@ -185,7 +240,7 @@ bool spiffebundle_Bundle_HasJWTAuthority(spiffebundle_Bundle *b,
                                          const char *keyID)
 {
     mtx_lock(&(b->mtx));
-    const bool present = shgeti(b->jwtAuths, keyID) >= 0 ? true : false;
+    const bool present = shgeti(b->jwt_auths, keyID) >= 0 ? true : false;
     mtx_unlock(&(b->mtx));
 
     return present;
@@ -199,7 +254,10 @@ err_t spiffebundle_Bundle_AddJWTAuthority(spiffebundle_Bundle *b,
 
     if(!empty_str(keyID)) {
         mtx_lock(&(b->mtx));
-        shput(b->jwtAuths, keyID, auth);
+        if(shgeti(b->jwt_auths, keyID) < 0) {
+            EVP_PKEY_up_ref(auth);
+            shput(b->jwt_auths, keyID, auth);
+        }
         err = NO_ERROR;
         mtx_unlock(&(b->mtx));
     }
@@ -211,7 +269,7 @@ void spiffebundle_Bundle_RemoveJWTAuthority(spiffebundle_Bundle *b,
                                             const char *keyID)
 {
     mtx_lock(&(b->mtx));
-    shdel(b->jwtAuths, keyID);
+    shdel(b->jwt_auths, keyID);
     mtx_unlock(&(b->mtx));
 }
 
@@ -219,18 +277,18 @@ void spiffebundle_Bundle_SetJWTAuthorities(spiffebundle_Bundle *b,
                                            map_string_EVP_PKEY *auths)
 {
     mtx_lock(&(b->mtx));
-    for(size_t i = 0, size = shlenu(b->jwtAuths); i < size; ++i) {
-        EVP_PKEY_free(b->jwtAuths[i].value);
+    for(size_t i = 0, size = shlenu(b->jwt_auths); i < size; ++i) {
+        EVP_PKEY_free(b->jwt_auths[i].value);
     }
-    shfree(b->jwtAuths);
-    b->jwtAuths = jwtutil_CopyJWTAuthorities(auths);
+    shfree(b->jwt_auths);
+    b->jwt_auths = jwtutil_CopyJWTAuthorities(auths);
     mtx_unlock(&(b->mtx));
 }
 
 bool spiffebundle_Bundle_Empty(spiffebundle_Bundle *b)
 {
     mtx_lock(&(b->mtx));
-    bool empty = (arrlenu(b->x509Auths) == 0) && (shlenu(b->jwtAuths) == 0);
+    bool empty = (arrlenu(b->x509_auths) == 0) && (shlenu(b->jwt_auths) == 0);
     mtx_unlock(&(b->mtx));
 
     return empty;
@@ -240,81 +298,69 @@ struct timespec spiffebundle_Bundle_RefreshHint(spiffebundle_Bundle *b,
                                                 bool *suc)
 {
     mtx_lock(&(b->mtx));
-    struct timespec ts = { 0, 0 };
-    *suc = false;
-
-    if(b->refreshHint) {
-        ts = *(b->refreshHint);
-        *suc = true;
-    }
+    *suc = (b->refresh_hint.tv_sec >= 0);
     mtx_unlock(&(b->mtx));
 
-    return ts;
+    return b->refresh_hint;
 }
 
 void spiffebundle_Bundle_SetRefreshHint(spiffebundle_Bundle *b,
-                                        struct timespec *refHint)
+                                        const struct timespec *refHint)
 {
     mtx_lock(&(b->mtx));
-    b->refreshHint = refHint;
+    b->refresh_hint = *refHint;
     mtx_unlock(&(b->mtx));
 }
 
 void spiffebundle_Bundle_ClearRefreshHint(spiffebundle_Bundle *b)
 {
     mtx_lock(&(b->mtx));
-    b->refreshHint = NULL;
+    b->refresh_hint = (struct timespec){ .tv_sec = -1, .tv_nsec = 0 };
     mtx_unlock(&(b->mtx));
 }
 
-uint64_t spiffebundle_Bundle_SequenceNumber(spiffebundle_Bundle *b, bool *suc)
+int64_t spiffebundle_Bundle_SequenceNumber(spiffebundle_Bundle *b, bool *suc)
 {
     mtx_lock(&(b->mtx));
-    uint64_t seqNum = 0;
-    *suc = false;
-
-    if(b->seqNumber) {
-        seqNum = *(b->seqNumber);
-        *suc = true;
-    }
+    *suc = (b->seq_number >= 0);
     mtx_unlock(&(b->mtx));
 
-    return seqNum;
+    return b->seq_number;
 }
 
 void spiffebundle_Bundle_SetSequenceNumber(spiffebundle_Bundle *b,
-                                           uint64_t *seqNumber)
+                                           const int64_t seq_number)
 {
     mtx_lock(&(b->mtx));
-    b->seqNumber = seqNumber;
+    b->seq_number = seq_number;
     mtx_unlock(&(b->mtx));
 }
 
 void spiffebundle_Bundle_ClearSequenceNumber(spiffebundle_Bundle *b)
 {
     mtx_lock(&(b->mtx));
-    b->seqNumber = NULL;
+    b->seq_number = -1;
     mtx_unlock(&(b->mtx));
 }
 
 spiffebundle_Bundle *spiffebundle_Bundle_Clone(spiffebundle_Bundle *b)
 {
     mtx_lock(&(b->mtx));
-    spiffebundle_Bundle *nbundle = spiffebundle_New(b->td);
-    nbundle->refreshHint = spiffebundle_copyRefreshHint(b->refreshHint);
-    nbundle->seqNumber = spiffebundle_copySequenceNumber(b->seqNumber);
-    nbundle->x509Auths = x509util_CopyX509Authorities(b->x509Auths);
-    nbundle->jwtAuths = jwtutil_CopyJWTAuthorities(b->jwtAuths);
+    spiffebundle_Bundle *mbundle = spiffebundle_New(b->td);
+    mbundle->refresh_hint = spiffebundle_copyRefreshHint(&(b->refresh_hint));
+    mbundle->seq_number = b->seq_number;
+    mbundle->x509_auths = x509util_CopyX509Authorities(b->x509_auths);
+    mbundle->jwt_auths = jwtutil_CopyJWTAuthorities(b->jwt_auths);
     mtx_unlock(&(b->mtx));
 
-    return nbundle;
+    return mbundle;
 }
 
 x509bundle_Bundle *spiffebundle_Bundle_X509Bundle(spiffebundle_Bundle *b)
 {
     mtx_lock(&(b->mtx));
     x509bundle_Bundle *x509bundle
-        = x509bundle_FromX509Authorities(b->td, b->x509Auths);
+        = x509bundle_FromX509Authorities(b->td, b->x509_auths);
     mtx_unlock(&(b->mtx));
 
     return x509bundle;
@@ -324,7 +370,7 @@ jwtbundle_Bundle *spiffebundle_Bundle_JWTBundle(spiffebundle_Bundle *b)
 {
     mtx_lock(&(b->mtx));
     jwtbundle_Bundle *jwtbundle
-        = jwtbundle_FromJWTAuthorities(b->td, b->jwtAuths);
+        = jwtbundle_FromJWTAuthorities(b->td, b->jwt_auths);
     mtx_unlock(&(b->mtx));
 
     return jwtbundle;
@@ -354,7 +400,7 @@ x509bundle_Bundle *spiffebundle_Bundle_GetX509BundleForTrustDomain(
     // trust domain not available
     *err = ERROR1;
     if(!strcmp(b->td.name, td.name)) {
-        bundle = spiffebundle_Bundle_X509Bundle(b);
+        bundle = x509bundle_FromX509Authorities(b->td, b->x509_auths);
         *err = NO_ERROR;
     }
     mtx_unlock(&(b->mtx));
@@ -370,7 +416,7 @@ jwtbundle_Bundle *spiffebundle_Bundle_GetJWTBundleForTrustDomain(
     // trust domain not available
     *err = ERROR1;
     if(!strcmp(b->td.name, td.name)) {
-        bundle = spiffebundle_Bundle_JWTBundle(b);
+        bundle = jwtbundle_FromJWTAuthorities(b->td, b->jwt_auths);
         *err = NO_ERROR;
     }
     mtx_unlock(&(b->mtx));
@@ -383,14 +429,15 @@ bool spiffebundle_Bundle_Equal(const spiffebundle_Bundle *b1,
 {
     if(b1 && b2) {
         return !strcmp(b1->td.name, b2->td.name)
-               && spiffebundle_refreshHintEqual(b1->refreshHint,
-                                                b2->refreshHint)
-               && spiffebundle_sequenceNumberEqual(b1->seqNumber,
-                                                   b2->seqNumber)
-               && x509util_CertsEqual(b1->x509Auths, b2->x509Auths)
-               && jwtutil_JWTAuthoritiesEqual(b1->jwtAuths, b2->jwtAuths);
-    } else
+               && spiffebundle_refreshHintEqual(&(b1->refresh_hint),
+                                                &(b2->refresh_hint))
+               && spiffebundle_sequenceNumberEqual(b1->seq_number,
+                                                   b2->seq_number)
+               && x509util_CertsEqual(b1->x509_auths, b2->x509_auths)
+               && jwtutil_JWTAuthoritiesEqual(b1->jwt_auths, b2->jwt_auths);
+    } else {
         return b1 == b2;
+    }
 }
 
 bool spiffebundle_refreshHintEqual(const struct timespec *t1,
@@ -403,35 +450,29 @@ bool spiffebundle_refreshHintEqual(const struct timespec *t1,
     return t1 == t2;
 }
 
-bool spiffebundle_sequenceNumberEqual(const uint64_t *a, const uint64_t *b)
+bool spiffebundle_sequenceNumberEqual(const int64_t a, const int64_t b)
 {
-    if(a && b) {
-        return *a == *b;
-    }
-
     return a == b;
 }
 
-struct timespec *spiffebundle_copyRefreshHint(const struct timespec *ts)
+struct timespec spiffebundle_copyRefreshHint(const struct timespec *ts)
 {
-    if(ts) {
-        struct timespec *new_ts = malloc(sizeof *new_ts);
-        memcpy(new_ts, ts, sizeof *new_ts);
-
-        return new_ts;
-    }
-
-    return NULL;
+    return *ts;
 }
 
-uint64_t *spiffebundle_copySequenceNumber(const uint64_t *seqNum)
+void spiffebundle_Bundle_Free(spiffebundle_Bundle *b)
 {
-    if(seqNum) {
-        uint64_t *new_seqNum = malloc(sizeof *new_seqNum);
-        *new_seqNum = *seqNum;
-
-        return new_seqNum;
+    if(b) {
+        // mtx_destroy(&(b->mtx));
+        for(size_t i = 0, size = shlenu(b->jwt_auths); i < size; ++i) {
+            EVP_PKEY_free(b->jwt_auths[i].value);
+        }
+        shfree(b->jwt_auths);
+        for(size_t i = 0, size = arrlenu(b->x509_auths); i < size; ++i) {
+            X509_free(b->x509_auths[i]);
+        }
+        arrfree(b->x509_auths);
+        spiffeid_TrustDomain_Free(&(b->td));
+        free(b);
     }
-
-    return NULL;
 }

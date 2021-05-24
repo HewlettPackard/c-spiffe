@@ -1,8 +1,8 @@
 #ifndef INCLUDE_BUNDLE_SPIFFEBUNDLE_SET_H
 #define INCLUDE_BUNDLE_SPIFFEBUNDLE_SET_H
 
-#include "utils/src/util.h"
 #include "bundle/spiffebundle/src/bundle.h"
+#include "utils/src/util.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,6 +33,7 @@ x509bundle_Bundle *spiffebundle_Set_GetX509BundleForTrustDomain(
     spiffebundle_Set *s, const spiffeid_TrustDomain td, err_t *err);
 jwtbundle_Bundle *spiffebundle_Set_GetJWTBundleForTrustDomain(
     spiffebundle_Set *s, const spiffeid_TrustDomain td, err_t *err);
+void spiffebundle_Set_Free(spiffebundle_Set *s);
 
 #ifdef __cplusplus
 }
