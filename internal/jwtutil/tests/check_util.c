@@ -232,7 +232,7 @@ END_TEST
 START_TEST(test_jwtutil_JWKS_Marshal)
 {
     FILE *f = fopen("./resources/jwks_valid_2.json", "r");
-    
+
     ck_assert_ptr_ne(f, NULL);
 
     string_t str = FILE_to_string(f);
