@@ -29,9 +29,12 @@ ARG SPIRE_VERSION=0.12.0
 ARG SPIRE_RELEASE=https://github.com/spiffe/spire/releases/download/v${SPIRE_VERSION}/spire-${SPIRE_VERSION}-linux-x86_64-glibc.tar.gz
 ARG SPIRE_DIR=/opt/spire
 
+ARG C_SPIFFE_DIR=/mnt/c-spiffe
+
 RUN curl --silent --location $SPIRE_RELEASE | tar -xzf -
 RUN mv spire-${SPIRE_VERSION} ${SPIRE_DIR}
 
+RUN ln -s /opt/spire/bin/spire-server /usr/bin/spire-server
 RUN ln -s /opt/spire/bin/spire-agent /usr/bin/spire-agent
 
 ARG GRPC_VERSION=1.34.0
