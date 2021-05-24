@@ -57,6 +57,13 @@
             "crv": "P-256",
             "x": "hjhyHcq6nNph9QbcSIf3VzpkVWtfOT3HbRx4aZ3j-D8",
             "y": "KrdsDLurVCbnnYmYS2Gm0rjKkXOJ9x1-SVOjqdAQEBk"
+        },
+        {
+            "use": "jwt-svid",
+            "kty": "RSA", 
+            "kid": "ff3c5c96-392e-46ef-a839-6ff16027af78", 
+            "n": "wsqJbopx18NQFYLYOq4ZeMSE89yGiEankUpf25yV8QqroKUGrASj_OeqTWUjwPGKTN1vGFFuHYxiJeAUQH2qQPmg9Oqk6-ATBEKn9COKYniQ5459UxCwmZA2RL6ufhrNyq0JF3GfXkjLDBfhU9zJJEOhknsA0L_c-X4AI3d_NbFdMqxNe1V_UWAlLcbKdwO6iC9fAvwUmDQxgy6R0DC1CMouQpenMRcALaSHar1cm4K-syoNobv3HEuqgZ3s6-hOOSqauqAO0GUozPpaIA7OeruyRl5sTWT0r-iz39bchID2bIKtcqLiFcSYPLBcxmsaQCqRlGhmv6stjTCLV1yT9w", 
+            "e": "AQAB"
         }
     ],
     "spiffe_refresh_hint": 60,
