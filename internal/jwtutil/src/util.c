@@ -9,7 +9,7 @@ typedef struct _ec_keydata_int {
     EC_KEY *key;
 } ec_keydata;
 
-/// TODO: check for errors
+/// TODO: check for json errors
 
 map_string_EVP_PKEY *jwtutil_CopyJWTAuthorities(map_string_EVP_PKEY *hash)
 {
@@ -214,8 +214,8 @@ static char *BN_to_str(const BIGNUM *bn)
         char *out_bn_base64 = NULL;
         size_t out_bn_base64_len;
         cjose_err j_err;
-        cjose_base64url_encode(out_bn, arrlenu(out_bn), &out_bn_base64, &out_bn_base64_len,
-                            &j_err);
+        cjose_base64url_encode(out_bn, arrlenu(out_bn), &out_bn_base64,
+                               &out_bn_base64_len, &j_err);
         out_bn_base64[out_bn_base64_len] = 0;
         arrfree(out_bn);
 
@@ -365,8 +365,8 @@ string_t jwtutil_JWKS_Marshal(jwtutil_JWKS *jwks, err_t *err)
 {
     string_t jwks_str = NULL;
     if(jwks) {
-        json_t *jwks_json = NULL;
         if(!jwks->root) {
+            json_t *jwks_json = NULL;
             json_t *keys_json = json_array();
 
             for(size_t i = 0, size = arrlenu(jwks->x509_auths); i < size;
@@ -384,13 +384,13 @@ string_t jwtutil_JWKS_Marshal(jwtutil_JWKS *jwks, err_t *err)
             jwks->root = jwks_json;
         }
         // get size first
-        const size_t len = json_dumpb(
-            jwks_json, NULL, 0, JSON_PRESERVE_ORDER | JSON_ENSURE_ASCII);
+        const size_t len = json_dumpb(jwks->root, NULL, 0,
+                                      JSON_PRESERVE_ORDER | JSON_ENSURE_ASCII);
 
         // allocate and set string
         arrsetlen(jwks_str, len);
-        json_dumpb(jwks_json, jwks_str, arrlenu(jwks_str),
-                    JSON_PRESERVE_ORDER | JSON_ENSURE_ASCII);
+        json_dumpb(jwks->root, jwks_str, arrlenu(jwks_str),
+                   JSON_PRESERVE_ORDER | JSON_ENSURE_ASCII);
     } else {
         // null pointer error
         *err = ERROR1;
