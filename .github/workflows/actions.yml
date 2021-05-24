@@ -14,39 +14,6 @@ jobs:
       - name: Log the parent container ubuntu version
         run: lsb_release -a
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build & push Docker image
-        uses: docker/build-push-action@v1
-        with:
-          dockerfile: docker/test.Dockerfile
-          repository:  cspiffe/grpc-build
-          tag_with_ref: true
-
-      - name: Build & push  workload Docker image for infra tests
-        uses: docker/build-push-action@v1
-        with:
-          dockerfile: infra/workload/Dockerfile
-          repository:  cspiffe/workload
-          tag_with_ref: true
-
-      - name: Build & push  tests Docker image for infra tests
-        uses: docker/build-push-action@v1
-        with:
-          dockerfile: infra/tests/Dockerfile
-          repository:  cspiffe/tests
-          tag_with_ref: true
-
       - name: Create Build Environment
         shell: bash
         run: mkdir build

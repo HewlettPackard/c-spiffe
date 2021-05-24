@@ -24,7 +24,7 @@ clean:
 	docker-compose down
 
 integration-tests:
-	TAG=tagging-for-docker-image-ci docker-compose up -d
+	docker-compose up -d
 
 	docker exec infra_workload_1 service ssh restart
 	docker exec infra_tests_1 service ssh restart
