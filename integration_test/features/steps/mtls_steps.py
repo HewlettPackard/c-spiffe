@@ -67,7 +67,7 @@ def step_impl(context, message, container_name, language):
 def step_impl(context, message):
     tls_answer = context.result.replace("\"","").split("Server replied:")
     actual_message = tls_answer[-1].strip().replace("\\n","")
-    assert_that(actual_message, is_(message))
+    assert_that(actual_message, is_(message), "Unexpected response from server: %s" % message)
 
 
 @given('The second agent is turned on inside "{container_name}" container with the second trust domain')
@@ -106,5 +106,5 @@ def step_impl(context, container_name):
 
 @then('I check that mTLS connection did not succeed')
 def step_impl(context):
-    assert_that(context.result.find("Server replied:"), is_(-1))
-    assert_that(context.result.find("could not create TLS connection"), is_not(-1))
+    assert_that(context.result.find("Server replied:"), is_(-1), "Unexpected response from server: %s" % context.result)
+    assert_that(context.result.find("could not create TLS connection"), is_not(-1), "Unexpected error from server")

@@ -30,22 +30,22 @@ Feature: Mutual TLS
             |     12345    |     c     |      c      |
 
 
-    @Sprint12 @updated-conf @wip
+    @Sprint12 @updated-conf
     Scenario: MT_002 - Check that it is not possible to establish mtls connection with different key chains in the servers
         Given I set the "server" "port" to "9090" inside "spire-server2" container
         And   I set the "server" "trust domain" to "example2.org" inside "spire-server2" container
         And   The second server is turned on inside "spire-server2" container
-        And   I set the "agent" "port" to "9090" inside "workload" container
-        And   I set the "agent" "trust domain" to "example2.org" inside "workload" container
-        And   I set the "agent" "server address" to "spire-server2" inside "workload" container
-        And   The second agent is turned on inside "workload" container with the second trust domain
+        And   I set the "agent" "port" to "9090" inside "workload2" container
+        And   I set the "agent" "trust domain" to "example2.org" inside "workload2" container
+        And   I set the "agent" "server address" to "spire-server2" inside "workload2" container
+        And   The second agent is turned on inside "workload2" container with the second trust domain
         # When  I fetch external "X509" "SVID"
         # Then  I check that the "SVID" is returned correctly
         When  I fetch "X509" "SVID"
         Then  I check that the "SVID" is returned correctly
-        When  The "go"-tls-listen is activated inside "workload" container
-        And   I send "segundo testeeee" to "workload" container through "go"-tls-dial
+        When  The "go"-tls-listen is activated inside "workload2" container
+        And   I send "Hello World!" to "workload2" container through "go"-tls-dial
         Then  I check that mTLS connection did not succeed
-        And   The second "agent" is turned off inside "workload" container
+        And   The second "agent" is turned off inside "workload2" container
         And   The second "server" is turned off inside "spire-server2" container
-        And   The "go"-tls-listen is disabled inside "workload" container
+        And   The "go"-tls-listen is disabled inside "workload2" container
