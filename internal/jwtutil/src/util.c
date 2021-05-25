@@ -9,8 +9,6 @@ typedef struct _ec_keydata_int {
     EC_KEY *key;
 } ec_keydata;
 
-/// TODO: check for json errors
-
 map_string_EVP_PKEY *jwtutil_CopyJWTAuthorities(map_string_EVP_PKEY *hash)
 {
     if(hash) {
@@ -313,17 +311,19 @@ static json_t *X509_to_json(X509 *cert)
     if(cert) {
         unsigned char *out_cert = NULL;
         int out_cert_len = i2d_X509(cert, &out_cert);
-        char *out_cert_base64 = NULL;
-        size_t out_cert_base64_len;
-        cjose_err j_err;
-        cjose_base64_encode(out_cert, out_cert_len, &out_cert_base64,
-                            &out_cert_base64_len, &j_err);
-        out_cert_base64[out_cert_base64_len] = 0;
-        OPENSSL_free(out_cert);
-        json_t *x5c_json = json_pack("[s]", out_cert_base64);
-        free(out_cert_base64);
+        if(out_cert_len > 0) {
+            char *out_cert_base64 = NULL;
+            size_t out_cert_base64_len;
+            cjose_err j_err;
+            cjose_base64_encode(out_cert, out_cert_len, &out_cert_base64,
+                                &out_cert_base64_len, &j_err);
+            out_cert_base64[out_cert_base64_len] = 0;
+            OPENSSL_free(out_cert);
+            json_t *x5c_json = json_pack("[s]", out_cert_base64);
+            free(out_cert_base64);
 
-        return x5c_json;
+            return x5c_json;
+        }
     }
 
     return NULL;
@@ -335,11 +335,13 @@ static json_t *x509svid_to_json(X509 *cert)
         json_t *key_json = json_pack("{s:s}", "use", "x509-svid");
 
         json_t *pubkey_json = EVP_PKEY_to_json(X509_get_pubkey(cert));
-        json_object_update(key_json, pubkey_json);
-        json_decref(pubkey_json);
-        json_object_set_new(key_json, "x5c", X509_to_json(cert));
-
-        return key_json;
+        if(pubkey_json) {
+            json_object_update(key_json, pubkey_json);
+            json_decref(pubkey_json);
+            json_object_set_new(key_json, "x5c", X509_to_json(cert));
+            
+            return key_json;
+        }
     }
 
     return NULL;
@@ -352,10 +354,12 @@ static json_t *jwtsvid_to_json(map_string_EVP_PKEY *pair)
             = json_pack("{s:s,s:s}", "use", "jwt-svid", "kid", pair->key);
 
         json_t *pubkey_json = EVP_PKEY_to_json(pair->value);
-        json_object_update(key_json, pubkey_json);
-        json_decref(pubkey_json);
-
-        return key_json;
+        if(pubkey_json) {
+            json_object_update(key_json, pubkey_json);
+            json_decref(pubkey_json);
+            
+            return key_json;
+        }
     }
 
     return NULL;
