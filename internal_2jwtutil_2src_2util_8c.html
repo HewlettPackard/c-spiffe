@@ -78,25 +78,26 @@ $(function() {
 <div class="textblock"><code>#include &quot;<a class="el" href="internal_2jwtutil_2src_2util_8h_source.html">internal/jwtutil/src/util.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="keys_8h_source.html">internal/cryptoutil/src/keys.h</a>&quot;</code><br />
 <code>#include &lt;cjose/cjose.h&gt;</code><br />
+<code>#include &lt;jansson.h&gt;</code><br />
 <code>#include &lt;openssl/x509.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for util.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="internal_2jwtutil_2src_2util_8c__incl.png" border="0" usemap="#ainternal_2jwtutil_2src_2util_8c" alt=""/></div>
 <map name="ainternal_2jwtutil_2src_2util_8c" id="ainternal_2jwtutil_2src_2util_8c">
-<area shape="rect" title=" " alt="" coords="226,5,350,47"/>
-<area shape="rect" href="internal_2jwtutil_2src_2util_8h.html" title=" " alt="" coords="158,95,282,136"/>
+<area shape="rect" title=" " alt="" coords="287,5,411,47"/>
+<area shape="rect" href="internal_2jwtutil_2src_2util_8h.html" title=" " alt="" coords="187,95,311,136"/>
+<area shape="rect" title=" " alt="" coords="323,191,400,218"/>
 <area shape="rect" href="keys_8h.html" title=" " alt="" coords="5,184,125,225"/>
-<area shape="rect" title=" " alt="" coords="307,102,405,129"/>
-<area shape="rect" title=" " alt="" coords="430,102,538,129"/>
-<area shape="rect" href="utils_2src_2util_8h.html" title=" " alt="" coords="301,191,400,218"/>
-<area shape="rect" title=" " alt="" coords="141,273,216,300"/>
-<area shape="rect" title=" " alt="" coords="200,191,277,218"/>
-<area shape="rect" href="stb__ds_8h.html" title=" " alt="" coords="265,273,386,300"/>
-<area shape="rect" title=" " alt="" coords="389,348,453,375"/>
-<area shape="rect" title=" " alt="" coords="14,273,117,300"/>
-<area shape="rect" title=" " alt="" coords="293,348,361,375"/>
-<area shape="rect" title=" " alt="" coords="206,348,269,375"/>
+<area shape="rect" title=" " alt="" coords="387,102,485,129"/>
+<area shape="rect" title=" " alt="" coords="510,102,618,129"/>
+<area shape="rect" href="utils_2src_2util_8h.html" title=" " alt="" coords="200,191,299,218"/>
+<area shape="rect" title=" " alt="" coords="137,273,212,300"/>
+<area shape="rect" href="stb__ds_8h.html" title=" " alt="" coords="287,273,409,300"/>
+<area shape="rect" title=" " alt="" coords="223,348,287,375"/>
+<area shape="rect" title=" " alt="" coords="10,273,113,300"/>
+<area shape="rect" title=" " alt="" coords="401,348,469,375"/>
+<area shape="rect" title=" " alt="" coords="314,348,377,375"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -118,6 +119,8 @@ Functions</h2></td></tr>
 <tr class="separator:a48cba483dfaddf07ef51ed2a87d36055"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa45126d98eaac1a922c7c1bf4ce78d51"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structjwtutil__JWKS.html">jwtutil_JWKS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="internal_2jwtutil_2src_2util_8c.html#aa45126d98eaac1a922c7c1bf4ce78d51">jwtutil_ParseJWKS</a> (const char *bytes, <a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err)</td></tr>
 <tr class="separator:aa45126d98eaac1a922c7c1bf4ce78d51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5019b9ac2d16d997a1f75d905522809"><td class="memItemLeft" align="right" valign="top"><a class="el" href="utils_2src_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="internal_2jwtutil_2src_2util_8c.html#aa5019b9ac2d16d997a1f75d905522809">jwtutil_JWKS_Marshal</a> (<a class="el" href="structjwtutil__JWKS.html">jwtutil_JWKS</a> *jwks, <a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *err)</td></tr>
+<tr class="separator:aa5019b9ac2d16d997a1f75d905522809"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fe62e5321eeec234230abb71d779372"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="internal_2jwtutil_2src_2util_8c.html#a6fe62e5321eeec234230abb71d779372">jwtutil_JWKS_Free</a> (<a class="el" href="structjwtutil__JWKS.html">jwtutil_JWKS</a> *jwks)</td></tr>
 <tr class="separator:a6fe62e5321eeec234230abb71d779372"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -175,6 +178,34 @@ Functions</h2></td></tr>
           <td class="paramtype"><a class="el" href="structjwtutil__JWKS.html">jwtutil_JWKS</a> *&#160;</td>
           <td class="paramname"><em>jwks</em></td><td>)</td>
           <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa5019b9ac2d16d997a1f75d905522809"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5019b9ac2d16d997a1f75d905522809">&#9670;&nbsp;</a></span>jwtutil_JWKS_Marshal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="utils_2src_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a> jwtutil_JWKS_Marshal </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjwtutil__JWKS.html">jwtutil_JWKS</a> *&#160;</td>
+          <td class="paramname"><em>jwks</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *&#160;</td>
+          <td class="paramname"><em>err</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
