@@ -44,6 +44,8 @@ bool jwtutil_JWTAuthoritiesEqual(map_string_EVP_PKEY *hash1,
  */
 jwtutil_JWKS jwtutil_ParseJWKS(const char *bytes, err_t *err);
 
+string_t jwtutil_JWKS_Marshal(jwtutil_JWKS *jwks, err_t *err);
+
 void jwtutil_JWKS_Free(jwtutil_JWKS *jwks);
 
 #ifdef __cplusplus

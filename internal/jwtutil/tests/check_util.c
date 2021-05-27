@@ -203,7 +203,7 @@ START_TEST(test_jwtutil_ParseJWKS)
             "./resources/jwks_multiple_x509.json" };
 
     err_t errs[] = { NO_ERROR, NO_ERROR, ERROR4, ERROR3, ERROR4 };
-    size_t map_lens[] = { 1, 6, 0, 0, 0 };
+    size_t map_lens[] = { 1, 7, 0, 0, 0 };
     size_t arr_lens[] = { 1, 1, 0, 0, 0 };
 
     for(int i = 0; i < ITERS; ++i) {
@@ -229,6 +229,33 @@ START_TEST(test_jwtutil_ParseJWKS)
 }
 END_TEST
 
+START_TEST(test_jwtutil_JWKS_Marshal)
+{
+    FILE *f = fopen("./resources/jwks_valid_2.json", "r");
+
+    ck_assert_ptr_ne(f, NULL);
+
+    string_t str = FILE_to_string(f);
+    fclose(f);
+
+    err_t err;
+    jwtutil_JWKS jwks = jwtutil_ParseJWKS(str, &err);
+    free(jwks.root);
+    jwks.root = NULL;
+
+    ck_assert_uint_eq(err, NO_ERROR);
+
+    arrfree(str);
+    str = jwtutil_JWKS_Marshal(&jwks, &err);
+
+    ck_assert_uint_eq(err, NO_ERROR);
+    ck_assert_ptr_ne(str, NULL);
+
+    jwtutil_JWKS_Free(&jwks);
+    arrfree(str);
+}
+END_TEST
+
 Suite *util_suite(void)
 {
     Suite *s = suite_create("util");
@@ -239,6 +266,7 @@ Suite *util_suite(void)
     tcase_add_test(tc_core, test_jwtutil_JWTAuthoritiesEqual);
     tcase_add_test(tc_core, test_jwtutil_CopyJWTAuthorities);
     tcase_add_test(tc_core, test_jwtutil_ParseJWKS);
+    tcase_add_test(tc_core, test_jwtutil_JWKS_Marshal);
 
     return s;
 }
