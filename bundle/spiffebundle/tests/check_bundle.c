@@ -644,6 +644,23 @@ START_TEST(test_spiffebundle_Bundle_ClearRefreshHint)
 }
 END_TEST
 
+START_TEST(test_spiffebundle_Bundle_Marshal)
+{
+    spiffeid_TrustDomain td = { "example.com" };
+    err_t err;
+    spiffebundle_Bundle *bundle
+        = spiffebundle_Load(td, "./resources/jwks_valid_2.json", &err);
+
+    string_t str = spiffebundle_Bundle_Marshal(bundle, &err);
+
+    ck_assert_uint_eq(err, NO_ERROR);
+    ck_assert_ptr_ne(str, NULL);
+
+    spiffebundle_Bundle_Free(bundle);
+    arrfree(str);
+}
+END_TEST
+
 START_TEST(test_spiffebundle_Bundle_SequenceNumber)
 {
     spiffeid_TrustDomain td = { "example.com" };
@@ -866,6 +883,7 @@ Suite *bundle_suite(void)
     tcase_add_test(tc_core, test_spiffebundle_Bundle_Empty);
     tcase_add_test(tc_core, test_spiffebundle_Bundle_RefreshHint);
     tcase_add_test(tc_core, test_spiffebundle_Bundle_ClearRefreshHint);
+    tcase_add_test(tc_core, test_spiffebundle_Bundle_Marshal);
     tcase_add_test(tc_core, test_spiffebundle_Bundle_SequenceNumber);
     tcase_add_test(tc_core, test_spiffebundle_Bundle_ClearSequenceNumber);
     tcase_add_test(tc_core, test_spiffebundle_Bundle_Clone);

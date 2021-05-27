@@ -1,6 +1,7 @@
 #include "internal/jwtutil/src/util.h"
 #include "internal/cryptoutil/src/keys.h"
 #include <cjose/cjose.h>
+#include <jansson.h>
 #include <openssl/x509.h>
 
 typedef struct _ec_keydata_int {
@@ -196,6 +197,210 @@ error1:
     // null pointer error
     *err = ERROR1;
     return jwks;
+}
+
+static char *BN_to_str(const BIGNUM *bn)
+{
+    int num_bytes;
+    if(bn && (num_bytes = BN_num_bytes(bn)) > 0) {
+        // set raw array of bytes
+        byte *out_bn = NULL;
+        arrsetlen(out_bn, num_bytes);
+        BN_bn2bin(bn, out_bn);
+
+        // raw array of bytes to base64
+        char *out_bn_base64 = NULL;
+        size_t out_bn_base64_len;
+        cjose_err j_err;
+        cjose_base64url_encode(out_bn, arrlenu(out_bn), &out_bn_base64,
+                               &out_bn_base64_len, &j_err);
+        out_bn_base64[out_bn_base64_len] = 0;
+        arrfree(out_bn);
+
+        return out_bn_base64;
+    }
+
+    return NULL;
+}
+
+static const char *NID_curve_to_str(int nid)
+{
+    switch(nid) {
+    case NID_X9_62_prime192v1:
+    case NID_X9_62_prime192v2:
+    case NID_X9_62_prime192v3:
+        return "P-192";
+    case NID_X9_62_prime239v1:
+    case NID_X9_62_prime239v2:
+    case NID_X9_62_prime239v3:
+        return "P-239";
+    case NID_X9_62_prime256v1:
+        return "P-256";
+    case NID_secp384r1:
+        return "P-384";
+    case NID_secp521r1:
+        return "P-521";
+    default:
+        return NULL;
+    }
+}
+
+static json_t *EC_KEY_to_json(const EC_KEY *key)
+{
+    if(key) {
+        const EC_GROUP *group = EC_KEY_get0_group(key);
+        const EC_POINT *point = EC_KEY_get0_public_key(key);
+        BIGNUM *X = BN_new(), *Y = BN_new();
+        BN_CTX *ctx = BN_CTX_new();
+        EC_POINT_get_affine_coordinates(group, point, X, Y, ctx);
+        char *X_str = BN_to_str(X), *Y_str = BN_to_str(Y);
+        BN_free(X);
+        BN_free(Y);
+        BN_CTX_free(ctx);
+
+        const int crv_nid = EC_GROUP_get_curve_name(group);
+        json_t *key_json
+            = json_pack("{s:s,s:s*,s:s,s:s}", "kty", "EC", "crv",
+                        NID_curve_to_str(crv_nid), "x", X_str, "y", Y_str);
+
+        free(X_str);
+        free(Y_str);
+
+        return key_json;
+    }
+
+    return NULL;
+}
+
+static json_t *RSA_to_json(const RSA *key)
+{
+    if(key) {
+        const BIGNUM *N = NULL, *E = NULL;
+        RSA_get0_key(key, &N, &E, NULL);
+        char *N_str = BN_to_str(N), *E_str = BN_to_str(E);
+
+        json_t *key_json
+            = json_pack("{s:s,s:s,s:s}", "kty", "RSA", "n", N_str, "e", E_str);
+
+        free(N_str);
+        free(E_str);
+
+        return key_json;
+    }
+
+    return NULL;
+}
+
+static json_t *EVP_PKEY_to_json(EVP_PKEY *pubkey)
+{
+    if(pubkey) {
+        const int type = EVP_PKEY_base_id(pubkey);
+        switch(type) {
+        case EVP_PKEY_EC:
+            return EC_KEY_to_json(EVP_PKEY_get0_EC_KEY(pubkey));
+        case EVP_PKEY_RSA:
+            return RSA_to_json(EVP_PKEY_get0_RSA(pubkey));
+        }
+    }
+
+    return NULL;
+}
+
+static json_t *X509_to_json(X509 *cert)
+{
+    if(cert) {
+        unsigned char *out_cert = NULL;
+        int out_cert_len = i2d_X509(cert, &out_cert);
+        if(out_cert_len > 0) {
+            char *out_cert_base64 = NULL;
+            size_t out_cert_base64_len;
+            cjose_err j_err;
+            cjose_base64_encode(out_cert, out_cert_len, &out_cert_base64,
+                                &out_cert_base64_len, &j_err);
+            out_cert_base64[out_cert_base64_len] = 0;
+            OPENSSL_free(out_cert);
+            json_t *x5c_json = json_pack("[s]", out_cert_base64);
+            free(out_cert_base64);
+
+            return x5c_json;
+        }
+    }
+
+    return NULL;
+}
+
+static json_t *x509svid_to_json(X509 *cert)
+{
+    if(cert) {
+        json_t *key_json = json_pack("{s:s}", "use", "x509-svid");
+
+        json_t *pubkey_json = EVP_PKEY_to_json(X509_get_pubkey(cert));
+        if(pubkey_json) {
+            json_object_update(key_json, pubkey_json);
+            json_decref(pubkey_json);
+            json_object_set_new(key_json, "x5c", X509_to_json(cert));
+            
+            return key_json;
+        }
+    }
+
+    return NULL;
+}
+
+static json_t *jwtsvid_to_json(map_string_EVP_PKEY *pair)
+{
+    if(pair) {
+        json_t *key_json
+            = json_pack("{s:s,s:s}", "use", "jwt-svid", "kid", pair->key);
+
+        json_t *pubkey_json = EVP_PKEY_to_json(pair->value);
+        if(pubkey_json) {
+            json_object_update(key_json, pubkey_json);
+            json_decref(pubkey_json);
+            
+            return key_json;
+        }
+    }
+
+    return NULL;
+}
+
+string_t jwtutil_JWKS_Marshal(jwtutil_JWKS *jwks, err_t *err)
+{
+    string_t jwks_str = NULL;
+    if(jwks) {
+        if(!jwks->root) {
+            json_t *jwks_json = NULL;
+            json_t *keys_json = json_array();
+
+            for(size_t i = 0, size = arrlenu(jwks->x509_auths); i < size;
+                ++i) {
+                json_array_append_new(keys_json,
+                                      x509svid_to_json(jwks->x509_auths[i]));
+            }
+            for(size_t i = 0, size = shlenu(jwks->jwt_auths); i < size; ++i) {
+                json_array_append_new(keys_json,
+                                      jwtsvid_to_json(jwks->jwt_auths + i));
+            }
+
+            jwks_json = json_object();
+            json_object_set_new(jwks_json, "keys", keys_json);
+            jwks->root = jwks_json;
+        }
+        // get size first
+        const size_t len = json_dumpb(jwks->root, NULL, 0,
+                                      JSON_PRESERVE_ORDER | JSON_ENSURE_ASCII);
+
+        // allocate and set string
+        arrsetlen(jwks_str, len);
+        json_dumpb(jwks->root, jwks_str, arrlenu(jwks_str),
+                   JSON_PRESERVE_ORDER | JSON_ENSURE_ASCII);
+    } else {
+        // null pointer error
+        *err = ERROR1;
+    }
+
+    return jwks_str;
 }
 
 void jwtutil_JWKS_Free(jwtutil_JWKS *jwks)

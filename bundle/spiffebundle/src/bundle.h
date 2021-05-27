@@ -72,7 +72,7 @@ int64_t spiffebundle_Bundle_SequenceNumber(spiffebundle_Bundle *b, bool *suc);
 void spiffebundle_Bundle_SetSequenceNumber(spiffebundle_Bundle *b,
                                            int64_t seq_number);
 void spiffebundle_Bundle_ClearSequenceNumber(spiffebundle_Bundle *b);
-byte *spiffebundle_Bundle_Marshal(spiffebundle_Bundle *b, err_t *err);
+string_t spiffebundle_Bundle_Marshal(spiffebundle_Bundle *b, err_t *err);
 spiffebundle_Bundle *spiffebundle_Bundle_Clone(spiffebundle_Bundle *b);
 x509bundle_Bundle *spiffebundle_Bundle_X509Bundle(spiffebundle_Bundle *b);
 jwtbundle_Bundle *spiffebundle_Bundle_JWTBundle(spiffebundle_Bundle *b);
