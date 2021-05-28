@@ -28,9 +28,9 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: .docker/test.Dockerfile
+          file: docker/test.Dockerfile
           outputs: type=docker,dest=/tmp/gRPCimage.tar
-          tag: grpc-build:${{ env.BRANCH }}
+          tags: grpc-build:${{ env.BRANCH }}
       - name: Upload gRPCDockerImage
         uses: actions/upload-artifact@v2
         with:
@@ -41,9 +41,9 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: .infra/workload/Dockerfile
+          file: infra/workload/Dockerfile
           outputs: type=docker,dest=/tmp/workloadimage.tar
-          tag: worload:${{ env.BRANCH }}
+          tags: worload:${{ env.BRANCH }}
       - name: Upload workloadDockerImage
         uses: actions/upload-artifact@v2
         with:
@@ -54,9 +54,9 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: .infra/tests/Dockerfile
+          file: infra/tests/Dockerfile
           outputs: type=docker,dest=/tmp/testimage.tar
-          tag: tests:${{ env.BRANCH }}
+          tags: tests:${{ env.BRANCH }}
       - name: Upload testDockerImage
         uses: actions/upload-artifact@v2
         with:
