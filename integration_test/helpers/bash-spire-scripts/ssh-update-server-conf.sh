@@ -3,7 +3,7 @@
 if [ $4 ];
 then
     ssh root@$4 <<EOL 
-     sed -i 's#'$1' = "\([^"]\)*"#'$1' = "'$2'"#' /opt/spire/conf/'$3'/'$3''$5'.conf
+    sed -i 's#'$1' = "\([^"]\)*"#'$1' = "'$2'"#' /opt/spire/conf/'$3'/'$3''$5'.conf
 EOL
 else
     sed -i 's#'$1' = "\([^"]\)*"#'$1' = "'$2'"#' /opt/spire/conf/$3/$3.conf
