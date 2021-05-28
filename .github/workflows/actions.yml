@@ -16,7 +16,7 @@ jobs:
      
       - name: Set user repo name
         if: ${{ env.HAS_TOKEN }}
-        run:  echo "REPO_NAME=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
+        run:  echo "REPO_NAME=${{ secrets.DOCKERHUB_USERNAME }}" >> $GITHUB_ENV
       
       - name: Checkout Project
         uses: actions/checkout@v1
