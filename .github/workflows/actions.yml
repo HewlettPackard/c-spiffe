@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build gRPC Docker image
+      - name: Build & push gRPC Docker image
         uses: docker/build-push-action@v1
         with:
           dockerfile: docker/test.Dockerfile
@@ -48,31 +48,15 @@ jobs:
           push: ${{ env.HAS_TOKEN }}
           tag_with_ref: true
       
-      - name: Build tests Docker image
+      - name: Build & push tests Docker image
         uses: docker/build-push-action@v1
         with:
           dockerfile: infra/tests/Dockerfile
           repository:  ${{ secrets.DOCKERHUB_USERNAME }}/tests
           push: ${{ env.HAS_TOKEN }}
           tag_with_ref: true
-      
-            
-      - name: Build & push workload Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: ${{ env.HAS_TOKEN }}
-          file: infra/workload/Dockerfile
-          tags: worload:${{ env.BRANCH }}
-     
-      - name: Build & push test Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: ${{ env.HAS_TOKEN }}
-          tags: tests:${{ env.BRANCH }}
-          file: infra/tests/Dockerfile
-     
+                
+           
       - name: Create Build Environment
         shell: bash
         run: mkdir build
