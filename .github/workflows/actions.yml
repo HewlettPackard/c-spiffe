@@ -114,7 +114,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs/html
   push-containers:
-    if:  ${{ secrets.DOCKERHUB_USERNAME != null &&  secrets.DOCKERHUB_TOKEN != null}}
     runs-on: ubuntu-latest
     container:
       image: willallves/grpc-build:1.34.0
