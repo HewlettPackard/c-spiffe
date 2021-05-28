@@ -34,12 +34,12 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build gRPC Docker image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v1
         with:
-          context: .
-          file: docker/test.Dockerfile
+          dockerfile: docker/test.Dockerfile
+          repository:  cspiffe/grpc-build
           push: ${{ env.HAS_TOKEN }}
-          tags: grpc-build:${{ env.BRANCH }}
+          tag_with_ref: true
             
       - name: Build & push workload Docker image
         uses: docker/build-push-action@v2
