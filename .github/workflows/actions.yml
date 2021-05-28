@@ -37,9 +37,25 @@ jobs:
         uses: docker/build-push-action@v1
         with:
           dockerfile: docker/test.Dockerfile
-          repository:  cspiffe/grpc-build
+          repository:  ${{ secrets.DOCKERHUB_USERNAME }}/grpc-build
           push: ${{ env.HAS_TOKEN }}
           tag_with_ref: true
+      - name: Build & push workload Docker image
+        uses: docker/build-push-action@v1
+        with:
+          dockerfile: infra/workload/Dockerfile
+          repository:  ${{ secrets.DOCKERHUB_USERNAME }}/workload
+          push: ${{ env.HAS_TOKEN }}
+          tag_with_ref: true
+      
+      - name: Build tests Docker image
+        uses: docker/build-push-action@v1
+        with:
+          dockerfile: infra/tests/Dockerfile
+          repository:  ${{ secrets.DOCKERHUB_USERNAME }}/tests
+          push: ${{ env.HAS_TOKEN }}
+          tag_with_ref: true
+      
             
       - name: Build & push workload Docker image
         uses: docker/build-push-action@v2
