@@ -9,5 +9,5 @@ else
     cd /mnt/c-spiffe/integration_test && scp root@spire-server:/opt/spire/myagent.token .
     ssh root@spire-server "`env | sed 's/;/\\\\;/g' | sed 's/.*/set &\;/g'` spire-server token generate -spiffeID spiffe://example.org/myagent>/opt/spire/myagentWlB.token"
     cd /mnt/c-spiffe/integration_test && scp root@spire-server:/opt/spire/myagentWlB.token .
-spire-server token generate -spiffeID spiffe://example.org/myagent>/mnt/c-spiffe/integration_test/myagent$1.token
+    spire-server token generate -spiffeID spiffe://example.org/myagent>/mnt/c-spiffe/integration_test/myagent$1.token
 fi
