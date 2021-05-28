@@ -10,6 +10,14 @@ jobs:
     container:
       image: willallves/grpc-build:1.34.0
     steps:
+      - name: Set default repo name
+        if: ${{ ! env.HAS_TOKEN }}
+        run:  echo "REPO_NAME=cspiffe" >> $GITHUB_ENV
+     
+      - name: Set user repo name
+        if: ${{ env.HAS_TOKEN }}
+        run:  echo "REPO_NAME=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
+      
       - name: Checkout Project
         uses: actions/checkout@v1
 
@@ -37,14 +45,14 @@ jobs:
         uses: docker/build-push-action@v1
         with:
           dockerfile: docker/test.Dockerfile
-          repository:  ${{ secrets.DOCKERHUB_USERNAME }}/grpc-build
+          repository:  ${{ env.REPO_NAME }}/grpc-build
           push: ${{ env.HAS_TOKEN }}
           tag_with_ref: true
       - name: Build & push workload Docker image
         uses: docker/build-push-action@v1
         with:
           dockerfile: infra/workload/Dockerfile
-          repository:  ${{ secrets.DOCKERHUB_USERNAME }}/workload
+          repository:  ${{ env.REPO_NAME  }}/workload
           push: ${{ env.HAS_TOKEN }}
           tag_with_ref: true
       
@@ -52,7 +60,7 @@ jobs:
         uses: docker/build-push-action@v1
         with:
           dockerfile: infra/tests/Dockerfile
-          repository:  ${{ secrets.DOCKERHUB_USERNAME }}/tests
+          repository:  ${{ env.REPO_NAME  }}/tests
           push: ${{ env.HAS_TOKEN }}
           tag_with_ref: true
                 
