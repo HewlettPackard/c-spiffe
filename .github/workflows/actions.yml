@@ -119,51 +119,66 @@ jobs:
     container:
       image: willallves/grpc-build:1.34.0
     needs: build-and-tests
+    env: 
+      HAS_TOKEN: ${{ secrets.DOCKERHUB_USERNAME != '' &&  secrets.DOCKERHUB_TOKEN != ''}}
     steps:
      - name: Checkout Project
        uses: actions/checkout@v1
+       if: ${{ env.HAS_TOKEN == 'true' }}
      - name: Set env.BRANCH
        run: echo "BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
+       if: ${{ env.HAS_TOKEN == 'true' }}
      - name: Login to DockerHub
        uses: docker/login-action@v1
+       if: ${{ env.HAS_TOKEN == 'true' }}
        with:
          username: ${{ secrets.DOCKERHUB_USERNAME }}
          password: ${{ secrets.DOCKERHUB_TOKEN }}
      - name: Set up Docker Buildx
+       if: ${{ env.HAS_TOKEN == 'true' }}
        uses: docker/setup-buildx-action@v1
      - name: Download gRPC image
        uses: actions/download-artifact@v2
+       if: ${{ env.HAS_TOKEN == 'true' }}
        with:
          name: gRPCimage.tar
          path: /tmp
      - name: Load gRPC image
+       if: ${{ env.HAS_TOKEN == 'true' }}
        run: |
          docker load --input /tmp/gRPCimage.tar
      - name: Push gRPC image
+       if: ${{ env.HAS_TOKEN == 'true' }}
        run: |
          docker push  ${{ secrets.DOCKERHUB_USERNAME }}/grpc-build:$BRANCH
 
      - name: Download workload image
        uses: actions/download-artifact@v2
+       if: ${{ env.HAS_TOKEN == 'true' }}
        with:
          name: workloadimage.tar
          path: /tmp
      - name: Load workload image
+       if: ${{ env.HAS_TOKEN == 'true' }}
        run: |
          docker load --input /tmp/workloadimage.tar
      - name: Push workload image
+       if: ${{ env.HAS_TOKEN == 'true' }}
        run: |
          docker push  ${{ secrets.DOCKERHUB_USERNAME }}/workload:$BRANCH
 
      - name: Download test image
+       if: ${{ env.HAS_TOKEN == 'true' }}
        uses: actions/download-artifact@v2
        with:
          name: testimage.tar
          path: /tmp
      - name: Load workload image
+       if: ${{ env.HAS_TOKEN == 'true' }}
        run: |
          docker load --input /tmp/testimage.tar
      - name: Push workload image
+       if: ${{ env.HAS_TOKEN == 'true' }}
        run: |
          docker push  ${{ secrets.DOCKERHUB_USERNAME }}/tests:$BRANCH
      
