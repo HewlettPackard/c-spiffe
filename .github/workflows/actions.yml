@@ -11,12 +11,14 @@ jobs:
       image: willallves/grpc-build:1.34.0
     steps:
       - name: Set default repo name
-        if: ${{ ! env.HAS_TOKEN }}
+        if: ${{ env.HAS_TOKEN == false}}
         run:  echo "REPO_NAME=cspiffe" >> $GITHUB_ENV
      
       - name: Set user repo name
-        if: ${{ env.HAS_TOKEN }}
+        if: ${{ env.HAS_TOKEN == true}}
         run:  echo "REPO_NAME=${{ secrets.DOCKERHUB_USERNAME }}" >> $GITHUB_ENV
+        env:
+          USER_NAME: ${{ secrets.DOCKERHUB_USERNAME }}
       
       - name: Checkout Project
         uses: actions/checkout@v1
