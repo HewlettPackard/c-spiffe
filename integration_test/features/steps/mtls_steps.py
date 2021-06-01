@@ -13,16 +13,23 @@ register_type(NullableString=parse_nullable_string)
 
 
 @then('The second "{process}" is turned off inside "{container_name}" container')
-def step_impl(context, process, container_name):
+def step_impl(context, process, container_name):    
     if process != "agent" and process != "server":
         raise Exception("Invalid process '%s'. Choose 'agent' or 'server'." % process)
+    workload_id = ""
+    if "WlB" in context.tags:
+        workload_id = context.workload_b
+    elif "WlC" in context.tags:
+        workload_id = context.workload_c
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-stop-process.sh %s %s" % (process, container_name))
     time.sleep(5)
 
 
 @given('The second agent is turned on inside "{container_name}" container')
 def step_impl(context, container_name):
-    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect-agent.sh WlB %s" % container_name)
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-generate-token.sh")
+    time.sleep(2)
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect-agent.sh %s %s" % (context.workload_b, container_name))
     time.sleep(5)
 
 
@@ -74,14 +81,17 @@ def step_impl(context, message):
 def step_impl(context, container_name):
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-generate-token.sh 2")
     time.sleep(2)
-    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect-agent.sh WlC %s" % container_name)
-    time.sleep(5)
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect-agent.sh %s %s" % (context.workload_c, container_name))
+    time.sleep(7)
 
 
 @given('I set the "{process}" "{field_alias}" to "{new_value}" inside "{container_name}" container')
 def step_impl(context, process, field_alias, new_value, container_name):
     if process != "agent" and process != "server":
         raise Exception("Invalid process '%s' to update the conf file. Choose 'agent' or 'server'." % process)
+    workload = ""
+    if process == "agent":
+        workload = context.current_workload
     if field_alias == "port" and process == "server":
         field_name = "bind_port"
     elif field_alias == "port" and process == "agent":
@@ -90,9 +100,11 @@ def step_impl(context, process, field_alias, new_value, container_name):
         field_name = "trust_domain"
     elif field_alias == "server address":
         field_name = "server_address"
+    elif field_alias in ["data_dir", "directory", "socket_path"]:
+            field_name = field_alias
     else:
         raise Exception("Invalid field '%s' to update in the server.conf/agent.conf file." % field_alias)
-    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-update-server-conf.sh %s %s %s %s" % (field_name, new_value, process, container_name))
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-update-server-conf.sh %s %s %s %s %s" % (field_name, new_value, process, container_name, workload))
 
 
 @given('The second server is turned on inside "{container_name}" container')

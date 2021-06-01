@@ -12,9 +12,11 @@ register_type(optional=parse_optional)
 
 @when('I fetch{external:optional}"{profile}" "{document}"')
 def step_impl(context, external, profile, document):
-    host = ""
+    host, host_number = "", ""
     if external == "external":
-        host = "workload"
+        if context.current_workload == context.workload_c:
+            host_number = "2"
+        host = "workload%s" % host_number
 
     if document == "SVID":
         bin_file = "c_client"
@@ -58,5 +60,7 @@ def step_impl(context):
 
 @when('The agent is turned on')
 def step_impl(context):
+    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-generate-token.sh")
+    time.sleep(2)
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect-agent.sh")
     time.sleep(5)
