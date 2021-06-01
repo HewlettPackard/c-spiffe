@@ -1,6 +1,6 @@
 # C-spiffe Examples
 
-This section contains a set of standalone examples that demonstrate different use cases for the go-spiffe library.
+This section contains a set of standalone examples that demonstrate different use cases for the C-spiffe library.
 
 ## Use cases
 
