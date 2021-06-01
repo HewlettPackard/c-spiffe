@@ -52,3 +52,4 @@ services:
       - spire-server
       - spire-server2
       - workload
+      - workload2
