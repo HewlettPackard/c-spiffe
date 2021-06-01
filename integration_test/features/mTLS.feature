@@ -2,7 +2,7 @@
 Feature: Mutual TLS
 
 
-    @Sprint11
+    @Sprint11 @WlB
     Scenario Outline: MT_001 - Check that it is possible to establish mtls connection between two WLs connected to the same server
         Given The second agent is turned on inside "workload" container
         When  I fetch external "X509" "SVID"
@@ -30,7 +30,7 @@ Feature: Mutual TLS
             |     12345    |     c     |      c      |
 
 
-    @Sprint12 @updated-conf
+    @Sprint12 @updated-conf @WlC
     Scenario: MT_002 - Check that it is not possible to establish mtls connection with different key chains in the servers
         Given I set the "server" "port" to "9090" inside "spire-server2" container
         And   I set the "server" "trust domain" to "example2.org" inside "spire-server2" container
@@ -39,8 +39,8 @@ Feature: Mutual TLS
         And   I set the "agent" "trust domain" to "example2.org" inside "workload2" container
         And   I set the "agent" "server address" to "spire-server2" inside "workload2" container
         And   The second agent is turned on inside "workload2" container with the second trust domain
-        # When  I fetch external "X509" "SVID"
-        # Then  I check that the "SVID" is returned correctly
+        When  I fetch external "X509" "SVID"
+        Then  I check that the "SVID" is returned correctly
         When  I fetch "X509" "SVID"
         Then  I check that the "SVID" is returned correctly
         When  The "go"-tls-listen is activated inside "workload2" container
