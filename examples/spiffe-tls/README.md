@@ -15,7 +15,7 @@ The scenario goes like this:
 ## Listening
 To start listening for incoming connections the **server workload** uses the [spiffetls_ListenWithMode] function as follows:
 ```C++
-	SSL *conn
+    SSL *conn
         = spiffetls_ListenWithMode(port, mode, &config, &sock_fd, &err);
 ```
 Where:
