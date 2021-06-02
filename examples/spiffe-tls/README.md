@@ -27,7 +27,7 @@ Where:
 ## Dialing
 To establish a connection, the **client workload** uses the [spiffetls_DialWithMode] function as follows:
 ```C++
-	SSL *conn = spiffetls_DialWithMode(port, addr, mode, &config, &err);
+    SSL *conn = spiffetls_DialWithMode(port, addr, mode, &config, &err);
 ```
 Where:
 - port is the port (`55555U`) where the client workload is going to dial for server connections.
