@@ -1,4 +1,4 @@
-ARG TAG=test/373-with-hpe-master
+ARG TAG=test-373-with-hpe-master
 FROM cspiffe/workload:${TAG}
 
 RUN apt-get update \
