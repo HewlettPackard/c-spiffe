@@ -41,13 +41,13 @@ As we can see the C-spiffe library allows your application to use the Workload A
 ## Building
 To build the client workload:
 ```bash
-cd build/examples/spiffe-tls/client
+cd build/examples/
 make
 ```
 
 To build the server workload:
 ```bash
-cd build/examples/spiffe-tls/server
+cd build/examples/
 make
 ```
 
@@ -79,13 +79,13 @@ Client:
 ### 2. Start the server
 Start the server with the `server-workload` user:
 ```bash
-sudo -u server-workload ./server
+sudo -u server-workload ./spiffe_tls_server
 ```
 
 ### 3. Run the client
 Run the client with the `client-workload` user:
 ```bash
-sudo -u client-workload ./client
+sudo -u client-workload ./spiffe_tls_client
 ```
 
 The server should have received a _"Hello server"_ message and responded with a _"Hello client"_ message.
@@ -93,7 +93,7 @@ The server should have received a _"Hello server"_ message and responded with a 
 If either workload encounters a peer with a different SPIFFE ID than the one it expects, the workload aborts the TLS handshake and the connection fails.  
 For instance, when running the client with the server's user: 
 ```
-sudo -u server-workload ./client
+sudo -u server-workload ./spiffe_tls_client
 
 Unable to read server response: remote error: tls: bad certificate
 ```
