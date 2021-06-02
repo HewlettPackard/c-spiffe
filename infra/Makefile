@@ -24,7 +24,7 @@ clean:
 	docker-compose down
 
 integration-tests:
-	TAG=test-374-Error-on-MT-02-with-c-dial-and-go-listen docker-compose up -d
+	TAG=dev-federation-fetch docker-compose up -d
 
 	docker exec infra_workload_1 service ssh restart
 	docker exec infra_workload2_1 service ssh restart
