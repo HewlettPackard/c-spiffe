@@ -1,4 +1,4 @@
-ARG TAG=test-373-with-hpe-master
+ARG TAG=test/373-Error-on-agent-after-running-consecutive-mTLS-test-scenarios
 FROM cspiffe/workload:${TAG}
 
 RUN apt-get update \
