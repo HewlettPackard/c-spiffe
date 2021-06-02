@@ -1,4 +1,4 @@
-ARG TAG=test-373-Error-on-agent-after-running-consecutive-mTLS-test-scenarios
+ARG TAG=test-374-Error-on-MT-02-with-c-dial-and-go-listen
 FROM cspiffe/workload:${TAG}
 
 RUN apt-get update \

@@ -24,7 +24,7 @@ clean:
 	docker-compose down
 
 integration-tests:
-	TAG=test-373-Error-on-agent-after-running-consecutive-mTLS-test-scenarios docker-compose up -d
+	TAG=test-374-Error-on-MT-02-with-c-dial-and-go-listen docker-compose up -d
 
 	docker exec infra_workload_1 service ssh restart
 	docker exec infra_workload2_1 service ssh restart
@@ -50,4 +50,4 @@ integration-tests:
 	docker exec infra_spire-server_1 spire-server token generate -spiffeID spiffe://example.org/myagent > myagent.token && docker cp myagent.token infra_tests_1:/mnt/c-spiffe/integration_test
 	docker exec infra_spire-server_1 spire-server token generate -spiffeID spiffe://example.org/myagent > myagentWlB.token && docker cp myagentWlB.token infra_tests_1:/mnt/c-spiffe/integration_test
 	docker exec -w /mnt/c-spiffe/integration_test/helpers/bash-general-scripts infra_tests_1 ./run-behave-tests.sh
-	docker-compose down
+	# docker-compose down
