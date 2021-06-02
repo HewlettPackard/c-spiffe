@@ -80,7 +80,7 @@ def step_impl(context, container_name):
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-generate-token.sh 2")
     time.sleep(2)
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect-agent.sh %s %s" % (context.workload_c, container_name))
-    time.sleep(5)
+    time.sleep(7)
 
 
 @given('I set the "{process}" "{field_alias}" to "{new_value}" inside "{container_name}" container')
