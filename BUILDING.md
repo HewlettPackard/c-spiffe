@@ -21,7 +21,7 @@ docker build -f docker/grpc.Dockerfile --build-arg GPRC_VERSION=1.34.0 --build-a
 Or you can use a pre-built image:
 
 ````bash
-docker pull willallves/grpc-build:1.34.0
+docker pull cspiffe/grpc-build:1.34.0
 ````
 
 #### Run Docker Container

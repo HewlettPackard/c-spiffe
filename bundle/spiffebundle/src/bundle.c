@@ -328,11 +328,15 @@ string_t spiffebundle_Bundle_Marshal(spiffebundle_Bundle *b, err_t *err)
             .x509_auths = x509util_CopyX509Authorities(b->x509_auths) };
     string_t str = jwtutil_JWKS_Marshal(&jwks, err);
     if(jwks.root && !(*err)) {
+        if(b->refresh_hint.tv_sec >= 0) {
+            json_object_set_new(jwks.root, "spiffe_refresh_hint",
+                                json_integer(b->refresh_hint.tv_sec));
+        }
+        if(b->seq_number >= 0) {
+            json_object_set_new(jwks.root, "spiffe_sequence",
+                                json_integer(b->seq_number));
+        }
         arrfree(str);
-        json_object_set_new(jwks.root, "spiffe_refresh_hint",
-                            json_integer(b->refresh_hint.tv_sec));
-        json_object_set_new(jwks.root, "spiffe_sequence",
-                            json_integer(b->seq_number));
         str = jwtutil_JWKS_Marshal(&jwks, err);
     }
     jwtutil_JWKS_Free(&jwks);
