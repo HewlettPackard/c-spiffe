@@ -33,7 +33,7 @@ services:
 
 
   workload2:
-    image: alg4/infra_workload
+    image: cspiffe/workload:${TAG}
     tty: true
     hostname: workload2
     links:
