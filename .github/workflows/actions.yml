@@ -26,7 +26,6 @@ jobs:
       - name: Set env.BRANCH
         run: echo "BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
-
       - name: Log the parent container ubuntu version
         run: lsb_release -a
 
@@ -43,13 +42,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build & push gRPC Docker image
-        uses: docker/build-push-action@v1
-        with:
-          dockerfile: docker/test.Dockerfile
-          repository:  ${{ env.REPO_NAME }}/grpc-build
-          push: ${{ env.HAS_TOKEN }}
-          tag_with_ref: true
       - name: Build & push workload Docker image
         uses: docker/build-push-action@v1
         with:
@@ -64,8 +56,7 @@ jobs:
           dockerfile: infra/tests/Dockerfile
           repository:  ${{ env.REPO_NAME  }}/tests
           push: ${{ env.HAS_TOKEN }}
-          tag_with_ref: true
-                
+          tag_with_ref: true    
            
       - name: Create Build Environment
         shell: bash
@@ -117,4 +108,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs/html
-  
