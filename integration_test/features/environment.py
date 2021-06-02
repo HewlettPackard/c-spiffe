@@ -14,8 +14,6 @@ def before_all(context):
     context.default_trust_domain = context.config.userdata['default_trust_domain']
     context.default_echo_server_port = context.config.userdata['default_echo_server_port']
     
-    # os.system(PARENT_PATH + "bash-spire-scripts/ssh-generate-token.sh")
-    # time.sleep(2)
     os.system(PARENT_PATH + "bash-spire-scripts/ssh-connect-agent.sh")
     time.sleep(5)
 

@@ -13,7 +13,7 @@ register_type(NullableString=parse_nullable_string)
 
 
 @then('The second "{process}" is turned off inside "{container_name}" container')
-def step_impl(context, process, container_name):    
+def step_impl(context, process, container_name):
     if process != "agent" and process != "server":
         raise Exception("Invalid process '%s'. Choose 'agent' or 'server'." % process)
     workload_id = ""
@@ -27,8 +27,6 @@ def step_impl(context, process, container_name):
 
 @given('The second agent is turned on inside "{container_name}" container')
 def step_impl(context, container_name):
-    # os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-generate-token.sh")
-    # time.sleep(2)
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect-agent.sh %s %s" % (context.workload_b, container_name))
     time.sleep(5)
 
@@ -82,7 +80,7 @@ def step_impl(context, container_name):
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-generate-token.sh 2")
     time.sleep(2)
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect-agent.sh %s %s" % (context.workload_c, container_name))
-    time.sleep(7)
+    time.sleep(5)
 
 
 @given('I set the "{process}" "{field_alias}" to "{new_value}" inside "{container_name}" container')
