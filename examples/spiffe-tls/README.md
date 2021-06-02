@@ -20,7 +20,7 @@ To start listening for incoming connections the **server workload** uses the [sp
 ```
 Where:
 - port is the port (`55555U`) where the server workload is going to listen for client connections.
-- [spiffetls_MTLSServerWithSource] is used to configure the [X509Source] used by the internal Workload API client.
+- [spiffetls_MTLSServerWithSource] is used to configure the [workloadapi_X509Source] used by the internal Workload API client.
 - config is a preset variable if the user wishes to use a pre-configured `SSL_CTX` and/or an already created, binded and listening socket. `NULL` and a nonpositive integer are the default values, respectively. In this case, the function will configure a `SSL_CTX` variable and create a socket internally.
 - sock_fd is the variable where the server socket will be returned. It must be closed when no longer needed.
 
@@ -32,7 +32,7 @@ To establish a connection, the **client workload** uses the [spiffetls_DialWithM
 Where:
 - port is the port (`55555U`) where the client workload is going to dial for server connections.
 - addr is the address (`0x7F000001U`, 127.0.0.1 - localhost) where the client workload is going to dial for server connections.
-- [spiffetls_MTLSClientWithSource] is used to configure the [X509Source] used by the internal Workload API client.
+- [spiffetls_MTLSClientWithSource] is used to configure the [workloadapi_X509Source] used by the internal Workload API client.
 - config is a preset variable if the user wishes to use a pre-configured `SSL_CTX` and/or an already created and connected socket. `NULL` and a nonpositive integer are the default values, respectively. In this case, the function will configure a `SSL_CTX` variable and create a socket internally.
 
 ## That is it!
