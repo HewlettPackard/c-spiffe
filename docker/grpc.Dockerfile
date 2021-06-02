@@ -46,7 +46,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         graphviz \
         docker-compose \
         libcurl4-openssl-dev\
-        golang;\
+        golang\
+        golang-go;\
 pip3 install behave PyHamcrest pathlib2;\
 apt-get clean
 
