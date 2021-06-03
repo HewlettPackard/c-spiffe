@@ -59,7 +59,7 @@ def step_impl(context, message, container_name, language):
     result = ""
 
     if language == "go":
-        client = subprocess.run(["/mnt/c-spiffe/integration_test/helpers/bash-general-scripts/run-go-client.sh '%s'" % message], stderr=subprocess.PIPE, text=True, shell=True)
+        client = subprocess.run(["/mnt/c-spiffe/integration_test/helpers/bash-general-scripts/run-go-client.sh '%s' %s" % (message, container_name)], stderr=subprocess.PIPE, text=True, shell=True)
         time.sleep(1)
         result = client.stderr
     elif language == "c":
