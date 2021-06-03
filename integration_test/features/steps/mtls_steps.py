@@ -117,4 +117,4 @@ def step_impl(context, container_name):
 @then('I check that mTLS connection did not succeed')
 def step_impl(context):
     assert_that(context.result.find("Server replied:"), is_(-1), "Unexpected response from server: %s" % context.result)
-    assert_that(context.result.find("could not create TLS connection"), is_not(-1), "Unexpected error from server")
+    assert_that(context.result.find("could not create TLS connection"), is_not(-1), "Unexpected error from server: %s" % context.result)
