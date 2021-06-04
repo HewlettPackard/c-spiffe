@@ -8,8 +8,8 @@
 #include "spiffeid/src/trustdomain.h"
 #include "utils/src/util.h"
 #include <curl/curl.h>
-#include <uriparser/Uri.h>
 #include <threads.h>
+#include <uriparser/Uri.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -48,12 +48,13 @@ err_t spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
 
 err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint);
 
-//cancels any running curl request, sets curl handler to NULL
+// cancels any running curl request, sets curl handler to NULL
 err_t spiffebundle_Endpoint_Cancel(spiffebundle_Endpoint *endpoint);
 
-spiffebundle_Bundle *spiffebundle_Endpoint_GetBundleForTrustDomain(
-    spiffebundle_Endpoint *endpoint, const spiffeid_TrustDomain td,
-    err_t *err);
+spiffebundle_Bundle *
+spiffebundle_Endpoint_GetBundleForTrustDomain(spiffebundle_Endpoint *endpoint,
+                                              const spiffeid_TrustDomain td,
+                                              err_t *err);
 
 #ifdef __cplusplus
 }
