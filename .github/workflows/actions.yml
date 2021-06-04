@@ -11,8 +11,6 @@ jobs:
 
     container:
       image: cspiffe/federation-tests:v1
-      extra_hosts:
-       - "example.org:127.0.0.1"
     steps:
       - name: Set default repo name
         if:  ${{ env.HAS_TOKEN == 'false' }}
