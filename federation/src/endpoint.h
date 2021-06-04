@@ -40,7 +40,7 @@ err_t spiffebundle_Endpoint_Config_HTTPS_WEB(
 
 err_t spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
     spiffebundle_Endpoint *endpoint, string_t url,
-    spiffeid_TrustDomain trust_domain, spiffeid_ID spiffeid,
+    spiffeid_TrustDomain trust_domain, string_t spiffeid,
     spiffebundle_Source *source);
 
 err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint);

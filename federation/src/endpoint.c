@@ -83,7 +83,7 @@ err_t spiffebundle_Endpoint_Config_HTTPS_WEB(spiffebundle_Endpoint *endpoint,
     endpoint->trust_domain
         = spiffeid_TrustDomainFromString(trust_domain.name, &err);
     if(err) {
-        return ERROR4;
+        return ERROR3;
     }
     endpoint->profile = HTTPS_WEB;
     endpoint->owns_bundle = false;
@@ -92,7 +92,7 @@ err_t spiffebundle_Endpoint_Config_HTTPS_WEB(spiffebundle_Endpoint *endpoint,
 
 err_t spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
     spiffebundle_Endpoint *endpoint, string_t url,
-    spiffeid_TrustDomain trust_domain, spiffeid_ID spiffe_id,
+    spiffeid_TrustDomain trust_domain, string_t spiffe_id,
     spiffebundle_Source *source)
 {
     err_t err = NO_ERROR;
@@ -102,29 +102,28 @@ err_t spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
     if(!url) {
         return ERROR2; // empty/NULL url string
     }
+    if(!source) {
+        return ERROR6; // no source of initial bundle provided
+    }
     UriUriA temp_uri = URL_parse(url, &err);
     if(err) {
         uriFreeUriMembersA(&temp_uri);
         return ERROR2; // invalid url string
     }
-    endpoint->url = URI_to_string(&temp_uri);
-    uriFreeUriMembersA(&temp_uri);
     if(!trust_domain.name) {
         return ERROR3; // empty/NULL trust domain name
     }
     endpoint->trust_domain
         = spiffeid_TrustDomainFromString(trust_domain.name, &err);
     if(err) {
-        return ERROR4;
+        return ERROR3;
     }
-    endpoint->spiffe_id
-        = spiffeid_FromString(spiffeid_ID_String(spiffe_id), &err);
+    endpoint->spiffe_id = spiffeid_FromString(spiffe_id, &err);
     if(err) {
         return ERROR5; // couldn't parse spiffeID
     }
-    if(!source) {
-        return ERROR6; // no source of initial bundle provided
-    }
+    endpoint->url = URI_to_string(&temp_uri);
+    uriFreeUriMembersA(&temp_uri);
     endpoint->bundle_source = source;
     endpoint->profile = HTTPS_SPIFFE;
     endpoint->owns_bundle = false;
@@ -148,8 +147,6 @@ spiffebundle_Bundle *spiffebundle_Endpoint_GetBundleForTrustDomain(
         *err = ERROR3;
         return NULL;
     }
-    spiffebundle_Bundle *bundle = NULL;
-
     return spiffebundle_Source_GetSpiffeBundleForTrustDomain(
         endpoint->bundle_source, trust_domain, err);
 }
