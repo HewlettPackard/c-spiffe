@@ -51,7 +51,6 @@ install(
 set(HEADERS_BUNDLE_SPIFFE
 ${PROJECT_SOURCE_DIR}/spiffebundle/src/bundle.h
 ${PROJECT_SOURCE_DIR}/spiffebundle/src/set.h
-${PROJECT_SOURCE_DIR}/spiffebundle/src/source.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(

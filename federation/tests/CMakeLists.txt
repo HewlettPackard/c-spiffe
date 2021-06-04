@@ -1,9 +1,27 @@
 # Minimum CMake required
 cmake_minimum_required(VERSION 3.13)
+file(COPY ../tests/resources/ DESTINATION ${PROJECT_BINARY_DIR}/federation/tests/resources/)
+# add_executable(check_endpoint check_endpoint.c)
 
-add_executable(check_endpoint check_endpoint.c)
+# target_link_libraries(check_endpoint federation ${CHECK_LIBRARIES}
+#   uriparser
+#   jansson
+#   cjose
+#   subunit
+#   check_pic
+#   check
+#   rt
+#   m
+#   crypto
+#   pthread)
 
-target_link_libraries(check_endpoint spiffeid ${CHECK_LIBRARIES}
+# add_test(check_endpoint check_endpoint)
+
+add_executable(check_spiffebundle_source check_spiffebundle_source.c)
+
+target_link_libraries(check_spiffebundle_source bundle federation ${CHECK_LIBRARIES}
+  spiffeid
+  internal
   uriparser
   jansson
   cjose
@@ -15,4 +33,4 @@ target_link_libraries(check_endpoint spiffeid ${CHECK_LIBRARIES}
   crypto
   pthread)
 
-add_test(check_endpoint check_endpoint)
+add_test(check_spiffebundle_source check_spiffebundle_source)

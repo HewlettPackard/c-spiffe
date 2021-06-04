@@ -78,6 +78,7 @@ if (ENABLE_TESTS)
     add_subdirectory(${PROJECT_SOURCE_DIR}/workload/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/spiffetls/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/spiffetls/tlsconfig/tests)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/federation/tests)
 
     # Add build target to generate Coverage Test Report to all compiled object files
     find_program(GCOV gcov)
