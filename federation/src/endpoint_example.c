@@ -12,7 +12,7 @@ int main()
     // the HTTPS call will authenticate.
     spiffeid_TrustDomain td
         = spiffeid_TrustDomainFromString("example.com", &err);
-    spiffebundle_Endpoint_Config_HTTPS_WEB(
+    spiffebundle_Endpoint_ConfigHTTPSWEB(
         endpoint,
         "https://raw.githubusercontent.com/HewlettPackard/c-spiffe/master/"
         "bundle/jwtbundle/tests/resources/jwk_keys.json",
