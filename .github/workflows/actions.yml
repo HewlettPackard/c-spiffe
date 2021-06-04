@@ -75,7 +75,7 @@ jobs:
 
       - name: Unit Testing
         shell: bash
-        run: cd build && make test
+        run: cd build && make test ARGS="-V"
 
       - name: Coverage Test
         shell: bash
