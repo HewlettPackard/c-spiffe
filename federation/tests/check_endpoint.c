@@ -165,7 +165,7 @@ START_TEST(test_federation_Endpoint_fetch_WEB);
     
     ck_assert_uint_eq(err, NO_ERROR);
     err = spiffebundle_Endpoint_Config_HTTPS_WEB(
-        tested, "https://localhost/resources/jwks_valid_2.json", td);
+        tested, "https://localhost", td);
     
     ck_assert_int_eq(err,NO_ERROR);
 
