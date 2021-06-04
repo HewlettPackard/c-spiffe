@@ -61,6 +61,15 @@ jobs:
           push: ${{ env.HAS_TOKEN }}
           tag_with_ref: true    
            
+      - name: Install dependencies
+        run: |
+          go version
+          go get -u github.com/spiffe/go-spiffe/v2/bundle/spiffebundle
+          go get -u github.com/spiffe/go-spiffe/v2/federation
+          go get -u github.com/spiffe/go-spiffe/v2/logger
+          go get -u github.com/spiffe/go-spiffe/v2/spiffeid
+          go get -u github.com/spiffe/go-spiffe/v2/svid/x509svid
+        
       - name: Create Build Environment
         shell: bash
         run: mkdir build
