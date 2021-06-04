@@ -43,7 +43,6 @@ services:
       - "4434:4434"
 
 
-  # Todo: Create sceneries for spire-server test; script python; "getRequestor" {generate, get, (entrys, token)}
   tests:
     image: cspiffe/tests:${TAG}
     tty: true
