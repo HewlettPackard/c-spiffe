@@ -1,19 +1,16 @@
 package main
 
-import(
-	"net/http"
-	"log"
+import (
+	"bytes"
 	"crypto/tls"
-    "bytes"
 	"errors"
-	
+	"log"
+	"net/http"
 
-	"github.com/spiffe/go-spiffe/v2/spiffeid"
 	"github.com/spiffe/go-spiffe/v2/bundle/spiffebundle"
 	"github.com/spiffe/go-spiffe/v2/federation"
-    "github.com/spiffe/go-spiffe/v2/logger"
-	// "github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
-	// "github.com/spiffe/go-spiffe/v2/workloadapi"
+	"github.com/spiffe/go-spiffe/v2/logger"
+	"github.com/spiffe/go-spiffe/v2/spiffeid"
 )
 
 const jwks = `{
@@ -96,8 +93,8 @@ func (s *fakeSource) GetBundleForTrustDomain(trustDomain spiffeid.TrustDomain) (
 func main() {
 
 	// generate a `Certificate` struct
-	cert, _ := tls.LoadX509KeyPair( "localhost.crt", "localhost.key" )
-	trustDomain, _ := spiffeid.TrustDomainFromString("localhost")
+	cert, _ := tls.LoadX509KeyPair("./example.org.crt", "./example.org.key")
+	trustDomain, _ := spiffeid.TrustDomainFromString("example.org")
 	bundle, _ := spiffebundle.Parse(trustDomain, []byte(jwks))
 	source := &fakeSource{}
 	source.bundles = map[spiffeid.TrustDomain]*spiffebundle.Bundle{
@@ -107,14 +104,14 @@ func main() {
 	handler := federation.Handler(trustDomain, source, logger.Writer(writer))
 	// create a custom server with `TLSConfig`
 	s := &http.Server{
-	  Addr: "localhost:443",
-	  Handler: handler, // use `http.DefaultServeMux`
-	  TLSConfig: &tls.Config{
-		Certificates: []tls.Certificate{ cert },
-	  },
+		Addr:    "example.org:443",
+		Handler: handler, // use `http.DefaultServeMux`
+		TLSConfig: &tls.Config{
+			Certificates: []tls.Certificate{cert},
+		},
 	}
 
 	// run server on port "443"
-	log.Fatal( s.ListenAndServeTLS("", "") )
+	log.Fatal(s.ListenAndServeTLS("", ""))
 
 }
