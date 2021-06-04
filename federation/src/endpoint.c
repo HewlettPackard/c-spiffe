@@ -67,7 +67,7 @@ void spiffebundle_Endpoint_Free(spiffebundle_Endpoint *endpoint)
 }
 
 err_t spiffebundle_Endpoint_Config_HTTPS_WEB(spiffebundle_Endpoint *endpoint,
-                                             string_t url,
+                                             const char* url,
                                              spiffeid_TrustDomain trust_domain)
 {
     err_t err = NO_ERROR;
@@ -98,7 +98,7 @@ err_t spiffebundle_Endpoint_Config_HTTPS_WEB(spiffebundle_Endpoint *endpoint,
 }
 
 err_t spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
-    spiffebundle_Endpoint *endpoint, string_t url,
+    spiffebundle_Endpoint *endpoint, const char* url,
     spiffeid_TrustDomain trust_domain, string_t spiffe_id,
     spiffebundle_Source *source)
 {
