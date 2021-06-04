@@ -27,3 +27,37 @@ void spiffebundle_Endpoint_Free(spiffebundle_Endpoint *endpoint)
         free(endpoint);
     }
 }
+
+err_t spiffebundle_Endpoint_Config_HTTPS_WEB(spiffebundle_Endpoint *endpoint,
+                                             string_t url,
+                                             spiffeid_TrustDomain trust_domain)
+{
+    if(!endpoint) {
+        return ERROR1;
+    }
+    if(!url) {
+        return ERROR2;
+    }
+    if(!trust_domain.name) {
+        return ERROR3;
+    }
+    endpoint->url = string_new(url);
+    endpoint->trust_domain = trust_domain;
+    endpoint->trust_domain.name = string_new(trust_domain.name);
+    endpoint->profile = HTTPS_WEB;
+    return NO_ERROR;
+}
+
+err_t spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
+    spiffebundle_Endpoint *endpoint, string_t url,
+    spiffeid_TrustDomain trust_domain, spiffeid_ID spiffeid,
+    spiffebundle_Source *source){
+
+    }
+
+err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint);
+spiffebundle_Bundle *spiffebundle_Endpoint_GetBundleForTrustDomain(
+    spiffebundle_Endpoint *endpoint, spiffeid_TrustDomain trust_domain,
+    err_t *err){
+
+    }
