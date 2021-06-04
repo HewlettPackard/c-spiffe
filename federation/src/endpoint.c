@@ -34,12 +34,6 @@ spiffebundle_Endpoint *spiffebundle_Endpoint_New()
 {
     spiffebundle_Endpoint *endpoint
         = (spiffebundle_Endpoint *) calloc(1, sizeof(*endpoint));
-    endpoint->bundle_source = NULL;
-    endpoint->owns_bundle = false;
-    endpoint->trust_domain.name = NULL;
-    endpoint->url = NULL;
-    endpoint->profile = NONE;
-    endpoint->curl_handle = NULL;
     return endpoint;
 }
 
@@ -47,17 +41,8 @@ void spiffebundle_Endpoint_Free(spiffebundle_Endpoint *endpoint)
 {
     if(endpoint) {
         if(endpoint->owns_bundle) {
-            spiffebundle_Source_Free(endpoint->bundle_source);
+            spiffebundle_Source_Free(endpoint->source);
             endpoint->owns_bundle = false;
-        }
-        if(endpoint->url) {
-            util_string_t_Free(endpoint->url);
-        }
-        if(endpoint->trust_domain.name) {
-            spiffeid_TrustDomain_Free(&(endpoint->trust_domain));
-        }
-        if(!spiffeid_ID_IsZero(endpoint->spiffe_id)) {
-            spiffeid_ID_Free(&endpoint->spiffe_id);
         }
         if(endpoint->curl_handle) {
             curl_free(endpoint->curl_handle);
@@ -67,8 +52,8 @@ void spiffebundle_Endpoint_Free(spiffebundle_Endpoint *endpoint)
 }
 
 err_t spiffebundle_Endpoint_ConfigHTTPSWEB(spiffebundle_Endpoint *endpoint,
-                                             const char *url,
-                                             spiffeid_TrustDomain trust_domain)
+                                           const char *url,
+                                           spiffeid_TrustDomain trust_domain)
 {
     err_t err = NO_ERROR;
     if(!endpoint) {
@@ -87,8 +72,7 @@ err_t spiffebundle_Endpoint_ConfigHTTPSWEB(spiffebundle_Endpoint *endpoint,
     if(!trust_domain.name) {
         return ERROR3; // empty/NULL trust domain name
     }
-    endpoint->trust_domain
-        = spiffeid_TrustDomainFromString(trust_domain.name, &err);
+    endpoint->td = spiffeid_TrustDomainFromString(trust_domain.name, &err);
     if(err) {
         return ERROR3;
     }
@@ -99,7 +83,7 @@ err_t spiffebundle_Endpoint_ConfigHTTPSWEB(spiffebundle_Endpoint *endpoint,
 
 err_t spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
     spiffebundle_Endpoint *endpoint, const char *url,
-    spiffeid_TrustDomain trust_domain, string_t spiffe_id,
+    spiffeid_TrustDomain trust_domain, const char *spiffe_id,
     spiffebundle_Source *source)
 {
     err_t err = NO_ERROR;
@@ -120,18 +104,17 @@ err_t spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
     if(!trust_domain.name) {
         return ERROR3; // empty/NULL trust domain name
     }
-    endpoint->trust_domain
-        = spiffeid_TrustDomainFromString(trust_domain.name, &err);
+    endpoint->td = spiffeid_TrustDomainFromString(trust_domain.name, &err);
     if(err) {
         return ERROR3;
     }
-    endpoint->spiffe_id = spiffeid_FromString(spiffe_id, &err);
+    endpoint->id = spiffeid_FromString(spiffe_id, &err);
     if(err) {
         return ERROR5; // couldn't parse spiffeID
     }
     endpoint->url = URI_to_string(&temp_uri);
     uriFreeUriMembersA(&temp_uri);
-    endpoint->bundle_source = source;
+    endpoint->source = source;
     endpoint->profile = HTTPS_SPIFFE;
     endpoint->owns_bundle = false;
     return NO_ERROR;
@@ -149,12 +132,12 @@ spiffebundle_Bundle *spiffebundle_Endpoint_GetBundleForTrustDomain(
         *err = ERROR2;
         return NULL;
     }
-    if(!endpoint->bundle_source) {
+    if(!endpoint->source) {
         *err = ERROR3;
         return NULL;
     }
     return spiffebundle_Source_GetSpiffeBundleForTrustDomain(
-        endpoint->bundle_source, trust_domain, err);
+        endpoint->source, trust_domain, err);
 }
 
 static size_t write_function(void *ptr, size_t size, size_t nmemb,
@@ -213,7 +196,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
     if(!endpoint) {
         return ERROR1;
     }
-    if(!endpoint->trust_domain.name) {
+    if(!endpoint->td.name) {
         return ERROR2;
     }
     // if handle exists, reuse.
@@ -243,13 +226,12 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
             if(resp_code == 200
                || (resp_code / 100 == 3)) { // 200 OK or 300 redirect
 
-                spiffebundle_Bundle *bundle = spiffebundle_Parse(
-                    endpoint->trust_domain, response, &err);
+                spiffebundle_Bundle *bundle
+                    = spiffebundle_Parse(endpoint->td, response, &err);
                 if(err) {
                     return ERROR5;
                 }
-                endpoint->bundle_source
-                    = spiffebundle_SourceFromBundle(bundle);
+                endpoint->source = spiffebundle_SourceFromBundle(bundle);
                 endpoint->owns_bundle = true;
                 util_string_t_Free(response);
             } else {
@@ -266,7 +248,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
     {
         spiffebundle_Bundle *server_bundle
             = spiffebundle_Endpoint_GetBundleForTrustDomain(
-                endpoint, endpoint->trust_domain, &err);
+                endpoint, endpoint->td, &err);
         BIO *cert_bio = BIO_new(BIO_s_mem());
         for(size_t i = 0, size = arrlenu(server_bundle->x509_auths); i < size;
             ++i) {
@@ -281,13 +263,12 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
             res = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp_code);
             if(resp_code == 200
                || (resp_code / 100 == 3)) { // 200 OK or 300 redirect
-                spiffebundle_Bundle *bundle = spiffebundle_Parse(
-                    endpoint->trust_domain, response, &err);
+                spiffebundle_Bundle *bundle
+                    = spiffebundle_Parse(endpoint->td, response, &err);
                 if(err) {
                     return ERROR5;
                 }
-                endpoint->bundle_source
-                    = spiffebundle_SourceFromBundle(bundle);
+                endpoint->source = spiffebundle_SourceFromBundle(bundle);
                 endpoint->owns_bundle = true;
                 util_string_t_Free(response);
             } else {

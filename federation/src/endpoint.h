@@ -25,23 +25,23 @@ typedef enum spiffebundle_Endpoint_Profile {
 typedef struct spiffebundle_Endpoint {
     string_t url;
     spiffebundle_Endpoint_Profile profile;
-    spiffeid_TrustDomain trust_domain;
-    spiffeid_ID spiffe_id;
-    spiffebundle_Source *bundle_source;
+    spiffeid_TrustDomain td;
+    spiffeid_ID id;
+    spiffebundle_Source *source;
     bool owns_bundle;
-    CURL* curl_handle;
+    CURL *curl_handle;
 } spiffebundle_Endpoint;
 
 spiffebundle_Endpoint *spiffebundle_Endpoint_New();
 void spiffebundle_Endpoint_Free(spiffebundle_Endpoint *endpoint);
 
-err_t spiffebundle_Endpoint_ConfigHTTPSWEB(
-    spiffebundle_Endpoint *endpoint, const char* url,
-    spiffeid_TrustDomain trust_domain);
+err_t spiffebundle_Endpoint_ConfigHTTPSWEB(spiffebundle_Endpoint *endpoint,
+                                           const char *url,
+                                           spiffeid_TrustDomain trust_domain);
 
 err_t spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
-    spiffebundle_Endpoint *endpoint, const char* url,
-    spiffeid_TrustDomain trust_domain, string_t spiffeid,
+    spiffebundle_Endpoint *endpoint, const char *url,
+    spiffeid_TrustDomain trust_domain, const char *spiffeid,
     spiffebundle_Source *source);
 
 err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint);
