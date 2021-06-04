@@ -23,6 +23,7 @@ def after_all(context):
     time.sleep(5)
     os.system(PARENT_PATH + "bash-general-scripts/clean.sh")
     time.sleep(1)
+    os.system("ssh root@spire-server2 \"rm /opt/spire/conf/server/entry2.output\"")
 
 
 def before_feature(context, feature):
