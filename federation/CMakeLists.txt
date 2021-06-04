@@ -12,6 +12,11 @@ ${CMAKE_CURRENT_SOURCE_DIR}/../bundle/spiffebundle/src/source.c
 add_library(${TARGET_NAME} SHARED ${LIB_FEDERATION})
 target_link_libraries(${TARGET_NAME} 
     curl
+    spiffeid
+    bundle
+    internal
+    cjose
+    uriparser
 )
 # Install lib:
 install(
@@ -28,3 +33,9 @@ install(
     FILES ${HEADERS_FEDERATION}
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/src"
 )
+
+set(ENDPOINT_EXAMPLE
+    src/endpoint_example.c
+)
+add_executable(endpoint_example "${ENDPOINT_EXAMPLE}")
+target_link_libraries(endpoint_example federation)

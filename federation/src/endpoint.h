@@ -8,6 +8,7 @@
 #include "spiffeid/src/trustdomain.h"
 #include "utils/src/util.h"
 #include <curl/curl.h>
+#include <uriparser/Uri.h>
 
 #ifdef __cplusplus
 extern "C" {
