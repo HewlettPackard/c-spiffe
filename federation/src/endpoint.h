@@ -35,11 +35,11 @@ typedef struct spiffebundle_Endpoint {
 spiffebundle_Endpoint *spiffebundle_Endpoint_New();
 void spiffebundle_Endpoint_Free(spiffebundle_Endpoint *endpoint);
 
-err_t spiffebundle_Endpoint_Config_HTTPS_WEB(
+err_t spiffebundle_Endpoint_ConfigHTTPSWEB(
     spiffebundle_Endpoint *endpoint, const char* url,
     spiffeid_TrustDomain trust_domain);
 
-err_t spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
+err_t spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
     spiffebundle_Endpoint *endpoint, const char* url,
     spiffeid_TrustDomain trust_domain, string_t spiffeid,
     spiffebundle_Source *source);
