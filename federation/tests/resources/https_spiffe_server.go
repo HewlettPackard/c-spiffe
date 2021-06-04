@@ -6,6 +6,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/spiffe/go-spiffe/v2/bundle/spiffebundle"
 	"github.com/spiffe/go-spiffe/v2/federation"
@@ -18,66 +19,26 @@ const jwks = `{
     "keys": [
         {
             "use": "x509-svid",
-            "kty": "EC",
-            "crv": "P-384",
-            "x": "WjB-nSGSxIYiznb84xu5WGDZj80nL7W1c3zf48Why0ma7Y7mCBKzfQkrgDguI4j0",
-            "y": "Z-0_tDH_r8gtOtLLrIpuMwWHoe4vbVBFte1vj6Xt6WeE8lXwcCvLs_mcmvPqVK9j",
+            "kty": "RSA",
+            "n": "3CErJbXU-LId44PrDxBbkys8mqb6-DpwVIsTJtMpY0j7Y5l05efthP4rF0VRh5uZr7GBkkkeBtHjE53P353ODDiwq70LTfqsVtcDuMMY_GYwAB3iHgJ0ubweARBWjRUHxQxSkjDKhdXI5BYDKYvAoERly3BAmsEWvQkMiUbkoRE2tnS3qOcGfPy9xWF_XJkgnMshRLp6bxyYpkFJEDpnLrslQYsunFUcYIP9B0AUyYADM5S-G0OwwFjtW6J4VHtJFIkFjS5qpmAEVO6cOMmhi3bvJGUw2Ns3xbwWLj0UCMll5kFXnH608P_Vwgpy0P0fTJ1CNvsRyJUDGTZGeOujpw",
+            "e": "AQAB",
             "x5c": [
-                "MIIBzDCCAVOgAwIBAgIJAJM4DhRH0vmuMAoGCCqGSM49BAMEMB4xCzAJBgNVBAYTAlVTMQ8wDQYDVQQKDAZTUElGRkUwHhcNMTgwNTEzMTkzMzQ3WhcNMjMwNTEyMTkzMzQ3WjAeMQswCQYDVQQGEwJVUzEPMA0GA1UECgwGU1BJRkZFMHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEWjB+nSGSxIYiznb84xu5WGDZj80nL7W1c3zf48Why0ma7Y7mCBKzfQkrgDguI4j0Z+0/tDH/r8gtOtLLrIpuMwWHoe4vbVBFte1vj6Xt6WeE8lXwcCvLs/mcmvPqVK9jo10wWzAdBgNVHQ4EFgQUh6XzV6LwNazA+GTEVOdu07o5yOgwDwYDVR0TAQH/BAUwAwEB/zAOBgNVHQ8BAf8EBAMCAQYwGQYDVR0RBBIwEIYOc3BpZmZlOi8vbG9jYWwwCgYIKoZIzj0EAwQDZwAwZAIwE4Me13qMC9i6Fkx0h26y09QZIbuRqA9puLg9AeeAAyo5tBzRl1YL0KNEp02VKSYJAjBdeJvqjJ9wW55OGj1JQwDFD7kWeEB6oMlwPbI/5hEY3azJi16I0uN1JSYTSWGSqWc="
+                "MIID8zCCAtugAwIBAgIUc1IscvOYvHFCpp1qoIA3giuEyakwDQYJKoZIhvcNAQELBQAwNDELMAkGA1UEBhMCVVMxDzANBgNVBAoMBlNQSUZGRTEUMBIGA1UEAwwLZXhhbXBsZS5vcmcwIBcNMjEwNTI3MTQ0NDU0WhgPMjEyMTA1MDMxNDQ0NTRaMDQxCzAJBgNVBAYTAlVTMQ8wDQYDVQQKDAZTUElGRkUxFDASBgNVBAMMC2V4YW1wbGUub3JnMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3CErJbXU+LId44PrDxBbkys8mqb6+DpwVIsTJtMpY0j7Y5l05efthP4rF0VRh5uZr7GBkkkeBtHjE53P353ODDiwq70LTfqsVtcDuMMY/GYwAB3iHgJ0ubweARBWjRUHxQxSkjDKhdXI5BYDKYvAoERly3BAmsEWvQkMiUbkoRE2tnS3qOcGfPy9xWF/XJkgnMshRLp6bxyYpkFJEDpnLrslQYsunFUcYIP9B0AUyYADM5S+G0OwwFjtW6J4VHtJFIkFjS5qpmAEVO6cOMmhi3bvJGUw2Ns3xbwWLj0UCMll5kFXnH608P/Vwgpy0P0fTJ1CNvsRyJUDGTZGeOujpwIDAQABo4H6MIH3MAkGA1UdEwQCMAAwKAYDVR0RBCEwH4Ydc3BpZmZlOi8vZXhhbXBsZS5vcmcvd29ya2xvYWQwHQYDVR0OBBYEFCfcXfUrUp7s7RfshCkSEnW0mAlbMG8GA1UdIwRoMGaAFFkJY/1Dl7/xxDfHAO0enNmsxUKQoTikNjA0MQswCQYDVQQGEwJVUzEPMA0GA1UECgwGU1BJRkZFMRQwEgYDVQQDDAtleGFtcGxlLm9yZ4IUX2ap2e4rmTrPAQM/A4P6ojCg+5gwDgYDVR0PAQH/BAQDAgOoMCAGA1UdJQEB/wQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjANBgkqhkiG9w0BAQsFAAOCAQEAx1mwKx6BUTwQvzX5doRtCC5++oTL9ogrmY38bydQosIHu4KIO6AQi2qcENXVPIoqykP+hzxIBqZDd0VElKFiJz72hv9Y9Qpy2SSsKK0/pNHb91aM4XtsUfqloPt9I/kfSdWOhFkT3u5fhFyG8sE3i2BT8vjxmFXPkqGD9q5V2kd2aSaLPZNIPfsvCz5BoGfsly/YAqhJLHW5oU2CtujV+0lrCEpI9myPVSu/DiCfODj250CqHgfsla7n9vvMdRZlOHBqrhl2XwgixkGinM3aF1T5QnptJBepVgwr10BEzU+tCMbACkF+Of4uS+ssTRjwaY98JanPGsHqi0stikSplw=="
             ]
         },
         {
-            "use": "jwt-svid",
-            "kty": "EC",
-            "kid": "IRsID4VIM3T11TsK43Ny1DgCD5UNWhva",
-            "crv": "P-256",
-            "x": "64Mm92hnvqSdLxl6XQVu32-3rydodal1S8JgGYg5AGk",
-            "y": "x5hVyA9Z4OgQxpvkhTXwNsZACk1jz1xyuTDr6JdH3R0"
-        },
-        {
-            "use": "jwt-svid",
-            "kty": "EC",
-            "kid": "qjwWkiMpkHzIxsSrAsLxSZ2WZ8AyMESx",
-            "crv": "P-256",
-            "x": "mLo0vBg7xWrcSOEhWpSmrcoVpZRBGoDDxwNJQugFzR4",
-            "y": "7Kb3afZVERcOBWHOTWwTJLTwWX4913TSxeoTU9A0hYQ"
-        },
-        {
-            "use": "jwt-svid",
-            "kty": "EC",
-            "kid": "uNhqAaPI7NDn7IHOsa2ac1BF4O5qGxjZ",
-            "crv": "P-256",
-            "x": "pm3pJKQjBVx7x1h_dbNVCoHoXZuTwD5EAS2DjcUNsTY",
-            "y": "jAe4nHFq0Jtr4ugIz500GfjjMfCfupIoWcPnwVWnpJc"
-        },
-        {
-            "use": "jwt-svid",
-            "kty": "EC",
-            "kid": "y3UHKFp0WqPpG7gVr3FKieiEzwH8fTMm",
-            "crv": "P-256",
-            "x": "SttM6EWWCPBRYDqGKIAqVbCcelCIJE9VBqj-uX4sgwE",
-            "y": "4jVOkUVM-lA9GYNU8_GX5Us5fjNR_f9Hcaj7PGkgZDo"
-        },
-        {
-            "use": "jwt-svid",
-            "kty": "EC",
-            "kid": "mbrcuIaIUUapdCCmhQon4xJSicDmAVfK",
-            "crv": "P-256",
-            "x": "HvINid075yH0ssKsbmalal1LDceTuz9dN_RScnmLiaw",
-            "y": "VBFCHK_RS4oKamHY3UdGkwbd03cC6fqEm5PI4V1crSg"
-        },
-        {
-            "use": "jwt-svid",
-            "kty": "EC",
-            "kid": "cHPeHMMEtvTeSMBc20DzPPhkF41BN2WJ",
-            "crv": "P-256",
-            "x": "hjhyHcq6nNph9QbcSIf3VzpkVWtfOT3HbRx4aZ3j-D8",
-            "y": "KrdsDLurVCbnnYmYS2Gm0rjKkXOJ9x1-SVOjqdAQEBk"
+            "use": "x509-svid",
+            "kty": "RSA",
+            "n": "0mfowcVtUL-Qkf8ommz-afivIXJiV1emoZ199b1CDXEiGR5_ordFvz6y4l8_q6i0psKIhYaag56nTUSk5kjcUJpzuVkVV5vdG3IVLo4n3ULbZEjZEnorWlhYJcAJLNJhYk6An32uz4-pjlzigSxghinUBFG8e5A-etAST6VZ8HtIWErjEe92R8paB56IACwzbhFpJ_OTQu6FJNiRf5XDipMf6whXFwmwEws-FiZa-m5-4zE-QSWxS1WmJM4qAJsCcCJDvuc7_6JoF8Y7O6wsIVZ0vvg1f26caXG80bYBSF_xX6gcSgFa0OvrMauVNFIbVKZkdOgdjftOPvni7OpIUQ",
+            "e": "AQAB",
+            "x5c": [
+                "MIIDUjCCAjqgAwIBAgIUX2ap2e4rmTrPAQM/A4P6ojCg+5gwDQYJKoZIhvcNAQEFBQAwNDELMAkGA1UEBhMCVVMxDzANBgNVBAoMBlNQSUZGRTEUMBIGA1UEAwwLZXhhbXBsZS5vcmcwIBcNMjEwNTI3MTQ0NDM5WhgPMjEyMTA1MDMxNDQ0MzlaMDQxCzAJBgNVBAYTAlVTMQ8wDQYDVQQKDAZTUElGRkUxFDASBgNVBAMMC2V4YW1wbGUub3JnMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0mfowcVtUL+Qkf8ommz+afivIXJiV1emoZ199b1CDXEiGR5/ordFvz6y4l8/q6i0psKIhYaag56nTUSk5kjcUJpzuVkVV5vdG3IVLo4n3ULbZEjZEnorWlhYJcAJLNJhYk6An32uz4+pjlzigSxghinUBFG8e5A+etAST6VZ8HtIWErjEe92R8paB56IACwzbhFpJ/OTQu6FJNiRf5XDipMf6whXFwmwEws+FiZa+m5+4zE+QSWxS1WmJM4qAJsCcCJDvuc7/6JoF8Y7O6wsIVZ0vvg1f26caXG80bYBSF/xX6gcSgFa0OvrMauVNFIbVKZkdOgdjftOPvni7OpIUQIDAQABo1owWDAJBgNVHRMEAjAAMB8GA1UdEQQYMBaGFHNwaWZmZTovL2V4YW1wbGUuY29tMB0GA1UdDgQWBBRZCWP9Q5e/8cQ3xwDtHpzZrMVCkDALBgNVHQ8EBAMCB4AwDQYJKoZIhvcNAQEFBQADggEBAAJOA81nY/8ItGUO2BZey6wnH88fnTwmum2XG/uzUeYIuGMztUuoGzQ5bpOVhh8Fe9O3biJ1u+zJzRWO6J4XuMWkjGCGp6oYvnwXxvd6nas1HkqEH7q/4hgX4CtHUAWnW5sa8t2jbG+a5x7534ZZQ5VwMZXTm07wAMtRVTqRYl6nSHUWCDowZjqR02tJRtGbSia04tq17ojcdIa7mVrrfFU1Frn3kCh6ifyIk9lOVhhR3B4evyOuanLPUjj8QHR7yPTxtDsBQ+FGwhC9W7hAaMcu7k8iy8ASaqM2w4bCUPpiQWm6kVeHUbr7jEoB/Ym87fInIorVFysctktK2pSlcgU="
+            ]
         }
     ],
-    "spiffe_refresh_hint": 60,
-    "spiffe_sequence": 1
-}`
+    "spiffe_refresh_hint": 60
+}
+`
 
 type fakeSource struct {
 	bundles map[spiffeid.TrustDomain]*spiffebundle.Bundle
@@ -93,10 +54,7 @@ func (s *fakeSource) GetBundleForTrustDomain(trustDomain spiffeid.TrustDomain) (
 
 func main() {
 
-	// generate a `Certificate` struct
-	// cert, _ := tls.LoadX509KeyPair( "localhost.crt", "localhost.key" )
-
-	svid, err := x509svid.Load("./example.org.crt", "./example.org.key")
+	svid, err := x509svid.Load("./resources/example.org.crt", "./resources/example.org.key")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -122,14 +80,17 @@ func main() {
 		Addr:    "example.org:443",
 		Handler: handler, // use `http.DefaultServeMux`
 		TLSConfig: &tls.Config{
-			// Certificates: []tls.Certificate{ cert },
-			GetCertificate: func(*tls.ClientHelloInfo) (*tls.Certificate, error) {
-				return cert, nil
-			},
+			Certificates: []tls.Certificate{*cert},
+			// GetCertificate: func(*tls.ClientHelloInfo) (*tls.Certificate, error) {
+			// 	return cert, nil
+			// },
 		},
 	}
 
 	// run server on port "443"
-	log.Fatal(s.ListenAndServeTLS("", ""))
-
+	go s.ListenAndServeTLS("", "")
+	// log.Fatal(s)
+	d := time.Second * 3
+	time.Sleep(d)
+	s.Close()
 }
