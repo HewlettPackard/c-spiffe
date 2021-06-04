@@ -5,6 +5,7 @@ set(TARGET_NAME "federation")
 
 set(LIB_FEDERATION 
 ${CMAKE_CURRENT_SOURCE_DIR}/src/endpoint.c
+${CMAKE_CURRENT_SOURCE_DIR}/src/watcher.c
 ${CMAKE_CURRENT_SOURCE_DIR}/../utils/src/util.c
 ${CMAKE_CURRENT_SOURCE_DIR}/../bundle/spiffebundle/src/source.c
 )
@@ -27,6 +28,7 @@ install(
 # Install Headers:
 set(HEADERS_FEDERATION
 ${CMAKE_CURRENT_SOURCE_DIR}/src/endpoint.h
+${CMAKE_CURRENT_SOURCE_DIR}/src/watcher.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
