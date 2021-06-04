@@ -22,7 +22,7 @@ typedef enum spiffebundle_Endpoint_Profile {
 
 typedef struct spiffebundle_Endpoint {
     string_t url;
-    profile;
+    spiffebundle_Endpoint_Profile profile;
     spiffeid_TrustDomain trust_domain;
     spiffeid_ID *spiffeID;
     spiffebundle_Bundle *bundle;
