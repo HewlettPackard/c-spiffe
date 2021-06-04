@@ -9,6 +9,7 @@
 #include "utils/src/util.h"
 #include <curl/curl.h>
 #include <uriparser/Uri.h>
+#include <threads.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,7 +17,8 @@ extern "C" {
 
 typedef struct spiffebundle_Endpoint_Status{
     spiffebundle_Endpoint *endpoint;
-    pthread_t *thread;
+    cnd_t *cond_var;
+    thrd_t *thread;
     int running;
 } spiffebundle_Endpoint_Status;
 
@@ -27,8 +29,6 @@ typedef struct map_TD_Endpoint_Status {
 
 typedef struct spiffebundle_Watcher {
     map_TD_Endpoint_Status *endpoints;
-    pthread_mutex_t* mutex;
-    pthread_cond_t* cond;
 } spiffebundle_Watcher;
 
 spiffebundle_Watcher *spiffebundle_Watcher_New();
@@ -51,7 +51,7 @@ err_t spiffebundle_Watcher_Stop(spiffebundle_Watcher *watcher);
 
 spiffebundle_Bundle *
 spiffebundle_Watcher_GetBundleForTrustDomain(spiffebundle_Watcher *watcher,
-                                             spiffeid_TrustDomain trust_domain,
+                                             const spiffeid_TrustDomain td,
                                              err_t *err);
 
 #ifdef __cplusplus
