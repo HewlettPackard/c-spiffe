@@ -17,7 +17,7 @@ START_TEST(test_federation_Endpoint_New_and_free);
         = spiffebundle_Load(td, "./resources/jwks_valid_2.json", &err);
     ck_assert_int_eq(err, NO_ERROR);
     spiffebundle_Source *bundle_source = spiffebundle_SourceFromBundle(bundle);
-    spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
+    spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", td, sid, bundle_source);
     tested->owns_bundle = true;
 
@@ -40,37 +40,37 @@ START_TEST(test_federation_Endpoint_Config_SPIFFE);
     ck_assert_int_eq(err, NO_ERROR);
     spiffebundle_Source *bundle_source = spiffebundle_SourceFromBundle(bundle);
 
-    err = spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
+    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         NULL, "example.com/bundle.json", td, sid, bundle_source);
     ck_assert_int_eq(err, ERROR1);
 
-    err = spiffebundle_Endpoint_Config_HTTPS_SPIFFE(tested, NULL, td, sid,
+    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(tested, NULL, td, sid,
                                                     bundle_source);
     ck_assert_int_eq(err, ERROR2);
 
-    err = spiffebundle_Endpoint_Config_HTTPS_SPIFFE(tested, "not a URL", td,
+    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(tested, "not a URL", td,
                                                     sid, bundle_source);
     ck_assert_int_eq(err, ERROR2);
 
     spiffeid_TrustDomain err_td = { NULL };
-    err = spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
+    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", err_td, sid, bundle_source);
     ck_assert_int_eq(err, ERROR3);
     spiffeid_TrustDomain err_td2 = { "not_a_td://NU,,LL" };
-    err = spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
+    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", err_td2, sid, bundle_source);
     ck_assert_int_eq(err, ERROR3);
 
     string_t err_id = "https://not.a.spiffe.id/wrong";
-    err = spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
+    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", td, err_id, bundle_source);
     ck_assert_int_eq(err, ERROR5);
 
-    err = spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
+    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", td, sid, NULL);
     ck_assert_int_eq(err, ERROR6);
 
-    err = spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
+    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", td, sid, bundle_source);
     ck_assert_int_eq(err, NO_ERROR);
 
@@ -87,26 +87,26 @@ START_TEST(test_federation_Endpoint_Config_WEB);
         = spiffeid_TrustDomainFromString("example.com", &err);
     ck_assert_int_eq(err, NO_ERROR);
 
-    err = spiffebundle_Endpoint_Config_HTTPS_WEB(
+    err = spiffebundle_Endpoint_ConfigHTTPSWEB(
         NULL, "example.com/bundle.json", td);
     ck_assert_int_eq(err, ERROR1);
 
-    err = spiffebundle_Endpoint_Config_HTTPS_WEB(tested, NULL, td);
+    err = spiffebundle_Endpoint_ConfigHTTPSWEB(tested, NULL, td);
     ck_assert_int_eq(err, ERROR2);
 
-    err = spiffebundle_Endpoint_Config_HTTPS_WEB(tested, "not a URL", td);
+    err = spiffebundle_Endpoint_ConfigHTTPSWEB(tested, "not a URL", td);
     ck_assert_int_eq(err, ERROR2);
 
     spiffeid_TrustDomain err_td = { NULL };
-    err = spiffebundle_Endpoint_Config_HTTPS_WEB(
+    err = spiffebundle_Endpoint_ConfigHTTPSWEB(
         tested, "example.com/bundle.json", err_td);
     ck_assert_int_eq(err, ERROR3);
     spiffeid_TrustDomain err_td2 = { "not_a_td://NU,,LL" };
-    err = spiffebundle_Endpoint_Config_HTTPS_WEB(
+    err = spiffebundle_Endpoint_ConfigHTTPSWEB(
         tested, "example.com/bundle.json", err_td2);
     ck_assert_int_eq(err, ERROR3);
 
-    err = spiffebundle_Endpoint_Config_HTTPS_WEB(
+    err = spiffebundle_Endpoint_ConfigHTTPSWEB(
         tested, "example.com/bundle.json", td);
     ck_assert_int_eq(err, NO_ERROR);
 
@@ -167,7 +167,7 @@ START_TEST(test_federation_Endpoint_fetch_WEB);
         = spiffebundle_Load(td, "./resources/example.org.bundle.jwks", &err);
 
     ck_assert_uint_eq(err, NO_ERROR);
-    err = spiffebundle_Endpoint_Config_HTTPS_WEB(tested, "https://example.org",
+    err = spiffebundle_Endpoint_ConfigHTTPSWEB(tested, "https://example.org",
                                                  td);
 
     ck_assert_int_eq(err, NO_ERROR);
@@ -213,7 +213,7 @@ START_TEST(test_federation_Endpoint_fetch_SPIFFE);
     spiffebundle_Source *source = spiffebundle_SourceFromBundle(bundle);
     spiffebundle_Endpoint *tested = spiffebundle_Endpoint_New();
 
-    err = spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
+    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "https://example.org:443", td, "spiffe://example.org/workload",
         source);
 
