@@ -20,8 +20,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libgtest-dev \
         libgmock-dev \
         golang-go \
-        openssh-server
-RUN apt-get clean
+        openssh-server ;\
+apt-get clean
 
 ARG BRANCH=test/373-Error-on-agent-after-running-consecutive-mTLS-test-scenarios
 RUN cd /mnt && git clone -b ${BRANCH} https://github.com/arianalima/c-spiffe.git

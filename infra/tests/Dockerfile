@@ -2,7 +2,8 @@ ARG TAG=test-373-Error-on-agent-after-running-consecutive-mTLS-test-scenarios
 FROM cspiffe/workload:${TAG}
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends software-properties-common python3 python3-pip
+  && apt-get install -y --no-install-recommends software-properties-common python3 python3-pip \
+  && apt-get clean
 
 ARG TEST_DIR=/mnt/c-spiffe
 
