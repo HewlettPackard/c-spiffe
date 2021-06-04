@@ -4,13 +4,13 @@ spiffebundle_Bundle *spiffebundle_Source_GetSpiffeBundleForTrustDomain(
     spiffebundle_Source *s, const spiffeid_TrustDomain td, err_t *err)
 {
     if(s->type == SPIFFEBUNDLE_BUNDLE) {
-        return spiffebundle_Bundle_GetSpiffeBundleForTrustDomain(s->source.bundle,
+        return spiffebundle_Bundle_GetBundleForTrustDomain(s->source.bundle,
                                                              td, err);
     } else if(s->type == SPIFFEBUNDLE_SET) {
-        return spiffebundle_Set_GetSpiffeBundleForTrustDomain(s->source.set, td,
+        return spiffebundle_Set_GetBundleForTrustDomain(s->source.set, td,
                                                           err);
     }else if(s->type == SPIFFEBUNDLE_ENDPOINT) {
-        return spiffebundle_Endpoint_GetBundleForTrustDomain(s->source.set, td,
+        return spiffebundle_Endpoint_GetBundleForTrustDomain(s->source.endpoint, td,
                                                           err);
     }
 

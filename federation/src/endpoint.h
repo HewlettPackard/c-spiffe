@@ -6,18 +6,21 @@
 #include "utils/src/util.h"
 #include "bundle/spiffebundle/src/bundle.h"
 #include "bundle/spiffebundle/src/set.h"
+#include "bundle/spiffebundle/src/source.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct {
-    string_t endpoint_url;
-    enum endpoint_profile{
+typedef struct spiffebundle_Source spiffebundle_Source;
+
+typedef struct spiffebundle_Endpoint{
+    string_t url;
+    enum {
         HTTPS_WEB,HTTPS_SPIFFE
-    } ;
+    } profile;
     spiffeid_TrustDomain *trust_domain;
-    spiffeid_ID *endpoint_spiffeID;
+    spiffeid_ID *spiffeID;
     spiffebundle_Bundle *bundle;
 } spiffebundle_Endpoint;
 
@@ -29,7 +32,7 @@ err_t spiffebundle_Endpoint_Config_HTTPS_WEB(spiffebundle_Endpoint* endpoint,str
 err_t spiffebundle_Endpoint_Config_HTTPS_SPIFFE(spiffebundle_Endpoint* endpoint, string_t url, spiffeid_TrustDomain trust_domain,spiffeid_ID spiffeid, spiffebundle_Source *source);
 
 err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint);
-
+spiffebundle_Bundle *spiffebundle_Endpoint_GetBundleForTrustDomain(spiffebundle_Endpoint* endpoint, spiffeid_TrustDomain trust_domain, err_t *err);
 #ifdef __cplusplus
 }
 #endif

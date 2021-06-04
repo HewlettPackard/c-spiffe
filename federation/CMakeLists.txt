@@ -9,6 +9,7 @@ project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C)
 set(LIB_FEDERATION 
 ${PROJECT_SOURCE_DIR}/src/endpoint.c
 ${PROJECT_SOURCE_DIR}/../utils/src/util.c
+${PROJECT_SOURCE_DIR}/../bundle/spiffebundle/src/source.c
 )
 
 add_library(${TARGET_NAME} SHARED ${LIB_FEDERATION})

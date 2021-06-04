@@ -8,9 +8,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+typedef struct spiffebundle_Endpoint spiffebundle_Endpoint;
 /** Source represents a source of SPIFFE bundles keyed by trust domain. */
-typedef struct {
+typedef struct spiffebundle_Source{
     enum spiffebundle_Source_Cardinality {
         SPIFFEBUNDLE_BUNDLE,
         SPIFFEBUNDLE_SET,
