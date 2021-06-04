@@ -74,22 +74,17 @@ func main() {
 	}
 	writer := new(bytes.Buffer)
 	handler := federation.Handler(trustDomain, source, logger.Writer(writer))
+	
 	// create a custom server with `TLSConfig`
-
 	s := &http.Server{
 		Addr:    "example.org:443",
-		Handler: handler, // use `http.DefaultServeMux`
+		Handler: handler, 
 		TLSConfig: &tls.Config{
 			Certificates: []tls.Certificate{*cert},
-			// GetCertificate: func(*tls.ClientHelloInfo) (*tls.Certificate, error) {
-			// 	return cert, nil
-			// },
 		},
 	}
 
-	// run server on port "443"
 	go s.ListenAndServeTLS("", "")
-	// log.Fatal(s)
 	d := time.Second * 3
 	time.Sleep(d)
 	s.Close()
