@@ -181,8 +181,9 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
     curl_easy_setopt(curl, CURLOPT_URL, endpoint->url);
     curl_easy_setopt(curl, CURLOPT_PORT, 443);
     curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, false);
+    // curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
+    // curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, false);
+    curl_easy_setopt(curl, CURLOPT_CAINFO, "./resources/localhost.crt");
 
     switch(endpoint->profile) {
 
