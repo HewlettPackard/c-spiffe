@@ -157,7 +157,9 @@ START_TEST(test_federation_Endpoint_get_bundle);
 END_TEST
 
 START_TEST(test_federation_Endpoint_fetch_WEB);
-{
+{   
+    system("go run ./resources/https_spiffe_server.go &");
+    sleep(1); // sleep for a second to let the server set itself up
     spiffebundle_Endpoint *tested = spiffebundle_Endpoint_New();
     err_t err;
     spiffeid_TrustDomain td = { string_new("example.org") };
@@ -196,6 +198,8 @@ END_TEST
 
 START_TEST(test_federation_Endpoint_fetch_SPIFFE);
 {
+    system("go run ./resources/https_spiffe_server.go &");
+    sleep(1); // sleep for a second to let the server set itself up
     err_t err;
     spiffeid_TrustDomain td = { "example.org" };
     x509bundle_Bundle *x509bundle
@@ -277,8 +281,7 @@ int main(int argc, char **argv)
     Suite *s = watcher_suite();
     SRunner *sr = srunner_create(s);
 
-    system("go run ./resources/https_spiffe_server.go &");
-    sleep(1); // sleep for a second to let the server set itself up
+    
 
     srunner_run_all(sr, CK_NORMAL);
     const int number_failed = srunner_ntests_failed(sr);
