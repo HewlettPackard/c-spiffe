@@ -18,6 +18,7 @@ typedef struct spiffebundle_Set {
 } spiffebundle_Set;
 
 spiffebundle_Set *spiffebundle_NewSet(int n_args, ...);
+void spiffebundle_Set_Free(spiffebundle_Set* set);
 void spiffebundle_Set_Add(spiffebundle_Set *s, spiffebundle_Bundle *bundle);
 void spiffebundle_Set_Remove(spiffebundle_Set *s,
                              const spiffeid_TrustDomain td);
