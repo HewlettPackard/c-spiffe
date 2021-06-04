@@ -8,21 +8,21 @@ int main()
     spiffebundle_Endpoint *endpoint = spiffebundle_Endpoint_New();
 
     // Configure Endpoint
-    // since raw.githubusercontent.com has a bundle installed for it, 
+    // since raw.githubusercontent.com has a bundle installed for it,
     // the HTTPS call will authenticate.
+    spiffeid_TrustDomain td
+        = spiffeid_TrustDomainFromString("example.com", &err);
     spiffebundle_Endpoint_Config_HTTPS_WEB(
         endpoint,
         "https://raw.githubusercontent.com/HewlettPackard/c-spiffe/master/"
         "bundle/jwtbundle/tests/resources/jwk_keys.json",
-        spiffeid_TrustDomainFromString("example.com", &err));
+        td);
     // Fetch it.
     err = spiffebundle_Endpoint_Fetch(endpoint);
 
     // Get it.
     spiffebundle_Bundle *bundle
-        = spiffebundle_Endpoint_GetBundleForTrustDomain(
-            endpoint, spiffeid_TrustDomainFromString("example.com", &err),
-            &err);
+        = spiffebundle_Endpoint_GetBundleForTrustDomain(endpoint, td, &err);
 
     // Marshall it into a json string
     string_t jwks = spiffebundle_Bundle_Marshal(bundle, &err);
@@ -32,7 +32,7 @@ int main()
 
     // Free string.
     util_string_t_Free(jwks);
-
+    spiffeid_TrustDomain_Free(&td);
     // don't free spiffebundle since endpoint owns it
     // spiffebundle_Bundle_Free(bundle);
 
