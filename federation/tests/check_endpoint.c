@@ -155,6 +155,45 @@ START_TEST(test_federation_Endpoint_get_bundle);
 }
 END_TEST
 
+START_TEST(test_federation_Endpoint_fetch_WEB);
+{
+    spiffebundle_Endpoint *tested = spiffebundle_Endpoint_New();
+    err_t err;
+    spiffeid_TrustDomain td = { string_new("localhost") };
+    spiffebundle_Bundle *bundle
+        = spiffebundle_Load(td, "./resources/jwks_valid_2.json", &err);
+    
+    ck_assert_uint_eq(err, NO_ERROR);
+    err = spiffebundle_Endpoint_Config_HTTPS_WEB(
+        tested, "https://localhost/resources/jwks_valid_2.json", td);
+    
+    ck_assert_int_eq(err,NO_ERROR);
+
+    err = spiffebundle_Endpoint_Fetch(tested);
+    ck_assert_ptr_ne(tested->bundle_source,NULL);
+
+    ck_assert(
+        spiffebundle_Bundle_Equal(
+            bundle,
+            spiffebundle_Endpoint_GetBundleForTrustDomain(tested,td,&err)
+        )
+    );
+    ck_assert_int_eq(err,NO_ERROR);
+
+    bundle
+        = spiffebundle_Load(td, "./resources/jwks_valid_1.json", &err);
+    
+    ck_assert(
+        !spiffebundle_Bundle_Equal(
+            bundle,
+            spiffebundle_Endpoint_GetBundleForTrustDomain(tested,td,&err)
+        )
+    );
+    ck_assert_uint_eq(err, NO_ERROR);
+    spiffeid_TrustDomain_Free(&td);
+}
+END_TEST
+
 Suite *watcher_suite(void)
 {
     Suite *s = suite_create("spiffebundle_endpoint");
@@ -164,7 +203,9 @@ Suite *watcher_suite(void)
     tcase_add_test(tc_core, test_federation_Endpoint_Config_SPIFFE);
     tcase_add_test(tc_core, test_federation_Endpoint_Config_WEB);
     tcase_add_test(tc_core, test_federation_Endpoint_get_bundle);
-
+    tcase_add_test(tc_core, test_federation_Endpoint_fetch_WEB);
+    // tcase_add_test(tc_core, test_federation_Endpoint_fetch_SPIFFE);
+    
     suite_add_tcase(s, tc_core);
 
     return s;

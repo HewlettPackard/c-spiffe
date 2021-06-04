@@ -176,33 +176,37 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
     CURLcode res;
     string_t response = NULL;
     err_t err = NO_ERROR;
-
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_function);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
     curl_easy_setopt(curl, CURLOPT_URL, endpoint->url);
-
+    curl_easy_setopt(curl, CURLOPT_PORT, 443);
     curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, true);
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, false);
 
     switch(endpoint->profile) {
 
     case HTTPS_WEB:
         res = curl_easy_perform(curl);
         int resp_code;
-        res = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp_code);
-        if(res == CURLE_OK
-           && (resp_code == 200
-               || (resp_code / 100 == 3))) { // 200 OK or 300 redirect
-            spiffebundle_Bundle *bundle
-                = spiffebundle_Parse(endpoint->trust_domain, response, &err);
-            if(err) {
-                return ERROR5;
+        if(res == CURLE_OK) {
+            res = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp_code);
+            if(resp_code == 200
+               || (resp_code / 100 == 3)) { // 200 OK or 300 redirect
+                spiffebundle_Bundle *bundle = spiffebundle_Parse(
+                    endpoint->trust_domain, response, &err);
+                if(err) {
+                    return ERROR5;
+                }
+                endpoint->bundle_source
+                    = spiffebundle_SourceFromBundle(bundle);
+                endpoint->owns_bundle = true;
+                util_string_t_Free(response);
+            } else {
+                return ERROR4;
             }
-            endpoint->bundle_source = spiffebundle_SourceFromBundle(bundle);
-            endpoint->owns_bundle = true;
-            util_string_t_Free(response);
         } else {
+            printf("ERROR CODE: %d\n", res);
             return ERROR4;
         }
         break;
