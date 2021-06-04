@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         golang-go \
         openssh-server\
         libcurl4-openssl-dev;\
-RUN apt-get clean
+apt-get clean
 
 
 ARG BRANCH=dev-federation-fetch
