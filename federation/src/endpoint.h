@@ -29,6 +29,7 @@ typedef struct spiffebundle_Endpoint {
     spiffeid_ID spiffe_id;
     spiffebundle_Source *bundle_source;
     bool owns_bundle;
+    CURL* curl_handle;
 } spiffebundle_Endpoint;
 
 spiffebundle_Endpoint *spiffebundle_Endpoint_New();
@@ -48,6 +49,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint);
 spiffebundle_Bundle *spiffebundle_Endpoint_GetBundleForTrustDomain(
     spiffebundle_Endpoint *endpoint, spiffeid_TrustDomain trust_domain,
     err_t *err);
+
 #ifdef __cplusplus
 }
 #endif

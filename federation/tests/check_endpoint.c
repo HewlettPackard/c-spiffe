@@ -168,6 +168,11 @@ START_TEST(test_federation_Endpoint_fetch_WEB);
         tested, "https://localhost", td);
     
     ck_assert_int_eq(err,NO_ERROR);
+    tested->curl_handle = curl_easy_init();
+
+    //get certs for localhost
+    curl_easy_setopt(tested->curl_handle, CURLOPT_CAINFO, "./resources/localhost.crt");
+
 
     err = spiffebundle_Endpoint_Fetch(tested);
     ck_assert_ptr_ne(tested->bundle_source,NULL);

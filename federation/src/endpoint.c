@@ -36,6 +36,7 @@ spiffebundle_Endpoint *spiffebundle_Endpoint_New()
     endpoint->trust_domain.name = NULL;
     endpoint->url = NULL;
     endpoint->profile = NONE;
+    endpoint->curl_handle = NULL;
     return endpoint;
 }
 
@@ -54,6 +55,9 @@ void spiffebundle_Endpoint_Free(spiffebundle_Endpoint *endpoint)
         }
         if(!spiffeid_ID_IsZero(endpoint->spiffe_id)) {
             spiffeid_ID_Free(&endpoint->spiffe_id);
+        }
+        if(endpoint->curl_handle) {
+            curl_free(endpoint->curl_handle);
         }
         free(endpoint);
     }
@@ -167,8 +171,8 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
     if(!endpoint->trust_domain.name) {
         return ERROR2;
     }
-
-    CURL *curl = curl_easy_init();
+    //if handle exists, reuse.
+    CURL *curl = endpoint->curl_handle? endpoint->curl_handle : curl_easy_init();
     if(!curl) {
         return ERROR3;
     }
@@ -181,9 +185,6 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
     curl_easy_setopt(curl, CURLOPT_URL, endpoint->url);
     curl_easy_setopt(curl, CURLOPT_PORT, 443);
     curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
-    // curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
-    // curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, false);
-    curl_easy_setopt(curl, CURLOPT_CAINFO, "./resources/localhost.crt");
 
     switch(endpoint->profile) {
 
@@ -213,6 +214,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
         break;
 
     case HTTPS_SPIFFE:
+    
     case NONE:
     default:
         return ERROR6; // NOT_IMPLEMENTED
@@ -220,5 +222,6 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
     }
 
     curl_easy_cleanup(curl);
+    endpoint->curl_handle = NULL;
     return NO_ERROR;
 }
