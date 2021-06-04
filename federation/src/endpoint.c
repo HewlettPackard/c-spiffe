@@ -34,19 +34,24 @@ spiffebundle_Endpoint *spiffebundle_Endpoint_New()
 {
     spiffebundle_Endpoint *endpoint
         = (spiffebundle_Endpoint *) calloc(1, sizeof(*endpoint));
+    mtx_init(&endpoint->mutex, mtx_plain);
     return endpoint;
 }
 
 void spiffebundle_Endpoint_Free(spiffebundle_Endpoint *endpoint)
 {
     if(endpoint) {
+        mtx_lock(&endpoint->mutex);
         if(endpoint->owns_bundle) {
             spiffebundle_Source_Free(endpoint->source);
             endpoint->owns_bundle = false;
         }
         if(endpoint->curl_handle) {
-            curl_free(endpoint->curl_handle);
+            curl_easy_cleanup(endpoint->curl_handle);
+            endpoint->curl_handle = NULL;
         }
+        mtx_unlock(&endpoint->mutex);
+        mtx_destroy(&endpoint->mutex);
         free(endpoint);
     }
 }
@@ -67,17 +72,21 @@ err_t spiffebundle_Endpoint_ConfigHTTPSWEB(spiffebundle_Endpoint *endpoint,
         uriFreeUriMembersA(&temp_uri);
         return ERROR2; // invalid url string
     }
-    endpoint->url = URI_to_string(&temp_uri);
-    uriFreeUriMembersA(&temp_uri);
     if(!trust_domain.name) {
         return ERROR3; // empty/NULL trust domain name
     }
+    mtx_lock(&endpoint->mutex);
+    endpoint->url = URI_to_string(&temp_uri);
+    uriFreeUriMembersA(&temp_uri);
     endpoint->td = spiffeid_TrustDomainFromString(trust_domain.name, &err);
     if(err) {
+
+        mtx_unlock(&endpoint->mutex);
         return ERROR3;
     }
     endpoint->profile = HTTPS_WEB;
     endpoint->owns_bundle = false;
+    mtx_unlock(&endpoint->mutex);
     return NO_ERROR;
 }
 
@@ -96,20 +105,24 @@ err_t spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
     if(!source) {
         return ERROR6; // no source of initial bundle provided
     }
+    if(!trust_domain.name) {
+        return ERROR3; // empty/NULL trust domain name
+    }
     UriUriA temp_uri = URL_parse(url, &err);
     if(err) {
         uriFreeUriMembersA(&temp_uri);
         return ERROR2; // invalid url string
     }
-    if(!trust_domain.name) {
-        return ERROR3; // empty/NULL trust domain name
-    }
+
+    mtx_lock(&endpoint->mutex);
     endpoint->td = spiffeid_TrustDomainFromString(trust_domain.name, &err);
     if(err) {
+        mtx_unlock(&endpoint->mutex);
         return ERROR3;
     }
     endpoint->id = spiffeid_FromString(spiffe_id, &err);
     if(err) {
+        mtx_unlock(&endpoint->mutex);
         return ERROR5; // couldn't parse spiffeID
     }
     endpoint->url = URI_to_string(&temp_uri);
@@ -117,11 +130,12 @@ err_t spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
     endpoint->source = source;
     endpoint->profile = HTTPS_SPIFFE;
     endpoint->owns_bundle = false;
+    mtx_unlock(&endpoint->mutex);
     return NO_ERROR;
 }
 
 spiffebundle_Bundle *spiffebundle_Endpoint_GetBundleForTrustDomain(
-    spiffebundle_Endpoint *endpoint, spiffeid_TrustDomain trust_domain,
+    spiffebundle_Endpoint *endpoint, const spiffeid_TrustDomain trust_domain,
     err_t *err)
 {
     if(!endpoint) {
@@ -132,12 +146,18 @@ spiffebundle_Bundle *spiffebundle_Endpoint_GetBundleForTrustDomain(
         *err = ERROR2;
         return NULL;
     }
+    mtx_lock(&endpoint->mutex);
     if(!endpoint->source) {
         *err = ERROR3;
+        mtx_unlock(&endpoint->mutex);
         return NULL;
     }
-    return spiffebundle_Source_GetSpiffeBundleForTrustDomain(
-        endpoint->source, trust_domain, err);
+
+    spiffebundle_Bundle *ret
+        = spiffebundle_Source_GetSpiffeBundleForTrustDomain(endpoint->source,
+                                                            trust_domain, err);
+    mtx_unlock(&endpoint->mutex);
+    return ret;
 }
 
 static size_t write_function(void *ptr, size_t size, size_t nmemb,
@@ -200,11 +220,15 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
         return ERROR2;
     }
     // if handle exists, reuse.
+    mtx_lock(&endpoint->mutex);
     CURL *curl
         = endpoint->curl_handle ? endpoint->curl_handle : curl_easy_init();
     if(!curl) {
+        mtx_unlock(&endpoint->mutex);
         return ERROR3;
     }
+    endpoint->curl_handle = curl;
+    mtx_unlock(&endpoint->mutex);
 
     CURLcode res;
     string_t response = NULL;
@@ -225,14 +249,17 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
             res = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp_code);
             if(resp_code == 200
                || (resp_code / 100 == 3)) { // 200 OK or 300 redirect
-
+                mtx_lock(&endpoint->mutex);
                 spiffebundle_Bundle *bundle
                     = spiffebundle_Parse(endpoint->td, response, &err);
                 if(err) {
+                    mtx_unlock(&endpoint->mutex);
                     return ERROR5;
                 }
                 endpoint->source = spiffebundle_SourceFromBundle(bundle);
                 endpoint->owns_bundle = true;
+                mtx_unlock(&endpoint->mutex);
+
                 util_string_t_Free(response);
             } else {
                 return ERROR4;
@@ -268,8 +295,10 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
                 if(err) {
                     return ERROR5;
                 }
+                mtx_lock(&endpoint->mutex);
                 endpoint->source = spiffebundle_SourceFromBundle(bundle);
                 endpoint->owns_bundle = true;
+                mtx_unlock(&endpoint->mutex);
                 util_string_t_Free(response);
             } else {
                 return ERROR4;
@@ -287,8 +316,21 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
         return ERROR6; // NOT_IMPLEMENTED
         break;
     }
+    return NO_ERROR;
+}
 
-    curl_easy_cleanup(curl);
+err_t spiffebundle_Endpoint_Cancel(spiffebundle_Endpoint *endpoint)
+{
+    if(!endpoint) {
+        return ERROR1;
+    }
+    mtx_lock(&(endpoint->mutex));
+    if(!endpoint->curl_handle) {
+        mtx_unlock(&(endpoint->mutex));
+        return NO_ERROR;
+    }
+    curl_easy_cleanup(endpoint->curl_handle);
     endpoint->curl_handle = NULL;
+    mtx_unlock(&(endpoint->mutex));
     return NO_ERROR;
 }

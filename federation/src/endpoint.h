@@ -9,6 +9,7 @@
 #include "utils/src/util.h"
 #include <curl/curl.h>
 #include <uriparser/Uri.h>
+#include <threads.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,6 +31,7 @@ typedef struct spiffebundle_Endpoint {
     spiffebundle_Source *source;
     bool owns_bundle;
     CURL *curl_handle;
+    mtx_t mutex;
 } spiffebundle_Endpoint;
 
 spiffebundle_Endpoint *spiffebundle_Endpoint_New();
@@ -46,8 +48,11 @@ err_t spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
 
 err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint);
 
+//cancels any running curl request, sets curl handler to NULL
+err_t spiffebundle_Endpoint_Cancel(spiffebundle_Endpoint *endpoint);
+
 spiffebundle_Bundle *spiffebundle_Endpoint_GetBundleForTrustDomain(
-    spiffebundle_Endpoint *endpoint, spiffeid_TrustDomain trust_domain,
+    spiffebundle_Endpoint *endpoint, const spiffeid_TrustDomain td,
     err_t *err);
 
 #ifdef __cplusplus
