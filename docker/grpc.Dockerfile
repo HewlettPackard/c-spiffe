@@ -66,11 +66,6 @@ mv openssl-${OPENSSL_VERSION} ${OPENSSL_DIR} ;\
 cd ${OPENSSL_DIR}openssl-${OPENSSL_VERSION} && ./config --prefix=/usr --openssldir=/usr/lib/ssl --libdir=lib/x86_64-linux-gnu shared -lcrypto && make && make test && make install ;\
 rm -rf /tmp/*
 
-# gRPC
-# https://github.com/grpc/grpc/tree/master/src/cpp
-# https://github.com/grpc/grpc/blob/master/BUILDING.md
-
-# RUN apt-get install -y build-essential autoconf libtool pkg-config && \
 RUN cd /tmp && git clone --recurse-submodules -b v${GRPC_VERSION} https://github.com/grpc/grpc ;\
 mkdir -p /tmp/grpc/cmake/build ;\
 cd /tmp/grpc/cmake/build && cmake -DgRPC_INSTALL=ON -DgRPC_BUILD_TESTS=ON -DgRPC_SSL_PROVIDER=package ../.. ;\
