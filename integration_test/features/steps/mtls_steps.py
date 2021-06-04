@@ -5,7 +5,7 @@ import socket
 
 from hamcrest import assert_that, is_, is_not
 from behave.matchers import register_type
-from utils import parse_nullable_string
+from utils import parse_nullable_string, is_wlc_entry_created
 
 
 parse_nullable_string.pattern = r'.*'
@@ -111,7 +111,8 @@ def step_impl(context, container_name):
         raise Exception("Unexpected container to run second server. Use 'spire-server2'.")
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-start-server.sh 2")
     time.sleep(5)
-    os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-create-entries.sh 2")
+    if not is_wlc_entry_created(container_name):
+        os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-create-entries.sh 2")
 
 
 @then('I check that mTLS connection did not succeed')
