@@ -61,7 +61,7 @@ err_t spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
     err_t err = NO_ERROR;
     endpoint->spiffe_id
         = spiffeid_FromString(spiffeid_ID_String(spiffe_id), &err);
-    if(err){
+    if(err) {
         return ERROR4; // couldn't parse spiffeID
     }
     if(!endpoint) {
@@ -82,8 +82,26 @@ err_t spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
     return NO_ERROR;
 }
 
-err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint);
 spiffebundle_Bundle *spiffebundle_Endpoint_GetBundleForTrustDomain(
     spiffebundle_Endpoint *endpoint, spiffeid_TrustDomain trust_domain,
     err_t *err)
-{}
+{
+    if(!endpoint) {
+        err = ERROR1;
+        return NULL;
+    }
+    if(!trust_domain.name) {
+        err = ERROR2;
+        return NULL;
+    }
+    if(!endpoint->bundle_source) {
+        err = ERROR3;
+        return NULL;
+    }
+    spiffebundle_Bundle *bundle = NULL;
+
+    return spiffebundle_Source_GetSpiffeBundleForTrustDomain(
+        endpoint->bundle_source, trust_domain, err);
+}
+
+err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint);
