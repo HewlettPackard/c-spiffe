@@ -159,22 +159,23 @@ START_TEST(test_federation_Endpoint_fetch_WEB);
 {
     spiffebundle_Endpoint *tested = spiffebundle_Endpoint_New();
     err_t err;
-    spiffeid_TrustDomain td = { string_new("localhost") };
+    spiffeid_TrustDomain td = { string_new("example.org") };
     spiffebundle_Bundle *bundle
         = spiffebundle_Load(td, "./resources/jwks_valid_2.json", &err);
     
     ck_assert_uint_eq(err, NO_ERROR);
     err = spiffebundle_Endpoint_Config_HTTPS_WEB(
-        tested, "https://localhost", td);
+        tested, "https://example.org", td);
     
     ck_assert_int_eq(err,NO_ERROR);
     tested->curl_handle = curl_easy_init();
 
     //get certs for localhost
-    curl_easy_setopt(tested->curl_handle, CURLOPT_CAINFO, "./resources/localhost.crt");
+    curl_easy_setopt(tested->curl_handle, CURLOPT_CAINFO, "./resources/example.org.crt");
 
 
     err = spiffebundle_Endpoint_Fetch(tested);
+    printf("ERRO:%d\n",err);
     ck_assert_ptr_ne(tested->bundle_source,NULL);
 
     ck_assert(
@@ -198,6 +199,8 @@ START_TEST(test_federation_Endpoint_fetch_WEB);
     spiffeid_TrustDomain_Free(&td);
 }
 END_TEST
+
+
 
 Suite *watcher_suite(void)
 {

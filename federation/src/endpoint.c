@@ -1,5 +1,8 @@
 #include "endpoint.h"
 
+#include <openssl/pem.h>
+#include <openssl/ssl.h>
+
 // from "spiffeid/src/id.h"
 static UriUriA URL_parse(const char *str, err_t *err)
 {
@@ -131,7 +134,6 @@ err_t spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
     endpoint->bundle_source = source;
     endpoint->profile = HTTPS_SPIFFE;
     endpoint->owns_bundle = false;
-    endpoint->bundle_source = source;
     return NO_ERROR;
 }
 
@@ -155,12 +157,55 @@ spiffebundle_Bundle *spiffebundle_Endpoint_GetBundleForTrustDomain(
         endpoint->bundle_source, trust_domain, err);
 }
 
-size_t write_function(void *ptr, size_t size, size_t nmemb, string_t *result)
+static size_t write_function(void *ptr, size_t size, size_t nmemb,
+                             string_t *result)
 {
     size_t len = size * nmemb;
     string_t pos = arraddnptr(*result, len);
     memcpy(pos, ptr, len);
     return len;
+}
+
+static CURLcode sslctx_function(CURL *curl, void *sslctx, void *parm)
+{
+    CURLcode rv = CURLE_ABORTED_BY_CALLBACK;
+
+    /** This example uses two (fake) certificates **/
+
+    BIO *cbio = (BIO *) parm;
+    // BIO_new_mem_buf(mypem, strlen((mypem)));
+    X509_STORE *cts = SSL_CTX_get_cert_store((SSL_CTX *) sslctx);
+    int i;
+    STACK_OF(X509_INFO) * inf;
+    (void) curl;
+    //   (void)parm;
+
+    if(!cts || !cbio) {
+        return rv;
+    }
+
+    inf = PEM_X509_INFO_read_bio(cbio, NULL, NULL, NULL);
+
+    if(!inf) {
+        BIO_free(cbio);
+        return rv;
+    }
+
+    for(i = 0; i < sk_X509_INFO_num(inf); i++) {
+        X509_INFO *itmp = sk_X509_INFO_value(inf, i);
+        if(itmp->x509) {
+            X509_STORE_add_cert(cts, itmp->x509);
+        }
+        if(itmp->crl) {
+            X509_STORE_add_crl(cts, itmp->crl);
+        }
+    }
+
+    sk_X509_INFO_pop_free(inf, X509_INFO_free);
+    BIO_free(cbio);
+
+    rv = CURLE_OK;
+    return rv;
 }
 
 err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
@@ -171,8 +216,9 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
     if(!endpoint->trust_domain.name) {
         return ERROR2;
     }
-    //if handle exists, reuse.
-    CURL *curl = endpoint->curl_handle? endpoint->curl_handle : curl_easy_init();
+    // if handle exists, reuse.
+    CURL *curl
+        = endpoint->curl_handle ? endpoint->curl_handle : curl_easy_init();
     if(!curl) {
         return ERROR3;
     }
@@ -188,9 +234,9 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
 
     switch(endpoint->profile) {
 
+        int resp_code;
     case HTTPS_WEB:
         res = curl_easy_perform(curl);
-        int resp_code;
         if(res == CURLE_OK) {
             res = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp_code);
             if(resp_code == 200
@@ -209,7 +255,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
             }
         } else {
             printf("ERROR CODE: %d\n", res);
-            return ERROR4;
+            return ERROR6;
         }
         break;
 
