@@ -20,8 +20,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libgtest-dev \
         libgmock-dev \
         golang-go \
-        openssh-server ;\
-apt-get clean
+        openssh-server\
+        libcurl4-openssl-dev;\
+RUN apt-get clean
 
 
 ARG BRANCH=dev-federation-fetch
