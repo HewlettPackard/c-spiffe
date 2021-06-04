@@ -109,13 +109,13 @@ Running the tests</h1>
 Details inside &lt;tt&gt;$ make integration-tests&lt;/tt&gt;</h2>
 <p>This command encapsulates some steps:</p><ol type="1">
 <li>Start <code>infra_tests</code>, <code>inrfa_spire-server</code> and <code>infra_workload</code> containers</li>
-<li>Start <code>spire-server</code> proccess inside <code>infra_spire-server</code> container</li>
+<li>Start <code>spire-server</code> process inside <code>infra_spire-server</code> container</li>
 <li>Create <code>spire-server</code> entry</li>
 <li>Generate <code>spire-server</code> token which is copied into <code>infra_tests</code> container</li>
 <li>Inside <code>infra_tests</code> container, run <code>run-behave-tests.sh</code> script, which encapsulates the following:<ul>
 <li>Build binary files examples (the interface to use c-spiffe lib)</li>
 <li>Run behave tests<ul>
-<li>Before all the tests are run, this stage is also responsible for starting <code>spire-agent</code> proccess inside <code>infra_tests</code> container and connect it to the <code>spire-server</code> running inside the <code>infra_spire-server</code> container</li>
+<li>Before all the tests are run, this stage is also responsible for starting <code>spire-agent</code> process inside <code>infra_tests</code> container and connect it to the <code>spire-server</code> running inside the <code>infra_spire-server</code> container</li>
 </ul>
 </li>
 </ul>
