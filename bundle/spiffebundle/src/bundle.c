@@ -1,6 +1,7 @@
 #include "bundle/spiffebundle/src/bundle.h"
 #include "internal/jwtutil/src/util.h"
 #include "internal/x509util/src/util.h"
+#include "utils/src/util.h"
 
 spiffebundle_Bundle *spiffebundle_New(const spiffeid_TrustDomain td)
 {
@@ -500,5 +501,21 @@ void spiffebundle_Bundle_Free(spiffebundle_Bundle *b)
         arrfree(b->x509_auths);
         spiffeid_TrustDomain_Free(&(b->td));
         free(b);
+    }
+}
+
+void spiffebundle_Bundle_Free(spiffebundle_Bundle* bundle){
+    if(bundle) {
+        // mtx_destroy(&(bundle->mtx));
+        for(size_t i = 0, size = shlenu(bundle->jwtAuths); i < size; ++i) {
+            EVP_PKEY_free(bundle->jwtAuths[i].value);
+        }
+        shfree(bundle->jwtAuths);
+        for(size_t i = 0, size = arrlenu(bundle->x509Auths); i < size; ++i) {
+            EVP_PKEY_free(bundle->x509Auths[i]);
+        }
+        arrfree(bundle->x509Auths);
+        spiffeid_TrustDomain_Free(&(bundle->td));
+        free(bundle);
     }
 }
