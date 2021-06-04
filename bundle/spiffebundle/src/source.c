@@ -14,9 +14,10 @@ spiffebundle_Bundle *spiffebundle_Source_GetSpiffeBundleForTrustDomain(
             return spiffebundle_Endpoint_GetBundleForTrustDomain(
                 s->source.endpoint, td, err);
         }
+    } else {
+        *err = ERROR1;
+        return NULL;
     }
-    *err = ERROR1;
-    return NULL;
 }
 
 spiffebundle_Source *spiffebundle_SourceFromBundle(spiffebundle_Bundle *b)

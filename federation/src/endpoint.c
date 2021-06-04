@@ -67,7 +67,7 @@ void spiffebundle_Endpoint_Free(spiffebundle_Endpoint *endpoint)
 }
 
 err_t spiffebundle_Endpoint_Config_HTTPS_WEB(spiffebundle_Endpoint *endpoint,
-                                             const char* url,
+                                             const char *url,
                                              spiffeid_TrustDomain trust_domain)
 {
     err_t err = NO_ERROR;
@@ -98,7 +98,7 @@ err_t spiffebundle_Endpoint_Config_HTTPS_WEB(spiffebundle_Endpoint *endpoint,
 }
 
 err_t spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
-    spiffebundle_Endpoint *endpoint, const char* url,
+    spiffebundle_Endpoint *endpoint, const char *url,
     spiffeid_TrustDomain trust_domain, string_t spiffe_id,
     spiffebundle_Source *source)
 {
@@ -231,18 +231,18 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
     curl_easy_setopt(curl, CURLOPT_URL, endpoint->url);
     curl_easy_setopt(curl, CURLOPT_PORT, 443);
     curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
-    
-    
+
     switch(endpoint->profile) {
 
         int resp_code;
     case HTTPS_WEB:
+    {
         res = curl_easy_perform(curl);
         if(res == CURLE_OK) {
             res = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp_code);
             if(resp_code == 200
                || (resp_code / 100 == 3)) { // 200 OK or 300 redirect
-                
+
                 spiffebundle_Bundle *bundle = spiffebundle_Parse(
                     endpoint->trust_domain, response, &err);
                 if(err) {
@@ -260,6 +260,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
             return ERROR6;
         }
         break;
+    }
 
     case HTTPS_SPIFFE:
     {

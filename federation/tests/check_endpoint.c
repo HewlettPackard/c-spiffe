@@ -204,9 +204,6 @@ START_TEST(test_federation_Endpoint_fetch_SPIFFE);
     ck_assert_ptr_ne(x509bundle, NULL);
 
     spiffebundle_Bundle *bundle = spiffebundle_FromX509Bundle(x509bundle);
-    // struct timespec refresh_hint = {60,0};
-    // spiffebundle_Bundle_SetRefreshHint(bundle,&refresh_hint);
-
     ck_assert_uint_eq(err, NO_ERROR);
 
     spiffebundle_Source *source = spiffebundle_SourceFromBundle(bundle);
@@ -281,11 +278,11 @@ int main(int argc, char **argv)
     SRunner *sr = srunner_create(s);
 
     system("go run ./resources/https_spiffe_server.go &");
-    sleep(1); //sleep for a second to let the server set itself up
+    sleep(1); // sleep for a second to let the server set itself up
 
     srunner_run_all(sr, CK_NORMAL);
     const int number_failed = srunner_ntests_failed(sr);
-    // system("kill");
+
     srunner_free(sr);
 
     return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
