@@ -39,13 +39,7 @@ Where:
 As we can see the C-spiffe library allows your application to use the Workload API transparently for both ends of the connection. The C-spiffe library takes care of fetching and automatically renewing the X.509 SVIDs needed to maintain a secure communication.
 
 ## Building
-To build the client workload:
-```bash
-cd build/examples/
-make
-```
-
-To build the server workload:
+To build the client and server workloads:
 ```bash
 cd build/examples/
 make
