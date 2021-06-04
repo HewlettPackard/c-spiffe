@@ -24,8 +24,9 @@ typedef struct spiffebundle_Endpoint {
     string_t url;
     spiffebundle_Endpoint_Profile profile;
     spiffeid_TrustDomain trust_domain;
-    spiffeid_ID *spiffeID;
-    spiffebundle_Bundle *bundle;
+    spiffeid_ID spiffe_id;
+    spiffebundle_Source *bundle_source;
+    bool owns_bundle;
 } spiffebundle_Endpoint;
 
 spiffebundle_Endpoint *spiffebundle_Endpoint_New();
@@ -41,6 +42,7 @@ err_t spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
     spiffebundle_Source *source);
 
 err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint);
+
 spiffebundle_Bundle *spiffebundle_Endpoint_GetBundleForTrustDomain(
     spiffebundle_Endpoint *endpoint, spiffeid_TrustDomain trust_domain,
     err_t *err);
