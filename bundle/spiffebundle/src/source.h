@@ -10,7 +10,7 @@ extern "C" {
 #endif
 typedef struct spiffebundle_Endpoint spiffebundle_Endpoint;
 /** Source represents a source of SPIFFE bundles keyed by trust domain. */
-typedef struct spiffebundle_Source{
+typedef struct spiffebundle_Source {
     enum spiffebundle_Source_Cardinality {
         SPIFFEBUNDLE_BUNDLE,
         SPIFFEBUNDLE_SET,
@@ -58,10 +58,11 @@ spiffebundle_Source *spiffebundle_SourceFromSet(spiffebundle_Set *set);
  * bundles. Takes ownership of the object, so it will be freed when the source
  * is freed.
  *
- * \param source [in] SPIFFE BUNDLE Endpoint source of SPIFFE bundles object pointer.
- * \returns A source of SPIFFE bundles object pointer.
+ * \param source [in] SPIFFE BUNDLE Endpoint source of SPIFFE bundles object
+ * pointer. \returns A source of SPIFFE bundles object pointer.
  */
-spiffebundle_Source *spiffebundle_SourceFromEndpoint(spiffebundle_Endpoint *endpoint);
+spiffebundle_Source *
+spiffebundle_SourceFromEndpoint(spiffebundle_Endpoint *endpoint);
 
 /**
  * Frees a source of SPIFFE bundles object.

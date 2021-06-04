@@ -5,13 +5,13 @@ spiffebundle_Bundle *spiffebundle_Source_GetSpiffeBundleForTrustDomain(
 {
     if(s->type == SPIFFEBUNDLE_BUNDLE) {
         return spiffebundle_Bundle_GetBundleForTrustDomain(s->source.bundle,
-                                                             td, err);
+                                                           td, err);
     } else if(s->type == SPIFFEBUNDLE_SET) {
         return spiffebundle_Set_GetBundleForTrustDomain(s->source.set, td,
-                                                          err);
-    }else if(s->type == SPIFFEBUNDLE_ENDPOINT) {
-        return spiffebundle_Endpoint_GetBundleForTrustDomain(s->source.endpoint, td,
-                                                          err);
+                                                        err);
+    } else if(s->type == SPIFFEBUNDLE_ENDPOINT) {
+        return spiffebundle_Endpoint_GetBundleForTrustDomain(
+            s->source.endpoint, td, err);
     }
 
     return NULL;
@@ -44,7 +44,8 @@ spiffebundle_Source *spiffebundle_SourceFromSet(spiffebundle_Set *s)
     return NULL;
 }
 
-spiffebundle_Source *spiffebundle_SourceFromEndpoint(spiffebundle_Endpoint *endpoint)
+spiffebundle_Source *
+spiffebundle_SourceFromEndpoint(spiffebundle_Endpoint *endpoint)
 {
     if(endpoint) {
         spiffebundle_Source *my_source = malloc(sizeof *my_source);
@@ -57,7 +58,6 @@ spiffebundle_Source *spiffebundle_SourceFromEndpoint(spiffebundle_Endpoint *endp
     return NULL;
 }
 
-
 void spiffebundle_Source_Free(spiffebundle_Source *s)
 {
     if(s) {
@@ -68,7 +68,6 @@ void spiffebundle_Source_Free(spiffebundle_Source *s)
         } else if(s->type == SPIFFEBUNDLE_ENDPOINT) {
             spiffebundle_Endpoint_Free(s->source.endpoint);
         }
-
         free(s);
     }
 }
