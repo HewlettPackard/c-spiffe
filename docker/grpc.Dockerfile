@@ -87,10 +87,4 @@ mv spire-${SPIRE_VERSION} ${SPIRE_DIR}
 RUN ln -s /opt/spire/bin/spire-server /usr/bin/spire-server
 RUN ln -s /opt/spire/bin/spire-agent /usr/bin/spire-agent
 
-RUN go get  "github.com/spiffe/go-spiffe/v2/bundle/spiffebundle" && go install -v "github.com/spiffe/go-spiffe/v2/bundle/spiffebundle"
-RUN go get  "github.com/spiffe/go-spiffe/v2/federation" && go install -v "github.com/spiffe/go-spiffe/v2/federation"
-RUN go get  "github.com/spiffe/go-spiffe/v2/logger" && go install -v "github.com/spiffe/go-spiffe/v2/logger"
-RUN go get  "github.com/spiffe/go-spiffe/v2/spiffeid" && go install -v "github.com/spiffe/go-spiffe/v2/spiffeid"
-RUN go get  "github.com/spiffe/go-spiffe/v2/svid/x509svid" && go install -v "github.com/spiffe/go-spiffe/v2/svid/x509svid"
-
 RUN rm -rf /tmp/*
