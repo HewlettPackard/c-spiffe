@@ -187,7 +187,7 @@ static CURLcode sslctx_function(CURL *curl, void *sslctx, void *parm)
     inf = PEM_X509_INFO_read_bio(cbio, NULL, NULL, NULL);
 
     if(!inf) {
-        BIO_free(cbio);
+        // BIO_free(cbio);
         return rv;
     }
 
@@ -202,7 +202,7 @@ static CURLcode sslctx_function(CURL *curl, void *sslctx, void *parm)
     }
 
     sk_X509_INFO_pop_free(inf, X509_INFO_free);
-    BIO_free(cbio);
+    // BIO_free(cbio);
 
     rv = CURLE_OK;
     return rv;
@@ -231,12 +231,51 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
     curl_easy_setopt(curl, CURLOPT_URL, endpoint->url);
     curl_easy_setopt(curl, CURLOPT_PORT, 443);
     curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
-
+    
+    
     switch(endpoint->profile) {
 
         int resp_code;
     case HTTPS_WEB:
         res = curl_easy_perform(curl);
+        if(res == CURLE_OK) {
+            res = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp_code);
+            if(resp_code == 200
+               || (resp_code / 100 == 3)) { // 200 OK or 300 redirect
+                
+                spiffebundle_Bundle *bundle = spiffebundle_Parse(
+                    endpoint->trust_domain, response, &err);
+                if(err) {
+                    return ERROR5;
+                }
+                endpoint->bundle_source
+                    = spiffebundle_SourceFromBundle(bundle);
+                endpoint->owns_bundle = true;
+                util_string_t_Free(response);
+            } else {
+                return ERROR4;
+            }
+        } else {
+            printf("ERROR CODE: %d\n", res);
+            return ERROR6;
+        }
+        break;
+
+    case HTTPS_SPIFFE:
+    {
+        spiffebundle_Bundle *server_bundle
+            = spiffebundle_Endpoint_GetBundleForTrustDomain(
+                endpoint, endpoint->trust_domain, &err);
+        BIO *cert_bio = BIO_new(BIO_s_mem());
+        for(size_t i = 0, size = arrlenu(server_bundle->x509_auths); i < size;
+            ++i) {
+            PEM_write_bio_X509(cert_bio, server_bundle->x509_auths[i]);
+        }
+
+        curl_easy_setopt(curl, CURLOPT_SSL_CTX_FUNCTION, sslctx_function);
+        curl_easy_setopt(curl, CURLOPT_SSL_CTX_DATA, cert_bio);
+        res = curl_easy_perform(curl);
+
         if(res == CURLE_OK) {
             res = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp_code);
             if(resp_code == 200
@@ -257,10 +296,10 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
             printf("ERROR CODE: %d\n", res);
             return ERROR6;
         }
+        BIO_free(cert_bio);
         break;
+    }
 
-    case HTTPS_SPIFFE:
-    
     case NONE:
     default:
         return ERROR6; // NOT_IMPLEMENTED
