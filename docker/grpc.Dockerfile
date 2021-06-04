@@ -44,45 +44,49 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         zlib1g-dev \
         doxygen \
         graphviz \
-        docker-compose
-
-RUN pip3 install behave PyHamcrest pathlib2
-RUN apt-get clean
+        docker-compose;\
+pip3 install behave PyHamcrest pathlib2;\
+apt-get clean
 
 # Install Docker Enginer
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 RUN echo \
   "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-RUN apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io
+  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null ;\
+apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io && apt-get clean
 
 # Install OpenSSL
 ARG OPENSSL_VERSION=1.1.1k
 ARG OPENSSL_RELEASE=https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
-ARG OPENSSL_DIR=/opt/
+ARG OPENSSL_DIR=/tmp/
 
-RUN curl --silent --location $OPENSSL_RELEASE | tar -xzf -
-RUN mv openssl-${OPENSSL_VERSION} ${OPENSSL_DIR}
-RUN cd /opt/openssl-${OPENSSL_VERSION} && ./config --prefix=/usr --openssldir=/usr/lib/ssl --libdir=lib/x86_64-linux-gnu shared -lcrypto && make && make test && make install
+RUN cd ${OPENSSL_DIR} ;\
+curl --silent --location $OPENSSL_RELEASE | tar -xzf - ;\
+mv openssl-${OPENSSL_VERSION} ${OPENSSL_DIR} ;\
+cd ${OPENSSL_DIR}openssl-${OPENSSL_VERSION} && ./config --prefix=/usr --openssldir=/usr/lib/ssl --libdir=lib/x86_64-linux-gnu shared -lcrypto && make && make test && make install ;\
+rm -rf /tmp/*
 
 # gRPC
 # https://github.com/grpc/grpc/tree/master/src/cpp
 # https://github.com/grpc/grpc/blob/master/BUILDING.md
 
 # RUN apt-get install -y build-essential autoconf libtool pkg-config && \
-RUN cd /tmp && git clone --recurse-submodules -b v${GRPC_VERSION} https://github.com/grpc/grpc
-RUN mkdir -p /tmp/grpc/cmake/build
-RUN cd /tmp/grpc/cmake/build && cmake -DgRPC_INSTALL=ON -DgRPC_BUILD_TESTS=ON -DgRPC_SSL_PROVIDER=package ../..
-RUN sed -i '7,13d' /tmp/grpc/third_party/benchmark/test/cxx03_test.cc 
-RUN cd /tmp/grpc/cmake/build && make -j${NUM_JOBS} && make install
+RUN cd /tmp && git clone --recurse-submodules -b v${GRPC_VERSION} https://github.com/grpc/grpc ;\
+mkdir -p /tmp/grpc/cmake/build ;\
+cd /tmp/grpc/cmake/build && cmake -DgRPC_INSTALL=ON -DgRPC_BUILD_TESTS=ON -DgRPC_SSL_PROVIDER=package ../.. ;\
+sed -i '7,13d' /tmp/grpc/third_party/benchmark/test/cxx03_test.cc  ;\
+cd /tmp/grpc/cmake/build && make -j${NUM_JOBS} && make install ;\
+rm -rf /tmp/*
 
 # Install Spire Server
 ARG SPIRE_VERSION=0.12.0
 ARG SPIRE_RELEASE=https://github.com/spiffe/spire/releases/download/v${SPIRE_VERSION}/spire-${SPIRE_VERSION}-linux-x86_64-glibc.tar.gz
 ARG SPIRE_DIR=/opt/spire
 
-RUN curl --silent --location $SPIRE_RELEASE | tar -xzf -
-RUN mv spire-${SPIRE_VERSION} ${SPIRE_DIR}
+RUN curl --silent --location $SPIRE_RELEASE | tar -xzf - ;\
+mv spire-${SPIRE_VERSION} ${SPIRE_DIR}
 
 RUN ln -s /opt/spire/bin/spire-server /usr/bin/spire-server
 RUN ln -s /opt/spire/bin/spire-agent /usr/bin/spire-agent
+
+RUN rm -rf /tmp/*

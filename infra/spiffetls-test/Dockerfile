@@ -1,7 +1,8 @@
 FROM cspiffe/grpc-build:1.34.0
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends software-properties-common python3 python3-pip
+  && apt-get install -y --no-install-recommends software-properties-common python3 python3-pip \
+  && apt-get clean
 
 ARG TEST_DIR=/mnt/c-spiffe
 
