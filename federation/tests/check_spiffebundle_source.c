@@ -61,7 +61,7 @@ START_TEST(test_spiffebundle_SourceFromEndpoint)
     ck_assert_ptr_ne(source, NULL);
 
     spiffebundle_Endpoint *endpoint = spiffebundle_Endpoint_New();
-    endpoint->bundle_source = source;
+    endpoint->source = source;
 
     spiffebundle_Source *end_source = spiffebundle_SourceFromEndpoint(NULL);
     ck_assert_ptr_eq(end_source, NULL);
@@ -113,7 +113,7 @@ START_TEST(test_spiffebundle_Source_GetspiffeBundleForTrustDomain)
     source = spiffebundle_SourceFromSet(set);
 
     spiffebundle_Endpoint *endpoint = spiffebundle_Endpoint_New();
-    endpoint->bundle_source = source;
+    endpoint->source = source;
 
     spiffebundle_Source *end_source
         = spiffebundle_SourceFromEndpoint(endpoint);

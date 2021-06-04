@@ -48,7 +48,7 @@ START_TEST(test_federation_Endpoint_Config_SPIFFE);
                                                     bundle_source);
     ck_assert_int_eq(err, ERROR2);
 
-    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(tested, "not a URL", td,
+    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(tested, "not an URL", td,
                                                     sid, bundle_source);
     ck_assert_int_eq(err, ERROR2);
 
@@ -139,12 +139,12 @@ START_TEST(test_federation_Endpoint_get_bundle);
         = spiffebundle_Endpoint_GetBundleForTrustDomain(tested, err_td, &err);
     ck_assert_uint_eq(err, ERROR2);
 
-    tested->bundle_source = NULL;
+    tested->source = NULL;
     end_bundle
         = spiffebundle_Endpoint_GetBundleForTrustDomain(tested, td, &err);
     ck_assert_uint_eq(err, ERROR3);
 
-    tested->bundle_source = source;
+    tested->source = source;
     end_bundle
         = spiffebundle_Endpoint_GetBundleForTrustDomain(tested, td, &err);
     ck_assert_uint_eq(err, NO_ERROR);
@@ -179,7 +179,7 @@ START_TEST(test_federation_Endpoint_fetch_WEB);
 
     err = spiffebundle_Endpoint_Fetch(tested);
 
-    ck_assert_ptr_ne(tested->bundle_source, NULL);
+    ck_assert_ptr_ne(tested->source, NULL);
 
     ck_assert(spiffebundle_Bundle_Equal(
         bundle,
@@ -217,8 +217,8 @@ START_TEST(test_federation_Endpoint_fetch_SPIFFE);
         tested, "https://example.org:443", td, "spiffe://example.org/workload",
         source);
 
-    ck_assert_ptr_ne(tested->bundle_source, NULL);
-    ck_assert_ptr_eq(tested->bundle_source, source);
+    ck_assert_ptr_ne(tested->source, NULL);
+    ck_assert_ptr_eq(tested->source, source);
     ck_assert_int_eq(err, NO_ERROR);
     tested->curl_handle = curl_easy_init();
     ck_assert_ptr_ne(tested->curl_handle, NULL);
@@ -226,7 +226,7 @@ START_TEST(test_federation_Endpoint_fetch_SPIFFE);
     err = spiffebundle_Endpoint_Fetch(tested);
 
     ck_assert_int_eq(err, NO_ERROR);
-    ck_assert_ptr_ne(tested->bundle_source, NULL);
+    ck_assert_ptr_ne(tested->source, NULL);
     ck_assert(tested->owns_bundle);
 
     for(size_t i = 0,

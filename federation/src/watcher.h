@@ -14,25 +14,21 @@
 extern "C" {
 #endif
 
-typedef struct map_TD_Endpoint {
-    string_t key;
-    spiffebundle_Endpoint *value;
-} map_TD_Endpoint;
+typedef struct spiffebundle_Endpoint_Status{
+    spiffebundle_Endpoint *endpoint;
+    pthread_t *thread;
+    int running;
+} spiffebundle_Endpoint_Status;
 
-typedef struct map_TD_Thread {
+typedef struct map_TD_Endpoint_Status {
     string_t key;
-    pthread_t *value;
-} map_TD_Thread;
-
-typedef struct map_TD_int {
-    string_t key;
-    int value;
-} map_TD_int;
+    spiffebundle_Endpoint_Status* value;
+} map_TD_Endpoint_Status;
 
 typedef struct spiffebundle_Watcher {
-    map_TD_Endpoint *endpoints;
-    map_TD_Thread *threads;
-    map_TD_int *running;
+    map_TD_Endpoint_Status *endpoints;
+    pthread_mutex_t* mutex;
+    pthread_cond_t* cond;
 } spiffebundle_Watcher;
 
 spiffebundle_Watcher *spiffebundle_Watcher_New();
@@ -42,9 +38,9 @@ err_t spiffebundle_Watcher_AddHttpsWebEndpoint(
     spiffebundle_Watcher *watcher, const char *url,
     spiffeid_TrustDomain trust_domain);
 
-err_t piffebundle_Watcher_AddHttpsSpiffeEndpoint(
+err_t spiffebundle_Watcher_AddHttpsSpiffeEndpoint(
     spiffebundle_Watcher *watcher, const char *url,
-    spiffeid_TrustDomain trust_domain, string_t spiffeid,
+    spiffeid_TrustDomain trust_domain, const char* spiffeid,
     spiffebundle_Source *source);
 
 err_t spiffebundle_Watcher_RemoveEndpoint(spiffebundle_Watcher *watcher, spiffeid_TrustDomain trust_domain);

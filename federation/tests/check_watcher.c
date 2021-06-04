@@ -17,35 +17,42 @@ START_TEST(test_spiffebundle_Watcher_AddHttpsWebEndpoint)
 {
     spiffebundle_Watcher *watcher = spiffebundle_Watcher_New();
     spiffeid_TrustDomain td = { "example.com" };
-    err_t err = spiffebundle_Watcher_AddHttpsWebEndpoint(
-        watcher, "example.com/blabla", td);
+    const char url[] = "https://raw.githubusercontent.com/HewlettPackard/c-spiffe/master/bundle/jwtbundle/tests/resources/jwk_keys.json";
+    err_t err = spiffebundle_Watcher_AddHttpsWebEndpoint(watcher, url, td);
 
     ck_assert_uint_eq(err, NO_ERROR);
     
     const int idx = shgeti(watcher->endpoints, td.name);
     
     ck_assert_int_ge(idx, 0);
-    ck_assert_ptr_ne(watcher->endpoints[idx].value, NULL);
+    ck_assert_ptr_ne(watcher->endpoints[idx].value->endpoint, NULL);
 
     spiffebundle_Watcher_Free(watcher);
 }
 END_TEST
 
-START_TEST(test_piffebundle_Watcher_AddHttpsSpiffeEndpoint)
+START_TEST(test_spiffebundle_Watcher_AddHttpsSpiffeEndpoint)
 {
     spiffebundle_Watcher *watcher = spiffebundle_Watcher_New();
     spiffeid_TrustDomain td = { "example.com" };
-    spiffebundle_Source *source = NULL;
-    err_t err = piffebundle_Watcher_AddHttpsSpiffeEndpoint(
-        watcher, "example.com/blabla", td, "spiffe://example.com/workload1",
-        source);
+    err_t err;
+    spiffebundle_Bundle *bundle
+        = spiffebundle_Load(td, "./resources/jwks_valid_2.json", &err);
+
+    ck_assert_uint_eq(err, NO_ERROR);
+    ck_assert_ptr_ne(bundle, NULL);
+       
+    spiffebundle_Source *source = spiffebundle_SourceFromBundle(bundle);
+    const char url[] = "https://raw.githubusercontent.com/HewlettPackard/c-spiffe/master/bundle/jwtbundle/tests/resources/jwk_keys.json";
+    const char str_id[] = "spiffe://example.com/workload1";
+    err = spiffebundle_Watcher_AddHttpsSpiffeEndpoint(watcher, url, td, str_id, source);
 
     ck_assert_uint_eq(err, NO_ERROR);
     
     const int idx = shgeti(watcher->endpoints, td.name);
     
     ck_assert_int_ge(idx, 0);
-    ck_assert_ptr_ne(watcher->endpoints[idx].value, NULL);
+    ck_assert_ptr_ne(watcher->endpoints[idx].value->endpoint, NULL);
 
     spiffebundle_Watcher_Free(watcher);
     spiffebundle_Source_Free(source);
@@ -75,7 +82,10 @@ START_TEST(test_spiffebundle_Watcher_Stop)
 }
 END_TEST
 
-START_TEST(test_spiffebundle_Watcher_GetBundleForTrustDomain) {}
+START_TEST(test_spiffebundle_Watcher_GetBundleForTrustDomain)
+{
+
+}
 END_TEST
 
 Suite *watcher_suite(void)
@@ -85,7 +95,7 @@ Suite *watcher_suite(void)
 
     tcase_add_test(tc_core, test_spiffebundle_Watcher_New);
     tcase_add_test(tc_core, test_spiffebundle_Watcher_AddHttpsWebEndpoint);
-    tcase_add_test(tc_core, test_piffebundle_Watcher_AddHttpsSpiffeEndpoint);
+    tcase_add_test(tc_core, test_spiffebundle_Watcher_AddHttpsSpiffeEndpoint);
     tcase_add_test(tc_core, test_spiffebundle_Watcher_Start);
     tcase_add_test(tc_core, test_spiffebundle_Watcher_Stop);
     tcase_add_test(tc_core, test_spiffebundle_Watcher_GetBundleForTrustDomain);
