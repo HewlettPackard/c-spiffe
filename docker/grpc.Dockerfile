@@ -44,7 +44,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         zlib1g-dev \
         doxygen \
         graphviz \
-        docker-compose;\
+        docker-compose \
+        libcurl4-openssl-dev;\
 pip3 install behave PyHamcrest pathlib2;\
 apt-get clean
 

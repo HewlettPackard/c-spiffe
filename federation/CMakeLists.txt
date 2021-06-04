@@ -3,17 +3,16 @@ cmake_minimum_required(VERSION 3.13)
 
 set(TARGET_NAME "federation")
 
-project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C)
-
-
 set(LIB_FEDERATION 
-${PROJECT_SOURCE_DIR}/src/endpoint.c
-${PROJECT_SOURCE_DIR}/../utils/src/util.c
-${PROJECT_SOURCE_DIR}/../bundle/spiffebundle/src/source.c
+${CMAKE_CURRENT_SOURCE_DIR}/src/endpoint.c
+${CMAKE_CURRENT_SOURCE_DIR}/../utils/src/util.c
+${CMAKE_CURRENT_SOURCE_DIR}/../bundle/spiffebundle/src/source.c
 )
 
 add_library(${TARGET_NAME} SHARED ${LIB_FEDERATION})
-
+target_link_libraries(${TARGET_NAME} 
+    curl
+)
 # Install lib:
 install(
     TARGETS              "${TARGET_NAME}"
@@ -22,7 +21,7 @@ install(
 
 # Install Headers:
 set(HEADERS_FEDERATION
-${PROJECT_SOURCE_DIR}/src/endpoint.h
+${CMAKE_CURRENT_SOURCE_DIR}/src/endpoint.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
