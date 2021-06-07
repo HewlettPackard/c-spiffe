@@ -51,35 +51,34 @@ This example assumes the following preconditions:
 - There is a Unix workload attestor configured.
 - The trust domain is `example.org`.
 - The agent's SPIFFE ID is `spiffe://example.org/host`.
-- There is a `server-workload` user and a `client-workload` user in the system.
 
 ### 1. Create the registration entries
 Create the registration entries for the workloads:
 
 Server:
 ```bash
-./spire-server entry create -spiffeID spiffe://example.org/server \
-                            -parentID spiffe://example.org/host \
-                            -selector unix:user:server-workload
+spire-server entry create -spiffeID spiffe://example.org/server \
+                          -parentID spiffe://example.org/host \
+                          -selector unix:user:root
 ```
 
 Client: 
 ```bash
-./spire-server entry create -spiffeID spiffe://example.org/client \
-                            -parentID spiffe://example.org/host \
-                            -selector unix:user:client-workload
+spire-server entry create -spiffeID spiffe://example.org/client \
+                          -parentID spiffe://example.org/host \
+                          -selector unix:user:root
 ```
 
 ### 2. Start the server
 Start the server with the `server-workload` user:
 ```bash
-sudo -u server-workload ./spiffe_tls_server
+./spiffe_tls_server
 ```
 
 ### 3. Run the client
 Run the client with the `client-workload` user:
 ```bash
-sudo -u client-workload ./spiffe_tls_client
+./spiffe_tls_client
 ```
 
 The server should have received a _"Hello server"_ message and responded with a _"Hello client"_ message.
@@ -87,12 +86,12 @@ The server should have received a _"Hello server"_ message and responded with a 
 If either workload encounters a peer with a different SPIFFE ID than the one it expects, the workload aborts the TLS handshake and the connection fails.  
 For instance, when running the client with the server's user: 
 ```
-sudo -u server-workload ./spiffe_tls_client
+./spiffe_tls_client
 
-Unable to read server response: remote error: tls: bad certificate
+spiffetls_DialWithMode() failed: error 1
 ```
 
 The server log would contain:
 ```
-Error reading incoming data: unexpected ID "spiffe://example.org/server"
+spiffetls_ListenWithMode() failed: error 1
 ```
