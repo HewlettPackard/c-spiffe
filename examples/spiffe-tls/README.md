@@ -84,14 +84,3 @@ Run the client with the `client-workload` user:
 The server should have received a _"Hello server"_ message and responded with a _"Hello client"_ message.
 
 If either workload encounters a peer with a different SPIFFE ID than the one it expects, the workload aborts the TLS handshake and the connection fails.  
-For instance, when running the client with the server's user: 
-```
-./spiffe_tls_client
-
-spiffetls_DialWithMode() failed: error 1
-```
-
-The server log would contain:
-```
-spiffetls_ListenWithMode() failed: error 1
-```
