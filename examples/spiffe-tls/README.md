@@ -75,7 +75,6 @@ spire-server entry create -spiffeID spiffe://example.org/client \
 ```
 
 ### 3. Run the client
-Run the client with the `client-workload` user:
 ```bash
 ./spiffe_tls_client
 ```
