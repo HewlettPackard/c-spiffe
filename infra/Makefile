@@ -24,7 +24,7 @@ clean:
 	docker-compose down
 
 integration-tests:
-	TAG=dev-federation-fetch docker-compose up -d
+	TAG=dev-federation-watch docker-compose up -d
 
 	docker exec infra_workload_1 service ssh restart
 	docker exec infra_workload2_1 service ssh restart
