@@ -50,15 +50,9 @@ void spiffebundle_Endpoint_Free(spiffebundle_Endpoint *endpoint)
             spiffebundle_Source_Free(endpoint->bundle_source);
             endpoint->owns_bundle = false;
         }
-        if(endpoint->url) {
-            util_string_t_Free(endpoint->url);
-        }
-        if(endpoint->trust_domain.name) {
-            spiffeid_TrustDomain_Free(&(endpoint->trust_domain));
-        }
-        if(!spiffeid_ID_IsZero(endpoint->spiffe_id)) {
-            spiffeid_ID_Free(&endpoint->spiffe_id);
-        }
+        util_string_t_Free(endpoint->url);
+        spiffeid_TrustDomain_Free(&(endpoint->trust_domain));
+        spiffeid_ID_Free(&endpoint->spiffe_id);
         if(endpoint->curl_handle) {
             curl_free(endpoint->curl_handle);
         }
@@ -99,7 +93,7 @@ err_t spiffebundle_Endpoint_Config_HTTPS_WEB(spiffebundle_Endpoint *endpoint,
 
 err_t spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
     spiffebundle_Endpoint *endpoint, const char *url,
-    spiffeid_TrustDomain trust_domain, string_t spiffe_id,
+    spiffeid_TrustDomain trust_domain, const char *spiffe_id,
     spiffebundle_Source *source)
 {
     err_t err = NO_ERROR;
