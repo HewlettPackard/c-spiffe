@@ -20,11 +20,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libgtest-dev \
         libgmock-dev \
         golang-go \
-        openssh-server ;\
+        openssh-server\
+        libcurl4-openssl-dev;\
 apt-get clean
 
-ARG BRANCH=test/373-Error-on-agent-after-running-consecutive-mTLS-test-scenarios
-RUN cd /mnt && git clone -b ${BRANCH} https://github.com/arianalima/c-spiffe.git
+
+ARG BRANCH=dev-federation-fetch
+RUN cd /mnt && git clone -b ${BRANCH} https://github.com/rodrigolc/c-spiffe.git
 RUN cd ${C_SPIFFE_DIR} && git pull
 
 RUN mkdir -p ${C_SPIFFE_DIR}/build/

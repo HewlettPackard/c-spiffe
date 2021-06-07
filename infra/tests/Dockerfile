@@ -1,4 +1,4 @@
-ARG TAG=test-374-Error-on-MT-02-with-c-dial-and-go-listen
+ARG TAG=dev-federation-fetch
 FROM cspiffe/workload:${TAG}
 
 RUN apt-get update \
