@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 apt-get clean
 
 
-ARG BRANCH=dev-federation-fetch
+ARG BRANCH=master
 RUN cd /mnt && git clone -b ${BRANCH} https://github.com/rodrigolc/c-spiffe.git
 RUN cd ${C_SPIFFE_DIR} && git pull
 
