@@ -31,7 +31,18 @@ services:
       - "4433:4433"
       - "443:443"
 
-  # Todo: Create sceneries for spire-server test; script python; "getRequestor" {generate, get, (entrys, token)}
+
+  workload2:
+    image: cspiffe/workload:${TAG}
+    tty: true
+    hostname: workload2
+    links:
+      - spire-server
+      - spire-server2
+    ports:
+      - "4434:4434"
+
+
   tests:
     image: cspiffe/tests:${TAG}
     tty: true
@@ -40,3 +51,4 @@ services:
       - spire-server
       - spire-server2
       - workload
+      - workload2

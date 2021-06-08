@@ -16,8 +16,8 @@ import (
 )
 
 const (
-	socketPath    = "unix:///tmp/agent.sock"
-	serverAddress = "workload:4433"
+	socketPath = "unix:///tmp/agent.sock"
+	serverPort = "4433"
 )
 
 func main() {
@@ -27,6 +27,9 @@ func main() {
 
 	// Allowed SPIFFE ID
 	spiffeID := spiffeid.Must("example.org", "myworkloadB")
+
+	//hostname for server passed as argument
+	serverAddress := os.Args[2] + ":" + serverPort
 
 	// Create a TLS connection.
 	// The client expects the server to present an SVID with the spiffeID: 'spiffe://example.org/server'

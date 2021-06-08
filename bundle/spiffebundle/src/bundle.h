@@ -29,6 +29,8 @@ typedef struct {
 } spiffebundle_Bundle;
 
 spiffebundle_Bundle *spiffebundle_New(const spiffeid_TrustDomain td);
+void spiffebundle_Bundle_Free(spiffebundle_Bundle* bundle);
+
 spiffebundle_Bundle *spiffebundle_Load(const spiffeid_TrustDomain td,
                                        const char *path, err_t *err);
 spiffebundle_Bundle *spiffebundle_Parse(const spiffeid_TrustDomain td,

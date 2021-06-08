@@ -1,7 +1,9 @@
-FROM cspiffe/workload:tagging-for-docker-image-ci
+ARG TAG=latest
+FROM cspiffe/workload:${TAG}
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends software-properties-common python3 python3-pip
+  && apt-get install -y --no-install-recommends software-properties-common python3 python3-pip \
+  && apt-get clean
 
 ARG TEST_DIR=/mnt/c-spiffe
 

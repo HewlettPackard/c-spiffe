@@ -49,7 +49,7 @@ include_directories(${PROJECT_SOURCE_DIR})
 include(GNUInstallDirs)
 
 # Set modules list
-set(modules bundle internal spiffeid svid workload spiffetls examples)
+set(modules bundle internal spiffeid svid workload spiffetls federation examples)
 
 # Add projects
 foreach(module ${modules})
@@ -78,6 +78,7 @@ if (ENABLE_TESTS)
     add_subdirectory(${PROJECT_SOURCE_DIR}/workload/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/spiffetls/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/spiffetls/tlsconfig/tests)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/federation/tests)
 
     # Add build target to generate Coverage Test Report to all compiled object files
     find_program(GCOV gcov)
