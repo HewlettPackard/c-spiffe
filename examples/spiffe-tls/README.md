@@ -80,5 +80,3 @@ spire-server entry create -spiffeID spiffe://example.org/client \
 ```
 
 The server should have received a _"Hello server"_ message and responded with a _"Hello client"_ message.
-
-If either workload encounters a peer with a different SPIFFE ID than the one it expects, the workload aborts the TLS handshake and the connection fails.  
