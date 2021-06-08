@@ -26,7 +26,7 @@ apt-get clean
 
 
 ARG BRANCH=master
-RUN cd /mnt && git clone -b ${BRANCH} https://github.com/rodrigolc/c-spiffe.git
+RUN cd /mnt && git clone -b ${BRANCH} https://github.com/HewlettPackard/c-spiffe.git
 RUN cd ${C_SPIFFE_DIR} && git pull
 
 RUN mkdir -p ${C_SPIFFE_DIR}/build/
