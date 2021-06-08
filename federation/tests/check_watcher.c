@@ -50,7 +50,9 @@ START_TEST(test_spiffebundle_Watcher_StartHttpsWebEndpoint)
     ck_assert_int_ge(idx, 0);
     ck_assert_ptr_ne(watcher->endpoints[idx].value->endpoint, NULL);
     spiffebundle_Watcher_Start(watcher);
-    sleep(1);
+    
+    struct timespec sleep_time = {0,800000000};
+    nanosleep(&sleep_time,NULL);
     ck_assert_int_eq(watcher->endpoints[idx].value->running, 1);
     spiffebundle_Bundle *bundle
         = spiffebundle_Watcher_GetBundleForTrustDomain(watcher, td, &err);
@@ -59,7 +61,8 @@ START_TEST(test_spiffebundle_Watcher_StartHttpsWebEndpoint)
     ck_assert_ptr_ne(bundle, NULL);
 
     spiffebundle_Watcher_Stop(watcher);
-    sleep(1);
+
+    nanosleep(&sleep_time,NULL);
     ck_assert_int_eq(watcher->endpoints[idx].value->running, 0);
     spiffebundle_Watcher_Free(watcher);
 }
@@ -99,7 +102,8 @@ END_TEST
 START_TEST(test_spiffebundle_Watcher_StartHttpsSpiffeEndpoint)
 {
     system("go run ./resources/https_spiffe_server.go &");
-    sleep(1); // sleep for a second to let the server set itself up
+    struct timespec sleep_time = {0,800000000};
+    nanosleep(&sleep_time,NULL); // sleep for a second to let the server set itself up
     spiffebundle_Watcher *watcher = spiffebundle_Watcher_New();
     spiffeid_TrustDomain td = { "example.org" };
     err_t err;
@@ -126,7 +130,7 @@ START_TEST(test_spiffebundle_Watcher_StartHttpsSpiffeEndpoint)
     ck_assert_ptr_ne(watcher->endpoints[idx].value->endpoint, NULL);
 
     spiffebundle_Watcher_Start(watcher);
-    sleep(1);
+    nanosleep(&sleep_time,NULL);
     ck_assert_int_eq(watcher->endpoints[idx].value->running, 1);
 
     spiffebundle_Watcher_Stop(watcher);
@@ -142,7 +146,9 @@ START_TEST(test_spiffebundle_Watcher_Start)
     spiffebundle_Watcher *watcher = spiffebundle_Watcher_New();
     err_t err = spiffebundle_Watcher_Start(watcher);
     ck_assert_uint_eq(err, NO_ERROR);
-    sleep(1);
+    
+    struct timespec sleep_time = {0,800000000};
+    nanosleep(&sleep_time,NULL);
 
     err = spiffebundle_Watcher_Stop(watcher);
 
