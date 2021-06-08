@@ -70,18 +70,18 @@ $(function() {
 <div class="textblock"><p><a class="anchor" id="md_README"></a> C extension for Spiffe platform.</p>
 <p><a href="https://github.com/HewlettPackard/c-spiffe/actions/workflows/actions.yml"><img src="https://github.com/HewlettPackard/c-spiffe/actions/workflows/actions.yml/badge.svg" alt="Build and run tests" style="pointer-events: none;" class="inline"/></a></p>
 <p><a href="https://codecov.io/gh/HewlettPackard/c-spiffe"><img src="https://codecov.io/gh/HewlettPackard/c-spiffe/branch/master/graph/badge.svg" alt="codecov" style="pointer-events: none;" class="inline"/></a></p>
-<h1><a class="anchor" id="autotoc_md49"></a>
+<h1><a class="anchor" id="autotoc_md50"></a>
 Introduction</h1>
 <p><a href="https://spiffe.io/">SPIFFE</a> stands for Security Identity Framework for Everyone and is a set for securely identifying system in dynamic and heterogeneous environment. Please refer to <a href="https://spiffe.io/docs/latest/spiffe-about/overview/">SPIFFE Documentation</a> for more information. <br  />
  C-spiffe is an extension for Spiffe that allows any <a href="https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#workload">workload</a> written C, C++ or any language that supports loading a .so library, access <a href="https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-workload-api">Workload API</a> and establish a mTLS connection with other workloads. <br  />
  The image above shows an example, where a C/C++ Workload imports the c-spiffe library in order to fetch a <a href="https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-verifiable-identity-document-svid">SVID</a> and use it to establish a mTLS connection with another Workload, which can be implemented in another language, provided it follows the SPIFFE standard.</p>
 <p><img src="img/cspiffe_example.png" alt="Alt text" title="C-spiffe usage example" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md50"></a>
+<h2><a class="anchor" id="autotoc_md51"></a>
 Motivation</h2>
 <p>Even though there is an official <a href="https://github.com/spiffe/c-spiffe">c-spiffe</a> library, we started this one from scratch. We wanted a C implementation (not C++) for better compatibility. We also based most of the design decisions on <a href="https://github.com/spiffe/go-spiffe">go-spiffe</a>, which is the offical supported extension by the Spiffe Community.</p>
-<h1><a class="anchor" id="autotoc_md51"></a>
+<h1><a class="anchor" id="autotoc_md52"></a>
 Project structure</h1>
-<h2><a class="anchor" id="autotoc_md52"></a>
+<h2><a class="anchor" id="autotoc_md53"></a>
 Folders</h2>
 <p>The project folder structure is described as follows:</p>
 <ul>
@@ -99,7 +99,7 @@ Folders</h2>
 <li><b>utils</b> Source code for utility functions</li>
 <li><b>workload</b> Source code for workload</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md53"></a>
+<h2><a class="anchor" id="autotoc_md54"></a>
 Remarkable files</h2>
 <ul>
 <li><a href="CMakeLists.txt">CMakeList.txt</a> Main build configuration file. Each source folder also has its own CMake file.</li>
@@ -108,20 +108,20 @@ Remarkable files</h2>
 <li><a class="el" href="md_BUILDING.html">BUILDING.md</a> Instructions on how to build c-spiffe in your system.</li>
 <li><a class="el" href="md_CONTRIBUTING.html">CONTRIBUTING.md</a> Guidelines for contributing to c-spiffe project.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md54"></a>
+<h1><a class="anchor" id="autotoc_md55"></a>
 Using C-Spiffe</h1>
-<h2><a class="anchor" id="autotoc_md55"></a>
+<h2><a class="anchor" id="autotoc_md56"></a>
 Installing</h2>
-<h3><a class="anchor" id="autotoc_md56"></a>
+<h3><a class="anchor" id="autotoc_md57"></a>
 Install from source</h3>
 <p>Reffer to <a class="el" href="md_BUILDING.html">BUILDING.md</a></p>
-<h3><a class="anchor" id="autotoc_md57"></a>
+<h3><a class="anchor" id="autotoc_md58"></a>
 Install on system</h3>
 <p>We are planning on delivering package for the most popular Linux distros, but at this moment, only building from source is supported.</p>
-<h2><a class="anchor" id="autotoc_md58"></a>
+<h2><a class="anchor" id="autotoc_md59"></a>
 Basic usage</h2>
 <p>Refer to <a class="el" href="md_workload_src_EXAMPLE.html">Examples</a> for more information.</p>
-<h1><a class="anchor" id="autotoc_md59"></a>
+<h1><a class="anchor" id="autotoc_md60"></a>
 Initial Contributors</h1>
 <ul>
 <li>Ariana Guimarães</li>
@@ -132,7 +132,7 @@ Initial Contributors</h1>
 <li>Thiago Jamir</li>
 <li>Willian Alves</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md60"></a>
+<h1><a class="anchor" id="autotoc_md61"></a>
 Contributing</h1>
 <p>Refer to <a class="el" href="md_CONTRIBUTING.html">Contributing</a> for more information. </p>
 </div></div><!-- PageDoc -->

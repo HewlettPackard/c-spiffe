@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['jwtbundle_5fbundle_1696',['JWTBUNDLE_BUNDLE',['../structjwtbundle__Source.html#a4eb7f17219c8d39a3a3e4e332cc8d587a7273e6b8e9659f437924f4810b1b5587',1,'jwtbundle_Source']]],
-  ['jwtbundle_5fset_1697',['JWTBUNDLE_SET',['../structjwtbundle__Source.html#a4eb7f17219c8d39a3a3e4e332cc8d587aab4b97eac74b8ebfdd3edee136af95e5',1,'jwtbundle_Source']]]
+  ['https_5fspiffe_1782',['HTTPS_SPIFFE',['../endpoint_8h.html#aa940ea32ff440076df24fd16b6998c18a6064e2f5e96f3ef9085fc96a7eab1dec',1,'endpoint.h']]],
+  ['https_5fweb_1783',['HTTPS_WEB',['../endpoint_8h.html#aa940ea32ff440076df24fd16b6998c18aff5eb9f9a5bd447603bd44da98660647',1,'endpoint.h']]]
 ];

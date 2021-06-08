@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['x509bundle_5fbundle_1717',['X509BUNDLE_BUNDLE',['../structx509bundle__Source.html#aaa1bac005ce96754442b285b5bc02298ab5e923c4accb38aebb949e3a2af9635b',1,'x509bundle_Source']]],
-  ['x509bundle_5fset_1718',['X509BUNDLE_SET',['../structx509bundle__Source.html#aaa1bac005ce96754442b285b5bc02298ad5893f792281271effb4e00f22a9878e',1,'x509bundle_Source']]],
-  ['x509bundle_5fworkloadapi_5fx509source_1719',['X509BUNDLE_WORKLOADAPI_X509SOURCE',['../structx509bundle__Source.html#aaa1bac005ce96754442b285b5bc02298af3b929de980f176418b74a1034bd301f',1,'x509bundle_Source']]],
-  ['x509svid_5fsvid_1720',['X509SVID_SVID',['../structx509svid__Source.html#aa22d29f7e75deaf697975d2d1a697d3da47471c32960afd59a15c2830e13c940a',1,'x509svid_Source']]],
-  ['x509svid_5fworkloadapi_5fx509source_1721',['X509SVID_WORKLOADAPI_X509SOURCE',['../structx509svid__Source.html#aa22d29f7e75deaf697975d2d1a697d3da308968269d04213bdf84a9627052d310',1,'x509svid_Source']]]
+  ['tls_5fclient_5fmode_1806',['TLS_CLIENT_MODE',['../mode_8h.html#a8a655dfcca53fbd030e1600104da3b8aa7efd2938d1facb448885c6a2463ec9d1',1,'mode.h']]],
+  ['tls_5fserver_5fmode_1807',['TLS_SERVER_MODE',['../mode_8h.html#a0865f9bb6b2d685b5229b6e5c63085f5ac418bc63dcf829cd42cae1bcd795ab3d',1,'mode.h']]],
+  ['tlsconfig_5ffunc_1808',['TLSCONFIG_FUNC',['../structtlsconfig__Option.html#a48ce868261179aa874fb7fc6f0d28d08ad870511b5a32cdb7f9a144c246b1ab8c',1,'tlsconfig_Option']]]
 ];
