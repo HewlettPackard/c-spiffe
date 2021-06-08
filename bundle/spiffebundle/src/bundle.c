@@ -1,6 +1,7 @@
 #include "bundle/spiffebundle/src/bundle.h"
 #include "internal/jwtutil/src/util.h"
 #include "internal/x509util/src/util.h"
+#include "utils/src/util.h"
 
 spiffebundle_Bundle *spiffebundle_New(const spiffeid_TrustDomain td)
 {
@@ -502,3 +503,4 @@ void spiffebundle_Bundle_Free(spiffebundle_Bundle *b)
         free(b);
     }
 }
+

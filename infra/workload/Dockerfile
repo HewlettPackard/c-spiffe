@@ -20,12 +20,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libgtest-dev \
         libgmock-dev \
         golang-go \
-        openssh-server
-RUN apt-get clean
+        openssh-server\
+        libcurl4-openssl-dev;\
+apt-get clean
 
 
-ARG BRANCH=test/354-Update-MT_01-to-cover-all-go-C-spiffe-scenarios
-RUN cd /mnt && git clone -b ${BRANCH} https://github.com/arianalima/c-spiffe.git
+ARG BRANCH=master
+RUN cd /mnt && git clone -b ${BRANCH} https://github.com/HewlettPackard/c-spiffe.git
 RUN cd ${C_SPIFFE_DIR} && git pull
 
 RUN mkdir -p ${C_SPIFFE_DIR}/build/
