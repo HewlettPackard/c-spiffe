@@ -32,7 +32,6 @@ err_t spiffebundle_Watcher_AddHttpsWebEndpoint(
     status->endpoint = endpoint;
     status->running = 0;
     status->thread = malloc(sizeof(thrd_t));
-
     status->cond_var = malloc(sizeof(cnd_t));
     int i = cnd_init(status->cond_var);
     err_t error
@@ -60,6 +59,7 @@ err_t spiffebundle_Watcher_AddHttpsSpiffeEndpoint(
     status->endpoint = endpoint;
     status->thread = malloc(sizeof(thrd_t));
     status->cond_var = malloc(sizeof(cnd_t));
+    int i = cnd_init(status->cond_var);
     err_t error = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         endpoint, url, trust_domain, spiffeid, source);
     if(error == NO_ERROR) {
