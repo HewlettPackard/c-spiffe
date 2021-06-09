@@ -201,7 +201,6 @@ Suite *watcher_suite(void)
 {
     Suite *s = suite_create("spiffebundle_watcher");
     TCase *tc_core = tcase_create("core");
-
     tcase_add_test(tc_core, test_spiffebundle_Watcher_StartHttpsWebEndpoint);
     tcase_add_test(tc_core,
                    test_spiffebundle_Watcher_StartHttpsSpiffeEndpoint);
@@ -212,6 +211,7 @@ Suite *watcher_suite(void)
     tcase_add_test(tc_core, test_spiffebundle_Watcher_Stop);
     tcase_add_test(tc_core, test_spiffebundle_Watcher_GetBundleForTrustDomain);
 
+    tcase_set_timeout(tc_core,20);
     suite_add_tcase(s, tc_core);
 
     return s;

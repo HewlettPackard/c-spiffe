@@ -227,8 +227,6 @@ START_TEST(test_federation_Endpoint_fetch_SPIFFE);
     ck_assert_ptr_ne(tested->source, NULL);
     ck_assert_ptr_eq(tested->source, source);
     ck_assert_int_eq(err, NO_ERROR);
-    tested->curl_handle = curl_easy_init();
-    ck_assert_ptr_ne(tested->curl_handle, NULL);
 
     err = spiffebundle_Endpoint_Fetch(tested);
 
@@ -278,6 +276,7 @@ Suite *watcher_suite(void)
     tcase_add_test(tc_core, test_federation_Endpoint_fetch_WEB);
     tcase_add_test(tc_core, test_federation_Endpoint_fetch_SPIFFE);
 
+    tcase_set_timeout(tc_core,20);
     suite_add_tcase(s, tc_core);
 
     return s;
