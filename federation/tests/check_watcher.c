@@ -111,7 +111,7 @@ END_TEST
 START_TEST(test_spiffebundle_Watcher_StartHttpsSpiffeEndpoint)
 {
     system("go run ./resources/https_spiffe_server.go &");
-    struct timespec sleep_time = { 2, 000000000 };
+    struct timespec sleep_time = { 1, 000000000 };
     nanosleep(&sleep_time,
               NULL); // sleep for a second to let the server set itself up
     spiffebundle_Watcher *watcher = spiffebundle_Watcher_New();
