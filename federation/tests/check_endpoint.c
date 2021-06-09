@@ -159,7 +159,10 @@ END_TEST
 START_TEST(test_federation_Endpoint_fetch_WEB);
 {
     system("go run ./resources/https_spiffe_server.go &");
-    sleep(1); // sleep for a second to let the server set itself up
+
+    struct timespec sleep_time = { 1, 00000000 };
+    nanosleep(&sleep_time,
+              NULL); // sleep for a second to let the server set itself up
     spiffebundle_Endpoint *tested = spiffebundle_Endpoint_New();
     err_t err;
     spiffeid_TrustDomain td = { string_new("example.org") };
@@ -167,8 +170,8 @@ START_TEST(test_federation_Endpoint_fetch_WEB);
         = spiffebundle_Load(td, "./resources/example.org.bundle.jwks", &err);
 
     ck_assert_uint_eq(err, NO_ERROR);
-    err = spiffebundle_Endpoint_ConfigHTTPSWEB(tested, "https://example.org",
-                                               td);
+    err = spiffebundle_Endpoint_ConfigHTTPSWEB(tested,
+                                               "https://example.org:443", td);
 
     ck_assert_int_eq(err, NO_ERROR);
     tested->curl_handle = curl_easy_init();
@@ -178,7 +181,7 @@ START_TEST(test_federation_Endpoint_fetch_WEB);
                      "./resources/example.org.crt");
 
     err = spiffebundle_Endpoint_Fetch(tested);
-
+    nanosleep(&sleep_time, NULL);
     ck_assert_ptr_ne(tested->source, NULL);
 
     ck_assert(spiffebundle_Bundle_Equal(
@@ -199,11 +202,15 @@ END_TEST
 START_TEST(test_federation_Endpoint_fetch_SPIFFE);
 {
     system("go run ./resources/https_spiffe_server.go &");
-    sleep(1); // sleep for a second to let the server set itself up
+
+    struct timespec sleep_time = { 1, 000000000 };
+    nanosleep(&sleep_time,
+              NULL); // sleep for half a second to let the server set itself up
     err_t err;
     spiffeid_TrustDomain td = { "example.org" };
     x509bundle_Bundle *x509bundle
         = x509bundle_Load(td, "./resources/example.org.crt", &err);
+
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_ne(x509bundle, NULL);
 
