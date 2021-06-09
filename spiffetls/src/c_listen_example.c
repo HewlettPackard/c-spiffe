@@ -83,15 +83,16 @@ int main(int argc, char **argv)
 
         SSL_write(conn, buff, strlen(buff));
         printf("Server replied: %s\n", buff);
+
+        SSL_shutdown(conn);
+        SSL_free(conn);
+        close(fd);
+        close(sock_fd);
     }
 
     spiffeid_TrustDomain_Free(&td);
     spiffetls_ListenMode_Free(mode);
     const int fd = SSL_get_fd(conn);
-    SSL_shutdown(conn);
-    SSL_free(conn);
-    close(fd);
-    close(sock_fd);
 
     return 0;
 }
