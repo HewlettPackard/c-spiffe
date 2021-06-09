@@ -191,8 +191,6 @@ START_TEST(test_spiffebundle_Watcher_GetBundleForTrustDomain)
     ck_assert_uint_ne(err, NO_ERROR);
     ck_assert_ptr_eq(bundle, NULL);
 
-    /// TODO: add bundle to watcher
-
     spiffebundle_Watcher_Free(watcher);
 }
 END_TEST

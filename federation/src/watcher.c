@@ -125,7 +125,6 @@ static int watch_endpoint(void *arg)
         if(status->running > 0) {
             int t_error = cnd_timedwait(status->cond_var,
                                         &status->endpoint->mutex, &waittime);
-            // TODO if error, break and cancel thread?
         }
 
         mtx_unlock(&(status->endpoint->mutex));
