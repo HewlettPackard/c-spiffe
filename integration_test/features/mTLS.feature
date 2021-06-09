@@ -52,9 +52,9 @@ Feature: Mutual TLS
         Examples:
             | dial_type | listen_type |
             |     go    |      go     |
-            # |     c     |      go     |
+            |     c     |      go     |
             |     go    |      c      |
-            # |     c     |      c      |
+            |     c     |      c      |
 
 
     @Sprint15 @WlB
@@ -79,5 +79,5 @@ Feature: Mutual TLS
             | dial_type | listen_type |
             |     go    |      go     |
             |     c     |      go     |
-            # |     go    |      c      |
-            # |     c     |      c      |
+            |     go    |      c      |
+            |     c     |      c      |
