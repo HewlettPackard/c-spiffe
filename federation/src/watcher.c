@@ -170,7 +170,7 @@ err_t spiffebundle_Watcher_Stop(spiffebundle_Watcher *watcher)
             ++i) {
             spiffebundle_Endpoint_Status *status = watcher->endpoints[i].value;
             if(status->running == -1 && status->thread) {
-                // thrd_join(*(status->thread), NULL);
+                thrd_join(*(status->thread), NULL);
                 status->running = 0;
             }
         }
