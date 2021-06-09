@@ -58,3 +58,6 @@ def after_scenario(context, scenario):
         ''')
         os.system(PARENT_PATH + "bash-general-scripts/clean.sh")
         time.sleep(1)
+    if "entry-removed" in scenario.tags:
+        if context.workload_b in scenario.tags:
+            os.system("ssh root@workload spire-server entry create -parentID spiffe://example.org/myagent -spiffeID spiffe://example.org/myworkloadB -selector unix:user:server-workload")
