@@ -28,11 +28,6 @@ void test_TLSClientWithRawConfig(void)
 
     spiffeid_TrustDomain_Free(&td);
     spiffetls_DialMode_Free(mode);
-
-    /* const int fd = SSL_get_fd(conn);
-    SSL_shutdown(conn);
-    SSL_free(conn);
-    close(fd);*/
 }
 
 void test_MTLSClient(void)
@@ -55,11 +50,6 @@ void test_MTLSClient(void)
 
     spiffeid_TrustDomain_Free(&td);
     spiffetls_DialMode_Free(mode);
-
-    /*const int fd = SSL_get_fd(conn);
-    SSL_shutdown(conn);
-    SSL_free(conn);
-    close(fd);*/
 }
 
 void test_MTLSWebClient(void)
