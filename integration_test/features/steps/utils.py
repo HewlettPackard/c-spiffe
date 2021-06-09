@@ -33,5 +33,6 @@ def remove_entry(workload_id, container):
     entries = list_entries(container).splitlines()
     for entry in entries:
         if entry.find(workload) != -1:
+            #TODO: get entryID
             entryId = ""
             os.system("ssh root@%s \"spire-server entry delete -entryId %s\"" % (container, entryId))
