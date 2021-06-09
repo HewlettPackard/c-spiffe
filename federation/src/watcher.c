@@ -108,7 +108,6 @@ static int watch_endpoint(void *arg)
         = (spiffebundle_Endpoint_Status *) arg;
 
     err_t error = spiffebundle_Endpoint_Fetch(status->endpoint);
-    ;
     while(error == NO_ERROR && status->running == 1) {
         spiffebundle_Bundle *bundle
             = spiffebundle_Endpoint_GetBundleForTrustDomain(

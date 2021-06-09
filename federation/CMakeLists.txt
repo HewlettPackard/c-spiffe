@@ -12,7 +12,7 @@ ${CMAKE_CURRENT_SOURCE_DIR}/../bundle/spiffebundle/src/source.c
 
 add_library(${TARGET_NAME} SHARED ${LIB_FEDERATION})
 target_link_libraries(${TARGET_NAME} 
-    curl 
+    curl
     spiffeid
     bundle
     internal
