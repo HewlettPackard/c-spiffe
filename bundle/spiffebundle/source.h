@@ -3,7 +3,7 @@
 
 #include "bundle/spiffebundle/bundle.h"
 #include "bundle/spiffebundle/set.h"
-#include "federation/src/endpoint.h"
+#include "federation/endpoint.h"
 
 #ifdef __cplusplus
 extern "C" {
