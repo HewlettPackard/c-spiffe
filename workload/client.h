@@ -5,10 +5,10 @@
 #include "svid/jwtsvid/svid.h"
 #include "svid/x509svid/svid.h"
 #include "utils/util.h"
-#include "workload/src/backoff.h"
-#include "workload/src/jwtwatcher.h"
-#include "workload/src/watcher.h"
-#include "workload/src/x509context.h"
+#include "workload/backoff.h"
+#include "workload/jwtwatcher.h"
+#include "workload/watcher.h"
+#include "workload/x509context.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,5 +1,5 @@
 
-#include "workload/src/client.h"
+#include "workload/client.h"
 #include "bundle/x509bundle/bundle.h"
 #include "bundle/x509bundle/set.h"
 #include "internal/x509util/util.h"

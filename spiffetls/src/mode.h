@@ -6,7 +6,7 @@
 #include "spiffetls/tlsconfig/src/authorizer.h"
 #include "svid/x509svid/source.h"
 #include "svid/x509svid/svid.h"
-#include "workload/src/x509source.h"
+#include "workload/x509source.h"
 
 #ifdef __cplusplus
 extern "C" {

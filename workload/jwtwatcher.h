@@ -1,9 +1,9 @@
 #ifndef INCLUDE_WORKLOAD_JWTWATCHER_H
 #define INCLUDE_WORKLOAD_JWTWATCHER_H
 
-#include "workload/src/client.h"
+#include "workload/client.h"
 
-#include "workload/src/jwtcallback.h"
+#include "workload/jwtcallback.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,7 +1,7 @@
 #ifndef INCLUDE_SVID_X509SVID_SOURCE_H
 #define INCLUDE_SVID_X509SVID_SOURCE_H
 
-#include "workload/src/x509source.h"
+#include "workload/x509source.h"
 #include "svid/x509svid/svid.h"
 
 typedef struct {

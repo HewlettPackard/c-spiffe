@@ -2,7 +2,7 @@
 #include "spiffetls/src/dial.h"
 #include "spiffetls/src/mode.h"
 #include "spiffetls/src/option.h"
-#include "workload/src/x509source.h"
+#include "workload/x509source.h"
 #include <unistd.h>
 
 void init_openssl()

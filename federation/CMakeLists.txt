@@ -28,7 +28,7 @@ install(
 # Install Headers:
 set(HEADERS_FEDERATION
 ${CMAKE_CURRENT_SOURCE_DIR}/src/endpoint.h
-${CMAKE_CURRENT_SOURCE_DIR}/src/watcher.h
+${CMAKE_CURRENT_SOURCE_DIR}/watcher.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(

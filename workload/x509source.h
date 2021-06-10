@@ -3,7 +3,7 @@
 
 #include "bundle/x509bundle/set.h"
 #include "svid/x509svid/svid.h"
-#include "workload/src/watcher.h"
+#include "workload/watcher.h"
 #include <threads.h>
 
 #ifdef __cplusplus

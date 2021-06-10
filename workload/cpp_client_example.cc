@@ -1,4 +1,4 @@
-#include "workload/src/client.h"
+#include "workload/client.h"
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
