@@ -11,7 +11,7 @@ ${PROJECT_SOURCE_DIR}/jwtutil/src/util.c
 ${PROJECT_SOURCE_DIR}/pemutil/src/pem.c
 ${PROJECT_SOURCE_DIR}/x509util/src/certpool.c
 ${PROJECT_SOURCE_DIR}/x509util/src/util.c
-${PROJECT_SOURCE_DIR}/../utils/src/util.c
+${PROJECT_SOURCE_DIR}/../utils/util.c
 )
 
 add_library(${TARGET_NAME} SHARED ${LIB_INTERNAL})
@@ -64,8 +64,8 @@ install(
 
 # Install Headers:
 set(HEADERS_UTIL
-${PROJECT_SOURCE_DIR}/../utils/src/util.h
-${PROJECT_SOURCE_DIR}/../utils/src/stb_ds.h
+${PROJECT_SOURCE_DIR}/../utils/util.h
+${PROJECT_SOURCE_DIR}/../utils/stb_ds.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(

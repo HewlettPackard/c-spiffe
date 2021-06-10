@@ -3,7 +3,7 @@
 
 #include "spiffeid/id.h"
 #include "svid/x509svid/src/verify.h"
-#include "utils/src/util.h"
+#include "utils/util.h"
 #include <openssl/ssl.h>
 
 #ifdef __cplusplus

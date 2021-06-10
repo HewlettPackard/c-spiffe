@@ -2,7 +2,7 @@
 #define INCLUDE_SPIFFEID_TRUSTDOMAIN_H
 
 #include "spiffeid/id.h"
-#include "utils/src/util.h"
+#include "utils/util.h"
 
 #ifdef __cplusplus
 extern "C" {

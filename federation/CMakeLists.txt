@@ -6,7 +6,7 @@ set(TARGET_NAME "federation")
 set(LIB_FEDERATION 
 ${CMAKE_CURRENT_SOURCE_DIR}/src/endpoint.c
 ${CMAKE_CURRENT_SOURCE_DIR}/src/watcher.c
-${CMAKE_CURRENT_SOURCE_DIR}/../utils/src/util.c
+${CMAKE_CURRENT_SOURCE_DIR}/../utils/util.c
 ${CMAKE_CURRENT_SOURCE_DIR}/../bundle/spiffebundle/source.c
 )
 

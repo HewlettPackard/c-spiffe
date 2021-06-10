@@ -4,7 +4,7 @@
 #include "bundle/jwtbundle/bundle.h"
 #include "bundle/x509bundle/bundle.h"
 #include "spiffeid/trustdomain.h"
-#include "utils/src/util.h"
+#include "utils/util.h"
 #include <openssl/x509.h>
 #include <threads.h>
 #include <time.h>

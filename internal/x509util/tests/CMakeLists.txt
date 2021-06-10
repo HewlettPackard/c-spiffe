@@ -7,7 +7,7 @@ set(SOURCES_CHECK
   check_util.c
   ../src/util.c
   ../src/certpool.c
-  ../../../utils/src/util.c
+  ../../../utils/util.c
 )
 
 add_executable(check_x509util ${SOURCES_CHECK})
@@ -32,7 +32,7 @@ set(SOURCES_CHECK
   check_certpool.c
   ../src/util.c
   ../src/certpool.c
-  ../../../utils/src/util.c
+  ../../../utils/util.c
 )
 
 add_executable(check_certpool ${SOURCES_CHECK})

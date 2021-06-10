@@ -3,7 +3,7 @@
 
 #include "bundle/jwtbundle/source.h"
 #include "spiffeid/id.h"
-#include "utils/src/util.h"
+#include "utils/util.h"
 #include <jansson.h>
 #include <time.h>
 

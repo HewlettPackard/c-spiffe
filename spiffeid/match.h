@@ -1,7 +1,7 @@
 #ifndef INCLUDE_SPIFFEID_MATCH_H
 #define INCLUDE_SPIFFEID_MATCH_H
 
-#include "utils/src/util.h"
+#include "utils/util.h"
 #include "spiffeid/id.h"
 
 #ifdef __cplusplus

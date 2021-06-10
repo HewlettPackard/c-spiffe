@@ -1,7 +1,7 @@
 #ifndef INCLUDE_INTERNAL_JWTUTIL_UTIL_H
 #define INCLUDE_INTERNAL_JWTUTIL_UTIL_H
 
-#include "utils/src/util.h"
+#include "utils/util.h"
 #include <jansson.h>
 #include <stdbool.h>
 

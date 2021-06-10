@@ -2,7 +2,7 @@
 #define INCLUDE_BUNDLE_X509BUNDLE_BUNDLE_H
 
 #include "spiffeid/trustdomain.h"
-#include "utils/src/util.h"
+#include "utils/util.h"
 #include <openssl/x509.h>
 #include <threads.h>
 

@@ -6,7 +6,7 @@
 #include "endpoint.h"
 #include "spiffeid/id.h"
 #include "spiffeid/trustdomain.h"
-#include "utils/src/util.h"
+#include "utils/util.h"
 #include <curl/curl.h>
 #include <threads.h>
 #include <uriparser/Uri.h>

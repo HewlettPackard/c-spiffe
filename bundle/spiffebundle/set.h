@@ -2,7 +2,7 @@
 #define INCLUDE_BUNDLE_SPIFFEBUNDLE_SET_H
 
 #include "bundle/spiffebundle/bundle.h"
-#include "utils/src/util.h"
+#include "utils/util.h"
 
 #ifdef __cplusplus
 extern "C" {

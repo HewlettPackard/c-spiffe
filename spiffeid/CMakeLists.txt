@@ -10,7 +10,7 @@ set(LIB_SPIFFEID
 ${PROJECT_SOURCE_DIR}/id.c
 ${PROJECT_SOURCE_DIR}/match.c
 ${PROJECT_SOURCE_DIR}/trustdomain.c
-${PROJECT_SOURCE_DIR}/../utils/src/util.c
+${PROJECT_SOURCE_DIR}/../utils/util.c
 )
 
 add_library(${TARGET_NAME} SHARED ${LIB_SPIFFEID})

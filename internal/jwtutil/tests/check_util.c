@@ -3,7 +3,7 @@
 #include <openssl/pem.h>
 
 #define STB_DS_IMPLEMENTATION
-#include "utils/src/stb_ds.h"
+#include "utils/stb_ds.h"
 
 START_TEST(test_jwtutil_JWTAuthoritiesEqual)
 {

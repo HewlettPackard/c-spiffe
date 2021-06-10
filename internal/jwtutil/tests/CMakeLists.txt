@@ -7,7 +7,7 @@ set(SOURCES_CHECK
   check_util.c 
   ../../cryptoutil/src/keys.c
   ../src/util.c
-  ../../../utils/src/stb_ds.h
+  ../../../utils/stb_ds.h
 )
 
 add_executable(check_jwtutil ${SOURCES_CHECK})

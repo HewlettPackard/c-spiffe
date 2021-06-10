@@ -1,7 +1,7 @@
 #ifndef SPIFFEID_ID_H
 #define SPIFFEID_ID_H
 
-#include "utils/src/util.h"
+#include "utils/util.h"
 #include <stdbool.h>
 #include <uriparser/Uri.h>
 
