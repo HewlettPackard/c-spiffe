@@ -1,5 +1,5 @@
 #include "svid/jwtsvid/src/svid.h"
-#include "bundle/jwtbundle/src/source.h"
+#include "bundle/jwtbundle/source.h"
 #include <cjose/cjose.h>
 #include <openssl/ec.h>
 #include <openssl/ecdsa.h>

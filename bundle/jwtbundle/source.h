@@ -1,8 +1,8 @@
 #ifndef INCLUDE_BUNDLE_JWTBUNDLE_SOURCE_H
 #define INCLUDE_BUNDLE_JWTBUNDLE_SOURCE_H
 
-#include "bundle/jwtbundle/src/bundle.h"
-#include "bundle/jwtbundle/src/set.h"
+#include "bundle/jwtbundle/bundle.h"
+#include "bundle/jwtbundle/set.h"
 
 #ifdef __cplusplus
 extern "C" {

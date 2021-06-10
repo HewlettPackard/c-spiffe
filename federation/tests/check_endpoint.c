@@ -1,4 +1,4 @@
-#include "bundle/spiffebundle/src/source.h"
+#include "bundle/spiffebundle/source.h"
 #include "federation/src/endpoint.h"
 #include <check.h>
 #include <unistd.h>

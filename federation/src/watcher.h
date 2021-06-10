@@ -1,8 +1,8 @@
 #ifndef INCLUDE_SPIFFEBUNDLE_WATCHER_H
 #define INCLUDE_SPIFFEBUNDLE_WATCHER_H
-#include "bundle/spiffebundle/src/bundle.h"
-#include "bundle/spiffebundle/src/set.h"
-#include "bundle/spiffebundle/src/source.h"
+#include "bundle/spiffebundle/bundle.h"
+#include "bundle/spiffebundle/set.h"
+#include "bundle/spiffebundle/source.h"
 #include "endpoint.h"
 #include "spiffeid/id.h"
 #include "spiffeid/trustdomain.h"

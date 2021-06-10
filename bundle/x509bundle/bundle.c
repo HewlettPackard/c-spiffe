@@ -1,4 +1,4 @@
-#include "bundle/x509bundle/src/bundle.h"
+#include "bundle/x509bundle/bundle.h"
 #include "internal/x509util/src/util.h"
 #include <openssl/pem.h>
 

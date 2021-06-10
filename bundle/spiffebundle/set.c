@@ -1,4 +1,4 @@
-#include "bundle/spiffebundle/src/set.h"
+#include "bundle/spiffebundle/set.h"
 
 spiffebundle_Set *spiffebundle_NewSet(int n_args, ...)
 {

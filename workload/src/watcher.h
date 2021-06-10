@@ -1,8 +1,8 @@
 #ifndef INCLUDE_WORKLOAD_WATCHER_H
 #define INCLUDE_WORKLOAD_WATCHER_H
 
-#include "bundle/x509bundle/src/bundle.h"
-#include "bundle/x509bundle/src/set.h"
+#include "bundle/x509bundle/bundle.h"
+#include "bundle/x509bundle/set.h"
 #include "svid/x509svid/src/svid.h"
 #include "workload/src/client.h"
 #include "workload/src/x509context.h"

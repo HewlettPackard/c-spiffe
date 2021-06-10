@@ -1,7 +1,7 @@
 #ifndef INCLUDE_SPIFFETLS_TLSCONFIG_CONFIG_H
 #define INCLUDE_SPIFFETLS_TLSCONFIG_CONFIG_H
 
-#include "bundle/x509bundle/src/source.h"
+#include "bundle/x509bundle/source.h"
 #include "spiffetls/tlsconfig/src/authorizer.h"
 #include "svid/x509svid/src/source.h"
 #include <openssl/ssl.h>

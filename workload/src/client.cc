@@ -1,7 +1,7 @@
 
 #include "workload/src/client.h"
-#include "bundle/x509bundle/src/bundle.h"
-#include "bundle/x509bundle/src/set.h"
+#include "bundle/x509bundle/bundle.h"
+#include "bundle/x509bundle/set.h"
 #include "internal/x509util/src/util.h"
 #include "svid/x509svid/src/svid.h"
 #include "workload.grpc.pb.h"

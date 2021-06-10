@@ -1,8 +1,8 @@
 #ifndef INCLUDE_BUNDLE_SPIFFEBUNDLE_SOURCE_H
 #define INCLUDE_BUNDLE_SPIFFEBUNDLE_SOURCE_H
 
-#include "bundle/spiffebundle/src/bundle.h"
-#include "bundle/spiffebundle/src/set.h"
+#include "bundle/spiffebundle/bundle.h"
+#include "bundle/spiffebundle/set.h"
 #include "federation/src/endpoint.h"
 
 #ifdef __cplusplus

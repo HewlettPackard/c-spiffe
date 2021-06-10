@@ -1,4 +1,4 @@
-#include "bundle/x509bundle/src/set.h"
+#include "bundle/x509bundle/set.h"
 #include <stdarg.h>
 
 x509bundle_Set *x509bundle_NewSet(const int n_args, ...)

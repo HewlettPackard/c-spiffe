@@ -1,7 +1,7 @@
 #ifndef INCLUDE_WORKLOAD_JWTCALLBACK_H
 #define INCLUDE_WORKLOAD_JWTCALLBACK_H
 
-#include "bundle/jwtbundle/src/set.h"
+#include "bundle/jwtbundle/set.h"
 #include "svid/jwtsvid/src/svid.h"
 
 #ifdef __cplusplus

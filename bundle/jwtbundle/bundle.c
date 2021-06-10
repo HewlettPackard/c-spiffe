@@ -1,4 +1,4 @@
-#include "bundle/jwtbundle/src/bundle.h"
+#include "bundle/jwtbundle/bundle.h"
 #include "internal/jwtutil/src/util.h"
 #include "spiffeid/trustdomain.h"
 #include <cjose/jwk.h>

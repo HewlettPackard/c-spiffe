@@ -2,7 +2,7 @@
 #define INCLUDE_BUNDLE_JWTBUNDLE_SET_H
 
 // qsort algorithm
-#include "bundle/jwtbundle/src/bundle.h"
+#include "bundle/jwtbundle/bundle.h"
 #include <stdlib.h>
 
 #ifdef __cplusplus

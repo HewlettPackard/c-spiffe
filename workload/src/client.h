@@ -1,7 +1,7 @@
 #ifndef INCLUDE_WORKLOAD_CLIENT_H
 #define INCLUDE_WORKLOAD_CLIENT_H
 
-#include "bundle/x509bundle/src/set.h"
+#include "bundle/x509bundle/set.h"
 #include "svid/jwtsvid/src/svid.h"
 #include "svid/x509svid/src/svid.h"
 #include "utils/src/util.h"

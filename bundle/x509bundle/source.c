@@ -1,4 +1,4 @@
-#include "bundle/x509bundle/src/source.h"
+#include "bundle/x509bundle/source.h"
 
 x509bundle_Bundle *x509bundle_Source_GetX509BundleForTrustDomain(
     x509bundle_Source *s, const spiffeid_TrustDomain td, err_t *err)

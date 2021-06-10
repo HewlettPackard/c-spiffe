@@ -1,7 +1,7 @@
 #ifndef INCLUDE_WORKLOAD_JWTSOURCE_H
 #define INCLUDE_WORKLOAD_JWTSOURCE_H
 
-#include "bundle/jwtbundle/src/set.h"
+#include "bundle/jwtbundle/set.h"
 #include "svid/jwtsvid/src/svid.h"
 #include "jwtwatcher.h"
 #include "jwtcallback.h"

@@ -1,7 +1,7 @@
 #ifndef INCLUDE_WORKLOAD_X509SOURCE_H
 #define INCLUDE_WORKLOAD_X509SOURCE_H
 
-#include "bundle/x509bundle/src/set.h"
+#include "bundle/x509bundle/set.h"
 #include "svid/x509svid/src/svid.h"
 #include "workload/src/watcher.h"
 #include <threads.h>

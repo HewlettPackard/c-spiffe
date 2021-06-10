@@ -1,4 +1,4 @@
-#include "bundle/jwtbundle/src/set.h"
+#include "bundle/jwtbundle/set.h"
 #include "internal/cryptoutil/src/keys.h"
 #include "internal/jwtutil/src/util.h"
 #include "spiffeid/trustdomain.h"

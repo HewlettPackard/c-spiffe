@@ -1,4 +1,4 @@
-#include "bundle/jwtbundle/src/source.h"
+#include "bundle/jwtbundle/source.h"
 
 jwtbundle_Bundle *jwtbundle_Source_GetJWTBundleForTrustDomain(
     jwtbundle_Source *s, const spiffeid_TrustDomain td, err_t *err)

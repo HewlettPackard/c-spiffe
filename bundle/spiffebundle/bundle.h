@@ -1,8 +1,8 @@
 #ifndef INCLUDE_BUNDLE_SPIFFEBUNDLE_BUNDLE_H
 #define INCLUDE_BUNDLE_SPIFFEBUNDLE_BUNDLE_H
 
-#include "bundle/jwtbundle/src/bundle.h"
-#include "bundle/x509bundle/src/bundle.h"
+#include "bundle/jwtbundle/bundle.h"
+#include "bundle/x509bundle/bundle.h"
 #include "spiffeid/trustdomain.h"
 #include "utils/src/util.h"
 #include <openssl/x509.h>

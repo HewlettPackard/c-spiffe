@@ -1,9 +1,9 @@
 #ifndef INCLUDE_SPIFFEBUNDLE_ENDPOINT_H
 #define INCLUDE_SPIFFEBUNDLE_ENDPOINT_H
 
-#include "bundle/spiffebundle/src/bundle.h"
-#include "bundle/spiffebundle/src/set.h"
-#include "bundle/spiffebundle/src/source.h"
+#include "bundle/spiffebundle/bundle.h"
+#include "bundle/spiffebundle/set.h"
+#include "bundle/spiffebundle/source.h"
 #include "spiffeid/id.h"
 #include "spiffeid/trustdomain.h"
 #include "utils/src/util.h"

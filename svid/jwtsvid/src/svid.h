@@ -1,7 +1,7 @@
 #ifndef INCLUDE_SVID_JWTSVID_SVID_H
 #define INCLUDE_SVID_JWTSVID_SVID_H
 
-#include "bundle/jwtbundle/src/source.h"
+#include "bundle/jwtbundle/source.h"
 #include "spiffeid/id.h"
 #include "utils/src/util.h"
 #include <jansson.h>
