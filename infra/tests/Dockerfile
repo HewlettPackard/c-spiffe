@@ -1,4 +1,4 @@
-ARG TAG=dev-federation-watch
+ARG TAG=latest
 FROM cspiffe/workload:${TAG}
 
 RUN apt-get update \
