@@ -9,15 +9,16 @@ def step_impl(context, time):
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-update-server-conf.sh default_svid_ttl %s server" % time)
 
 
-@when('I store the Bundle')
-def step_impl(context):
-    context.current_bundle = context.bundle
+@when('I store the "{document}"')
+def step_impl(context, document):
+    exec("context.current_{0} = context.{0}".format(document.lower()))
 
 
-@then('The Bundle was updated')
-def step_impl(context):
-    assert_that(context.bundle, is_not("(nil)"))
-    assert_that(context.bundle, is_not(context.current_bundle))
+@then('The "{document}" was updated')
+def step_impl(context, document):
+    document = document.lower()
+    exec("assert_that(context.%s, is_not('(nil)'), 'Document is empty: (nil)')" % document)
+    exec("assert_that(context.{0}, is_not(context.current_{0}), 'Document was not updated.')".format(document))
 
 
 @when('The server is turned off')

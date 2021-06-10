@@ -85,7 +85,7 @@ func main() {
 	}
 
 	go s.ListenAndServeTLS("", "")
-	d := time.Second * 3
+	d := time.Second * 10
 	time.Sleep(d)
 	s.Close()
 }

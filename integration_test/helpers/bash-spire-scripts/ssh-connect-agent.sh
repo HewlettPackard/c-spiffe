@@ -6,5 +6,5 @@ ssh root@$2 <<EOL
     nohup spire-agent run -joinToken ${TOKEN} -config /opt/spire/conf/agent/agent${1}.conf> /dev/null 2>&1 & 
 EOL
 else
-    spire-agent run -joinToken $TOKEN -config /opt/spire/conf/agent/agent.conf &
+    spire-agent run -joinToken $TOKEN -config /opt/spire/conf/agent/agent.conf> /dev/null 2>&1 & 
 fi
