@@ -28,7 +28,7 @@ ${PROJECT_SOURCE_DIR}/cryptoutil/keys.h
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_INTERNAL_CRYPTO}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/cryptoutil/src"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/cryptoutil"
 )
 
 # Install Headers:
@@ -38,7 +38,7 @@ ${PROJECT_SOURCE_DIR}/jwtutil/util.h
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_INTERNAL_JWT}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/jwtutil/src"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/jwtutil"
 )
 
 # Install Headers:
@@ -48,7 +48,7 @@ ${PROJECT_SOURCE_DIR}/pemutil/pem.h
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_INTERNAL_PEM}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/pemutil/src"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/pemutil"
 )
 
 # Install Headers:
@@ -59,7 +59,7 @@ ${PROJECT_SOURCE_DIR}/x509util/util.h
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_INTERNAL_X509}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/x509util/src"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/x509util"
 )
 
 # Install Headers:
@@ -70,6 +70,6 @@ ${PROJECT_SOURCE_DIR}/../utils/stb_ds.h
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_UTIL}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/utils/src"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/utils"
 )
 

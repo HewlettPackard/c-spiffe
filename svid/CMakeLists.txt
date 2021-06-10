@@ -25,7 +25,7 @@ ${PROJECT_SOURCE_DIR}/x509svid/verify.h
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_X509SVID}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/x509svid/src"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/x509svid"
 )
 
 # Install Headers:
@@ -35,5 +35,5 @@ ${PROJECT_SOURCE_DIR}/jwtsvid/svid.h
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_JWTSVID}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/jwtsvid/src"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/jwtsvid"
 )

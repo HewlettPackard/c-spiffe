@@ -30,5 +30,5 @@ ${PROJECT_SOURCE_DIR}/trustdomain.h
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_SPIFFEID}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/src"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}"
 )
