@@ -1,0 +1,124 @@
+name: Build and run tests
+
+on: push
+
+jobs:
+  build-and-tests:
+    runs-on: ubuntu-latest
+    
+    env: 
+      HAS_TOKEN: ${{ secrets.DOCKERHUB_USERNAME != '' &&  secrets.DOCKERHUB_TOKEN != ''}}
+
+    container:
+      image: cspiffe/grpc-build:1.34.0
+    steps:
+      - name: Set default repo name
+        if:  ${{ env.HAS_TOKEN == 'false' }}
+        run:  echo "REPO_NAME=cspiffe" >> $GITHUB_ENV
+     
+      - name: Set user repo name
+        if:  ${{ env.HAS_TOKEN == 'true' }}
+        run:  echo "REPO_NAME=${{ secrets.DOCKERHUB_USERNAME }}" >> $GITHUB_ENV
+        env:
+          USER_NAME: ${{ secrets.DOCKERHUB_USERNAME }}
+
+      - name: Add example.org host
+        run: echo "127.0.0.1 example.org" >> /etc/hosts && cat /etc/hosts
+
+      - name: Checkout Project
+        uses: actions/checkout@v1
+
+      - name: Set env.BRANCH
+        run: echo "BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
+      - name: Log the parent container ubuntu version
+        run: lsb_release -a
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        if: ${{ env.HAS_TOKEN == 'true' }}
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & push workload Docker image
+        uses: docker/build-push-action@v1
+        with:
+          dockerfile: infra/workload/Dockerfile
+          repository:  ${{ env.REPO_NAME  }}/workload
+          push: ${{ env.HAS_TOKEN }}
+          tag_with_ref: true
+      
+      - name: Build & push tests Docker image
+        uses: docker/build-push-action@v1
+        with:
+          dockerfile: infra/tests/Dockerfile
+          repository:  ${{ env.REPO_NAME  }}/tests
+          push: ${{ env.HAS_TOKEN }}
+          tag_with_ref: true    
+           
+      - name: Install dependencies
+        run: |
+          go version
+          go get -u github.com/spiffe/go-spiffe/v2/bundle/spiffebundle
+          go get -u github.com/spiffe/go-spiffe/v2/federation
+          go get -u github.com/spiffe/go-spiffe/v2/logger
+          go get -u github.com/spiffe/go-spiffe/v2/spiffeid
+          go get -u github.com/spiffe/go-spiffe/v2/svid/x509svid
+        
+      - name: Create Build Environment
+        shell: bash
+        run: mkdir build
+
+      - name: Configure CMake
+        shell: bash
+        run: cd build && cmake ..
+
+      - name: Build
+        shell: bash
+        run:  cd build && make
+
+      - name: Unit Testing
+        shell: bash
+        run: cd build && make test ARGS="--output-on-failure"
+
+      - name: Coverage Test
+        shell: bash
+        run: cd build && make gcov && make lcov && lcov --list Coverage/lcov.info > coverage
+        
+      - name: Integration Test
+        shell: bash
+        run: cd infra && make integration-tests
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+          verbose: true
+          file: build/Coverage/lcov.info
+
+      - name: Lines Coverage Verify
+        shell: bash
+        run: cd build && target=60.9;lines=`awk '{print substr($1, 8, 4)}' coverage | tail -1`;if { echo $lines; echo $target ; } | sort -hu -c 2>/dev/null; then echo "This coverage is less than threshold"; exit 1; fi
+
+      - name: Functions Coverage Verify
+        shell: bash
+        run: cd build && target=60.9;functions=`awk '{print substr($2, 6, 4)}' coverage | tail -1`;if { echo $functions; echo $target ; } | sort -hu -c 2>/dev/null; then echo "This coverage is less than threshold"; exit 1; fi
+
+      - name: Generate documentation
+        uses: mattnotmitt/doxygen-action@v1
+        with:
+            working-directory: '.'
+            doxyfile-path: 'docs/Doxyfile'
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/html

@@ -1,6 +1,6 @@
-#include <openssl/pem.h>
+#include "internal/x509util/src/certpool.h"
 #include <check.h>
-#include "../src/certpool.h"
+#include <openssl/pem.h>
 
 START_TEST(test_x509util_CertPool_New)
 {
@@ -29,37 +29,37 @@ START_TEST(test_x509util_CertPool_contains)
     x509util_CertPool *cp = x509util_CertPool_New();
 
     X509 **certs = NULL;
-    for(int i = 0; i < ITERS; ++i)
-    {
-        //load certificate here
+    for(int i = 0; i < ITERS; ++i) {
+        // load certificate here
         X509 *cert = PEM_read_bio_X509(bio_mem, NULL, NULL, NULL);
-        if(cert)
-        {
+        if(cert) {
             arrput(certs, cert);
         }
     }
 
-    for(int i = 0, size = arrlen(certs); i < size ; ++i)
-    {
+    for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
         ck_assert(!x509util_CertPool_contains(cp, certs[i]));
     }
 
-    for(int i = 0, size = arrlen(certs); i < size; ++i)
-    {
+    for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
         x509util_CertPool_AddCert(cp, certs[i]);
     }
 
-    for(int i = 0, size = arrlen(certs); i < size ; ++i)
-    {
+    for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
         ck_assert(x509util_CertPool_contains(cp, certs[i]));
     }
+
+    for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
+        X509_free(certs[i]);
+    }
+    arrfree(certs);
 
     BIO_free(bio_mem);
     x509util_CertPool_Free(cp);
 }
 END_TEST
 
-Suite* certpool_suite(void)
+Suite *certpool_suite(void)
 {
     Suite *s = suite_create("certpool");
     TCase *tc_core = tcase_create("core");
@@ -68,7 +68,6 @@ Suite* certpool_suite(void)
 
     tcase_add_test(tc_core, test_x509util_CertPool_New);
     tcase_add_test(tc_core, test_x509util_CertPool_contains);
-    // tcase_add_test(tc_core, test_x509util_CertPool_findPotentialParents);
 
     return s;
 }
@@ -80,8 +79,8 @@ int main(void)
 
     srunner_run_all(sr, CK_NORMAL);
     const int number_failed = srunner_ntests_failed(sr);
-    
+
     srunner_free(sr);
-    
+
     return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

@@ -2,150 +2,76 @@
 
 C extension for Spiffe platform.
 
+[![Build and run tests](https://github.com/HewlettPackard/c-spiffe/actions/workflows/actions.yml/badge.svg)](https://github.com/HewlettPackard/c-spiffe/actions/workflows/actions.yml)
+
+[![codecov](https://codecov.io/gh/HewlettPackard/c-spiffe/branch/master/graph/badge.svg)](https://codecov.io/gh/HewlettPackard/c-spiffe)
+
 ## Introduction
 
-gRPC C++ examples built with CMake.
+[SPIFFE](https://spiffe.io/) stands for Security Identity Framework for Everyone and is a set for securely identifying system in dynamic and heterogeneous environment. Please refer to [SPIFFE Documentation](https://spiffe.io/docs/latest/spiffe-about/overview/) for more information.  
+C-spiffe is an extension for Spiffe that allows any [workload](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#workload) written C, C++ or  any language that supports loading a .so library, access [Workload API](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-workload-api) and establish a mTLS connection with other workloads.  
+The image above shows an example, where a C/C++ Workload imports the c-spiffe library in order to fetch a [SVID](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-verifiable-identity-document-svid) and use it to establish a mTLS connection with another Workload, which can be implemented in another language, provided it follows the SPIFFE standard.
 
-## Files
+![Alt text](img/cspiffe_example.png "C-spiffe usage example")
 
-```
-.
-├── docker
-|   ├── spiffe.Dockerfile
-|   ├── ci.Dockerfile
-|   ├── test.Dockerfile
-│   └── grpc.Dockerfile
-├── worlkload
-|   ├── src
-|   │   ├── file1.cc
-|   │   ├── file2.cc
-|   │   ├── file3.cc
-|   │   └── CMakeLists.txt
-│   ├── tests
-|   │   ├── test1
-|   │   ├── test2
-|   │   ├── test3
-|   │   └── CMakeLists.txt 
-│   └── CMakeLists.txt
-├── bundle
-│   ├── jwtbundle
-│   │   ├── src
-│   │   │   ├── file1.cc
-│   │   │   ├── file2.cc
-│   │   │   ├── file3.cc
-|   │   │   └── CMakeLists.txt 
-│   │   ├── tests
-|   │   │   ├── test1
-|   │   │   ├── test2
-|   │   │   ├── test3
-|   │   │   └── CMakeLists.txt 
-│   │   └── CMakeLists.txt
-│   ├── spiffebundle
-│   │   ├── src
-│   │   │   ├── file1.cc
-│   │   │   ├── file2.cc
-│   │   │   ├── file3.cc
-|   │   │   └── CMakeLists.txt 
-│   │   ├── tests
-|   │   │   ├── test1
-|   │   │   ├── test2
-|   │   │   ├── test3
-|   │   │   └── CMakeLists.txt 
-│   │   └── CMakeLists.txt
-│   ├── x509bundle
-│   │   ├── src
-│   │   │   ├── file1.cc
-│   │   │   ├── file2.cc
-│   │   │   ├── file3.cc
-|   │   │   └── CMakeLists.txt 
-│   │   ├── tests
-|   │   │   ├── test1
-|   │   │   ├── test2
-|   │   │   ├── test3
-|   │   │   └── CMakeLists.txt
-|   |   └── CMakeLists.txt
-│   └── CMakeLists.txt
-├── CMakeLists.txt
-├── LICENSE.md
-├── protos
-│   ├── workload.proto
-└── README.md
-```
+### Motivation
 
-## Dependencies
+Even though there is an official [c-spiffe](https://github.com/spiffe/c-spiffe) library, we started this one from scratch. We wanted a C implementation (not C++) for better compatibility. We also based most of the design decisions on [go-spiffe](https://github.com/spiffe/go-spiffe), which is the offical supported extension by the Spiffe Community.
 
-* gRPC 1.34
-* CMake 3.13.0+
+## Project structure
 
-##  Build Docker Image
+### Folders
 
-```
-docker build -f docker/grpc.Dockerfile --build-arg GPRC_VERSION=1.34.0 --build-arg NUM_JOBS=8 --tag grpc-build:1.34.0 .
-```
+The project folder structure is described as follows:
 
-## Run Docker Container
+* **bundle** Source code for bundle module
+* **cmake** Configuration for cmake build
+* **docker** Configuration files for container used to build this lib
+* **img** Images files for documentations
+* **infra** Container orchestration for tests environment
+* **integration_test** Source code for automated test
+* **internal** Souce code for internal module
+* **protos** Source code for gRPC protos
+* **spiffeid** Sour code for spiffeid module
+* **spiffetls** Source code for spiffetls module
+* **svid** Source code for SVID module
+* **utils** Source code for utility functions
+* **workload** Source code for workload
 
-#### setting volume path: <code>/mnt</code>
+### Remarkable files
 
-```
-docker run -it --rm --network host -v $(pwd):/mnt grpc-build:1.34.0
-```
+* [CMakeList.txt](CMakeLists.txt) Main build configuration file. Each source folder also has its own CMake file.
+* [README.md](README.md) This README.
+* [LICENSE](LICENSE) Project license.
+* [BUILDING.md](BUILDING.md) Instructions on how to build c-spiffe in your system.
+* [CONTRIBUTING.md](CONTRIBUTING.md) Guidelines for contributing to c-spiffe project.
 
-# For Windows 
+## Using C-Spiffe
 
-```
-docker run -it --rm --network host -v //c/Repositorios/c-spiffe:/mnt grpc-build:1.34.0
-```
+### Installing
 
-## Building
-Build the c-spiffe project:
-```
-cd /mnt
-mkdir build && cd build
-cmake ..
-make
-make test
-```
-After running `make test`, you will find the test files into `Testing` folder.
+#### Install from source
 
-### Code Coverage Support
+Reffer to [BUILDING.md](BUILDING.md)
 
-This implements Code Coverage Reports using either using either `gcov` or `lcov`.
-If you want to check them, you should run the following command after `make test`:
+#### Install on system
 
-```
-make gcov
-make lcov
-```
+We are planning on delivering package for the most popular Linux distros, but at this moment, only building from source is supported.
 
-The coverage reports will be into `Coverage` folder. In the case of `lcov`, you
-can see into the browser, opening the `index.html` file on the folder above.
+### Basic usage
 
-# Continuous Integration (CI)
+Refer to [Examples](workload/src/EXAMPLE.md) for more information.
 
-## Operation
+## Initial Contributors
 
-Continuous integration (CI) is a practice where a team of developers integrate their code early and often to the main branch or code repository. The goal is to reduce the risk of seeing “integration hell” by waiting for the end of a project or a sprint to merge the work of all developers.
+* Ariana Guimarães
+* Débora Silva
+* Glaucimar Aguiar
+* Otávio Silva
+* Rodrigo Carvalho
+* Thiago Jamir
+* Willian Alves
 
-To adopt continuous integration, we will need to run your tests on every change that gets pushed back to the main branch. To do so, you will need to have a service that can monitor your repository and listen to new pushes to the codebase. 
+## Contributing
 
-![Alt text](img/ci-process.png "Commit, Build and Deploy")
-
-# The .gitlab-ci.yml file
-To use GitLab CI/CD, you need:
-
-Application code hosted in a Git repository.
-A file called .gitlab-ci.yml in the root of your repository, which contains the CI/CD configuration.
-In the .gitlab-ci.yml file, you can define:
-
-The scripts you want to run.
-Other configuration files and templates you want to include.
-Dependencies and caches.
-The commands you want to run in sequence and those you want to run in parallel.
-The location to deploy your application to.
-Whether you want to run the scripts automatically or trigger any of them manually.
-The scripts are grouped into jobs, and jobs run as part of a larger pipeline. You can group multiple independent jobs into stages that run in a defined order.
-
-You should organize your jobs in a sequence that suits your application and is in accordance with the tests you wish to perform. To visualize the process, imagine the scripts you add to jobs are the same as CLI commands you run on your computer.
-
-When you add a .gitlab-ci.yml file to your repository, GitLab detects it and an application called GitLab Runner runs the scripts defined in the jobs.
+Refer to [Contributing](CONTRIBUTING.md) for more information.

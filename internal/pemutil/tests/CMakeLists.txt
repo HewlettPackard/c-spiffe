@@ -1,14 +1,14 @@
 # Minimum CMake required
 cmake_minimum_required(VERSION 3.13)
 
+file(COPY ../tests/resources/ DESTINATION ${PROJECT_BINARY_DIR}/internal/pemutil/tests/resources/)
+
 add_executable(check_pem check_pem.c )
 
-target_link_libraries(check_pem libsvid ${CHECK_LIBRARIES}
-  OpenSSL::SSL
-  libspiffeid
-  libinternal
+target_link_libraries(check_pem internal ${CHECK_LIBRARIES}
+  spiffeid
   uriparser
-  libbundle
+  bundle
   jansson
   cjose
   subunit

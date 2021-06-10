@@ -12,12 +12,10 @@ set(SOURCES_CHECK
 
 add_executable(check_x509util ${SOURCES_CHECK})
 
-target_link_libraries(check_x509util libsvid ${CHECK_LIBRARIES}
-  OpenSSL::SSL
-  libspiffeid
-  libinternal
+target_link_libraries(check_x509util internal ${CHECK_LIBRARIES}
+  spiffeid
   uriparser
-  libbundle
+  bundle
   jansson
   cjose
   subunit
@@ -39,12 +37,11 @@ set(SOURCES_CHECK
 
 add_executable(check_certpool ${SOURCES_CHECK})
 
-target_link_libraries(check_certpool libsvid ${CHECK_LIBRARIES}
-  OpenSSL::SSL
-  libspiffeid
-  libinternal
+target_link_libraries(check_certpool svid ${CHECK_LIBRARIES}
+  spiffeid
+  internal
   uriparser
-  libbundle
+  bundle
   jansson
   cjose
   subunit

@@ -1,6 +1,8 @@
 # Minimum CMake required
 cmake_minimum_required(VERSION 3.13)
 
+file(COPY ../tests/resources/ DESTINATION ${PROJECT_BINARY_DIR}/internal/jwtutil/tests/resources/)
+
 set(SOURCES_CHECK
   check_util.c 
   ../../cryptoutil/src/keys.c
@@ -10,12 +12,10 @@ set(SOURCES_CHECK
 
 add_executable(check_jwtutil ${SOURCES_CHECK})
 
-target_link_libraries(check_jwtutil libsvid ${CHECK_LIBRARIES}
-  OpenSSL::SSL
-  libspiffeid
-  libinternal
+target_link_libraries(check_jwtutil internal ${CHECK_LIBRARIES}
+  spiffeid
   uriparser
-  libbundle
+  bundle
   jansson
   cjose
   subunit

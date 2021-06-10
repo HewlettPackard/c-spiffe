@@ -1,23 +1,20 @@
-#include "match.h"
+#include "spiffeid/src/match.h"
+#include "spiffeid/src/trustdomain.h"
 
-match_err_t spiffeid_ApplyMatcher(const spiffeid_Matcher *matcher, const spiffeid_ID id)
+match_err_t spiffeid_ApplyMatcher(const spiffeid_Matcher *matcher,
+                                  const spiffeid_ID id)
 {
-    if(matcher->type == MATCH_ANY)
-    {
+    if(matcher->type == MATCH_ANY) {
         return MATCH_OK;
-    }
-    else if(matcher->type == MATCH_ONEOF)
-    {
+    } else if(matcher->type == MATCH_ONEOF) {
         const spiffeid_ID *ids = matcher->ids;
-        for(size_t i = 0, size = arrlenu(ids); i < size; ++i)
-        {
-            if(!strcmp(id.path, ids[i].path) && !strcmp(id.td.name, ids[i].td.name))
+        for(size_t i = 0, size = arrlenu(ids); i < size; ++i) {
+            if(!strcmp(id.path, ids[i].path)
+               && !strcmp(id.td.name, ids[i].td.name))
                 return MATCH_OK;
         }
         return MATCH_UNEXPECTED_ID;
-    }
-    else if(matcher->type == MATCH_MEMBEROF)
-    {
+    } else if(matcher->type == MATCH_MEMBEROF) {
         if(strcmp(id.td.name, matcher->td.name))
             return MATCH_UNEXPECTED_TD;
         return MATCH_OK;
@@ -26,7 +23,7 @@ match_err_t spiffeid_ApplyMatcher(const spiffeid_Matcher *matcher, const spiffei
     return MATCH_OK;
 }
 
-spiffeid_Matcher* spiffeid_MatchAny()
+spiffeid_Matcher *spiffeid_MatchAny()
 {
     spiffeid_Matcher *matcher = malloc(sizeof *matcher);
     memset(matcher, 0, sizeof *matcher);
@@ -35,7 +32,7 @@ spiffeid_Matcher* spiffeid_MatchAny()
     return matcher;
 }
 
-spiffeid_Matcher* spiffeid_MatchID(const spiffeid_ID id)
+spiffeid_Matcher *spiffeid_MatchID(const spiffeid_ID id)
 {
     spiffeid_Matcher *matcher = malloc(sizeof *matcher);
     memset(matcher, 0, sizeof *matcher);
@@ -49,7 +46,7 @@ spiffeid_Matcher* spiffeid_MatchID(const spiffeid_ID id)
     return matcher;
 }
 
-spiffeid_Matcher* spiffeid_MatchOneOf(int n_args, ...)
+spiffeid_Matcher *spiffeid_MatchOneOf(int n_args, ...)
 {
     va_list args;
     va_start(args, n_args);
@@ -68,8 +65,7 @@ spiffeid_Matcher *spiffeid_vMatchOneOf(int n_args, va_list args)
 
     matcher->type = MATCH_ONEOF;
 
-    for(int i = 0; i < n_args; ++i)
-    {
+    for(int i = 0; i < n_args; ++i) {
         spiffeid_ID id = va_arg(args, spiffeid_ID);
 
         spiffeid_ID new_id;
@@ -82,7 +78,7 @@ spiffeid_Matcher *spiffeid_vMatchOneOf(int n_args, va_list args)
     return matcher;
 }
 
-spiffeid_Matcher* spiffeid_MatchMemberOf(const spiffeid_TrustDomain td)
+spiffeid_Matcher *spiffeid_MatchMemberOf(const spiffeid_TrustDomain td)
 {
     spiffeid_Matcher *matcher = malloc(sizeof *matcher);
     memset(matcher, 0, sizeof *matcher);
@@ -95,14 +91,12 @@ spiffeid_Matcher* spiffeid_MatchMemberOf(const spiffeid_TrustDomain td)
 
 void spiffeid_Matcher_Free(spiffeid_Matcher *matcher)
 {
-    if(matcher)
-    {
-        for(size_t i = 0, size = arrlenu(matcher->ids); i < size; ++i)
-        {
-            spiffeid_ID_Free(matcher->ids + i, false);
+    if(matcher) {
+        for(size_t i = 0, size = arrlenu(matcher->ids); i < size; ++i) {
+            spiffeid_ID_Free(matcher->ids + i);
         }
         arrfree(matcher->ids);
-        arrfree(matcher->td.name);
+        spiffeid_TrustDomain_Free(&(matcher->td));
 
         free(matcher);
     }

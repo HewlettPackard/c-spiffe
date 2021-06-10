@@ -1,6 +1,8 @@
-#include <stdlib.h>
+#include "utils/src/util.h"
 #include <check.h>
-#include "../src/util.h"
+#include <stdlib.h>
+
+#define STBDS_UNIT_TESTS
 
 START_TEST(test_string_new)
 {
@@ -40,10 +42,9 @@ END_TEST
 
 START_TEST(test_string_new_range)
 {
-    const char test_str[] = 
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    "abcdefghijklmnopqrstuvwxyz"
-    "0123456789";
+    const char test_str[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                            "abcdefghijklmnopqrstuvwxyz"
+                            "0123456789";
 
     string_t str1 = string_new_range(test_str, test_str + 10);
     string_t str2 = string_new_range(test_str + 26, test_str + 36);
@@ -61,21 +62,28 @@ END_TEST
 
 START_TEST(test_FILE_to_string)
 {
-    FILE *f = fopen("test.txt", "r");
+    FILE *f = fopen("./resources/test.txt", "r");
     string_t buffer = FILE_to_string(f);
     fclose(f);
 
+    ck_assert_ptr_ne(buffer, NULL);
     ck_assert_uint_ge(arrlenu(buffer), 63);
-    ck_assert_str_eq(buffer, 
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        "abcdefghijklmnopqrstuvwxyz"
-        "0123456789");
+    ck_assert_str_eq(buffer, "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                             "abcdefghijklmnopqrstuvwxyz"
+                             "0123456789");
 
     arrfree(buffer);
 }
 END_TEST
 
-Suite* util_suite(void)
+START_TEST(test_stb_ds)
+{
+    stbds_unit_tests();
+    ck_assert(1);
+}
+END_TEST
+
+Suite *util_suite(void)
 {
     Suite *s = suite_create("util");
     TCase *tc_core = tcase_create("core");
@@ -84,6 +92,7 @@ Suite* util_suite(void)
     tcase_add_test(tc_core, test_string_push);
     tcase_add_test(tc_core, test_string_new_range);
     tcase_add_test(tc_core, test_FILE_to_string);
+    tcase_add_test(tc_core, test_stb_ds);
 
     suite_add_tcase(s, tc_core);
 
@@ -97,8 +106,8 @@ int main(void)
 
     srunner_run_all(sr, CK_NORMAL);
     const int number_failed = srunner_ntests_failed(sr);
-    
+
     srunner_free(sr);
-    
+
     return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
