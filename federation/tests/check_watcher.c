@@ -38,7 +38,7 @@ START_TEST(test_spiffebundle_Watcher_StartHttpsWebEndpoint)
 {
     system("go run ./resources/https_web_server.go &");
 
-    struct timespec sleep_time = { 1, 000000000 };
+    struct timespec sleep_time = { .tv_sec = 1, .tv_nsec = 0 };
     nanosleep(&sleep_time,
               NULL); // sleep for a second to let the server set itself up
 
@@ -111,7 +111,7 @@ END_TEST
 START_TEST(test_spiffebundle_Watcher_StartHttpsSpiffeEndpoint)
 {
     system("go run ./resources/https_spiffe_server.go &");
-    struct timespec sleep_time = { 1, 000000000 };
+    struct timespec sleep_time = { .tv_sec = 1, .tv_nsec = 0 };
     nanosleep(&sleep_time,
               NULL); // sleep for a second to let the server set itself up
     spiffebundle_Watcher *watcher = spiffebundle_Watcher_New();
@@ -209,7 +209,7 @@ Suite *watcher_suite(void)
     tcase_add_test(tc_core, test_spiffebundle_Watcher_Stop);
     tcase_add_test(tc_core, test_spiffebundle_Watcher_GetBundleForTrustDomain);
 
-    tcase_set_timeout(tc_core,20);
+    tcase_set_timeout(tc_core, 20);
     suite_add_tcase(s, tc_core);
 
     return s;

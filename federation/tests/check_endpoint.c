@@ -160,7 +160,7 @@ START_TEST(test_federation_Endpoint_fetch_WEB);
 {
     system("go run ./resources/https_spiffe_server.go &");
 
-    struct timespec sleep_time = { 1, 00000000 };
+    struct timespec sleep_time = { .tv_sec = 1, .tv_nsec = 0 };
     nanosleep(&sleep_time,
               NULL); // sleep for a second to let the server set itself up
     spiffebundle_Endpoint *tested = spiffebundle_Endpoint_New();
@@ -203,7 +203,7 @@ START_TEST(test_federation_Endpoint_fetch_SPIFFE);
 {
     system("go run ./resources/https_spiffe_server.go &");
 
-    struct timespec sleep_time = { 1, 000000000 };
+    struct timespec sleep_time = { .tv_sec = 1, .tv_nsec = 0 };
     nanosleep(&sleep_time,
               NULL); // sleep for half a second to let the server set itself up
     err_t err;
