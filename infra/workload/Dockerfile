@@ -25,8 +25,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 apt-get clean
 
 
-ARG BRANCH=master
-RUN cd /mnt && git clone -b ${BRANCH} https://github.com/HewlettPackard/c-spiffe.git
+ARG BRANCH=test-352-Implement-test-case-MT_03
+RUN cd /mnt && git clone -b ${BRANCH} https://github.com/arianalima/c-spiffe.git
 RUN cd ${C_SPIFFE_DIR} && git pull
 
 RUN mkdir -p ${C_SPIFFE_DIR}/build/

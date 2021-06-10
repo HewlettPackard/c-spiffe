@@ -35,3 +35,21 @@ target_link_libraries(check_spiffebundle_source bundle federation ${CHECK_LIBRAR
   pthread)
 
 add_test(check_spiffebundle_source check_spiffebundle_source)
+
+add_executable(check_spiffebundle_watcher check_watcher.c)
+
+target_link_libraries(check_spiffebundle_watcher bundle federation ${CHECK_LIBRARIES}
+  spiffeid
+  internal
+  uriparser
+  jansson
+  cjose
+  subunit
+  check_pic
+  check
+  rt
+  m
+  crypto
+  pthread)
+
+add_test(check_spiffebundle_watcher check_spiffebundle_watcher)

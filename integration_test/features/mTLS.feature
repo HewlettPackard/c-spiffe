@@ -52,6 +52,32 @@ Feature: Mutual TLS
         Examples:
             | dial_type | listen_type |
             |     go    |      go     |
-            # |     c     |      go     |
+            |     c     |      go     |
             |     go    |      c      |
-            # |     c     |      c      |
+            |     c     |      c      |
+
+
+    @Sprint15 @WlB
+    Scenario Outline: MT_003 - Check the behavior when the certificate rotates after mtls has been established
+        Given The second agent is turned on inside "workload" container
+        When  I fetch external "X509" "SVID"
+        Then  I check that the "SVID" is returned correctly
+        When  I store the "SVID"
+        And   I fetch "X509" "SVID"
+        Then  I check that the "SVID" is returned correctly
+        When  The "<listen_type>"-tls-listen is activated inside "workload" container
+        And   I send "Hello World!" to "workload" container through "<dial_type>"-tls-dial
+        Then  I check that "Hello World!" was the answer from tls-listen
+        When  I fetch external "X509" "SVID"
+        Then  I check that the "SVID" is returned correctly
+        And   The "SVID" was updated
+        When  I send "Hello World!" to "workload" container through "<dial_type>"-tls-dial
+        Then  I check that "Hello World!" was the answer from tls-listen
+        And   The second "agent" is turned off inside "workload" container
+        And   The "<listen_type>"-tls-listen is disabled inside "workload" container
+        Examples:
+            | dial_type | listen_type |
+            |     go    |      go     |
+            |     c     |      go     |
+            |     go    |      c      |
+            |     c     |      c      |

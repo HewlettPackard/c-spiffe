@@ -13,6 +13,7 @@ def before_all(context):
     context.current_workload = ""
     context.default_trust_domain = context.config.userdata['default_trust_domain']
     context.default_echo_server_port = context.config.userdata['default_echo_server_port']
+    context.second_trust_domain = context.config.userdata['second_trust_domain']
     
     os.system(PARENT_PATH + "bash-spire-scripts/ssh-connect-agent.sh")
     time.sleep(5)

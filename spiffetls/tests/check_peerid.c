@@ -26,18 +26,6 @@ START_TEST(test_spiffetls_PeerIDFromConn)
     ck_assert_uint_ne(err, NO_ERROR);
     ck_assert_ptr_eq(conn, NULL);
 
-    /*spiffeid_ID id = spiffetls_PeerIDFromConn(conn, &err);
-
-    ck_assert_uint_eq(err, NO_ERROR);
-    ck_assert_ptr_ne(id.td.name, NULL);
-    ck_assert_ptr_ne(id.path, NULL);
-
-    int sock_fd = SSL_get_fd(conn);
-    SSL_shutdown(conn);
-    SSL_free(conn);
-    close(sock_fd);
-    spiffeid_ID_Free(&id);*/
-
     /* certificate with no spiffe ID */
     system("./tls_server 40005 &");
     sleep(1);
@@ -53,11 +41,6 @@ START_TEST(test_spiffetls_PeerIDFromConn)
 
     spiffeid_TrustDomain_Free(&td);
     spiffetls_DialMode_Free(mode);
-
-    /*sock_fd = SSL_get_fd(conn);
-    SSL_shutdown(conn);
-    SSL_free(conn);
-    close(sock_fd);*/
 
     /* NULL TLS connection */
     conn = NULL;

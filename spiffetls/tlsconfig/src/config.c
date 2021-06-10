@@ -126,9 +126,10 @@ static bool hookTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid)
     x509svid_SVID *my_svid = x509svid_Source_GetX509SVID(svid, &err);
 
     if(!err && my_svid) {
-        int ret = SSL_CTX_use_certificate(ctx, my_svid->certs[0]);
-        ret = ret && SSL_CTX_use_PrivateKey(ctx, my_svid->private_key);
-        return ret != 0;
+        bool ret = (SSL_CTX_use_certificate(ctx, my_svid->certs[0]) > 0);
+        ret = ret && (SSL_CTX_use_PrivateKey(ctx, my_svid->private_key) > 0);
+        ret = ret && (SSL_CTX_check_private_key(ctx) > 0);
+        return ret;
     }
 
     return false;
@@ -150,7 +151,8 @@ bool tlsconfig_HookMTLSServerConfig(SSL_CTX *ctx, x509svid_Source *svid,
     tlsconfig_resetAuthFields(ctx);
 
     if(hookTLSServerConfig(ctx, svid)) {
-        SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL);
+        SSL_CTX_set_verify(
+            ctx, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL);
 
         struct hookTLSClientConfig_st *safe_arg = malloc(sizeof *safe_arg);
         safe_arg->bundle = bundle;

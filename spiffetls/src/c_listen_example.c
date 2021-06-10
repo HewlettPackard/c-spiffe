@@ -63,33 +63,36 @@ int main(int argc, char **argv)
     spiffetls_listenConfig config
         = { .base_TLS_conf = NULL, .listener_fd = 0 };
 
-    int sock_fd;
-    SSL *conn = spiffetls_ListenWithMode(port, mode, &config, &sock_fd, &err);
+    while(true) {
+        int sock_fd;
+        SSL *conn = spiffetls_ListenWithMode(port, mode, &config, &sock_fd, &err);
 
-    if(conn == NULL) {
-        printf("spiffetls_ListenWithMode() failed\n");
-        exit(-1);
+        if(conn == NULL) {
+            printf("spiffetls_ListenWithMode() failed\n");
+            exit(-1);
+        }
+        if(err != NO_ERROR) {
+            printf("could not create TLS connection!");
+            exit(-1);
+        }
+
+        char buff[1024];
+        const int bytes = SSL_read(conn, buff, sizeof(buff));
+        buff[bytes] = 0;
+        printf("Server received: %s\n", buff);
+
+        SSL_write(conn, buff, strlen(buff));
+        printf("Server replied: %s\n", buff);
+
+        const int fd = SSL_get_fd(conn);
+        SSL_shutdown(conn);
+        SSL_free(conn);
+        close(fd);
+        close(sock_fd);
     }
-    if(err != NO_ERROR) {
-        printf("could not create TLS connection!");
-        exit(-1);
-    }
-
-    char buff[1024];
-    const int bytes = SSL_read(conn, buff, sizeof(buff));
-    buff[bytes] = 0;
-    printf("Server received: %s\n", buff);
-
-    SSL_write(conn, buff, strlen(buff));
-    printf("Server replied: %s\n", buff);
 
     spiffeid_TrustDomain_Free(&td);
     spiffetls_ListenMode_Free(mode);
-    const int fd = SSL_get_fd(conn);
-    SSL_shutdown(conn);
-    SSL_free(conn);
-    close(fd);
-    close(sock_fd);
 
     return 0;
 }
