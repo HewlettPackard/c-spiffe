@@ -3,7 +3,7 @@
 
 #include "internal/pemutil/src/pem.h"
 #include "internal/x509util/src/util.h"
-#include "spiffeid/src/id.h"
+#include "spiffeid/id.h"
 #include <openssl/ecdsa.h>
 #include <openssl/evp.h>
 #include <openssl/rsa.h>

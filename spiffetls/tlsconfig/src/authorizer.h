@@ -1,7 +1,7 @@
 #ifndef INCLUDE_SPIFFETLS_TLSCONFIG_AUTHORIZER_H
 #define INCLUDE_SPIFFETLS_TLSCONFIG_AUTHORIZER_H
 
-#include "spiffeid/src/match.h"
+#include "spiffeid/match.h"
 #include <openssl/x509.h>
 
 #ifdef __cplusplus

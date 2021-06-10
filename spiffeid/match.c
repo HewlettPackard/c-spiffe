@@ -1,5 +1,5 @@
-#include "spiffeid/src/match.h"
-#include "spiffeid/src/trustdomain.h"
+#include "spiffeid/match.h"
+#include "spiffeid/trustdomain.h"
 
 match_err_t spiffeid_ApplyMatcher(const spiffeid_Matcher *matcher,
                                   const spiffeid_ID id)

@@ -1,5 +1,5 @@
-#include "spiffeid/src/id.h"
-#include "spiffeid/src/trustdomain.h"
+#include "spiffeid/id.h"
+#include "spiffeid/trustdomain.h"
 #include "utils/src/stb_ds.h"
 #include <ctype.h>
 #include <stdlib.h>

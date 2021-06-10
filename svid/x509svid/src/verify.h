@@ -2,7 +2,7 @@
 #define INCLUDE_SVID_X509SVID_VERIFY_H
 
 #include "bundle/x509bundle/src/source.h"
-#include "spiffeid/src/id.h"
+#include "spiffeid/id.h"
 #include "utils/src/util.h"
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>

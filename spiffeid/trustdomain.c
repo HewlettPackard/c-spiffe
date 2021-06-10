@@ -1,4 +1,4 @@
-#include "spiffeid/src/trustdomain.h"
+#include "spiffeid/trustdomain.h"
 
 spiffeid_TrustDomain spiffeid_TrustDomainFromString(const char *uri,
                                                     err_t *err)

@@ -1,4 +1,4 @@
-#include "spiffeid/src/trustdomain.h"
+#include "spiffeid/trustdomain.h"
 #include "spiffetls/tlsconfig/src/authorizer.h"
 #include <check.h>
 

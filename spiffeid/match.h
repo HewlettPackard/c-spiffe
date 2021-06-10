@@ -2,7 +2,7 @@
 #define INCLUDE_SPIFFEID_MATCH_H
 
 #include "utils/src/util.h"
-#include "spiffeid/src/id.h"
+#include "spiffeid/id.h"
 
 #ifdef __cplusplus
 extern "C" {

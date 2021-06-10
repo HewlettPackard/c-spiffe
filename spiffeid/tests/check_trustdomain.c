@@ -1,4 +1,4 @@
-#include "spiffeid/src/trustdomain.h"
+#include "spiffeid/trustdomain.h"
 #include <check.h>
 
 START_TEST(test_spiffeid_TrustDomainFromString)

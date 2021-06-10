@@ -3,7 +3,7 @@
 
 #include "bundle/jwtbundle/src/bundle.h"
 #include "bundle/x509bundle/src/bundle.h"
-#include "spiffeid/src/trustdomain.h"
+#include "spiffeid/trustdomain.h"
 #include "utils/src/util.h"
 #include <openssl/x509.h>
 #include <threads.h>

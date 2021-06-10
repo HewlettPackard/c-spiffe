@@ -4,8 +4,8 @@
 #include "bundle/spiffebundle/src/set.h"
 #include "bundle/spiffebundle/src/source.h"
 #include "endpoint.h"
-#include "spiffeid/src/id.h"
-#include "spiffeid/src/trustdomain.h"
+#include "spiffeid/id.h"
+#include "spiffeid/trustdomain.h"
 #include "utils/src/util.h"
 #include <curl/curl.h>
 #include <threads.h>

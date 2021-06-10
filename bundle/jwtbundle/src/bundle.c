@@ -1,6 +1,6 @@
 #include "bundle/jwtbundle/src/bundle.h"
 #include "internal/jwtutil/src/util.h"
-#include "spiffeid/src/trustdomain.h"
+#include "spiffeid/trustdomain.h"
 #include <cjose/jwk.h>
 #include <jansson.h>
 #include <openssl/ec.h>

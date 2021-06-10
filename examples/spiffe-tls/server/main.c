@@ -1,4 +1,4 @@
-#include "spiffeid/src/id.h"
+#include "spiffeid/id.h"
 #include "spiffetls/src/listen.h"
 #include "spiffetls/src/mode.h"
 #include "spiffetls/src/option.h"

@@ -1,6 +1,6 @@
 #include "internal/cryptoutil/src/keys.h"
 #include "internal/x509util/src/util.h"
-#include "spiffeid/src/trustdomain.h"
+#include "spiffeid/trustdomain.h"
 #include "bundle/x509bundle/src/set.h"
 #include <check.h>
 #include <openssl/pem.h>

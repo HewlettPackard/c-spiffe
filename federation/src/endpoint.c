@@ -3,7 +3,7 @@
 #include <openssl/pem.h>
 #include <openssl/ssl.h>
 
-// from "spiffeid/src/id.h"
+// from "spiffeid/id.h"
 static UriUriA URL_parse(const char *str, err_t *err)
 {
     UriUriA uri;

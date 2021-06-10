@@ -1,7 +1,7 @@
 #ifndef INCLUDE_SPIFFEID_TRUSTDOMAIN_H
 #define INCLUDE_SPIFFEID_TRUSTDOMAIN_H
 
-#include "spiffeid/src/id.h"
+#include "spiffeid/id.h"
 #include "utils/src/util.h"
 
 #ifdef __cplusplus

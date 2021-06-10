@@ -1,7 +1,7 @@
 #ifndef INCLUDE_BUNDLE_JWTBUNDLE_BUNDLE_H
 #define INCLUDE_BUNDLE_JWTBUNDLE_BUNDLE_H
 
-#include "spiffeid/src/id.h"
+#include "spiffeid/id.h"
 #include <threads.h>
 
 #ifdef __cplusplus
