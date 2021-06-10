@@ -11,14 +11,14 @@ START_TEST(test_federation_Endpoint_New_and_free);
     spiffeid_TrustDomain td
         = spiffeid_TrustDomainFromString("example.com", &err);
     ck_assert_int_eq(err, NO_ERROR);
-    string_t sid = "spiffe://example.com/workload1";
+    const char *sid = "spiffe://example.com/workload1";
 
     spiffebundle_Bundle *bundle
         = spiffebundle_Load(td, "./resources/jwks_valid_2.json", &err);
     ck_assert_int_eq(err, NO_ERROR);
     spiffebundle_Source *bundle_source = spiffebundle_SourceFromBundle(bundle);
-    spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
-        tested, "example.com/bundle.json", td, sid, bundle_source);
+    spiffebundle_Endpoint_ConfigHTTPSSPIFFE(tested, "example.com/bundle.json",
+                                            td, sid, bundle_source);
     tested->owns_bundle = true;
 
     spiffebundle_Endpoint_Free(tested);
@@ -32,7 +32,7 @@ START_TEST(test_federation_Endpoint_Config_SPIFFE);
     spiffeid_TrustDomain td
         = spiffeid_TrustDomainFromString("example.com", &err);
     ck_assert_int_eq(err, NO_ERROR);
-    string_t sid = "spiffe://example.com/workload1";
+    const char *sid = "spiffe://example.com/workload1";
     ck_assert_int_eq(err, NO_ERROR);
 
     spiffebundle_Bundle *bundle
@@ -40,37 +40,37 @@ START_TEST(test_federation_Endpoint_Config_SPIFFE);
     ck_assert_int_eq(err, NO_ERROR);
     spiffebundle_Source *bundle_source = spiffebundle_SourceFromBundle(bundle);
 
-    err = spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
+    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         NULL, "example.com/bundle.json", td, sid, bundle_source);
     ck_assert_int_eq(err, ERROR1);
 
-    err = spiffebundle_Endpoint_Config_HTTPS_SPIFFE(tested, NULL, td, sid,
-                                                    bundle_source);
+    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(tested, NULL, td, sid,
+                                                  bundle_source);
     ck_assert_int_eq(err, ERROR2);
 
-    err = spiffebundle_Endpoint_Config_HTTPS_SPIFFE(tested, "not a URL", td,
-                                                    sid, bundle_source);
+    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(tested, "not an URL", td,
+                                                  sid, bundle_source);
     ck_assert_int_eq(err, ERROR2);
 
     spiffeid_TrustDomain err_td = { NULL };
-    err = spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
+    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", err_td, sid, bundle_source);
     ck_assert_int_eq(err, ERROR3);
     spiffeid_TrustDomain err_td2 = { "not_a_td://NU,,LL" };
-    err = spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
+    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", err_td2, sid, bundle_source);
     ck_assert_int_eq(err, ERROR3);
 
     string_t err_id = "https://not.a.spiffe.id/wrong";
-    err = spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
+    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", td, err_id, bundle_source);
     ck_assert_int_eq(err, ERROR5);
 
-    err = spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
+    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", td, sid, NULL);
     ck_assert_int_eq(err, ERROR6);
 
-    err = spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
+    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", td, sid, bundle_source);
     ck_assert_int_eq(err, NO_ERROR);
 
@@ -87,27 +87,27 @@ START_TEST(test_federation_Endpoint_Config_WEB);
         = spiffeid_TrustDomainFromString("example.com", &err);
     ck_assert_int_eq(err, NO_ERROR);
 
-    err = spiffebundle_Endpoint_Config_HTTPS_WEB(
-        NULL, "example.com/bundle.json", td);
+    err = spiffebundle_Endpoint_ConfigHTTPSWEB(NULL, "example.com/bundle.json",
+                                               td);
     ck_assert_int_eq(err, ERROR1);
 
-    err = spiffebundle_Endpoint_Config_HTTPS_WEB(tested, NULL, td);
+    err = spiffebundle_Endpoint_ConfigHTTPSWEB(tested, NULL, td);
     ck_assert_int_eq(err, ERROR2);
 
-    err = spiffebundle_Endpoint_Config_HTTPS_WEB(tested, "not a URL", td);
+    err = spiffebundle_Endpoint_ConfigHTTPSWEB(tested, "not a URL", td);
     ck_assert_int_eq(err, ERROR2);
 
     spiffeid_TrustDomain err_td = { NULL };
-    err = spiffebundle_Endpoint_Config_HTTPS_WEB(
+    err = spiffebundle_Endpoint_ConfigHTTPSWEB(
         tested, "example.com/bundle.json", err_td);
     ck_assert_int_eq(err, ERROR3);
     spiffeid_TrustDomain err_td2 = { "not_a_td://NU,,LL" };
-    err = spiffebundle_Endpoint_Config_HTTPS_WEB(
+    err = spiffebundle_Endpoint_ConfigHTTPSWEB(
         tested, "example.com/bundle.json", err_td2);
     ck_assert_int_eq(err, ERROR3);
 
-    err = spiffebundle_Endpoint_Config_HTTPS_WEB(
-        tested, "example.com/bundle.json", td);
+    err = spiffebundle_Endpoint_ConfigHTTPSWEB(tested,
+                                               "example.com/bundle.json", td);
     ck_assert_int_eq(err, NO_ERROR);
 
     tested->owns_bundle = true;
@@ -139,12 +139,12 @@ START_TEST(test_federation_Endpoint_get_bundle);
         = spiffebundle_Endpoint_GetBundleForTrustDomain(tested, err_td, &err);
     ck_assert_uint_eq(err, ERROR2);
 
-    tested->bundle_source = NULL;
+    tested->source = NULL;
     end_bundle
         = spiffebundle_Endpoint_GetBundleForTrustDomain(tested, td, &err);
     ck_assert_uint_eq(err, ERROR3);
 
-    tested->bundle_source = source;
+    tested->source = source;
     end_bundle
         = spiffebundle_Endpoint_GetBundleForTrustDomain(tested, td, &err);
     ck_assert_uint_eq(err, NO_ERROR);
@@ -157,9 +157,12 @@ START_TEST(test_federation_Endpoint_get_bundle);
 END_TEST
 
 START_TEST(test_federation_Endpoint_fetch_WEB);
-{   
+{
     system("go run ./resources/https_spiffe_server.go &");
-    sleep(1); // sleep for a second to let the server set itself up
+
+    struct timespec sleep_time = { .tv_sec = 1, .tv_nsec = 0 };
+    nanosleep(&sleep_time,
+              NULL); // sleep for a second to let the server set itself up
     spiffebundle_Endpoint *tested = spiffebundle_Endpoint_New();
     err_t err;
     spiffeid_TrustDomain td = { string_new("example.org") };
@@ -167,8 +170,8 @@ START_TEST(test_federation_Endpoint_fetch_WEB);
         = spiffebundle_Load(td, "./resources/example.org.bundle.jwks", &err);
 
     ck_assert_uint_eq(err, NO_ERROR);
-    err = spiffebundle_Endpoint_Config_HTTPS_WEB(tested, "https://example.org",
-                                                 td);
+    err = spiffebundle_Endpoint_ConfigHTTPSWEB(tested,
+                                               "https://example.org:443", td);
 
     ck_assert_int_eq(err, NO_ERROR);
     tested->curl_handle = curl_easy_init();
@@ -178,8 +181,8 @@ START_TEST(test_federation_Endpoint_fetch_WEB);
                      "./resources/example.org.crt");
 
     err = spiffebundle_Endpoint_Fetch(tested);
-
-    ck_assert_ptr_ne(tested->bundle_source, NULL);
+    nanosleep(&sleep_time, NULL);
+    ck_assert_ptr_ne(tested->source, NULL);
 
     ck_assert(spiffebundle_Bundle_Equal(
         bundle,
@@ -199,11 +202,15 @@ END_TEST
 START_TEST(test_federation_Endpoint_fetch_SPIFFE);
 {
     system("go run ./resources/https_spiffe_server.go &");
-    sleep(1); // sleep for a second to let the server set itself up
+
+    struct timespec sleep_time = { .tv_sec = 1, .tv_nsec = 0 };
+    nanosleep(&sleep_time,
+              NULL); // sleep for half a second to let the server set itself up
     err_t err;
     spiffeid_TrustDomain td = { "example.org" };
     x509bundle_Bundle *x509bundle
         = x509bundle_Load(td, "./resources/example.org.crt", &err);
+
     ck_assert_uint_eq(err, NO_ERROR);
     ck_assert_ptr_ne(x509bundle, NULL);
 
@@ -213,20 +220,18 @@ START_TEST(test_federation_Endpoint_fetch_SPIFFE);
     spiffebundle_Source *source = spiffebundle_SourceFromBundle(bundle);
     spiffebundle_Endpoint *tested = spiffebundle_Endpoint_New();
 
-    err = spiffebundle_Endpoint_Config_HTTPS_SPIFFE(
+    err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "https://example.org:443", td, "spiffe://example.org/workload",
         source);
 
-    ck_assert_ptr_ne(tested->bundle_source, NULL);
-    ck_assert_ptr_eq(tested->bundle_source, source);
+    ck_assert_ptr_ne(tested->source, NULL);
+    ck_assert_ptr_eq(tested->source, source);
     ck_assert_int_eq(err, NO_ERROR);
-    tested->curl_handle = curl_easy_init();
-    ck_assert_ptr_ne(tested->curl_handle, NULL);
 
     err = spiffebundle_Endpoint_Fetch(tested);
 
     ck_assert_int_eq(err, NO_ERROR);
-    ck_assert_ptr_ne(tested->bundle_source, NULL);
+    ck_assert_ptr_ne(tested->source, NULL);
     ck_assert(tested->owns_bundle);
 
     for(size_t i = 0,
@@ -271,6 +276,7 @@ Suite *watcher_suite(void)
     tcase_add_test(tc_core, test_federation_Endpoint_fetch_WEB);
     tcase_add_test(tc_core, test_federation_Endpoint_fetch_SPIFFE);
 
+    tcase_set_timeout(tc_core,20);
     suite_add_tcase(s, tc_core);
 
     return s;
@@ -280,8 +286,6 @@ int main(int argc, char **argv)
 {
     Suite *s = watcher_suite();
     SRunner *sr = srunner_create(s);
-
-    
 
     srunner_run_all(sr, CK_NORMAL);
     const int number_failed = srunner_ntests_failed(sr);
