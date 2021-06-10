@@ -60,7 +60,7 @@ We are planning on delivering package for the most popular Linux distros, but at
 
 ### Basic usage
 
-Refer to [Examples](workload/src/EXAMPLE.md) for more information.
+Refer to [Examples](workload/EXAMPLE.md) for more information.
 
 ## Initial Contributors
 

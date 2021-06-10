@@ -6,13 +6,13 @@ set(TARGET_NAME "bundle")
 project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C)
 
 set(LIB_BUNDLE 
-${PROJECT_SOURCE_DIR}/jwtbundle/src/bundle.c
-${PROJECT_SOURCE_DIR}/jwtbundle/src/set.c
-${PROJECT_SOURCE_DIR}/jwtbundle/src/source.c
-${PROJECT_SOURCE_DIR}/x509bundle/src/bundle.c
-${PROJECT_SOURCE_DIR}/x509bundle/src/set.c
-${PROJECT_SOURCE_DIR}/spiffebundle/src/bundle.c
-${PROJECT_SOURCE_DIR}/spiffebundle/src/set.c
+${PROJECT_SOURCE_DIR}/jwtbundle/bundle.c
+${PROJECT_SOURCE_DIR}/jwtbundle/set.c
+${PROJECT_SOURCE_DIR}/jwtbundle/source.c
+${PROJECT_SOURCE_DIR}/x509bundle/bundle.c
+${PROJECT_SOURCE_DIR}/x509bundle/set.c
+${PROJECT_SOURCE_DIR}/spiffebundle/bundle.c
+${PROJECT_SOURCE_DIR}/spiffebundle/set.c
 )
 
 add_library(${TARGET_NAME} SHARED ${LIB_BUNDLE})
@@ -25,9 +25,9 @@ install(
 
 # Install Headers:
 set(HEADERS_BUNDLE_JWT
-${PROJECT_SOURCE_DIR}/jwtbundle/src/bundle.h
-${PROJECT_SOURCE_DIR}/jwtbundle/src/set.h
-${PROJECT_SOURCE_DIR}/jwtbundle/src/source.h
+${PROJECT_SOURCE_DIR}/jwtbundle/bundle.h
+${PROJECT_SOURCE_DIR}/jwtbundle/set.h
+${PROJECT_SOURCE_DIR}/jwtbundle/source.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
@@ -37,9 +37,9 @@ install(
 
 # Install Headers:
 set(HEADERS_BUNDLE_X509
-${PROJECT_SOURCE_DIR}/x509bundle/src/bundle.h
-${PROJECT_SOURCE_DIR}/x509bundle/src/set.h
-${PROJECT_SOURCE_DIR}/x509bundle/src/source.h
+${PROJECT_SOURCE_DIR}/x509bundle/bundle.h
+${PROJECT_SOURCE_DIR}/x509bundle/set.h
+${PROJECT_SOURCE_DIR}/x509bundle/source.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
@@ -49,8 +49,8 @@ install(
 
 # Install Headers:
 set(HEADERS_BUNDLE_SPIFFE
-${PROJECT_SOURCE_DIR}/spiffebundle/src/bundle.h
-${PROJECT_SOURCE_DIR}/spiffebundle/src/set.h
+${PROJECT_SOURCE_DIR}/spiffebundle/bundle.h
+${PROJECT_SOURCE_DIR}/spiffebundle/set.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(

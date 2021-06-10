@@ -6,21 +6,21 @@ set(TARGET_NAME "spiffetls")
 project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C)
 
 set(LIB_SPIFFETLS
-${PROJECT_SOURCE_DIR}/tlsconfig/src/config.c
-${PROJECT_SOURCE_DIR}/tlsconfig/src/authorizer.c
-${PROJECT_SOURCE_DIR}/src/dial.c
-${PROJECT_SOURCE_DIR}/src/listen.c
-${PROJECT_SOURCE_DIR}/src/mode.c
-${PROJECT_SOURCE_DIR}/src/peerid.c)
+${PROJECT_SOURCE_DIR}/tlsconfig/config.c
+${PROJECT_SOURCE_DIR}/tlsconfig/authorizer.c
+${PROJECT_SOURCE_DIR}/dial.c
+${PROJECT_SOURCE_DIR}/listen.c
+${PROJECT_SOURCE_DIR}/mode.c
+${PROJECT_SOURCE_DIR}/peerid.c)
 
 set(C_DIAL
-    src/c_dial_example.c
+    c_dial_example.c
 )
 add_executable(c_dial "${C_DIAL}")
 target_link_libraries(c_dial spiffetls)
 
 set(C_LISTEN
-    src/c_listen_example.c
+    c_listen_example.c
 )
 add_executable(c_listen "${C_LISTEN}")
 target_link_libraries(c_listen spiffetls)

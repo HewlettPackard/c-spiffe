@@ -1,7 +1,7 @@
-#include "spiffetls/src/dial.h"
-#include "spiffetls/src/mode.h"
-#include "spiffetls/src/peerid.h"
-#include "spiffetls/tlsconfig/src/config.h"
+#include "spiffetls/dial.h"
+#include "spiffetls/mode.h"
+#include "spiffetls/peerid.h"
+#include "spiffetls/tlsconfig/config.h"
 #include <check.h>
 #include <stdio.h>
 #include <unistd.h>
