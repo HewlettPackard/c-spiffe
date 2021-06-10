@@ -1,4 +1,4 @@
-#include "bundle/x509bundle/src/source.h"
+#include "bundle/x509bundle/source.h"
 #include <check.h>
 
 START_TEST(test_x509bundle_SourceFromSet)

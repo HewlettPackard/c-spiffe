@@ -6,12 +6,12 @@ set(TARGET_NAME "internal")
 project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C)
 
 set(LIB_INTERNAL 
-${PROJECT_SOURCE_DIR}/cryptoutil/src/keys.c
-${PROJECT_SOURCE_DIR}/jwtutil/src/util.c
-${PROJECT_SOURCE_DIR}/pemutil/src/pem.c
-${PROJECT_SOURCE_DIR}/x509util/src/certpool.c
-${PROJECT_SOURCE_DIR}/x509util/src/util.c
-${PROJECT_SOURCE_DIR}/../utils/src/util.c
+${PROJECT_SOURCE_DIR}/cryptoutil/keys.c
+${PROJECT_SOURCE_DIR}/jwtutil/util.c
+${PROJECT_SOURCE_DIR}/pemutil/pem.c
+${PROJECT_SOURCE_DIR}/x509util/certpool.c
+${PROJECT_SOURCE_DIR}/x509util/util.c
+${PROJECT_SOURCE_DIR}/../utils/util.c
 )
 
 add_library(${TARGET_NAME} SHARED ${LIB_INTERNAL})
@@ -23,7 +23,7 @@ install(
 
 # Install Headers:
 set(HEADERS_INTERNAL_CRYPTO
-${PROJECT_SOURCE_DIR}/cryptoutil/src/keys.h
+${PROJECT_SOURCE_DIR}/cryptoutil/keys.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
@@ -33,7 +33,7 @@ install(
 
 # Install Headers:
 set(HEADERS_INTERNAL_JWT
-${PROJECT_SOURCE_DIR}/jwtutil/src/util.h
+${PROJECT_SOURCE_DIR}/jwtutil/util.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
@@ -43,7 +43,7 @@ install(
 
 # Install Headers:
 set(HEADERS_INTERNAL_PEM
-${PROJECT_SOURCE_DIR}/pemutil/src/pem.h
+${PROJECT_SOURCE_DIR}/pemutil/pem.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
@@ -53,8 +53,8 @@ install(
 
 # Install Headers:
 set(HEADERS_INTERNAL_X509
-${PROJECT_SOURCE_DIR}/x509util/src/certpool.h
-${PROJECT_SOURCE_DIR}/x509util/src/util.h
+${PROJECT_SOURCE_DIR}/x509util/certpool.h
+${PROJECT_SOURCE_DIR}/x509util/util.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
@@ -64,8 +64,8 @@ install(
 
 # Install Headers:
 set(HEADERS_UTIL
-${PROJECT_SOURCE_DIR}/../utils/src/util.h
-${PROJECT_SOURCE_DIR}/../utils/src/stb_ds.h
+${PROJECT_SOURCE_DIR}/../utils/util.h
+${PROJECT_SOURCE_DIR}/../utils/stb_ds.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(

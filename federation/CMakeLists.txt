@@ -4,8 +4,8 @@ cmake_minimum_required(VERSION 3.13)
 set(TARGET_NAME "federation")
 
 set(LIB_FEDERATION 
-${CMAKE_CURRENT_SOURCE_DIR}/src/endpoint.c
-${CMAKE_CURRENT_SOURCE_DIR}/src/watcher.c
+${CMAKE_CURRENT_SOURCE_DIR}/endpoint.c
+${CMAKE_CURRENT_SOURCE_DIR}/watcher.c
 ${CMAKE_CURRENT_SOURCE_DIR}/../utils/src/util.c
 ${CMAKE_CURRENT_SOURCE_DIR}/../bundle/spiffebundle/src/source.c
 )
@@ -37,7 +37,7 @@ install(
 )
 
 set(ENDPOINT_EXAMPLE
-    src/endpoint_example.c
+    endpoint_example.c
 )
 add_executable(endpoint_example "${ENDPOINT_EXAMPLE}")
 target_link_libraries(endpoint_example federation)

@@ -1,8 +1,8 @@
-#include "spiffeid/src/id.h"
-#include "spiffetls/src/dial.h"
-#include "spiffetls/src/mode.h"
-#include "spiffetls/src/option.h"
-#include "workload/src/x509source.h"
+#include "spiffeid/id.h"
+#include "spiffetls/dial.h"
+#include "spiffetls/mode.h"
+#include "spiffetls/option.h"
+#include "workload/x509source.h"
 #include <unistd.h>
 
 void init_openssl()
