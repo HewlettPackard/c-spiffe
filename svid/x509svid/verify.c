@@ -1,5 +1,5 @@
-#include "svid/x509svid/src/svid.h"
-#include "svid/x509svid/src/verify.h"
+#include "svid/x509svid/svid.h"
+#include "svid/x509svid/verify.h"
 #include "internal/x509util/util.h"
 #include <openssl/pem.h>
 

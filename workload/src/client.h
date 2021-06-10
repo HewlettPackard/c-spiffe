@@ -2,8 +2,8 @@
 #define INCLUDE_WORKLOAD_CLIENT_H
 
 #include "bundle/x509bundle/set.h"
-#include "svid/jwtsvid/src/svid.h"
-#include "svid/x509svid/src/svid.h"
+#include "svid/jwtsvid/svid.h"
+#include "svid/x509svid/svid.h"
 #include "utils/util.h"
 #include "workload/src/backoff.h"
 #include "workload/src/jwtwatcher.h"

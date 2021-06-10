@@ -1,4 +1,4 @@
-#include "svid/jwtsvid/src/svid.h"
+#include "svid/jwtsvid/svid.h"
 #include "bundle/jwtbundle/source.h"
 #include <cjose/cjose.h>
 #include <openssl/ec.h>

@@ -2,7 +2,7 @@
 #define INCLUDE_WORKLOAD_JWTCALLBACK_H
 
 #include "bundle/jwtbundle/set.h"
-#include "svid/jwtsvid/src/svid.h"
+#include "svid/jwtsvid/svid.h"
 
 #ifdef __cplusplus
 extern "C" {

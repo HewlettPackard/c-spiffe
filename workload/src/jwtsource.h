@@ -2,7 +2,7 @@
 #define INCLUDE_WORKLOAD_JWTSOURCE_H
 
 #include "bundle/jwtbundle/set.h"
-#include "svid/jwtsvid/src/svid.h"
+#include "svid/jwtsvid/svid.h"
 #include "jwtwatcher.h"
 #include "jwtcallback.h"
 #include <threads.h>

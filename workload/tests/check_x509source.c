@@ -1,4 +1,4 @@
-#include "svid/x509svid/src/svid.h"
+#include "svid/x509svid/svid.h"
 #include "workload/src/watcher.h"
 #include "workload/src/x509source.h"
 #include <check.h>

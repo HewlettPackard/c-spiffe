@@ -1,4 +1,4 @@
-#include "svid/jwtsvid/src/svid.h"
+#include "svid/jwtsvid/svid.h"
 #include "workload/src/jwtsource.h"
 #include "workload/src/jwtwatcher.h"
 #include <check.h>

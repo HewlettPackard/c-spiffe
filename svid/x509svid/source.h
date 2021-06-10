@@ -2,7 +2,7 @@
 #define INCLUDE_SVID_X509SVID_SOURCE_H
 
 #include "workload/src/x509source.h"
-#include "svid/x509svid/src/svid.h"
+#include "svid/x509svid/svid.h"
 
 typedef struct {
     enum { X509SVID_SVID, X509SVID_WORKLOADAPI_X509SOURCE } type;

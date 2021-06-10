@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #define STB_DS_IMPLEMENTATION
-#include "svid/jwtsvid/src/svid.h"
+#include "svid/jwtsvid/svid.h"
 
 // Check common fields
 void test_fields_verify(jwtsvid_SVID *svid, err_t err, char *token)

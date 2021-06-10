@@ -7,7 +7,7 @@
  * Copyright (c) 2020 CESAR
  */
 
-#include "svid/x509svid/src/svid.h"
+#include "svid/x509svid/svid.h"
 #include "workload.grpc.pb.h"
 #include "workload.pb.h"
 #include "workload/src/client.h"

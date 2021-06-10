@@ -1,4 +1,4 @@
-#include "svid/x509svid/src/source.h"
+#include "svid/x509svid/source.h"
 
 x509svid_Source *x509svid_SourceFromSVID(x509svid_SVID *svid)
 {
