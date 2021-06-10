@@ -1,5 +1,5 @@
-#include "internal/cryptoutil/src/keys.h"
-#include "internal/x509util/src/util.h"
+#include "internal/cryptoutil/keys.h"
+#include "internal/x509util/util.h"
 #include "spiffeid/trustdomain.h"
 #include "bundle/x509bundle/set.h"
 #include <check.h>

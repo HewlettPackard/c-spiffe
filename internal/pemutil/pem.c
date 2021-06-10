@@ -1,4 +1,4 @@
-#include "internal/pemutil/src/pem.h"
+#include "internal/pemutil/pem.h"
 
 static const char *types_str[] = { "CERTIFICATE", "PRIVATE KEY" };
 enum TYPE_IDX { CERT_TYPE, KEY_TYPE };

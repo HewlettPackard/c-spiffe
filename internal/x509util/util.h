@@ -1,7 +1,7 @@
 #ifndef INCLUDE_INTERNAL_X509UTIL_UTIL_H
 #define INCLUDE_INTERNAL_X509UTIL_UTIL_H
 
-#include "internal/x509util/src/certpool.h"
+#include "internal/x509util/certpool.h"
 #include "utils/util.h"
 #include <openssl/evp.h>
 #include <openssl/x509.h>

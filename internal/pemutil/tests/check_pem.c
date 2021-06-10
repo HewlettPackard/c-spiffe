@@ -1,4 +1,4 @@
-#include "internal/pemutil/src/pem.h"
+#include "internal/pemutil/pem.h"
 #include <check.h>
 
 #define STB_DS_IMPLEMENTATION

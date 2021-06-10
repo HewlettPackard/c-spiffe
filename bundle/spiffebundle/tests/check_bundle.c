@@ -1,7 +1,7 @@
 #include "bundle/spiffebundle/bundle.h"
-#include "internal/jwtutil/src/util.h"
-#include "internal/pemutil/src/pem.h"
-#include "internal/x509util/src/util.h"
+#include "internal/jwtutil/util.h"
+#include "internal/pemutil/pem.h"
+#include "internal/x509util/util.h"
 #include <check.h>
 
 START_TEST(test_spiffebundle_New)

@@ -1,6 +1,6 @@
 #include "svid/x509svid/src/svid.h"
 #include "svid/x509svid/src/verify.h"
-#include "internal/x509util/src/util.h"
+#include "internal/x509util/util.h"
 #include <openssl/pem.h>
 
 bool x509svid_Verify_cb(X509_STORE_CTX *store_ctx, x509bundle_Source *source,

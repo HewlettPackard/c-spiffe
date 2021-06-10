@@ -1,5 +1,5 @@
 #include "bundle/jwtbundle/bundle.h"
-#include "internal/jwtutil/src/util.h"
+#include "internal/jwtutil/util.h"
 #include "spiffeid/trustdomain.h"
 #include <cjose/jwk.h>
 #include <jansson.h>

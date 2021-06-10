@@ -5,8 +5,8 @@ file(COPY ../tests/resources/ DESTINATION ${PROJECT_BINARY_DIR}/internal/jwtutil
 
 set(SOURCES_CHECK
   check_util.c 
-  ../../cryptoutil/src/keys.c
-  ../src/util.c
+  ../../cryptoutil/keys.c
+  ../util.c
   ../../../utils/stb_ds.h
 )
 

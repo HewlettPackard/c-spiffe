@@ -2,7 +2,7 @@
 #define INCLUDE_SPIFFETLS_MODE_H
 
 #include "bundle/x509bundle/source.h"
-#include "internal/x509util/src/certpool.h"
+#include "internal/x509util/certpool.h"
 #include "spiffetls/tlsconfig/src/authorizer.h"
 #include "svid/x509svid/src/source.h"
 #include "svid/x509svid/src/svid.h"

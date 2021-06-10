@@ -5,8 +5,8 @@ file(COPY ../tests/resources/ DESTINATION ${PROJECT_BINARY_DIR}/internal/x509uti
 
 set(SOURCES_CHECK
   check_util.c
-  ../src/util.c
-  ../src/certpool.c
+  ../util.c
+  ../certpool.c
   ../../../utils/util.c
 )
 
@@ -30,8 +30,8 @@ add_test(check_x509util check_x509util)
 
 set(SOURCES_CHECK
   check_certpool.c
-  ../src/util.c
-  ../src/certpool.c
+  ../util.c
+  ../certpool.c
   ../../../utils/util.c
 )
 
