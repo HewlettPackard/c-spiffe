@@ -1,7 +1,7 @@
 <map id="workload/tests/check_x509source.c" name="workload/tests/check_x509source.c">
 <area shape="rect" id="node1" title=" " alt="" coords="923,5,1069,47"/>
 <area shape="rect" id="node2" href="$x509svid_2src_2svid_8h.html" title=" " alt="" coords="1081,654,1242,681"/>
-<area shape="rect" id="node20" href="$watcher_8h.html" title=" " alt="" coords="602,169,758,196"/>
+<area shape="rect" id="node20" href="$workload_2src_2watcher_8h.html" title=" " alt="" coords="602,169,758,196"/>
 <area shape="rect" id="node36" href="$x509source_8h.html" title=" " alt="" coords="592,95,768,121"/>
 <area shape="rect" id="node37" title=" " alt="" coords="1224,95,1291,121"/>
 <area shape="rect" id="node3" href="$pem_8h.html" title=" " alt="" coords="1317,825,1449,867"/>

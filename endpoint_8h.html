@@ -83,32 +83,33 @@ $(function() {
 <code>#include &quot;<a class="el" href="trustdomain_8h_source.html">spiffeid/src/trustdomain.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="utils_2src_2util_8h_source.html">utils/src/util.h</a>&quot;</code><br />
 <code>#include &lt;curl/curl.h&gt;</code><br />
+<code>#include &lt;threads.h&gt;</code><br />
 <code>#include &lt;uriparser/Uri.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for endpoint.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="endpoint_8h__incl.png" border="0" usemap="#afederation_2src_2endpoint_8h" alt=""/></div>
 <map name="afederation_2src_2endpoint_8h" id="afederation_2src_2endpoint_8h">
-<area shape="rect" title=" " alt="" coords="374,5,538,32"/>
-<area shape="rect" href="spiffebundle_2src_2bundle_8h.html" title=" " alt="" coords="389,259,523,300"/>
-<area shape="rect" href="id_8h.html" title=" " alt="" coords="184,512,293,539"/>
-<area shape="rect" href="utils_2src_2util_8h.html" title=" " alt="" coords="500,587,599,613"/>
-<area shape="rect" title=" " alt="" coords="55,587,158,613"/>
-<area shape="rect" href="trustdomain_8h.html" title=" " alt="" coords="247,437,414,464"/>
-<area shape="rect" href="spiffebundle_2src_2set_8h.html" title=" " alt="" coords="493,169,627,211"/>
-<area shape="rect" href="bundle_2spiffebundle_2src_2source_8h.html" title=" " alt="" coords="389,80,523,121"/>
-<area shape="rect" title=" " alt="" coords="873,87,951,114"/>
-<area shape="rect" href="jwtbundle_2src_2bundle_8h.html" title=" " alt="" coords="227,348,368,389"/>
-<area shape="rect" title=" " alt="" coords="437,437,512,464"/>
-<area shape="rect" href="x509bundle_2src_2bundle_8h.html" title=" " alt="" coords="494,348,645,389"/>
-<area shape="rect" title=" " alt="" coords="587,437,695,464"/>
-<area shape="rect" title=" " alt="" coords="145,355,202,382"/>
-<area shape="rect" title=" " alt="" coords="232,661,307,688"/>
-<area shape="rect" href="stb__ds_8h.html" title=" " alt="" coords="390,661,511,688"/>
-<area shape="rect" title=" " alt="" coords="515,736,579,763"/>
-<area shape="rect" title=" " alt="" coords="587,661,690,688"/>
-<area shape="rect" title=" " alt="" coords="330,736,398,763"/>
-<area shape="rect" title=" " alt="" coords="422,736,485,763"/>
+<area shape="rect" title=" " alt="" coords="593,5,757,32"/>
+<area shape="rect" href="spiffebundle_2src_2bundle_8h.html" title=" " alt="" coords="424,259,557,300"/>
+<area shape="rect" href="id_8h.html" title=" " alt="" coords="737,512,847,539"/>
+<area shape="rect" href="utils_2src_2util_8h.html" title=" " alt="" coords="527,587,625,613"/>
+<area shape="rect" title=" " alt="" coords="831,587,934,613"/>
+<area shape="rect" title=" " alt="" coords="248,437,323,464"/>
+<area shape="rect" href="trustdomain_8h.html" title=" " alt="" coords="531,437,698,464"/>
+<area shape="rect" href="spiffebundle_2src_2set_8h.html" title=" " alt="" coords="609,169,743,211"/>
+<area shape="rect" href="bundle_2spiffebundle_2src_2source_8h.html" title=" " alt="" coords="556,80,689,121"/>
+<area shape="rect" title=" " alt="" coords="922,87,1001,114"/>
+<area shape="rect" href="jwtbundle_2src_2bundle_8h.html" title=" " alt="" coords="93,348,235,389"/>
+<area shape="rect" href="x509bundle_2src_2bundle_8h.html" title=" " alt="" coords="411,348,562,389"/>
+<area shape="rect" title=" " alt="" coords="347,437,455,464"/>
+<area shape="rect" title=" " alt="" coords="586,355,643,382"/>
+<area shape="rect" title=" " alt="" coords="755,661,829,688"/>
+<area shape="rect" href="stb__ds_8h.html" title=" " alt="" coords="609,661,730,688"/>
+<area shape="rect" title=" " alt="" coords="480,736,544,763"/>
+<area shape="rect" title=" " alt="" coords="482,661,585,688"/>
+<area shape="rect" title=" " alt="" coords="679,736,747,763"/>
+<area shape="rect" title=" " alt="" coords="593,736,655,763"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -116,13 +117,16 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="endpoint_8h__dep__incl.png" border="0" usemap="#afederation_2src_2endpoint_8hdep" alt=""/></div>
 <map name="afederation_2src_2endpoint_8hdep" id="afederation_2src_2endpoint_8hdep">
-<area shape="rect" title=" " alt="" coords="298,5,462,32"/>
-<area shape="rect" href="bundle_2spiffebundle_2src_2source_8h.html" title=" " alt="" coords="209,80,343,121"/>
-<area shape="rect" href="check__endpoint_8c.html" title=" " alt="" coords="342,169,493,211"/>
-<area shape="rect" href="endpoint_8c.html" title=" " alt="" coords="418,87,582,114"/>
-<area shape="rect" href="endpoint__example_8c.html" title=" " alt="" coords="607,80,761,121"/>
-<area shape="rect" href="bundle_2spiffebundle_2src_2source_8c.html" title=" " alt="" coords="5,169,139,211"/>
-<area shape="rect" href="check__spiffebundle__source_8c.html" title=" " alt="" coords="163,169,317,211"/>
+<area shape="rect" title=" " alt="" coords="401,5,565,32"/>
+<area shape="rect" href="bundle_2spiffebundle_2src_2source_8h.html" title=" " alt="" coords="365,80,498,121"/>
+<area shape="rect" href="federation_2src_2watcher_8h.html" title=" " alt="" coords="95,177,256,203"/>
+<area shape="rect" href="check__endpoint_8c.html" title=" " alt="" coords="617,169,768,211"/>
+<area shape="rect" href="endpoint_8c.html" title=" " alt="" coords="573,87,737,114"/>
+<area shape="rect" href="endpoint__example_8c.html" title=" " alt="" coords="762,80,917,121"/>
+<area shape="rect" href="bundle_2spiffebundle_2src_2source_8c.html" title=" " alt="" coords="281,169,414,211"/>
+<area shape="rect" href="check__spiffebundle__source_8c.html" title=" " alt="" coords="438,169,593,211"/>
+<area shape="rect" href="federation_2src_2watcher_8c.html" title=" " alt="" coords="5,266,167,293"/>
+<area shape="rect" href="federation_2tests_2check__watcher_8c.html" title=" " alt="" coords="191,259,341,300"/>
 </map>
 </div>
 </div>
@@ -156,14 +160,16 @@ Functions</h2></td></tr>
 <tr class="separator:a2ced20e06e5add5bcba32eddc33396cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12f030a3055f1ace0f637d9bc6a0c4e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="endpoint_8h.html#a12f030a3055f1ace0f637d9bc6a0c4e7">spiffebundle_Endpoint_Free</a> (<a class="el" href="structspiffebundle__Endpoint.html">spiffebundle_Endpoint</a> *endpoint)</td></tr>
 <tr class="separator:a12f030a3055f1ace0f637d9bc6a0c4e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66c34d9d4c913fdd95f7ce0b00bee6db"><td class="memItemLeft" align="right" valign="top"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="endpoint_8h.html#a66c34d9d4c913fdd95f7ce0b00bee6db">spiffebundle_Endpoint_Config_HTTPS_WEB</a> (<a class="el" href="structspiffebundle__Endpoint.html">spiffebundle_Endpoint</a> *endpoint, const char *url, <a class="el" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> trust_domain)</td></tr>
-<tr class="separator:a66c34d9d4c913fdd95f7ce0b00bee6db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a482f3b43c545ed07c14c4719ca5c5b02"><td class="memItemLeft" align="right" valign="top"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="endpoint_8h.html#a482f3b43c545ed07c14c4719ca5c5b02">spiffebundle_Endpoint_Config_HTTPS_SPIFFE</a> (<a class="el" href="structspiffebundle__Endpoint.html">spiffebundle_Endpoint</a> *endpoint, const char *url, <a class="el" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> trust_domain, const char *spiffeid, <a class="el" href="structspiffebundle__Source.html">spiffebundle_Source</a> *<a class="el" href="check__endpoint_8c.html#a97b40964d47e99b65b312e4afc894c07">source</a>)</td></tr>
-<tr class="separator:a482f3b43c545ed07c14c4719ca5c5b02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c83cbf596227a19eb47751081cc63e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="endpoint_8h.html#a3c83cbf596227a19eb47751081cc63e6">spiffebundle_Endpoint_ConfigHTTPSWEB</a> (<a class="el" href="structspiffebundle__Endpoint.html">spiffebundle_Endpoint</a> *endpoint, const char *url, <a class="el" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> trust_domain)</td></tr>
+<tr class="separator:a3c83cbf596227a19eb47751081cc63e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e1611ad1926a7c68d7bf4eea6a9d793"><td class="memItemLeft" align="right" valign="top"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="endpoint_8h.html#a9e1611ad1926a7c68d7bf4eea6a9d793">spiffebundle_Endpoint_ConfigHTTPSSPIFFE</a> (<a class="el" href="structspiffebundle__Endpoint.html">spiffebundle_Endpoint</a> *endpoint, const char *url, <a class="el" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> trust_domain, const char *spiffeid, <a class="el" href="structspiffebundle__Source.html">spiffebundle_Source</a> *<a class="el" href="check__endpoint_8c.html#a97b40964d47e99b65b312e4afc894c07">source</a>)</td></tr>
+<tr class="separator:a9e1611ad1926a7c68d7bf4eea6a9d793"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac676b163751db3339198f3c0013368a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="endpoint_8h.html#ac676b163751db3339198f3c0013368a7">spiffebundle_Endpoint_Fetch</a> (<a class="el" href="structspiffebundle__Endpoint.html">spiffebundle_Endpoint</a> *endpoint)</td></tr>
 <tr class="separator:ac676b163751db3339198f3c0013368a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6693ca5dd02528d55d95422d06d8029f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structspiffebundle__Bundle.html">spiffebundle_Bundle</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="endpoint_8h.html#a6693ca5dd02528d55d95422d06d8029f">spiffebundle_Endpoint_GetBundleForTrustDomain</a> (<a class="el" href="structspiffebundle__Endpoint.html">spiffebundle_Endpoint</a> *endpoint, <a class="el" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> trust_domain, <a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="el" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>)</td></tr>
-<tr class="separator:a6693ca5dd02528d55d95422d06d8029f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a392938c3f96cbb9f80f170cb01cdc56b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="endpoint_8h.html#a392938c3f96cbb9f80f170cb01cdc56b">spiffebundle_Endpoint_Cancel</a> (<a class="el" href="structspiffebundle__Endpoint.html">spiffebundle_Endpoint</a> *endpoint)</td></tr>
+<tr class="separator:a392938c3f96cbb9f80f170cb01cdc56b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ff3bbbe9a91fdbc9e9ca40eaa7dc49d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structspiffebundle__Bundle.html">spiffebundle_Bundle</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="endpoint_8h.html#a3ff3bbbe9a91fdbc9e9ca40eaa7dc49d">spiffebundle_Endpoint_GetBundleForTrustDomain</a> (<a class="el" href="structspiffebundle__Endpoint.html">spiffebundle_Endpoint</a> *endpoint, const <a class="el" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> <a class="el" href="check__x509source_8c.html#af961692354eb34b5aacc2fedfbdb664c">td</a>, <a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="el" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>)</td></tr>
+<tr class="separator:a3ff3bbbe9a91fdbc9e9ca40eaa7dc49d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="ab1b07431a551bce34834e79d17511537"></a>
@@ -229,14 +235,32 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a482f3b43c545ed07c14c4719ca5c5b02"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a482f3b43c545ed07c14c4719ca5c5b02">&#9670;&nbsp;</a></span>spiffebundle_Endpoint_Config_HTTPS_SPIFFE()</h2>
+<a id="a392938c3f96cbb9f80f170cb01cdc56b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a392938c3f96cbb9f80f170cb01cdc56b">&#9670;&nbsp;</a></span>spiffebundle_Endpoint_Cancel()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> spiffebundle_Endpoint_Config_HTTPS_SPIFFE </td>
+          <td class="memname"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> spiffebundle_Endpoint_Cancel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structspiffebundle__Endpoint.html">spiffebundle_Endpoint</a> *&#160;</td>
+          <td class="paramname"><em>endpoint</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9e1611ad1926a7c68d7bf4eea6a9d793"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e1611ad1926a7c68d7bf4eea6a9d793">&#9670;&nbsp;</a></span>spiffebundle_Endpoint_ConfigHTTPSSPIFFE()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> spiffebundle_Endpoint_ConfigHTTPSSPIFFE </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structspiffebundle__Endpoint.html">spiffebundle_Endpoint</a> *&#160;</td>
           <td class="paramname"><em>endpoint</em>, </td>
@@ -275,14 +299,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a66c34d9d4c913fdd95f7ce0b00bee6db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66c34d9d4c913fdd95f7ce0b00bee6db">&#9670;&nbsp;</a></span>spiffebundle_Endpoint_Config_HTTPS_WEB()</h2>
+<a id="a3c83cbf596227a19eb47751081cc63e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c83cbf596227a19eb47751081cc63e6">&#9670;&nbsp;</a></span>spiffebundle_Endpoint_ConfigHTTPSWEB()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> spiffebundle_Endpoint_Config_HTTPS_WEB </td>
+          <td class="memname"><a class="el" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> spiffebundle_Endpoint_ConfigHTTPSWEB </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structspiffebundle__Endpoint.html">spiffebundle_Endpoint</a> *&#160;</td>
           <td class="paramname"><em>endpoint</em>, </td>
@@ -345,8 +369,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a6693ca5dd02528d55d95422d06d8029f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6693ca5dd02528d55d95422d06d8029f">&#9670;&nbsp;</a></span>spiffebundle_Endpoint_GetBundleForTrustDomain()</h2>
+<a id="a3ff3bbbe9a91fdbc9e9ca40eaa7dc49d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ff3bbbe9a91fdbc9e9ca40eaa7dc49d">&#9670;&nbsp;</a></span>spiffebundle_Endpoint_GetBundleForTrustDomain()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -360,8 +384,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a>&#160;</td>
-          <td class="paramname"><em>trust_domain</em>, </td>
+          <td class="paramtype">const <a class="el" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a>&#160;</td>
+          <td class="paramname"><em>td</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

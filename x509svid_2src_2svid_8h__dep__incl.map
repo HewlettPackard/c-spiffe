@@ -7,7 +7,7 @@
 <area shape="rect" id="node24" href="$x509svid_2tests_2check__svid_8c.html" title=" " alt="" coords="3827,80,3962,121"/>
 <area shape="rect" id="node25" href="$client_8cc.html" title=" " alt="" coords="2271,251,2419,278"/>
 <area shape="rect" id="node26" href="$client_8h.html" title=" " alt="" coords="2667,169,2808,196"/>
-<area shape="rect" id="node40" href="$watcher_8h.html" title=" " alt="" coords="2039,251,2195,278"/>
+<area shape="rect" id="node40" href="$workload_2src_2watcher_8h.html" title=" " alt="" coords="2039,251,2195,278"/>
 <area shape="rect" id="node42" href="$x509source_8h.html" title=" " alt="" coords="1871,341,2047,367"/>
 <area shape="rect" id="node47" href="$check__x509source_8c.html" title=" " alt="" coords="2377,423,2524,464"/>
 <area shape="rect" id="node49" href="$check__client_8cc.html" title=" " alt="" coords="3605,244,3752,285"/>
@@ -37,14 +37,14 @@
 <area shape="rect" id="node31" href="$cpp__client__example_8cc.html" title=" " alt="" coords="3003,244,3162,285"/>
 <area shape="rect" id="node32" href="$jwtwatcher_8c.html" title=" " alt="" coords="3132,341,3305,367"/>
 <area shape="rect" id="node33" href="$jwtwatcher_8h.html" title=" " alt="" coords="3408,251,3581,278"/>
-<area shape="rect" id="node39" href="$watcher_8c.html" title=" " alt="" coords="2197,430,2353,457"/>
+<area shape="rect" id="node39" href="$workload_2src_2watcher_8c.html" title=" " alt="" coords="2197,430,2353,457"/>
 <area shape="rect" id="node34" href="$jwtsource_8c.html" title=" " alt="" coords="3963,430,4130,457"/>
 <area shape="rect" id="node35" href="$jwtsource_8h.html" title=" " alt="" coords="3858,341,4025,367"/>
 <area shape="rect" id="node36" href="$check__jwtsource_8c.html" title=" " alt="" coords="3761,423,3908,464"/>
 <area shape="rect" id="node37" href="$watch__jwt__bundles_8c.html" title=" " alt="" coords="3387,333,3522,375"/>
 <area shape="rect" id="node38" href="$check__jwtwatcher_8c.html" title=" " alt="" coords="3547,333,3693,375"/>
 <area shape="rect" id="node41" href="$x509source_8c.html" title=" " alt="" coords="1996,430,2172,457"/>
-<area shape="rect" id="node48" href="$check__watcher_8c.html" title=" " alt="" coords="2172,333,2319,375"/>
+<area shape="rect" id="node48" href="$workload_2tests_2check__watcher_8c.html" title=" " alt="" coords="2172,333,2319,375"/>
 <area shape="rect" id="node43" href="$bundle_2x509bundle_2src_2source_8h.html" title=" " alt="" coords="1373,423,1523,464"/>
 <area shape="rect" id="node44" href="$bundle_2x509bundle_2src_2source_8c.html" title=" " alt="" coords="1286,512,1437,553"/>
 <area shape="rect" id="node45" href="$verify_8h.html" title=" " alt="" coords="1632,519,1800,546"/>

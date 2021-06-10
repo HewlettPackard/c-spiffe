@@ -1,9 +1,12 @@
 <map id="federation/src/endpoint.h" name="federation/src/endpoint.h">
-<area shape="rect" id="node1" title=" " alt="" coords="298,5,462,32"/>
-<area shape="rect" id="node2" href="$bundle_2spiffebundle_2src_2source_8h.html" title=" " alt="" coords="209,80,343,121"/>
-<area shape="rect" id="node4" href="$check__endpoint_8c.html" title=" " alt="" coords="342,169,493,211"/>
-<area shape="rect" id="node6" href="$endpoint_8c.html" title=" " alt="" coords="418,87,582,114"/>
-<area shape="rect" id="node7" href="$endpoint__example_8c.html" title=" " alt="" coords="607,80,761,121"/>
-<area shape="rect" id="node3" href="$bundle_2spiffebundle_2src_2source_8c.html" title=" " alt="" coords="5,169,139,211"/>
-<area shape="rect" id="node5" href="$check__spiffebundle__source_8c.html" title=" " alt="" coords="163,169,317,211"/>
+<area shape="rect" id="node1" title=" " alt="" coords="401,5,565,32"/>
+<area shape="rect" id="node2" href="$bundle_2spiffebundle_2src_2source_8h.html" title=" " alt="" coords="365,80,498,121"/>
+<area shape="rect" id="node4" href="$federation_2src_2watcher_8h.html" title=" " alt="" coords="95,177,256,203"/>
+<area shape="rect" id="node7" href="$check__endpoint_8c.html" title=" " alt="" coords="617,169,768,211"/>
+<area shape="rect" id="node9" href="$endpoint_8c.html" title=" " alt="" coords="573,87,737,114"/>
+<area shape="rect" id="node10" href="$endpoint__example_8c.html" title=" " alt="" coords="762,80,917,121"/>
+<area shape="rect" id="node3" href="$bundle_2spiffebundle_2src_2source_8c.html" title=" " alt="" coords="281,169,414,211"/>
+<area shape="rect" id="node8" href="$check__spiffebundle__source_8c.html" title=" " alt="" coords="438,169,593,211"/>
+<area shape="rect" id="node5" href="$federation_2src_2watcher_8c.html" title=" " alt="" coords="5,266,167,293"/>
+<area shape="rect" id="node6" href="$federation_2tests_2check__watcher_8c.html" title=" " alt="" coords="191,259,341,300"/>
 </map>

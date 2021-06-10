@@ -19,8 +19,8 @@
 <area shape="rect" id="node14" href="$cpp__client__example_8cc.html" title=" " alt="" coords="296,363,454,404"/>
 <area shape="rect" id="node15" href="$jwtwatcher_8c.html" title=" " alt="" coords="1215,459,1388,486"/>
 <area shape="rect" id="node16" href="$jwtwatcher_8h.html" title=" " alt="" coords="1732,370,1906,397"/>
-<area shape="rect" id="node23" href="$watcher_8c.html" title=" " alt="" coords="90,549,246,575"/>
-<area shape="rect" id="node24" href="$watcher_8h.html" title=" " alt="" coords="478,370,634,397"/>
+<area shape="rect" id="node23" href="$workload_2src_2watcher_8c.html" title=" " alt="" coords="90,549,246,575"/>
+<area shape="rect" id="node24" href="$workload_2src_2watcher_8h.html" title=" " alt="" coords="478,370,634,397"/>
 <area shape="rect" id="node48" href="$check__client_8cc.html" title=" " alt="" coords="710,363,856,404"/>
 <area shape="rect" id="node17" href="$jwtsource_8c.html" title=" " alt="" coords="1888,549,2054,575"/>
 <area shape="rect" id="node21" href="$watch__jwt__bundles_8c.html" title=" " alt="" coords="1549,452,1684,493"/>
@@ -29,7 +29,7 @@
 <area shape="rect" id="node25" href="$x509source_8c.html" title=" " alt="" coords="1131,549,1307,575"/>
 <area shape="rect" id="node26" href="$x509source_8h.html" title=" " alt="" coords="612,459,788,486"/>
 <area shape="rect" id="node46" href="$check__x509source_8c.html" title=" " alt="" coords="960,541,1107,583"/>
-<area shape="rect" id="node47" href="$check__watcher_8c.html" title=" " alt="" coords="442,452,588,493"/>
+<area shape="rect" id="node47" href="$workload_2tests_2check__watcher_8c.html" title=" " alt="" coords="442,452,588,493"/>
 <area shape="rect" id="node27" href="$bundle_2x509bundle_2src_2source_8h.html" title=" " alt="" coords="481,541,632,583"/>
 <area shape="rect" id="node29" href="$mode_8h.html" title=" " alt="" coords="288,638,422,665"/>
 <area shape="rect" id="node30" href="$client_2main_8c.html" title=" " alt="" coords="983,809,1114,851"/>

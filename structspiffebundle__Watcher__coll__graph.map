@@ -1,0 +1,13 @@
+<map id="spiffebundle_Watcher" name="spiffebundle_Watcher">
+<area shape="rect" id="node1" title=" " alt="" coords="6,496,153,523"/>
+<area shape="rect" id="node2" href="$structmap__string__Endpoint__Status.html" title=" " alt="" coords="8,392,151,433"/>
+<area shape="rect" id="node3" href="$structspiffebundle__Endpoint__Status.html" title=" " alt="" coords="5,288,153,329"/>
+<area shape="rect" id="node4" href="$structspiffebundle__Endpoint.html" title=" " alt="" coords="128,191,276,218"/>
+<area shape="rect" id="node7" href="$structspiffebundle__Source.html" title=" " alt="" coords="274,399,413,426"/>
+<area shape="rect" id="node5" href="$structspiffeid__ID.html" title=" " alt="" coords="225,95,307,121"/>
+<area shape="rect" id="node6" href="$structspiffeid__TrustDomain.html" title=" " alt="" coords="170,5,314,32"/>
+<area shape="rect" id="node8" href="$structspiffebundle__Bundle.html" title=" " alt="" coords="343,95,482,121"/>
+<area shape="rect" id="node11" href="$structmap__string__spiffebundle__Bundle.html" title=" " alt="" coords="421,184,583,225"/>
+<area shape="rect" id="node9" href="$structmap__string__EVP__PKEY.html" title=" " alt="" coords="339,5,500,32"/>
+<area shape="rect" id="node10" href="$structspiffebundle__Set.html" title=" " alt="" coords="427,295,545,322"/>
+</map>

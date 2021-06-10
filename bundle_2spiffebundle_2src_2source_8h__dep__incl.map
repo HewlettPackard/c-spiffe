@@ -1,9 +1,12 @@
 <map id="bundle/spiffebundle/src/source.h" name="bundle/spiffebundle/src/source.h">
-<area shape="rect" id="node1" title=" " alt="" coords="234,5,367,47"/>
-<area shape="rect" id="node2" href="$bundle_2spiffebundle_2src_2source_8c.html" title=" " alt="" coords="61,95,194,136"/>
-<area shape="rect" id="node3" href="$endpoint_8h.html" title=" " alt="" coords="219,102,383,129"/>
-<area shape="rect" id="node6" href="$check__endpoint_8c.html" title=" " alt="" coords="373,184,524,225"/>
-<area shape="rect" id="node7" href="$check__spiffebundle__source_8c.html" title=" " alt="" coords="458,95,613,136"/>
+<area shape="rect" id="node1" title=" " alt="" coords="387,5,521,47"/>
+<area shape="rect" id="node2" href="$bundle_2spiffebundle_2src_2source_8c.html" title=" " alt="" coords="154,95,287,136"/>
+<area shape="rect" id="node3" href="$endpoint_8h.html" title=" " alt="" coords="312,102,476,129"/>
+<area shape="rect" id="node6" href="$federation_2src_2watcher_8h.html" title=" " alt="" coords="373,191,535,218"/>
+<area shape="rect" id="node9" href="$check__endpoint_8c.html" title=" " alt="" coords="559,184,709,225"/>
+<area shape="rect" id="node10" href="$check__spiffebundle__source_8c.html" title=" " alt="" coords="602,95,757,136"/>
 <area shape="rect" id="node4" href="$endpoint_8c.html" title=" " alt="" coords="5,191,169,218"/>
 <area shape="rect" id="node5" href="$endpoint__example_8c.html" title=" " alt="" coords="194,184,349,225"/>
+<area shape="rect" id="node7" href="$federation_2src_2watcher_8c.html" title=" " alt="" coords="283,281,444,307"/>
+<area shape="rect" id="node8" href="$federation_2tests_2check__watcher_8c.html" title=" " alt="" coords="468,273,619,315"/>
 </map>
