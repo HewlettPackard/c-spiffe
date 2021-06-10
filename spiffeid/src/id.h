@@ -37,8 +37,10 @@ string_t join(string_arr_t str_arr);
  *
  * \param td_str [in] A stb string for the Trust Domain name.
  * \param segments [in] A stb array of stb strings of segments for the
- * path. \param err [out] Variable to get information in the event of
- * error. \returns A new SPIFFE ID object constructed from the parameters.
+ * path.
+ * \param err [out] Variable to get information in the event of
+ * error.
+ * \returns A new SPIFFE ID object constructed from the parameters.
  * The fields are NULL in case of error. Must be freed using
  * spiffeid_ID_Free function.
  */
@@ -50,8 +52,10 @@ spiffeid_ID spiffeid_ID_New(const char *td_str, const string_arr_t segments,
  *
  * \param td_str [in] A stb string for the Trust Domain name.
  * \param segments [in] A stb array of stb strings of segments for the
- * path. \param err [out] Variable to get information in the event of
- * error. \returns A new SPIFFE ID string constructed from the parameters.
+ * path.
+ * \param err [out] Variable to get information in the event of
+ * error.
+ * \returns A new SPIFFE ID string constructed from the parameters.
  * The fields are NULL in case of error. Must be freed using arrfree
  * function.
  */

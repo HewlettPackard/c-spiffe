@@ -49,7 +49,7 @@ include_directories(${PROJECT_SOURCE_DIR})
 include(GNUInstallDirs)
 
 # Set modules list
-set(modules bundle internal spiffeid svid workload spiffetls federation)
+set(modules bundle internal spiffeid svid workload spiffetls federation examples)
 
 # Add projects
 foreach(module ${modules})
