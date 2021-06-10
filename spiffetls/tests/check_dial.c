@@ -1,4 +1,4 @@
-#include "spiffetls/src/dial.h"
+#include "spiffetls/dial.h"
 #include <check.h>
 #include <unistd.h>
 

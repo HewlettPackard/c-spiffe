@@ -3,7 +3,7 @@
 
 #include "bundle/x509bundle/source.h"
 #include "internal/x509util/certpool.h"
-#include "spiffetls/tlsconfig/src/authorizer.h"
+#include "spiffetls/tlsconfig/authorizer.h"
 #include "svid/x509svid/source.h"
 #include "svid/x509svid/svid.h"
 #include "workload/x509source.h"

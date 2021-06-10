@@ -1,9 +1,9 @@
 #ifndef INCLUDE_SPIFFETLS_DIAL_H
 #define INCLUDE_SPIFFETLS_DIAL_H
 
-#include "spiffetls/src/mode.h"
-#include "spiffetls/src/option.h"
-#include "spiffetls/tlsconfig/src/authorizer.h"
+#include "spiffetls/mode.h"
+#include "spiffetls/option.h"
+#include "spiffetls/tlsconfig/authorizer.h"
 #include <arpa/inet.h>
 #include <openssl/ssl.h>
 #include <sys/socket.h>

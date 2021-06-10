@@ -1,7 +1,7 @@
 #include "spiffeid/id.h"
-#include "spiffetls/src/listen.h"
-#include "spiffetls/src/mode.h"
-#include "spiffetls/src/option.h"
+#include "spiffetls/listen.h"
+#include "spiffetls/mode.h"
+#include "spiffetls/option.h"
 #include "workload/x509source.h"
 #include <unistd.h>
 

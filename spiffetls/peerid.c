@@ -1,4 +1,4 @@
-#include "spiffetls/src/peerid.h"
+#include "spiffetls/peerid.h"
 
 spiffeid_ID spiffetls_PeerIDFromConn(SSL *conn, err_t *err)
 {

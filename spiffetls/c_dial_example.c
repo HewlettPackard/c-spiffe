@@ -1,4 +1,4 @@
-#include "spiffetls/src/dial.h"
+#include "spiffetls/dial.h"
 #include <unistd.h>
 
 /* returns 1 if little endian, 0 otherwise */
