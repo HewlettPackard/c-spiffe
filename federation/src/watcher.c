@@ -2,8 +2,7 @@
 
 spiffebundle_Watcher *spiffebundle_Watcher_New()
 {
-    spiffebundle_Watcher *watcher
-        = (spiffebundle_Watcher *) calloc(1, sizeof(*watcher));
+    spiffebundle_Watcher *watcher = calloc(1, sizeof(*watcher));
     sh_new_strdup(watcher->endpoints);
     return watcher;
 }
@@ -11,8 +10,7 @@ spiffebundle_Watcher *spiffebundle_Watcher_New()
 void spiffebundle_Watcher_Free(spiffebundle_Watcher *watcher)
 {
     if(watcher) {
-        for(size_t i = 0, length = shlenu(watcher->endpoints); i < length;
-            ++i) {
+        for(size_t i = 0, size = shlenu(watcher->endpoints); i < size; ++i) {
             spiffebundle_Endpoint_Free(watcher->endpoints[i].value->endpoint);
             free(watcher->endpoints[i].value->thread);
             free(watcher->endpoints[i].value);
@@ -54,8 +52,7 @@ err_t spiffebundle_Watcher_AddHttpsSpiffeEndpoint(
     spiffebundle_Source *source)
 {
     spiffebundle_Endpoint *endpoint = spiffebundle_Endpoint_New();
-    spiffebundle_Endpoint_Status *status
-        = (spiffebundle_Endpoint_Status *) calloc(1, sizeof(*status));
+    spiffebundle_Endpoint_Status *status = calloc(1, sizeof(*status));
     status->endpoint = endpoint;
     status->thread = malloc(sizeof(thrd_t));
     status->cond_var = malloc(sizeof(cnd_t));
@@ -100,6 +97,7 @@ spiffebundle_Bundle *spiffebundle_Watcher_GetBundleForTrustDomain(
     }
 }
 
+// Default refresh time, in seconds
 const int DEFAULT_REFRESH_HINT = 300;
 
 static int watch_endpoint(void *arg)
@@ -125,6 +123,11 @@ static int watch_endpoint(void *arg)
         if(status->running > 0) {
             int t_error = cnd_timedwait(status->cond_var,
                                         &status->endpoint->mutex, &waittime);
+            if(t_error == thrd_error) { // wait broke, cancel thread.
+                status->running = -2;   // ERROR STATE
+                mtx_unlock(&(status->endpoint->mutex));
+                return -1; // cancel thread
+            }
         }
 
         mtx_unlock(&(status->endpoint->mutex));
@@ -139,8 +142,7 @@ static int watch_endpoint(void *arg)
 err_t spiffebundle_Watcher_Start(spiffebundle_Watcher *watcher)
 {
     if(watcher) {
-        for(size_t i = 0, length = shlenu(watcher->endpoints); i < length;
-            ++i) {
+        for(size_t i = 0, size = shlenu(watcher->endpoints); i < size; ++i) {
             spiffebundle_Endpoint_Status *status = watcher->endpoints[i].value;
             if(status->running == 0 && status->thread) {
                 status->running = 1;
@@ -155,8 +157,7 @@ err_t spiffebundle_Watcher_Start(spiffebundle_Watcher *watcher)
 err_t spiffebundle_Watcher_Stop(spiffebundle_Watcher *watcher)
 {
     if(watcher) {
-        for(size_t i = 0, length = shlenu(watcher->endpoints); i < length;
-            ++i) {
+        for(size_t i = 0, size = shlenu(watcher->endpoints); i < size; ++i) {
             spiffebundle_Endpoint_Status *status = watcher->endpoints[i].value;
             if(status->running == 1) {
                 status->running = -1;
@@ -164,10 +165,9 @@ err_t spiffebundle_Watcher_Stop(spiffebundle_Watcher *watcher)
                 cnd_signal(status->cond_var);
             }
         }
-        for(size_t i = 0, length = shlenu(watcher->endpoints); i < length;
-            ++i) {
+        for(size_t i = 0, size = shlenu(watcher->endpoints); i < size; ++i) {
             spiffebundle_Endpoint_Status *status = watcher->endpoints[i].value;
-            if(status->running == -1 && status->thread) {
+            if(status->running < 0 && status->thread) {
                 thrd_join(*(status->thread), NULL);
                 status->running = 0;
             }
@@ -175,4 +175,27 @@ err_t spiffebundle_Watcher_Stop(spiffebundle_Watcher *watcher)
         return NO_ERROR;
     }
     return ERROR1;
+}
+
+int *spiffebundle_Watcher_GetStatus(spiffebundle_Watcher *watcher,
+                                    const spiffeid_TrustDomain td, err_t *err)
+{
+    if(!watcher) {
+        *err = ERROR1;
+        return -3; // not found
+    }
+    if(td.name) {
+        spiffebundle_Endpoint_Status *status
+            = shget(watcher->endpoints, td.name);
+        if(status == NULL) {
+            *err = ERROR3;
+            return -3; // not found
+        } else {
+            *err = NO_ERROR;
+            return status->running;
+        }
+    } else {
+        *err = ERROR2;
+        return -3; // not found
+    }
 }
