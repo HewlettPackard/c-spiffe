@@ -53,7 +53,7 @@ err_t spiffebundle_Watcher_Stop(spiffebundle_Watcher *watcher);
 spiffebundle_Bundle *spiffebundle_Watcher_GetBundleForTrustDomain(
     spiffebundle_Watcher *watcher, const spiffeid_TrustDomain td, err_t *err);
 
-int *spiffebundle_Watcher_GetStatus(spiffebundle_Watcher *watcher,
+int spiffebundle_Watcher_GetStatus(spiffebundle_Watcher *watcher,
                                     const spiffeid_TrustDomain td, err_t *err);
 
 #ifdef __cplusplus

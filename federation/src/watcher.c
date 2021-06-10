@@ -177,7 +177,7 @@ err_t spiffebundle_Watcher_Stop(spiffebundle_Watcher *watcher)
     return ERROR1;
 }
 
-int *spiffebundle_Watcher_GetStatus(spiffebundle_Watcher *watcher,
+int spiffebundle_Watcher_GetStatus(spiffebundle_Watcher *watcher,
                                     const spiffeid_TrustDomain td, err_t *err)
 {
     if(!watcher) {
