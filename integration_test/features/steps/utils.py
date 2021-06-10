@@ -30,9 +30,8 @@ def is_wlc_entry_created(container):
 
 def remove_entry(workload_id, container):
     workload = "myworkload%s" % workload_id[-1]
-    entries = list_entries(container).splitlines()
-    for entry in entries:
-        if entry.find(workload) != -1:
-            #TODO: get entryID
-            entryId = ""
-            os.system("ssh root@%s \"spire-server entry delete -entryId %s\"" % (container, entryId))
+    entries = list_entries(container).split("\n\n")
+    for result in entries:
+        if result.find(workload) != -1:
+            entryId = result.splitlines()[0].split(":")[1].strip()
+            os.system("ssh root@%s \"spire-server entry delete -entryID %s\"" % (container, entryId))
