@@ -21,6 +21,7 @@ install(
 set(HEADERS_X509SVID 
 ${PROJECT_SOURCE_DIR}/x509svid/svid.h
 ${PROJECT_SOURCE_DIR}/x509svid/verify.h
+${PROJECT_SOURCE_DIR}/x509svid/source.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(

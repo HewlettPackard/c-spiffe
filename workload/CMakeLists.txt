@@ -53,17 +53,17 @@ pthread
 crypto)
 
 set(LIB_SOURCE
-  ${PROJECT_SOURCE_DIR}/../svid/x509svid/verify.c
-  ${PROJECT_SOURCE_DIR}/../bundle/x509bundle/source.c
-  ${PROJECT_SOURCE_DIR}/../svid/x509svid/source.c
-  x509source.c
-  jwtsource.c
+${PROJECT_SOURCE_DIR}/../svid/x509svid/verify.c
+${PROJECT_SOURCE_DIR}/../bundle/x509bundle/source.c
+${PROJECT_SOURCE_DIR}/../svid/x509svid/source.c
+${PROJECT_SOURCE_DIR}/x509source.c
+${PROJECT_SOURCE_DIR}/jwtsource.c
 )
 
 # Install Headers:
 set(HEADERS_SOURCE
-  x509source.h
-  jwtsource.h
+${PROJECT_SOURCE_DIR}/x509source.h
+${PROJECT_SOURCE_DIR}/jwtsource.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
@@ -72,16 +72,16 @@ install(
 )
 
 set(LIB_WATCHER
-  watcher.c
-  jwtwatcher.c
+${PROJECT_SOURCE_DIR}/watcher.c
+${PROJECT_SOURCE_DIR}/jwtwatcher.c
 )
 
 # Install Headers:
 set(HEADERS_WATCHER
-  watcher.h
-  x509context.h
-  jwtcallback.h
-  jwtwatcher.h
+${PROJECT_SOURCE_DIR}/watcher.h
+${PROJECT_SOURCE_DIR}/x509context.h
+${PROJECT_SOURCE_DIR}/jwtcallback.h
+${PROJECT_SOURCE_DIR}/jwtwatcher.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
@@ -90,12 +90,12 @@ install(
 )
 
 set(LIB_BACKOFF
-  backoff.c
+${PROJECT_SOURCE_DIR}/backoff.c
 )
 
 # Install Headers:
 set(HEADERS_BACKOFF
-  backoff.h
+${PROJECT_SOURCE_DIR}/backoff.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
@@ -104,15 +104,15 @@ install(
 )
 
 set(LIB_CLIENT
-  client.cc
-  ${proto_srcs}
-  ${grpc_srcs}
+${PROJECT_SOURCE_DIR}/client.cc
+${proto_srcs}
+${grpc_srcs}
 )
 # Install Headers:
 set(HEADERS_CLIENT
-  client.h
-  ${proto_hdrs}
-  ${grpc_hdrs}
+${PROJECT_SOURCE_DIR}/client.h
+${proto_hdrs}
+${grpc_hdrs}
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(
@@ -152,37 +152,37 @@ install(
 )
 
 set(CPP_CLIENT
-    cpp_client_example.cc
+${PROJECT_SOURCE_DIR}/cpp_client_example.cc
 )
 add_executable(cpp_client "${CPP_CLIENT}")
 target_link_libraries(cpp_client source )
 
 set(C_CLIENT
-    c_client_example.c
+${PROJECT_SOURCE_DIR}/c_client_example.c
 )
 add_executable(c_client "${C_CLIENT}")
 target_link_libraries(c_client source )
 
 set(C_CLIENT_BUNDLE
-    c_client_example_bundle.c
+${PROJECT_SOURCE_DIR}/c_client_example_bundle.c
 )
 add_executable(c_client_bundle "${C_CLIENT_BUNDLE}")
 target_link_libraries(c_client_bundle client)
 
 set(WATCH_JWT_BUNDLES
-    watch_jwt_bundles.c
+${PROJECT_SOURCE_DIR}/watch_jwt_bundles.c
 )
 add_executable(example_watch_jwt_bundles "${WATCH_JWT_BUNDLES}")
 target_link_libraries(example_watch_jwt_bundles client)
 
 set(C_CLIENT_VALIDATE
-    c_client_example_validate.c
+${PROJECT_SOURCE_DIR}/c_client_example_validate.c
 )
 add_executable(c_client_validate "${C_CLIENT_VALIDATE}")
 target_link_libraries(c_client_validate client)
 
 set(JWTSOURCE_EXAMPLE
-    jwtsource_example.c
+${PROJECT_SOURCE_DIR}/jwtsource_example.c
 )
 add_executable(jwtsource_example "${JWTSOURCE_EXAMPLE}")
 target_link_libraries(jwtsource_example source)

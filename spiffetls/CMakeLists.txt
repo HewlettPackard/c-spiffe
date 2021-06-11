@@ -42,3 +42,29 @@ target_link_libraries(${TARGET_NAME}
     m
     pthread
     crypto)
+
+# Install Headers:
+set(HEADERS_SPIFFETLS
+${PROJECT_SOURCE_DIR}/dial.h
+${PROJECT_SOURCE_DIR}/listen.h
+${PROJECT_SOURCE_DIR}/mode.h
+${PROJECT_SOURCE_DIR}/option.h
+${PROJECT_SOURCE_DIR}/peerid.h
+)
+#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+install(
+    FILES ${HEADERS_SPIFFETLS}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}"
+)
+
+# Install Headers:
+set(HEADERS_TLSCONFIG
+${PROJECT_SOURCE_DIR}/authorizer.h
+${PROJECT_SOURCE_DIR}/config.h
+${PROJECT_SOURCE_DIR}/trace.h
+)
+#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+install(
+    FILES ${HEADERS_TLSCONFIG}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}"
+)
