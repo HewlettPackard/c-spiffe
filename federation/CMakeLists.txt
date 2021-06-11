@@ -53,3 +53,9 @@ install(
     FILES ${HEADERS_MOD_FEDERATION}
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}"
 )
+
+set(WATCHER_EXAMPLE
+    src/watcher_example.c
+)
+add_executable(watcher_example "${WATCHER_EXAMPLE}")
+target_link_libraries(watcher_example federation pthread)
