@@ -41,3 +41,13 @@ set(ENDPOINT_EXAMPLE
 )
 add_executable(endpoint_example "${ENDPOINT_EXAMPLE}")
 target_link_libraries(endpoint_example federation)
+
+# Install higher level header:
+set(HEADERS_MOD_FEDERATION
+${PROJECT_SOURCE_DIR}/federation.h
+)
+#   - *.h -> <prefix>/include/*.h
+install(
+    FILES ${HEADERS_MOD_FEDERATION}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+)

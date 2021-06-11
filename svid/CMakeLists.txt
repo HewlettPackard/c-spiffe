@@ -38,3 +38,14 @@ install(
     FILES ${HEADERS_JWTSVID}
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/jwtsvid"
 )
+
+# Install higher level header:
+set(HEADERS_MOD_SVID
+${PROJECT_SOURCE_DIR}/jwtsvid.h
+${PROJECT_SOURCE_DIR}/x509svid.h
+)
+#   - *.h -> <prefix>/include/*.h
+install(
+    FILES ${HEADERS_MOD_SVID}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+)

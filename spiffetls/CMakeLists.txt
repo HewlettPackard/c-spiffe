@@ -68,3 +68,14 @@ install(
     FILES ${HEADERS_TLSCONFIG}
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}"
 )
+
+# Install higher level header:
+set(HEADERS_MOD_SPIFFETLS
+${PROJECT_SOURCE_DIR}/spiffetls.h
+${PROJECT_SOURCE_DIR}/tlsconfig.h
+)
+#   - *.h -> <prefix>/include/*.h
+install(
+    FILES ${HEADERS_MOD_SPIFFETLS}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+)

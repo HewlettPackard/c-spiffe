@@ -21,7 +21,7 @@ install(
     LIBRARY DESTINATION  "${CMAKE_INSTALL_LIBDIR}"
 )
 
-# Install Headers:
+# Install headers:
 set(HEADERS_SPIFFEID
 ${PROJECT_SOURCE_DIR}/id.h
 ${PROJECT_SOURCE_DIR}/match.h
@@ -31,4 +31,14 @@ ${PROJECT_SOURCE_DIR}/trustdomain.h
 install(
     FILES ${HEADERS_SPIFFEID}
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}"
+)
+
+# Install higher level header:
+set(HEADERS_MOD_SPIFFEID
+${PROJECT_SOURCE_DIR}/spiffeid.h
+)
+#   - *.h -> <prefix>/include/*.h
+install(
+    FILES ${HEADERS_MOD_SPIFFEID}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
 )

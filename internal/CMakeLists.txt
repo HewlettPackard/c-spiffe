@@ -73,3 +73,15 @@ install(
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/utils"
 )
 
+# Install higher level header:
+set(HEADERS_MOD_INTERNAL
+${PROJECT_SOURCE_DIR}/cryptoutil.h
+${PROJECT_SOURCE_DIR}/jwtutil.h
+${PROJECT_SOURCE_DIR}/pemutil.h
+${PROJECT_SOURCE_DIR}/x509util.h
+)
+#   - *.h -> <prefix>/include/*.h
+install(
+    FILES ${HEADERS_MOD_INTERNAL}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+)

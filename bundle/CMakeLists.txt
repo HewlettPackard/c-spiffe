@@ -58,3 +58,15 @@ install(
     FILES ${HEADERS_BUNDLE_SPIFFE}
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/spiffebundle"
 )
+
+# Install higher level header:
+set(HEADERS_MOD_BUNDLE
+${PROJECT_SOURCE_DIR}/jwtbundle.h
+${PROJECT_SOURCE_DIR}/spiffebundle.h
+${PROJECT_SOURCE_DIR}/x509bundle.h
+)
+#   - *.h -> <prefix>/include/*.h
+install(
+    FILES ${HEADERS_MOD_BUNDLE}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+)

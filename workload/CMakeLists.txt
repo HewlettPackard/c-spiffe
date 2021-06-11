@@ -186,3 +186,13 @@ ${PROJECT_SOURCE_DIR}/jwtsource_example.c
 )
 add_executable(jwtsource_example "${JWTSOURCE_EXAMPLE}")
 target_link_libraries(jwtsource_example source)
+
+# Install higher level header:
+set(HEADERS_MOD_WORKLOAD
+${PROJECT_SOURCE_DIR}/workload.h
+)
+#   - *.h -> <prefix>/include/*.h
+install(
+    FILES ${HEADERS_MOD_WORKLOAD}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+)
