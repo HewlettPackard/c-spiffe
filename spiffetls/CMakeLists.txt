@@ -59,9 +59,9 @@ install(
 
 # Install Headers:
 set(HEADERS_TLSCONFIG
-${PROJECT_SOURCE_DIR}/authorizer.h
-${PROJECT_SOURCE_DIR}/config.h
-${PROJECT_SOURCE_DIR}/trace.h
+${PROJECT_SOURCE_DIR}/tlsconfig/authorizer.h
+${PROJECT_SOURCE_DIR}/tlsconfig/config.h
+${PROJECT_SOURCE_DIR}/tlsconfig/trace.h
 )
 #   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
 install(

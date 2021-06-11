@@ -5,7 +5,6 @@ set(TARGET_NAME "spiffeid")
 
 project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C)
 
-
 set(LIB_SPIFFEID 
 ${PROJECT_SOURCE_DIR}/id.c
 ${PROJECT_SOURCE_DIR}/match.c
