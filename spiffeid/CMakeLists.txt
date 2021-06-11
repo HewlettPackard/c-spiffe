@@ -26,18 +26,18 @@ ${PROJECT_SOURCE_DIR}/id.h
 ${PROJECT_SOURCE_DIR}/match.h
 ${PROJECT_SOURCE_DIR}/trustdomain.h
 )
-#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_SPIFFEID}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/${TARGET_NAME}"
 )
 
 # Install higher level header:
 set(HEADERS_MOD_SPIFFEID
 ${PROJECT_SOURCE_DIR}/spiffeid.h
 )
-#   - *.h -> <prefix>/include/*.h
+#   - *.h -> <prefix>/include/c-spiffe/*.h
 install(
     FILES ${HEADERS_MOD_SPIFFEID}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}"
 )

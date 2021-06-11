@@ -32,10 +32,10 @@ set(HEADERS_FEDERATION
 ${PROJECT_SOURCE_DIR}/endpoint.h
 ${PROJECT_SOURCE_DIR}/watcher.h
 )
-#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_FEDERATION}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/${TARGET_NAME}"
 )
 
 set(ENDPOINT_EXAMPLE
@@ -48,8 +48,8 @@ target_link_libraries(endpoint_example federation)
 set(HEADERS_MOD_FEDERATION
 ${PROJECT_SOURCE_DIR}/federation.h
 )
-#   - *.h -> <prefix>/include/*.h
+#   - *.h -> <prefix>/include/c-spiffe/*.h
 install(
     FILES ${HEADERS_MOD_FEDERATION}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}"
 )

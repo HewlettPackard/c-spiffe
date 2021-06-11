@@ -65,10 +65,10 @@ set(HEADERS_SOURCE
 ${PROJECT_SOURCE_DIR}/x509source.h
 ${PROJECT_SOURCE_DIR}/jwtsource.h
 )
-#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_SOURCE}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/${TARGET_NAME}"
 )
 
 set(LIB_WATCHER
@@ -83,10 +83,10 @@ ${PROJECT_SOURCE_DIR}/x509context.h
 ${PROJECT_SOURCE_DIR}/jwtcallback.h
 ${PROJECT_SOURCE_DIR}/jwtwatcher.h
 )
-#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_WATCHER}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/${TARGET_NAME}"
 )
 
 set(LIB_BACKOFF
@@ -97,10 +97,10 @@ ${PROJECT_SOURCE_DIR}/backoff.c
 set(HEADERS_BACKOFF
 ${PROJECT_SOURCE_DIR}/backoff.h
 )
-#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_BACKOFF}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/${TARGET_NAME}"
 )
 
 set(LIB_CLIENT
@@ -114,10 +114,10 @@ ${PROJECT_SOURCE_DIR}/client.h
 ${proto_hdrs}
 ${grpc_hdrs}
 )
-#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_CLIENT}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/${TARGET_NAME}"
 )
 
 add_library(backoff SHARED ${LIB_BACKOFF})
@@ -191,8 +191,8 @@ target_link_libraries(jwtsource_example source)
 set(HEADERS_MOD_WORKLOAD
 ${PROJECT_SOURCE_DIR}/workload.h
 )
-#   - *.h -> <prefix>/include/*.h
+#   - *.h -> <prefix>/include/c-spiffe/*.h
 install(
     FILES ${HEADERS_MOD_WORKLOAD}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}"
 )
