@@ -1,5 +1,5 @@
-#ifndef INCLUDE_SPIFFEBUNDLE_ENDPOINT_H
-#define INCLUDE_SPIFFEBUNDLE_ENDPOINT_H
+#ifndef INCLUDE_FEDERATION_ENDPOINT_H
+#define INCLUDE_FEDERATION_ENDPOINT_H
 
 #include "bundle/spiffebundle/bundle.h"
 #include "bundle/spiffebundle/set.h"
@@ -60,4 +60,4 @@ spiffebundle_Endpoint_GetBundleForTrustDomain(spiffebundle_Endpoint *endpoint,
 }
 #endif
 
-#endif // INCLUDE_SPIFFEBUNDLE_ENDPOINT_H
+#endif // INCLUDE_FEDERATION_ENDPOINT_H

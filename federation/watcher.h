@@ -1,5 +1,6 @@
-#ifndef INCLUDE_SPIFFEBUNDLE_WATCHER_H
-#define INCLUDE_SPIFFEBUNDLE_WATCHER_H
+#ifndef INCLUDE_FEDERATION_WATCHER_H
+#define INCLUDE_FEDERATION_WATCHER_H
+
 #include "bundle/spiffebundle/bundle.h"
 #include "bundle/spiffebundle/set.h"
 #include "bundle/spiffebundle/source.h"
@@ -60,4 +61,4 @@ int spiffebundle_Watcher_GetStatus(spiffebundle_Watcher *watcher,
 }
 #endif
 
-#endif // INCLUDE_SPIFFEBUNDLE_WATCHER_H
+#endif // INCLUDE_FEDERATION_WATCHER_H
