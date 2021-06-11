@@ -124,3 +124,4 @@ def step_impl(context):
 @given('The "{workload_id}" entry is removed from "{container_name}"')
 def step_impl(context, workload_id, container_name):
     remove_entry(workload_id, container_name)
+    time.sleep(7)
