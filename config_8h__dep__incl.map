@@ -1,8 +1,9 @@
-<map id="spiffetls/tlsconfig/src/config.h" name="spiffetls/tlsconfig/src/config.h">
-<area shape="rect" id="node1" title=" " alt="" coords="322,5,441,47"/>
-<area shape="rect" id="node2" href="$dial_8c.html" title=" " alt="" coords="5,102,128,129"/>
-<area shape="rect" id="node3" href="$listen_8c.html" title=" " alt="" coords="153,102,287,129"/>
-<area shape="rect" id="node4" href="$check__peerid_8c.html" title=" " alt="" coords="312,95,451,136"/>
-<area shape="rect" id="node5" href="$config_8c.html" title=" " alt="" coords="475,95,594,136"/>
-<area shape="rect" id="node6" href="$check__config_8c.html" title=" " alt="" coords="618,95,763,136"/>
+<map id="spiffetls/tlsconfig/config.h" name="spiffetls/tlsconfig/config.h">
+<area shape="rect" id="node1" title=" " alt="" coords="353,5,471,47"/>
+<area shape="rect" id="node2" href="$dial_8c.html" title=" " alt="" coords="5,102,107,129"/>
+<area shape="rect" id="node3" href="$listen_8c.html" title=" " alt="" coords="131,102,243,129"/>
+<area shape="rect" id="node4" href="$check__peerid_8c.html" title=" " alt="" coords="267,95,405,136"/>
+<area shape="rect" id="node5" href="$config_8c.html" title=" " alt="" coords="430,95,549,136"/>
+<area shape="rect" id="node6" href="$check__config_8c.html" title=" " alt="" coords="573,95,718,136"/>
+<area shape="rect" id="node7" href="$tlsconfig_8h.html" title=" " alt="" coords="742,102,871,129"/>
 </map>

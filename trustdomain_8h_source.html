@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE Library: spiffeid/src/trustdomain.h Source File</title>
+<title>C-SPIFFE Library: spiffeid/trustdomain.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,7 +63,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_f5f8b1bf819eb84a639c70c9d07c9204.html">spiffeid</a></li><li class="navelem"><a class="el" href="dir_60ef65c7f56b742cd246e3e56faebef0.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_f5f8b1bf819eb84a639c70c9d07c9204.html">spiffeid</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -74,24 +74,24 @@ $(function() {
 <a href="trustdomain_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef INCLUDE_SPIFFEID_TRUSTDOMAIN_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define INCLUDE_SPIFFEID_TRUSTDOMAIN_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="id_8h.html">spiffeid/src/id.h</a>&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="utils_2src_2util_8h.html">utils/src/util.h</a>&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="id_8h.html">spiffeid/id.h</a>&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="utils_2util_8h.html">utils/util.h</a>&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<a class="code" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> <a class="code" href="trustdomain_8h.html#abe7e66061f73ea500757ba6eee52d17e">spiffeid_TrustDomainFromString</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *str,</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;                                                    <a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="code" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;                                                    <a class="code" href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="code" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<a class="code" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> <a class="code" href="trustdomain_8h.html#ac9c6991688b59d3e6ea82cc18ccfaae3">spiffeid_TrustDomainFromURI</a>(<span class="keyword">const</span> UriUriA *uri,</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                                                 <a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="code" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                                                 <a class="code" href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="code" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>);</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="trustdomain_8h.html#afd2beb826381a27db48a7dea72f3fa4d">spiffeid_TrustDomain_String</a>(<span class="keyword">const</span> <a class="code" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> <a class="code" href="check__endpoint_8c.html#af961692354eb34b5aacc2fedfbdb664c">td</a>);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> <a class="code" href="trustdomain_8h.html#a2e2ae49e42bda3531015a30ccc191359">spiffeid_TrustDomain_ID</a>(<span class="keyword">const</span> <a class="code" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> <a class="code" href="check__endpoint_8c.html#af961692354eb34b5aacc2fedfbdb664c">td</a>);</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<a class="code" href="utils_2src_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a> <a class="code" href="trustdomain_8h.html#af3cdea863c8412323fe73ecfc213fac5">spiffeid_TrustDomain_IDString</a>(<span class="keyword">const</span> <a class="code" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> <a class="code" href="check__endpoint_8c.html#af961692354eb34b5aacc2fedfbdb664c">td</a>);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<a class="code" href="utils_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a> <a class="code" href="trustdomain_8h.html#af3cdea863c8412323fe73ecfc213fac5">spiffeid_TrustDomain_IDString</a>(<span class="keyword">const</span> <a class="code" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> <a class="code" href="check__endpoint_8c.html#af961692354eb34b5aacc2fedfbdb664c">td</a>);</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> <a class="code" href="trustdomain_8h.html#a3245c9b2864a725b9772a36ebddaf1b2">spiffeid_TrustDomain_NewID</a>(<span class="keyword">const</span> <a class="code" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> <a class="code" href="check__endpoint_8c.html#af961692354eb34b5aacc2fedfbdb664c">td</a>,</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                                       <span class="keyword">const</span> <span class="keywordtype">char</span> *path);</div>
@@ -122,9 +122,9 @@ $(function() {
 <div class="ttc" id="atrustdomain_8h_html_af3cdea863c8412323fe73ecfc213fac5"><div class="ttname"><a href="trustdomain_8h.html#af3cdea863c8412323fe73ecfc213fac5">spiffeid_TrustDomain_IDString</a></div><div class="ttdeci">string_t spiffeid_TrustDomain_IDString(const spiffeid_TrustDomain td)</div><div class="ttdef"><b>Definition:</b> trustdomain.c:51</div></div>
 <div class="ttc" id="atrustdomain_8h_html_afc315edc9a13ae7c58cf2bd584b02e39"><div class="ttname"><a href="trustdomain_8h.html#afc315edc9a13ae7c58cf2bd584b02e39">spiffeid_TrustDomain_IsZero</a></div><div class="ttdeci">bool spiffeid_TrustDomain_IsZero(const spiffeid_TrustDomain td)</div><div class="ttdef"><b>Definition:</b> trustdomain.c:67</div></div>
 <div class="ttc" id="atrustdomain_8h_html_afd2beb826381a27db48a7dea72f3fa4d"><div class="ttname"><a href="trustdomain_8h.html#afd2beb826381a27db48a7dea72f3fa4d">spiffeid_TrustDomain_String</a></div><div class="ttdeci">const char * spiffeid_TrustDomain_String(const spiffeid_TrustDomain td)</div><div class="ttdef"><b>Definition:</b> trustdomain.c:41</div></div>
-<div class="ttc" id="autils_2src_2util_8h_html"><div class="ttname"><a href="utils_2src_2util_8h.html">util.h</a></div></div>
-<div class="ttc" id="autils_2src_2util_8h_html_a5362d878a3b55147d5cfd29820512556"><div class="ttname"><a href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a></div><div class="ttdeci">enum enum_err_t err_t</div><div class="ttdef"><b>Definition:</b> util.h:42</div></div>
-<div class="ttc" id="autils_2src_2util_8h_html_ab0dcbec9b4b3c60b939b1095f93cb1b9"><div class="ttname"><a href="utils_2src_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a></div><div class="ttdeci">char * string_t</div><div class="ttdef"><b>Definition:</b> util.h:15</div></div>
+<div class="ttc" id="autils_2util_8h_html"><div class="ttname"><a href="utils_2util_8h.html">util.h</a></div></div>
+<div class="ttc" id="autils_2util_8h_html_a5362d878a3b55147d5cfd29820512556"><div class="ttname"><a href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a></div><div class="ttdeci">enum enum_err_t err_t</div><div class="ttdef"><b>Definition:</b> util.h:42</div></div>
+<div class="ttc" id="autils_2util_8h_html_ab0dcbec9b4b3c60b939b1095f93cb1b9"><div class="ttname"><a href="utils_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a></div><div class="ttdeci">char * string_t</div><div class="ttdef"><b>Definition:</b> util.h:15</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -1,5 +1,5 @@
-<map id="workload/src/grpc_conn_test.cc" name="workload/src/grpc_conn_test.cc">
-<area shape="rect" id="node1" title=" " alt="" coords="195,5,355,47"/>
+<map id="workload/grpc_conn_test.cc" name="workload/grpc_conn_test.cc">
+<area shape="rect" id="node1" title=" " alt="" coords="206,5,345,47"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,95,135,121"/>
 <area shape="rect" id="node3" title=" " alt="" coords="159,95,261,121"/>
 <area shape="rect" id="node4" title=" " alt="" coords="285,95,399,121"/>

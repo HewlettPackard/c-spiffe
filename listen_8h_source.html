@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE Library: spiffetls/src/listen.h Source File</title>
+<title>C-SPIFFE Library: spiffetls/listen.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,7 +63,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_2026a35d3728ab9e844181af2f3dbff1.html">spiffetls</a></li><li class="navelem"><a class="el" href="dir_13592f3a8f2cc64c1540964816eeb6ba.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_2026a35d3728ab9e844181af2f3dbff1.html">spiffetls</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -74,9 +74,9 @@ $(function() {
 <a href="listen_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef INCLUDE_SPIFFETLS_LISTEN_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define INCLUDE_SPIFFETLS_LISTEN_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="mode_8h.html">spiffetls/src/mode.h</a>&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="option_8h.html">spiffetls/src/option.h</a>&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="authorizer_8h.html">spiffetls/tlsconfig/src/authorizer.h</a>&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="mode_8h.html">spiffetls/mode.h</a>&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="option_8h.html">spiffetls/option.h</a>&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="authorizer_8h.html">spiffetls/tlsconfig/authorizer.h</a>&quot;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;arpa/inet.h&gt;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;openssl/ssl.h&gt;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;sys/socket.h&gt;</span></div>
@@ -87,7 +87,7 @@ $(function() {
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;SSL *<a class="code" href="listen_8h.html#aa62c0f452b3ae79c70bdce7e25359fae">spiffetls_ListenWithMode</a>(in_port_t port, <a class="code" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a> *mode,</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;                              <a class="code" href="structspiffetls__listenConfig.html">spiffetls_listenConfig</a> *<a class="code" href="check__jwtsource_8c.html#ac4bce25b2f2c75b798ee2fe84c200d90">config</a>, <span class="keywordtype">int</span> *sock,</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                              <a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="code" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                              <a class="code" href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="code" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>);</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
@@ -102,7 +102,7 @@ $(function() {
 <div class="ttc" id="aoption_8h_html"><div class="ttname"><a href="option_8h.html">option.h</a></div></div>
 <div class="ttc" id="astructspiffetls__ListenMode_html"><div class="ttname"><a href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a></div><div class="ttdef"><b>Definition:</b> mode.h:42</div></div>
 <div class="ttc" id="astructspiffetls__listenConfig_html"><div class="ttname"><a href="structspiffetls__listenConfig.html">spiffetls_listenConfig</a></div><div class="ttdef"><b>Definition:</b> option.h:15</div></div>
-<div class="ttc" id="autils_2src_2util_8h_html_a5362d878a3b55147d5cfd29820512556"><div class="ttname"><a href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a></div><div class="ttdeci">enum enum_err_t err_t</div><div class="ttdef"><b>Definition:</b> util.h:42</div></div>
+<div class="ttc" id="autils_2util_8h_html_a5362d878a3b55147d5cfd29820512556"><div class="ttname"><a href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a></div><div class="ttdeci">enum enum_err_t err_t</div><div class="ttdef"><b>Definition:</b> util.h:42</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

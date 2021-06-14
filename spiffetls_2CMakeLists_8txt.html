@@ -74,10 +74,10 @@ $(function() {
 Functions</h2></td></tr>
 <tr class="memitem:af54e805da180b70431013e89690d2f28"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spiffetls_2CMakeLists_8txt.html#af54e805da180b70431013e89690d2f28">cmake_minimum_required</a> (VERSION 3.13) <a class="el" href="workload_2CMakeLists_8txt.html#a9127ed30da9515f15ca6b2b79de373fc">set</a>(TARGET_NAME &quot;spiffetls&quot;) project($</td></tr>
 <tr class="separator:af54e805da180b70431013e89690d2f28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7de637095ee34620571db689922065fa"><td class="memItemLeft" align="right" valign="top">VERSION LANGUAGES C&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spiffetls_2CMakeLists_8txt.html#a7de637095ee34620571db689922065fa">set</a> (LIB_SPIFFETLS ${PROJECT_SOURCE_DIR}/tlsconfig/src/config.c ${PROJECT_SOURCE_DIR}/tlsconfig/src/authorizer.c ${PROJECT_SOURCE_DIR}/src/dial.c ${PROJECT_SOURCE_DIR}/src/listen.c ${PROJECT_SOURCE_DIR}/src/mode.c ${PROJECT_SOURCE_DIR}/src/peerid.c) set(C_DIAL src/c_dial_example.c) <a class="el" href="workload_2tests_2CMakeLists_8txt.html#ade62988fdb0fd968186f3cf1a775f657">add_executable</a>(c_dial &quot;$</td></tr>
-<tr class="separator:a7de637095ee34620571db689922065fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44603e8e9c2ddd550bd39c701cc0f825"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spiffetls_2CMakeLists_8txt.html#a44603e8e9c2ddd550bd39c701cc0f825">target_link_libraries</a> (c_dial spiffetls) <a class="el" href="workload_2CMakeLists_8txt.html#a9127ed30da9515f15ca6b2b79de373fc">set</a>(C_LISTEN src/c_listen_example.c) <a class="el" href="workload_2tests_2CMakeLists_8txt.html#ade62988fdb0fd968186f3cf1a775f657">add_executable</a>(c_listen &quot;$</td></tr>
-<tr class="separator:a44603e8e9c2ddd550bd39c701cc0f825"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a501f1c244ee3f2d6d6e7acb16a9b9f15"><td class="memItemLeft" align="right" valign="top">VERSION LANGUAGES C&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spiffetls_2CMakeLists_8txt.html#a501f1c244ee3f2d6d6e7acb16a9b9f15">set</a> (LIB_SPIFFETLS ${PROJECT_SOURCE_DIR}/tlsconfig/config.c ${PROJECT_SOURCE_DIR}/tlsconfig/authorizer.c ${PROJECT_SOURCE_DIR}/dial.c ${PROJECT_SOURCE_DIR}/listen.c ${PROJECT_SOURCE_DIR}/mode.c ${PROJECT_SOURCE_DIR}/peerid.c) set(C_DIAL c_dial_example.c) <a class="el" href="workload_2tests_2CMakeLists_8txt.html#ade62988fdb0fd968186f3cf1a775f657">add_executable</a>(c_dial &quot;$</td></tr>
+<tr class="separator:a501f1c244ee3f2d6d6e7acb16a9b9f15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac96537ef5cbe0e1750f1282e482a8bb0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spiffetls_2CMakeLists_8txt.html#ac96537ef5cbe0e1750f1282e482a8bb0">target_link_libraries</a> (c_dial spiffetls) <a class="el" href="workload_2CMakeLists_8txt.html#a9127ed30da9515f15ca6b2b79de373fc">set</a>(C_LISTEN c_listen_example.c) <a class="el" href="workload_2tests_2CMakeLists_8txt.html#ade62988fdb0fd968186f3cf1a775f657">add_executable</a>(c_listen &quot;$</td></tr>
+<tr class="separator:ac96537ef5cbe0e1750f1282e482a8bb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9952f8f9a0ee084843201ecd4f29ed49"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spiffetls_2CMakeLists_8txt.html#a9952f8f9a0ee084843201ecd4f29ed49">target_link_libraries</a> (c_listen spiffetls) add_library($</td></tr>
 <tr class="separator:a9952f8f9a0ee084843201ecd4f29ed49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -100,8 +100,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a7de637095ee34620571db689922065fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7de637095ee34620571db689922065fa">&#9670;&nbsp;</a></span>set()</h2>
+<a id="a501f1c244ee3f2d6d6e7acb16a9b9f15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a501f1c244ee3f2d6d6e7acb16a9b9f15">&#9670;&nbsp;</a></span>set()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -109,7 +109,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">VERSION LANGUAGES C set </td>
           <td>(</td>
-          <td class="paramtype">LIB_SPIFFETLS ${PROJECT_SOURCE_DIR}/tlsconfig/src/config.c ${PROJECT_SOURCE_DIR}/tlsconfig/src/authorizer.c ${PROJECT_SOURCE_DIR}/src/dial.c ${PROJECT_SOURCE_DIR}/src/listen.c ${PROJECT_SOURCE_DIR}/src/mode.c ${PROJECT_SOURCE_DIR}/src/peerid.&#160;</td>
+          <td class="paramtype">LIB_SPIFFETLS ${PROJECT_SOURCE_DIR}/tlsconfig/config.c ${PROJECT_SOURCE_DIR}/tlsconfig/authorizer.c ${PROJECT_SOURCE_DIR}/dial.c ${PROJECT_SOURCE_DIR}/listen.c ${PROJECT_SOURCE_DIR}/mode.c ${PROJECT_SOURCE_DIR}/peerid.&#160;</td>
           <td class="paramname"><em>c</em></td><td>)</td>
           <td></td>
         </tr>
@@ -118,8 +118,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a44603e8e9c2ddd550bd39c701cc0f825"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a44603e8e9c2ddd550bd39c701cc0f825">&#9670;&nbsp;</a></span>target_link_libraries() <span class="overload">[1/2]</span></h2>
+<a id="ac96537ef5cbe0e1750f1282e482a8bb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac96537ef5cbe0e1750f1282e482a8bb0">&#9670;&nbsp;</a></span>target_link_libraries() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

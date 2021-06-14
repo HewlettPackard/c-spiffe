@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE Library: spiffetls/tlsconfig/src/trace.h Source File</title>
+<title>C-SPIFFE Library: spiffetls/tlsconfig/trace.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,7 +63,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_2026a35d3728ab9e844181af2f3dbff1.html">spiffetls</a></li><li class="navelem"><a class="el" href="dir_40abd05d40de6cb14fa4b28692091c2e.html">tlsconfig</a></li><li class="navelem"><a class="el" href="dir_9015fbebfbf96fcaa7ff8b7f810173a1.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_2026a35d3728ab9e844181af2f3dbff1.html">spiffetls</a></li><li class="navelem"><a class="el" href="dir_40abd05d40de6cb14fa4b28692091c2e.html">tlsconfig</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -74,7 +74,7 @@ $(function() {
 <a href="trace_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef INCLUDE_SPIFFETLS_TLSCONFIG_TRACE_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define INCLUDE_SPIFFETLS_TLSCONFIG_TRACE_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="utils_2src_2util_8h.html">utils/src/util.h</a>&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="utils_2util_8h.html">utils/util.h</a>&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;openssl/ssl.h&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;openssl/x509.h&gt;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
@@ -84,7 +84,7 @@ $(function() {
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
 <div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="structtlsconfig__GotCertificateInfo.html">   12</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
 <div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="structtlsconfig__GotCertificateInfo.html#a77723bd4620184dbef5dec2957dfb896">   13</a></span>&#160;    X509 *<a class="code" href="structtlsconfig__GotCertificateInfo.html#a77723bd4620184dbef5dec2957dfb896">cert</a>;</div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="structtlsconfig__GotCertificateInfo.html#aa04b610dc94311a4ba01f39f9f13e7d6">   14</a></span>&#160;    <a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> <a class="code" href="structtlsconfig__GotCertificateInfo.html#aa04b610dc94311a4ba01f39f9f13e7d6">err</a>;</div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="structtlsconfig__GotCertificateInfo.html#aa04b610dc94311a4ba01f39f9f13e7d6">   14</a></span>&#160;    <a class="code" href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> <a class="code" href="structtlsconfig__GotCertificateInfo.html#aa04b610dc94311a4ba01f39f9f13e7d6">err</a>;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;} <a class="code" href="structtlsconfig__GotCertificateInfo.html">tlsconfig_GotCertificateInfo</a>;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="structtlsconfig__Trace.html">   17</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
@@ -106,8 +106,8 @@ $(function() {
 <div class="ttc" id="astructtlsconfig__Trace_html"><div class="ttname"><a href="structtlsconfig__Trace.html">tlsconfig_Trace</a></div><div class="ttdef"><b>Definition:</b> trace.h:17</div></div>
 <div class="ttc" id="atrace_8h_html_a088c87e82b61a72b0692542349f1be89"><div class="ttname"><a href="trace_8h.html#a088c87e82b61a72b0692542349f1be89">tlsconfig_GetCertificate</a></div><div class="ttdeci">void * tlsconfig_GetCertificate(tlsconfig_Trace *trace)</div></div>
 <div class="ttc" id="atrace_8h_html_a8e05433937f7a7bf1df1a8e91dd61383"><div class="ttname"><a href="trace_8h.html#a8e05433937f7a7bf1df1a8e91dd61383">tlsconfig_GotCertificate</a></div><div class="ttdeci">void tlsconfig_GotCertificate(tlsconfig_Trace *trace, const void *any, const tlsconfig_GotCertificateInfo *info)</div></div>
-<div class="ttc" id="autils_2src_2util_8h_html"><div class="ttname"><a href="utils_2src_2util_8h.html">util.h</a></div></div>
-<div class="ttc" id="autils_2src_2util_8h_html_a5362d878a3b55147d5cfd29820512556"><div class="ttname"><a href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a></div><div class="ttdeci">enum enum_err_t err_t</div><div class="ttdef"><b>Definition:</b> util.h:42</div></div>
+<div class="ttc" id="autils_2util_8h_html"><div class="ttname"><a href="utils_2util_8h.html">util.h</a></div></div>
+<div class="ttc" id="autils_2util_8h_html_a5362d878a3b55147d5cfd29820512556"><div class="ttname"><a href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a></div><div class="ttdeci">enum enum_err_t err_t</div><div class="ttdef"><b>Definition:</b> util.h:42</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

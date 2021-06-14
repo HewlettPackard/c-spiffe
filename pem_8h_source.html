@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE Library: internal/pemutil/src/pem.h Source File</title>
+<title>C-SPIFFE Library: internal/pemutil/pem.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,7 +63,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_7374381ecdb819c64ee9b6ea2bd3370d.html">internal</a></li><li class="navelem"><a class="el" href="dir_41c18e206d4934b0bc3e86bbe293a43b.html">pemutil</a></li><li class="navelem"><a class="el" href="dir_63e0da103ef3e4a0af3fa4675ac93d6a.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_7374381ecdb819c64ee9b6ea2bd3370d.html">internal</a></li><li class="navelem"><a class="el" href="dir_41c18e206d4934b0bc3e86bbe293a43b.html">pemutil</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -74,7 +74,7 @@ $(function() {
 <a href="pem_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef INCLUDE_INTERNAL_PEMUTIL_PEM_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define INCLUDE_INTERNAL_PEMUTIL_PEM_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="utils_2src_2util_8h.html">utils/src/util.h</a>&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="utils_2util_8h.html">utils/util.h</a>&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;openssl/evp.h&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;openssl/pem.h&gt;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;openssl/x509.h&gt;</span></div>
@@ -84,13 +84,13 @@ $(function() {
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;X509 **<a class="code" href="pem_8h.html#a3ff4b626d71e8c8c6d0a49ac4e3d995d">pemutil_ParseCertificates</a>(<span class="keyword">const</span> <span class="keywordtype">byte</span> *bytes, <a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="code" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;X509 **<a class="code" href="pem_8h.html#a3ff4b626d71e8c8c6d0a49ac4e3d995d">pemutil_ParseCertificates</a>(<span class="keyword">const</span> <span class="keywordtype">byte</span> *bytes, <a class="code" href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="code" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;EVP_PKEY *<a class="code" href="pem_8h.html#aa8ab9d05261ee69342f113549927d324">pemutil_ParsePrivateKey</a>(<span class="keyword">const</span> <span class="keywordtype">byte</span> *bytes, <a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="code" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;EVP_PKEY *<a class="code" href="pem_8h.html#aa8ab9d05261ee69342f113549927d324">pemutil_ParsePrivateKey</a>(<span class="keyword">const</span> <span class="keywordtype">byte</span> *bytes, <a class="code" href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="code" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>);</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordtype">byte</span> *<a class="code" href="pem_8h.html#a3963e783adecbcad286949e213e12415">pemutil_EncodePrivateKey</a>(EVP_PKEY *pkey, <a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="code" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordtype">byte</span> *<a class="code" href="pem_8h.html#a3963e783adecbcad286949e213e12415">pemutil_EncodePrivateKey</a>(EVP_PKEY *pkey, <a class="code" href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="code" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>);</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keywordtype">byte</span> **<a class="code" href="pem_8h.html#ad1e83efd6b29b1e71ebcc91c4bda3540">pemutil_EncodeCertificates</a>(X509 **<a class="code" href="check__x509source_8c.html#a86cc65f14198e068d60b43bcf233a074">certs</a>, <a class="code" href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="code" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keywordtype">byte</span> **<a class="code" href="pem_8h.html#ad1e83efd6b29b1e71ebcc91c4bda3540">pemutil_EncodeCertificates</a>(X509 **<a class="code" href="check__x509source_8c.html#a86cc65f14198e068d60b43bcf233a074">certs</a>, <a class="code" href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="code" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
@@ -103,8 +103,8 @@ $(function() {
 <div class="ttc" id="apem_8h_html_a3ff4b626d71e8c8c6d0a49ac4e3d995d"><div class="ttname"><a href="pem_8h.html#a3ff4b626d71e8c8c6d0a49ac4e3d995d">pemutil_ParseCertificates</a></div><div class="ttdeci">X509 ** pemutil_ParseCertificates(const byte *bytes, err_t *err)</div><div class="ttdef"><b>Definition:</b> pem.c:105</div></div>
 <div class="ttc" id="apem_8h_html_aa8ab9d05261ee69342f113549927d324"><div class="ttname"><a href="pem_8h.html#aa8ab9d05261ee69342f113549927d324">pemutil_ParsePrivateKey</a></div><div class="ttdeci">EVP_PKEY * pemutil_ParsePrivateKey(const byte *bytes, err_t *err)</div><div class="ttdef"><b>Definition:</b> pem.c:125</div></div>
 <div class="ttc" id="apem_8h_html_ad1e83efd6b29b1e71ebcc91c4bda3540"><div class="ttname"><a href="pem_8h.html#ad1e83efd6b29b1e71ebcc91c4bda3540">pemutil_EncodeCertificates</a></div><div class="ttdeci">byte ** pemutil_EncodeCertificates(X509 **certs, err_t *err)</div><div class="ttdef"><b>Definition:</b> pem.c:173</div></div>
-<div class="ttc" id="autils_2src_2util_8h_html"><div class="ttname"><a href="utils_2src_2util_8h.html">util.h</a></div></div>
-<div class="ttc" id="autils_2src_2util_8h_html_a5362d878a3b55147d5cfd29820512556"><div class="ttname"><a href="utils_2src_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a></div><div class="ttdeci">enum enum_err_t err_t</div><div class="ttdef"><b>Definition:</b> util.h:42</div></div>
+<div class="ttc" id="autils_2util_8h_html"><div class="ttname"><a href="utils_2util_8h.html">util.h</a></div></div>
+<div class="ttc" id="autils_2util_8h_html_a5362d878a3b55147d5cfd29820512556"><div class="ttname"><a href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a></div><div class="ttdeci">enum enum_err_t err_t</div><div class="ttdef"><b>Definition:</b> util.h:42</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

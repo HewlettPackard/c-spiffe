@@ -1,13 +1,13 @@
-<map id="spiffetls/tlsconfig/src/trace.c" name="spiffetls/tlsconfig/src/trace.c">
-<area shape="rect" id="node1" title=" " alt="" coords="332,5,451,47"/>
-<area shape="rect" id="node2" href="$trace_8h.html" title=" " alt="" coords="361,95,422,121"/>
-<area shape="rect" id="node3" href="$utils_2src_2util_8h.html" title=" " alt="" coords="219,169,318,196"/>
-<area shape="rect" id="node10" title=" " alt="" coords="342,169,441,196"/>
-<area shape="rect" id="node11" title=" " alt="" coords="465,169,573,196"/>
-<area shape="rect" id="node4" href="$stb__ds_8h.html" title=" " alt="" coords="65,244,187,271"/>
-<area shape="rect" id="node6" title=" " alt="" coords="190,319,254,345"/>
-<area shape="rect" id="node8" title=" " alt="" coords="263,244,365,271"/>
-<area shape="rect" id="node9" title=" " alt="" coords="390,244,465,271"/>
+<map id="spiffetls/tlsconfig/trace.c" name="spiffetls/tlsconfig/trace.c">
+<area shape="rect" id="node1" title=" " alt="" coords="312,5,431,47"/>
+<area shape="rect" id="node2" href="$trace_8h.html" title=" " alt="" coords="341,95,402,121"/>
+<area shape="rect" id="node3" href="$utils_2util_8h.html" title=" " alt="" coords="221,169,298,196"/>
+<area shape="rect" id="node10" title=" " alt="" coords="322,169,421,196"/>
+<area shape="rect" id="node11" title=" " alt="" coords="445,169,553,196"/>
+<area shape="rect" id="node4" href="$stb__ds_8h.html" title=" " alt="" coords="79,244,178,271"/>
+<area shape="rect" id="node6" title=" " alt="" coords="185,319,249,345"/>
+<area shape="rect" id="node8" title=" " alt="" coords="253,244,356,271"/>
+<area shape="rect" id="node9" title=" " alt="" coords="381,244,455,271"/>
 <area shape="rect" id="node5" title=" " alt="" coords="5,319,73,345"/>
 <area shape="rect" id="node7" title=" " alt="" coords="97,319,160,345"/>
 </map>

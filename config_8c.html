@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE Library: spiffetls/tlsconfig/src/config.c File Reference</title>
+<title>C-SPIFFE Library: spiffetls/tlsconfig/config.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,7 +63,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_2026a35d3728ab9e844181af2f3dbff1.html">spiffetls</a></li><li class="navelem"><a class="el" href="dir_40abd05d40de6cb14fa4b28692091c2e.html">tlsconfig</a></li><li class="navelem"><a class="el" href="dir_9015fbebfbf96fcaa7ff8b7f810173a1.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_2026a35d3728ab9e844181af2f3dbff1.html">spiffetls</a></li><li class="navelem"><a class="el" href="dir_40abd05d40de6cb14fa4b28692091c2e.html">tlsconfig</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -75,57 +75,57 @@ $(function() {
 <div class="title">config.c File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="config_8h_source.html">spiffetls/tlsconfig/src/config.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="authorizer_8h_source.html">spiffetls/tlsconfig/src/authorizer.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="verify_8h_source.html">svid/x509svid/src/verify.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="config_8h_source.html">spiffetls/tlsconfig/config.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="authorizer_8h_source.html">spiffetls/tlsconfig/authorizer.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="verify_8h_source.html">svid/x509svid/verify.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for config.c:</div>
 <div class="dyncontent">
-<div class="center"><img src="config_8c__incl.png" border="0" usemap="#aspiffetls_2tlsconfig_2src_2config_8c" alt=""/></div>
-<map name="aspiffetls_2tlsconfig_2src_2config_8c" id="aspiffetls_2tlsconfig_2src_2config_8c">
-<area shape="rect" title=" " alt="" coords="647,5,766,47"/>
-<area shape="rect" href="config_8h.html" title=" " alt="" coords="823,95,942,136"/>
-<area shape="rect" href="authorizer_8h.html" title=" " alt="" coords="673,273,791,315"/>
-<area shape="rect" href="verify_8h.html" title=" " alt="" coords="460,102,628,129"/>
-<area shape="rect" href="bundle_2x509bundle_2src_2source_8h.html" title=" " alt="" coords="995,184,1146,225"/>
-<area shape="rect" href="svid_2x509svid_2src_2source_8h.html" title=" " alt="" coords="795,191,971,218"/>
-<area shape="rect" title=" " alt="" coords="2096,191,2195,218"/>
-<area shape="rect" href="x509bundle_2src_2bundle_8h.html" title=" " alt="" coords="1443,840,1594,881"/>
-<area shape="rect" href="x509bundle_2src_2set_8h.html" title=" " alt="" coords="1795,587,1946,628"/>
-<area shape="rect" href="x509source_8h.html" title=" " alt="" coords="1228,281,1404,307"/>
-<area shape="rect" href="trustdomain_8h.html" title=" " alt="" coords="1435,937,1602,963"/>
-<area shape="rect" href="utils_2src_2util_8h.html" title=" " alt="" coords="1157,1093,1256,1120"/>
-<area shape="rect" title=" " alt="" coords="613,937,721,963"/>
-<area shape="rect" title=" " alt="" coords="1896,1019,1971,1045"/>
-<area shape="rect" href="id_8h.html" title=" " alt="" coords="1485,1019,1595,1045"/>
-<area shape="rect" title=" " alt="" coords="1443,1168,1517,1195"/>
-<area shape="rect" title=" " alt="" coords="1399,1093,1502,1120"/>
-<area shape="rect" href="stb__ds_8h.html" title=" " alt="" coords="1097,1168,1218,1195"/>
-<area shape="rect" title=" " alt="" coords="1220,1243,1284,1269"/>
-<area shape="rect" title=" " alt="" coords="94,1168,197,1195"/>
-<area shape="rect" title=" " alt="" coords="1123,1243,1191,1269"/>
-<area shape="rect" title=" " alt="" coords="1827,1243,1890,1269"/>
-<area shape="rect" href="x509svid_2src_2svid_8h.html" title=" " alt="" coords="801,676,962,703"/>
-<area shape="rect" href="workload_2src_2watcher_8h.html" title=" " alt="" coords="1378,363,1534,389"/>
-<area shape="rect" href="pem_8h.html" title=" " alt="" coords="609,751,741,792"/>
-<area shape="rect" href="internal_2x509util_2src_2util_8h.html" title=" " alt="" coords="271,751,406,792"/>
-<area shape="rect" title=" " alt="" coords="939,758,1055,785"/>
-<area shape="rect" title=" " alt="" coords="816,758,915,785"/>
-<area shape="rect" title=" " alt="" coords="805,847,912,874"/>
-<area shape="rect" title=" " alt="" coords="507,847,629,874"/>
-<area shape="rect" href="certpool_8h.html" title=" " alt="" coords="246,840,381,881"/>
-<area shape="rect" href="client_8h.html" title=" " alt="" coords="1385,437,1527,464"/>
-<area shape="rect" title=" " alt="" coords="1283,758,1341,785"/>
-<area shape="rect" href="x509context_8h.html" title=" " alt="" coords="1189,512,1368,539"/>
-<area shape="rect" href="jwtsvid_2src_2svid_8h.html" title=" " alt="" coords="1377,676,1527,703"/>
-<area shape="rect" href="backoff_8h.html" title=" " alt="" coords="1317,594,1469,621"/>
-<area shape="rect" href="jwtwatcher_8h.html" title=" " alt="" coords="1544,512,1717,539"/>
-<area shape="rect" href="bundle_2jwtbundle_2src_2source_8h.html" title=" " alt="" coords="1728,751,1869,792"/>
-<area shape="rect" title=" " alt="" coords="1416,758,1493,785"/>
-<area shape="rect" href="jwtbundle_2src_2bundle_8h.html" title=" " alt="" coords="1779,929,1920,971"/>
-<area shape="rect" href="jwtbundle_2src_2set_8h.html" title=" " alt="" coords="1829,840,1971,881"/>
-<area shape="rect" href="jwtcallback_8h.html" title=" " alt="" coords="1545,594,1719,621"/>
-<area shape="rect" href="match_8h.html" title=" " alt="" coords="1073,937,1207,963"/>
+<div class="center"><img src="config_8c__incl.png" border="0" usemap="#aspiffetls_2tlsconfig_2config_8c" alt=""/></div>
+<map name="aspiffetls_2tlsconfig_2config_8c" id="aspiffetls_2tlsconfig_2config_8c">
+<area shape="rect" title=" " alt="" coords="722,5,841,47"/>
+<area shape="rect" href="config_8h.html" title=" " alt="" coords="887,95,1006,136"/>
+<area shape="rect" href="authorizer_8h.html" title=" " alt="" coords="747,259,866,300"/>
+<area shape="rect" href="verify_8h.html" title=" " alt="" coords="533,102,680,129"/>
+<area shape="rect" href="bundle_2x509bundle_2source_8h.html" title=" " alt="" coords="1049,184,1231,211"/>
+<area shape="rect" href="svid_2x509svid_2source_8h.html" title=" " alt="" coords="869,184,1024,211"/>
+<area shape="rect" title=" " alt="" coords="2125,184,2224,211"/>
+<area shape="rect" href="x509bundle_2bundle_8h.html" title=" " alt="" coords="1464,796,1645,823"/>
+<area shape="rect" href="x509bundle_2set_8h.html" title=" " alt="" coords="1822,572,1983,599"/>
+<area shape="rect" href="x509source_8h.html" title=" " alt="" coords="1295,266,1449,293"/>
+<area shape="rect" href="trustdomain_8h.html" title=" " alt="" coords="1482,871,1627,897"/>
+<area shape="rect" href="utils_2util_8h.html" title=" " alt="" coords="1217,1020,1295,1047"/>
+<area shape="rect" title=" " alt="" coords="650,871,758,897"/>
+<area shape="rect" title=" " alt="" coords="1951,945,2025,972"/>
+<area shape="rect" href="id_8h.html" title=" " alt="" coords="1533,945,1619,972"/>
+<area shape="rect" title=" " alt="" coords="1477,1095,1552,1121"/>
+<area shape="rect" title=" " alt="" coords="1435,1020,1538,1047"/>
+<area shape="rect" href="stb__ds_8h.html" title=" " alt="" coords="1164,1095,1263,1121"/>
+<area shape="rect" title=" " alt="" coords="1268,1169,1332,1196"/>
+<area shape="rect" title=" " alt="" coords="94,1095,197,1121"/>
+<area shape="rect" title=" " alt="" coords="1175,1169,1243,1196"/>
+<area shape="rect" title=" " alt="" coords="1882,1169,1945,1196"/>
+<area shape="rect" href="x509svid_2svid_8h.html" title=" " alt="" coords="876,647,1015,673"/>
+<area shape="rect" href="workload_2watcher_8h.html" title=" " alt="" coords="1439,348,1574,375"/>
+<area shape="rect" href="pem_8h.html" title=" " alt="" coords="645,721,795,748"/>
+<area shape="rect" href="internal_2x509util_2util_8h.html" title=" " alt="" coords="294,721,437,748"/>
+<area shape="rect" title=" " alt="" coords="993,721,1109,748"/>
+<area shape="rect" title=" " alt="" coords="869,721,968,748"/>
+<area shape="rect" title=" " alt="" coords="843,796,949,823"/>
+<area shape="rect" title=" " alt="" coords="544,796,667,823"/>
+<area shape="rect" href="certpool_8h.html" title=" " alt="" coords="246,796,418,823"/>
+<area shape="rect" href="client_8h.html" title=" " alt="" coords="1447,423,1566,449"/>
+<area shape="rect" title=" " alt="" coords="1337,721,1394,748"/>
+<area shape="rect" href="x509context_8h.html" title=" " alt="" coords="1261,497,1419,524"/>
+<area shape="rect" href="jwtsvid_2svid_8h.html" title=" " alt="" coords="1442,647,1571,673"/>
+<area shape="rect" href="backoff_8h.html" title=" " alt="" coords="1387,572,1517,599"/>
+<area shape="rect" href="jwtwatcher_8h.html" title=" " alt="" coords="1595,497,1746,524"/>
+<area shape="rect" href="bundle_2jwtbundle_2source_8h.html" title=" " alt="" coords="1774,721,1946,748"/>
+<area shape="rect" title=" " alt="" coords="1469,721,1547,748"/>
+<area shape="rect" href="jwtbundle_2bundle_8h.html" title=" " alt="" coords="1804,871,1975,897"/>
+<area shape="rect" href="jwtbundle_2set_8h.html" title=" " alt="" coords="1874,796,2025,823"/>
+<area shape="rect" href="jwtcallback_8h.html" title=" " alt="" coords="1593,572,1746,599"/>
+<area shape="rect" href="match_8h.html" title=" " alt="" coords="1141,871,1254,897"/>
 </map>
 </div>
 </div><table class="memberdecls">

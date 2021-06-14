@@ -1,0 +1,24 @@
+<map id="federation/federation.h" name="federation/federation.h">
+<area shape="rect" id="node1" title=" " alt="" coords="559,5,709,32"/>
+<area shape="rect" id="node2" href="$endpoint_8h.html" title=" " alt="" coords="451,155,593,181"/>
+<area shape="rect" id="node22" href="$federation_2watcher_8h.html" title=" " alt="" coords="707,80,846,107"/>
+<area shape="rect" id="node3" href="$spiffebundle_2bundle_8h.html" title=" " alt="" coords="539,408,673,449"/>
+<area shape="rect" id="node5" href="$id_8h.html" title=" " alt="" coords="95,647,181,673"/>
+<area shape="rect" id="node6" href="$utils_2util_8h.html" title=" " alt="" coords="642,721,719,748"/>
+<area shape="rect" id="node13" title=" " alt="" coords="5,721,108,748"/>
+<area shape="rect" id="node14" title=" " alt="" coords="489,572,563,599"/>
+<area shape="rect" id="node16" href="$trustdomain_8h.html" title=" " alt="" coords="848,572,993,599"/>
+<area shape="rect" id="node19" href="$spiffebundle_2set_8h.html" title=" " alt="" coords="683,319,817,360"/>
+<area shape="rect" id="node20" href="$bundle_2spiffebundle_2source_8h.html" title=" " alt="" coords="529,229,662,271"/>
+<area shape="rect" id="node21" title=" " alt="" coords="737,237,816,263"/>
+<area shape="rect" id="node4" href="$jwtbundle_2bundle_8h.html" title=" " alt="" coords="347,497,518,524"/>
+<area shape="rect" id="node15" href="$x509bundle_2bundle_8h.html" title=" " alt="" coords="643,497,825,524"/>
+<area shape="rect" id="node17" title=" " alt="" coords="588,572,696,599"/>
+<area shape="rect" id="node18" title=" " alt="" coords="849,497,907,524"/>
+<area shape="rect" id="node12" title=" " alt="" coords="426,796,501,823"/>
+<area shape="rect" id="node7" href="$stb__ds_8h.html" title=" " alt="" coords="757,796,855,823"/>
+<area shape="rect" id="node9" title=" " alt="" coords="622,871,686,897"/>
+<area shape="rect" id="node11" title=" " alt="" coords="629,796,732,823"/>
+<area shape="rect" id="node8" title=" " alt="" coords="816,871,884,897"/>
+<area shape="rect" id="node10" title=" " alt="" coords="729,871,792,897"/>
+</map>

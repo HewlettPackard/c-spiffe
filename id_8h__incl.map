@@ -1,11 +1,11 @@
-<map id="spiffeid/src/id.h" name="spiffeid/src/id.h">
-<area shape="rect" id="node1" title=" " alt="" coords="359,5,469,32"/>
-<area shape="rect" id="node2" href="$utils_2src_2util_8h.html" title=" " alt="" coords="265,80,363,107"/>
-<area shape="rect" id="node8" title=" " alt="" coords="390,155,465,181"/>
-<area shape="rect" id="node9" title=" " alt="" coords="452,80,555,107"/>
-<area shape="rect" id="node3" href="$stb__ds_8h.html" title=" " alt="" coords="65,155,187,181"/>
-<area shape="rect" id="node5" title=" " alt="" coords="190,229,254,256"/>
-<area shape="rect" id="node7" title=" " alt="" coords="263,155,365,181"/>
+<map id="spiffeid/id.h" name="spiffeid/id.h">
+<area shape="rect" id="node1" title=" " alt="" coords="356,5,443,32"/>
+<area shape="rect" id="node2" href="$utils_2util_8h.html" title=" " alt="" coords="266,80,343,107"/>
+<area shape="rect" id="node8" title=" " alt="" coords="381,155,455,181"/>
+<area shape="rect" id="node9" title=" " alt="" coords="437,80,540,107"/>
+<area shape="rect" id="node3" href="$stb__ds_8h.html" title=" " alt="" coords="79,155,178,181"/>
+<area shape="rect" id="node5" title=" " alt="" coords="185,229,249,256"/>
+<area shape="rect" id="node7" title=" " alt="" coords="253,155,356,181"/>
 <area shape="rect" id="node4" title=" " alt="" coords="5,229,73,256"/>
 <area shape="rect" id="node6" title=" " alt="" coords="97,229,160,256"/>
 </map>
