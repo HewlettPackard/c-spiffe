@@ -54,4 +54,4 @@ This command encapsulates some steps:
     - Build binary files examples (the interface to use c-spiffe lib)
     - Run behave tests
         - Before all the tests are run, this stage is also responsible for starting `spire-agent` process inside `infra_tests` container and connect it to the `spire-server` running inside the `infra_spire-server` container
-6. Stop `infra_tests`, `inrfa_spire-server` and `infra_workload` containers
+6. Stop `infra_tests`, `infra_spire-server` and `infra_workload` containers
