@@ -1,5 +1,5 @@
-#include "federation/src/watcher.h"
-#include "spiffeid/src/trustdomain.h"
+#include "federation/watcher.h"
+#include "spiffeid/trustdomain.h"
 #include <check.h>
 #include <unistd.h>
 

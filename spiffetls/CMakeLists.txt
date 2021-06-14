@@ -6,21 +6,21 @@ set(TARGET_NAME "spiffetls")
 project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C)
 
 set(LIB_SPIFFETLS
-${PROJECT_SOURCE_DIR}/tlsconfig/src/config.c
-${PROJECT_SOURCE_DIR}/tlsconfig/src/authorizer.c
-${PROJECT_SOURCE_DIR}/src/dial.c
-${PROJECT_SOURCE_DIR}/src/listen.c
-${PROJECT_SOURCE_DIR}/src/mode.c
-${PROJECT_SOURCE_DIR}/src/peerid.c)
+${PROJECT_SOURCE_DIR}/tlsconfig/config.c
+${PROJECT_SOURCE_DIR}/tlsconfig/authorizer.c
+${PROJECT_SOURCE_DIR}/dial.c
+${PROJECT_SOURCE_DIR}/listen.c
+${PROJECT_SOURCE_DIR}/mode.c
+${PROJECT_SOURCE_DIR}/peerid.c)
 
 set(C_DIAL
-    src/c_dial_example.c
+    c_dial_example.c
 )
 add_executable(c_dial "${C_DIAL}")
 target_link_libraries(c_dial spiffetls)
 
 set(C_LISTEN
-    src/c_listen_example.c
+    c_listen_example.c
 )
 add_executable(c_listen "${C_LISTEN}")
 target_link_libraries(c_listen spiffetls)
@@ -42,3 +42,40 @@ target_link_libraries(${TARGET_NAME}
     m
     pthread
     crypto)
+
+# Install Headers:
+set(HEADERS_SPIFFETLS
+${PROJECT_SOURCE_DIR}/dial.h
+${PROJECT_SOURCE_DIR}/listen.h
+${PROJECT_SOURCE_DIR}/mode.h
+${PROJECT_SOURCE_DIR}/option.h
+${PROJECT_SOURCE_DIR}/peerid.h
+)
+#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
+install(
+    FILES ${HEADERS_SPIFFETLS}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/${TARGET_NAME}"
+)
+
+# Install Headers:
+set(HEADERS_TLSCONFIG
+${PROJECT_SOURCE_DIR}/tlsconfig/authorizer.h
+${PROJECT_SOURCE_DIR}/tlsconfig/config.h
+${PROJECT_SOURCE_DIR}/tlsconfig/trace.h
+)
+#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
+install(
+    FILES ${HEADERS_TLSCONFIG}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/${TARGET_NAME}"
+)
+
+# Install higher level header:
+set(HEADERS_MOD_SPIFFETLS
+${PROJECT_SOURCE_DIR}/spiffetls.h
+${PROJECT_SOURCE_DIR}/tlsconfig.h
+)
+#   - *.h -> <prefix>/include/c-spiffe/*.h
+install(
+    FILES ${HEADERS_MOD_SPIFFETLS}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}"
+)

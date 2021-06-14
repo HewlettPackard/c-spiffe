@@ -1,4 +1,4 @@
-#include "bundle/spiffebundle/src/set.h"
+#include "bundle/spiffebundle/set.h"
 #include <check.h>
 
 START_TEST(test_spiffebundle_NewSet)

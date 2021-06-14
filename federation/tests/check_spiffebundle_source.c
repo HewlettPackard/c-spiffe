@@ -1,4 +1,4 @@
-#include "bundle/spiffebundle/src/source.h"
+#include "bundle/spiffebundle/source.h"
 #include <check.h>
 
 START_TEST(test_spiffebundle_SourceFromBundle)

@@ -7,10 +7,10 @@
  * Copyright (c) 2020 CESAR
  */
 
-#include "svid/x509svid/src/svid.h"
+#include "svid/x509svid/svid.h"
 #include "workload.grpc.pb.h"
 #include "workload.pb.h"
-#include "workload/src/client.h"
+#include "workload/client.h"
 #include "workload_mock.grpc.pb.h"
 #include <check.h>
 #include <gmock/gmock.h>
