@@ -104,7 +104,7 @@ int ssl_serve(ssl_server_connection *connection)
         ERR_print_errors_fp(stdout);
         ret = SSL_get_error(connection->ssl, ret);
         error = ERR_get_error();
-        printf("Ret: %d error: %d Errno: %d", ret, error, errno);
+        printf("Ret: %d error: %d Errno: %d\n", ret, error, errno);
 
     } else {
         printf("Connection accepted!\n");

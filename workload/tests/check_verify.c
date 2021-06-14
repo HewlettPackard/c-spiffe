@@ -1,4 +1,4 @@
-#include "svid/x509svid/src/verify.h"
+#include "svid/x509svid/verify.h"
 #include <check.h>
 #include <openssl/pem.h>
 

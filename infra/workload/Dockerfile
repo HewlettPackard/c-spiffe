@@ -1,4 +1,4 @@
-FROM alg4/infra_spire-agent
+FROM cspiffe/spire-agent
 
 ARG C_SPIFFE_DIR=/mnt/c-spiffe
 
@@ -20,17 +20,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libgtest-dev \
         libgmock-dev \
         golang-go \
-        openssh-server
-RUN apt-get clean
+        openssh-server\
+        libcurl4-openssl-dev;\
+apt-get clean
 
-ARG BRANCH=test/351-implement-test-case-MT_02
+
+ARG BRANCH=test-352-Implement-test-case-MT_03
 RUN cd /mnt && git clone -b ${BRANCH} https://github.com/arianalima/c-spiffe.git
 RUN cd ${C_SPIFFE_DIR} && git pull
+
 RUN mkdir -p ${C_SPIFFE_DIR}/build/
+
+COPY . ${C_SPIFFE_DIR}/
+RUN ls ${C_SPIFFE_DIR}
+
 RUN chmod +x -R ${C_SPIFFE_DIR}/integration_test
 RUN chmod +x -R ${C_SPIFFE_DIR}/infra
-
-WORKDIR ${C_SPIFFE_DIR}/build
-COPY build-tests-workload.sh .
 
 RUN useradd server-workload

@@ -21,7 +21,7 @@ check_formatting:
 
 
 build:
-  image: willallves/grpc-build:1.34.0
+  image: cspiffe/grpc-build:1.34.0
   stage: build
   before_script:
     - cd $CI_PROJECT_DIR

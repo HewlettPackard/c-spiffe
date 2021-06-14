@@ -5,12 +5,11 @@ set(TARGET_NAME "spiffeid")
 
 project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C)
 
-
 set(LIB_SPIFFEID 
-${PROJECT_SOURCE_DIR}/src/id.c
-${PROJECT_SOURCE_DIR}/src/match.c
-${PROJECT_SOURCE_DIR}/src/trustdomain.c
-${PROJECT_SOURCE_DIR}/../utils/src/util.c
+${PROJECT_SOURCE_DIR}/id.c
+${PROJECT_SOURCE_DIR}/match.c
+${PROJECT_SOURCE_DIR}/trustdomain.c
+${PROJECT_SOURCE_DIR}/../utils/util.c
 )
 
 add_library(${TARGET_NAME} SHARED ${LIB_SPIFFEID})
@@ -21,14 +20,24 @@ install(
     LIBRARY DESTINATION  "${CMAKE_INSTALL_LIBDIR}"
 )
 
-# Install Headers:
+# Install headers:
 set(HEADERS_SPIFFEID
-${PROJECT_SOURCE_DIR}/src/id.h
-${PROJECT_SOURCE_DIR}/src/match.h
-${PROJECT_SOURCE_DIR}/src/trustdomain.h
+${PROJECT_SOURCE_DIR}/id.h
+${PROJECT_SOURCE_DIR}/match.h
+${PROJECT_SOURCE_DIR}/trustdomain.h
 )
-#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_SPIFFEID}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/src"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/${TARGET_NAME}"
+)
+
+# Install higher level header:
+set(HEADERS_MOD_SPIFFEID
+${PROJECT_SOURCE_DIR}/spiffeid.h
+)
+#   - *.h -> <prefix>/include/c-spiffe/*.h
+install(
+    FILES ${HEADERS_MOD_SPIFFEID}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}"
 )

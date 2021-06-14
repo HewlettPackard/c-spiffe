@@ -12,9 +12,11 @@ register_type(optional=parse_optional)
 
 @when('I fetch{external:optional}"{profile}" "{document}"')
 def step_impl(context, external, profile, document):
-    host = ""
+    host, host_number = "", ""
     if external == "external":
-        host = "workload"
+        if context.current_workload == context.workload_c:
+            host_number = "2"
+        host = "workload%s" % host_number
 
     if document == "SVID":
         bin_file = "c_client"
@@ -26,15 +28,22 @@ def step_impl(context, external, profile, document):
 
 @then('I check that the "{document}" is returned correctly')
 def step_impl(context, document):
+    document = document.lower()
     assert_that(context.result.find("error"), is_(-1), "There was an error")
-    assert_that(context.result.find("Address: "), is_not(-1), "There is no Address")
-    result = context.result.splitlines()
+    start_index = context.result.find("Address: ")
+    assert_that(start_index, is_not(-1), "There is no Address")
+    result = context.result[start_index:].splitlines()
     document_content = result[0].split(" ")[-1]
-    if document.lower() == "svid":
-        context.svid = document_content
+    exec("context.%s = document_content" % document)
+    exec("assert_that(context.%s, is_not('(nil)'))" % document)
+    if document == "svid":
+        trust_domain = result[2].split(" ")[-1]
+    elif document == "bundle":
+        trust_domain = result[3].split(" ")[-1]
+    if context.current_workload != context.workload_c:
+        assert_that(trust_domain, is_(context.default_trust_domain))
     else:
-        context.bundle = document_content
-    assert_that(document_content, is_not("(nil)"))
+        assert_that(trust_domain in [context.default_trust_domain, context.second_trust_domain])
 
 
 @then('I check that the "{document}" is not returned')

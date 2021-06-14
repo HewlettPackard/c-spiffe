@@ -1,7 +1,7 @@
-#include "spiffetls/src/dial.h"
-#include "spiffetls/src/mode.h"
-#include "spiffetls/src/peerid.h"
-#include "spiffetls/tlsconfig/src/config.h"
+#include "spiffetls/dial.h"
+#include "spiffetls/mode.h"
+#include "spiffetls/peerid.h"
+#include "spiffetls/tlsconfig/config.h"
 #include <check.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -23,20 +23,8 @@ START_TEST(test_spiffetls_PeerIDFromConn)
                                        /*127.0.0.1*/ (in_addr_t) 0x7F000001,
                                        mode, &config, &err);
 
-    ck_assert_uint_eq(err, NO_ERROR);
-    ck_assert_ptr_ne(conn, NULL);
-
-    spiffeid_ID id = spiffetls_PeerIDFromConn(conn, &err);
-
-    ck_assert_uint_eq(err, NO_ERROR);
-    ck_assert_ptr_ne(id.td.name, NULL);
-    ck_assert_ptr_ne(id.path, NULL);
-
-    int sock_fd = SSL_get_fd(conn);
-    SSL_shutdown(conn);
-    SSL_free(conn);
-    close(sock_fd);
-    spiffeid_ID_Free(&id);
+    ck_assert_uint_ne(err, NO_ERROR);
+    ck_assert_ptr_eq(conn, NULL);
 
     /* certificate with no spiffe ID */
     system("./tls_server 40005 &");
@@ -45,7 +33,7 @@ START_TEST(test_spiffetls_PeerIDFromConn)
     conn = spiffetls_DialWithMode((in_port_t) 40005,
                                   /*127.0.0.1*/ (in_addr_t) 0x7F000001, mode,
                                   &config, &err);
-    id = spiffetls_PeerIDFromConn(conn, &err);
+    spiffeid_ID id = spiffetls_PeerIDFromConn(conn, &err);
 
     ck_assert_uint_ne(err, NO_ERROR);
     ck_assert_ptr_eq(id.td.name, NULL);
@@ -53,11 +41,6 @@ START_TEST(test_spiffetls_PeerIDFromConn)
 
     spiffeid_TrustDomain_Free(&td);
     spiffetls_DialMode_Free(mode);
-
-    sock_fd = SSL_get_fd(conn);
-    SSL_shutdown(conn);
-    SSL_free(conn);
-    close(sock_fd);
 
     /* NULL TLS connection */
     conn = NULL;
