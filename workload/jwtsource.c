@@ -76,12 +76,12 @@ jwtsvid_SVID *workloadapi_JWTSource_GetJWTSVID(workloadapi_JWTSource *source,
 }
 
 jwtbundle_Bundle *workloadapi_JWTSource_GetJWTBundleForTrustDomain(
-    workloadapi_JWTSource *source, spiffeid_TrustDomain *td, err_t *err)
+    workloadapi_JWTSource *source, const spiffeid_TrustDomain td, err_t *err)
 {
     *err = workloadapi_JWTSource_checkClosed(source);
     if(!(*err)) {
         jwtbundle_Bundle *bundle = jwtbundle_Set_GetJWTBundleForTrustDomain(
-            source->bundles, *td, err);
+            source->bundles, td, err);
         if(*err == ERROR1) {
             *err = ERROR2;
         }

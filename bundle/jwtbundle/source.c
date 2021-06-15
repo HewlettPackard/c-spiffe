@@ -9,6 +9,9 @@ jwtbundle_Bundle *jwtbundle_Source_GetJWTBundleForTrustDomain(
     } else if(s->type == JWTBUNDLE_SET) {
         return jwtbundle_Set_GetJWTBundleForTrustDomain(s->source.set, td,
                                                         err);
+    } else if(s->type == JWTBUNDLE_WORKLOADAPI_JWTSOURCE) {
+        return workloadapi_JWTSource_GetJWTBundleForTrustDomain(
+            s->source.source, td, err);
     }
 
     return NULL;
@@ -42,6 +45,20 @@ jwtbundle_Source *jwtbundle_SourceFromSet(jwtbundle_Set *s)
     return NULL;
 }
 
+jwtbundle_Source *jwtbundle_SourceFromSource(workloadapi_JWTSource *s)
+{
+    if(s) {
+        jwtbundle_Source *source = malloc(sizeof *source);
+
+        source->type = JWTBUNDLE_WORKLOADAPI_JWTSOURCE;
+        source->source.source = s;
+
+        return source;
+    }
+
+    return NULL;
+}
+
 void jwtbundle_Source_Free(jwtbundle_Source *s)
 {
     if(s) {
@@ -49,6 +66,8 @@ void jwtbundle_Source_Free(jwtbundle_Source *s)
             jwtbundle_Bundle_Free(s->source.bundle);
         } else if(s->type == JWTBUNDLE_SET) {
             jwtbundle_Set_Free(s->source.set);
+        } else if(s->type == JWTBUNDLE_WORKLOADAPI_JWTSOURCE) {
+            workloadapi_JWTSource_Free(s->source.source);
         }
 
         free(s);

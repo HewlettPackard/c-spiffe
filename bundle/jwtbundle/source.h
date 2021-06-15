@@ -3,6 +3,7 @@
 
 #include "bundle/jwtbundle/bundle.h"
 #include "bundle/jwtbundle/set.h"
+#include "workload/jwtsource.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -10,10 +11,15 @@ extern "C" {
 
 /** Source represents a source of JWT bundles keyed by trust domain. */
 typedef struct {
-    enum jwtbundle_Source_Cardinality { JWTBUNDLE_BUNDLE, JWTBUNDLE_SET } type;
+    enum jwtbundle_Source_Cardinality {
+        JWTBUNDLE_BUNDLE,
+        JWTBUNDLE_SET,
+        JWTBUNDLE_WORKLOADAPI_JWTSOURCE
+    } type;
     union {
         jwtbundle_Bundle *bundle;
         jwtbundle_Set *set;
+        workloadapi_JWTSource *source;
     } source;
 } jwtbundle_Source;
 
@@ -46,6 +52,16 @@ jwtbundle_Source *jwtbundle_SourceFromBundle(jwtbundle_Bundle *b);
  * \returns A source of JWT bundles object pointer.
  */
 jwtbundle_Source *jwtbundle_SourceFromSet(jwtbundle_Set *s);
+
+/**
+ * Creates a source of JWT bundles from a workload API JWT source of
+ * bundles. Takes ownership of the object, so it will be freed when the source
+ * is freed.
+ *
+ * \param set [in] Workload API source of JWT bundles object pointer.
+ * \returns A source of JWT bundles object pointer.
+ */
+jwtbundle_Source *jwtbundle_SourceFromSource(workloadapi_JWTSource *s);
 
 /**
  * Frees a source of JWT bundles object.

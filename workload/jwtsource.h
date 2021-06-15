@@ -2,9 +2,9 @@
 #define INCLUDE_WORKLOAD_JWTSOURCE_H
 
 #include "bundle/jwtbundle/set.h"
-#include "jwtcallback.h"
-#include "jwtwatcher.h"
 #include "svid/jwtsvid/svid.h"
+#include "workload/jwtcallback.h"
+#include "workload/jwtwatcher.h"
 #include <threads.h>
 
 #ifdef __cplusplus
@@ -64,7 +64,7 @@ jwtsvid_SVID *workloadapi_JWTSource_GetJWTSVID(workloadapi_JWTSource *source,
  * the given trust domain. It implements the jwtbundle.Source interface.
  * */
 jwtbundle_Bundle *workloadapi_JWTSource_GetJWTBundleForTrustDomain(
-    workloadapi_JWTSource *source, spiffeid_TrustDomain *td, err_t *err);
+    workloadapi_JWTSource *source, const spiffeid_TrustDomain td, err_t *err);
 
 #ifdef __cplusplus
 }
