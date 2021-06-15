@@ -67,3 +67,10 @@ target_link_libraries(check_jwtsource ${CHECK_LIBRARIES}
   source)
 
 add_test(check_jwtsource check_jwtsource)
+
+add_executable(check_jwtsvid check_jwtsvid.c)
+
+target_link_libraries(check_jwtsvid ${CHECK_LIBRARIES}
+  source)
+
+add_test(check_jwtsvid check_jwtsvid)
