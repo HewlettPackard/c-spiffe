@@ -2,6 +2,7 @@
 cmake_minimum_required(VERSION 3.13)
 
 set(TARGET_NAME "c-spiffe")
+set(C_SPIFFE_NAME "c-spiffe")
 project(${TARGET_NAME} VERSION 0.0.1)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")

@@ -29,10 +29,10 @@ ${PROJECT_SOURCE_DIR}/jwtbundle/bundle.h
 ${PROJECT_SOURCE_DIR}/jwtbundle/set.h
 ${PROJECT_SOURCE_DIR}/jwtbundle/source.h
 )
-#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_BUNDLE_JWT}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/jwtbundle/src"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/${TARGET_NAME}/jwtbundle"
 )
 
 # Install Headers:
@@ -41,19 +41,32 @@ ${PROJECT_SOURCE_DIR}/x509bundle/bundle.h
 ${PROJECT_SOURCE_DIR}/x509bundle/set.h
 ${PROJECT_SOURCE_DIR}/x509bundle/source.h
 )
-#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_BUNDLE_X509}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/x509bundle/src"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/${TARGET_NAME}/x509bundle"
 )
 
 # Install Headers:
 set(HEADERS_BUNDLE_SPIFFE
 ${PROJECT_SOURCE_DIR}/spiffebundle/bundle.h
 ${PROJECT_SOURCE_DIR}/spiffebundle/set.h
+${PROJECT_SOURCE_DIR}/spiffebundle/source.h
 )
-#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_BUNDLE_SPIFFE}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/spiffebundle/src"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/${TARGET_NAME}/spiffebundle"
+)
+
+# Install higher level header:
+set(HEADERS_MOD_BUNDLE
+${PROJECT_SOURCE_DIR}/jwtbundle.h
+${PROJECT_SOURCE_DIR}/spiffebundle.h
+${PROJECT_SOURCE_DIR}/x509bundle.h
+)
+#   - *.h -> <prefix>/include/c-spiffe/*.h
+install(
+    FILES ${HEADERS_MOD_BUNDLE}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}"
 )

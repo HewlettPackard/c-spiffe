@@ -1,5 +1,5 @@
-#ifndef SPIFFEID_ID_H
-#define SPIFFEID_ID_H
+#ifndef INCLUDE_SPIFFEID_ID_H
+#define INCLUDE_SPIFFEID_ID_H
 
 #include "utils/util.h"
 #include <stdbool.h>

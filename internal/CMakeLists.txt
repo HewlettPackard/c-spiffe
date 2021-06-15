@@ -25,30 +25,30 @@ install(
 set(HEADERS_INTERNAL_CRYPTO
 ${PROJECT_SOURCE_DIR}/cryptoutil/keys.h
 )
-#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_INTERNAL_CRYPTO}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/cryptoutil/src"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/${TARGET_NAME}/cryptoutil"
 )
 
 # Install Headers:
 set(HEADERS_INTERNAL_JWT
 ${PROJECT_SOURCE_DIR}/jwtutil/util.h
 )
-#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_INTERNAL_JWT}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/jwtutil/src"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/${TARGET_NAME}/jwtutil"
 )
 
 # Install Headers:
 set(HEADERS_INTERNAL_PEM
 ${PROJECT_SOURCE_DIR}/pemutil/pem.h
 )
-#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_INTERNAL_PEM}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/pemutil/src"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/${TARGET_NAME}/pemutil"
 )
 
 # Install Headers:
@@ -56,10 +56,10 @@ set(HEADERS_INTERNAL_X509
 ${PROJECT_SOURCE_DIR}/x509util/certpool.h
 ${PROJECT_SOURCE_DIR}/x509util/util.h
 )
-#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_INTERNAL_X509}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${TARGET_NAME}/x509util/src"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/${TARGET_NAME}/x509util"
 )
 
 # Install Headers:
@@ -67,9 +67,21 @@ set(HEADERS_UTIL
 ${PROJECT_SOURCE_DIR}/../utils/util.h
 ${PROJECT_SOURCE_DIR}/../utils/stb_ds.h
 )
-#   - *.h -> <prefix>/include/${TARGET_NAME}/*.h
+#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
     FILES ${HEADERS_UTIL}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/utils/src"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/utils"
 )
 
+# Install higher level header:
+set(HEADERS_MOD_INTERNAL
+${PROJECT_SOURCE_DIR}/cryptoutil.h
+${PROJECT_SOURCE_DIR}/jwtutil.h
+${PROJECT_SOURCE_DIR}/pemutil.h
+${PROJECT_SOURCE_DIR}/x509util.h
+)
+#   - *.h -> <prefix>/include/c-spiffe/*.h
+install(
+    FILES ${HEADERS_MOD_INTERNAL}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}"
+)

@@ -42,3 +42,40 @@ target_link_libraries(${TARGET_NAME}
     m
     pthread
     crypto)
+
+# Install Headers:
+set(HEADERS_SPIFFETLS
+${PROJECT_SOURCE_DIR}/dial.h
+${PROJECT_SOURCE_DIR}/listen.h
+${PROJECT_SOURCE_DIR}/mode.h
+${PROJECT_SOURCE_DIR}/option.h
+${PROJECT_SOURCE_DIR}/peerid.h
+)
+#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
+install(
+    FILES ${HEADERS_SPIFFETLS}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/${TARGET_NAME}"
+)
+
+# Install Headers:
+set(HEADERS_TLSCONFIG
+${PROJECT_SOURCE_DIR}/tlsconfig/authorizer.h
+${PROJECT_SOURCE_DIR}/tlsconfig/config.h
+${PROJECT_SOURCE_DIR}/tlsconfig/trace.h
+)
+#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
+install(
+    FILES ${HEADERS_TLSCONFIG}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/${TARGET_NAME}"
+)
+
+# Install higher level header:
+set(HEADERS_MOD_SPIFFETLS
+${PROJECT_SOURCE_DIR}/spiffetls.h
+${PROJECT_SOURCE_DIR}/tlsconfig.h
+)
+#   - *.h -> <prefix>/include/c-spiffe/*.h
+install(
+    FILES ${HEADERS_MOD_SPIFFETLS}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}"
+)
