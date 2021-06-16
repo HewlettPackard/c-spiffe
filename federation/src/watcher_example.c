@@ -8,7 +8,7 @@ int running = true;
 
 int print_watcher(void *watcher_)
 {
-    spiffebundle_Watcher *watcher = watcher_;
+    spiffebundle_Watcher *watcher = (spiffebundle_Watcher *) watcher_;
     // waits and prints bundle every few seconds
     struct timespec update_time = { .tv_sec = 2, .tv_nsec = 0 };
 
@@ -33,7 +33,7 @@ int print_watcher(void *watcher_)
                        status->endpoint->td.name);
                 continue;
             }
-            char *m_string = spiffebundle_Bundle_Marshal(bundle, &err);
+            string_t m_string = spiffebundle_Bundle_Marshal(bundle, &err);
             if(m_string) {
                 printf("Bundle (jwks):\n%s\n", m_string);
                 util_string_t_Free(m_string);
@@ -41,11 +41,11 @@ int print_watcher(void *watcher_)
                 printf("Bundle (jwks): ERROR\n");
                 fprintf(stderr, "Error marshalling bundle.\n");
             }
-                }
+        }
     }
 }
 
-int main(int argc, char **argv)
+int main(void)
 {
     // create watcher
     spiffebundle_Watcher *watcher = spiffebundle_Watcher_New();
@@ -70,7 +70,7 @@ int main(int argc, char **argv)
         // free memory and exit
         fprintf(stderr, "\nERROR ADDING ENDPOINT: %d\n", err);
         spiffebundle_Watcher_Free(watcher);
-        return err;
+        exit(err);
     }
     // starts watcher up, will not block
     printf("Starting Watcher.\n");
@@ -80,7 +80,7 @@ int main(int argc, char **argv)
         // free memory and exit
         fprintf(stderr, "\nERROR STARTING WATCHER: %d\n", err);
         spiffebundle_Watcher_Free(watcher);
-        return err;
+        exit(err);
     }
 
     // start threads in the background
@@ -92,7 +92,7 @@ int main(int argc, char **argv)
         // free memory and exit
         fprintf(stderr, "\nERROR STARTING THREAD: %d\n", err);
         spiffebundle_Watcher_Free(watcher);
-        return err;
+        exit(err);
     }
     // wait until ENTER is pressed
     printf("Press ENTER to stop.\n");
@@ -107,7 +107,7 @@ int main(int argc, char **argv)
         // free memory and exit
         fprintf(stderr, "\nERROR STOPPING WATCHER: %d\n", err);
         spiffebundle_Watcher_Free(watcher);
-        return err;
+        exit(err);
     }
 
     // free memory
