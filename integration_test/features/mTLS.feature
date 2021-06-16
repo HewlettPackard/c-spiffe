@@ -98,7 +98,5 @@ Feature: Mutual TLS
         And   The "<listen_type>"-tls-listen is disabled inside "workload" container
         Examples:
             | dial_type | listen_type |
-            # |     go    |      go     |
-            # |     c     |      go     |
             |     go    |      c      |
             |     c     |      c      |

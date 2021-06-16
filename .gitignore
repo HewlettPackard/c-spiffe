@@ -41,6 +41,7 @@ integration_test/*.output
 integration_test/*.log
 integration_test/helpers/bash-general-scripts/authorized_keys
 *.token
+infra/docker-compose.override.yml
 
 #files generated from the document generator
 html/
