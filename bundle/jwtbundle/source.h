@@ -3,7 +3,7 @@
 
 #include "bundle/jwtbundle/bundle.h"
 #include "bundle/jwtbundle/set.h"
-#include "workload/jwtsource.h"
+// #include "workload/jwtsource.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,7 +19,8 @@ typedef struct {
     union {
         jwtbundle_Bundle *bundle;
         jwtbundle_Set *set;
-        workloadapi_JWTSource *source;
+        // workloadapi_JWTSource *source;
+        void *source;
     } source;
 } jwtbundle_Source;
 
@@ -61,7 +62,7 @@ jwtbundle_Source *jwtbundle_SourceFromSet(jwtbundle_Set *s);
  * \param set [in] Workload API source of JWT bundles object pointer.
  * \returns A source of JWT bundles object pointer.
  */
-jwtbundle_Source *jwtbundle_SourceFromSource(workloadapi_JWTSource *s);
+// jwtbundle_Source *jwtbundle_SourceFromSource(workloadapi_JWTSource *s);
 
 /**
  * Frees a source of JWT bundles object.
