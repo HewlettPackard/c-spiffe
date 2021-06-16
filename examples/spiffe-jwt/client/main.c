@@ -64,7 +64,7 @@ int main(int argc, char **argv)
     arrfree(header_arg);
     string_t response = NULL;
 
-    CURL *curl = curl_easy_init(curl);
+    CURL *curl = curl_easy_init();
     curl_easy_setopt(curl, CURLOPT_URL, "https://localhost");
     curl_easy_setopt(curl, CURLOPT_PORT, 8443);
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, list);
@@ -75,7 +75,7 @@ int main(int argc, char **argv)
     CURLcode res = curl_easy_perform(curl);
 
     if(res != CURLE_OK) {
-        printf("curl_easy_perfoem() failed: %s\n", curl_easy_strerror(curl));
+        printf("curl_easy_perfoem() failed: %s\n", curl_easy_strerror(res));
         exit(-1);
     }
 
