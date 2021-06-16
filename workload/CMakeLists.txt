@@ -56,8 +56,6 @@ set(LIB_SOURCE
 ${PROJECT_SOURCE_DIR}/../svid/x509svid/verify.c
 ${PROJECT_SOURCE_DIR}/../bundle/x509bundle/source.c
 ${PROJECT_SOURCE_DIR}/../svid/x509svid/source.c
-${PROJECT_SOURCE_DIR}/../bundle/jwtbundle/source.c
-${PROJECT_SOURCE_DIR}/../svid/jwtsvid/svid.c
 ${PROJECT_SOURCE_DIR}/x509source.c
 ${PROJECT_SOURCE_DIR}/jwtsource.c
 )
@@ -107,6 +105,8 @@ install(
 
 set(LIB_CLIENT
 ${PROJECT_SOURCE_DIR}/client.cc
+${PROJECT_SOURCE_DIR}/../svid/jwtsvid/svid.c
+${PROJECT_SOURCE_DIR}/../bundle/jwtbundle/source.c
 ${proto_srcs}
 ${grpc_srcs}
 )
@@ -157,13 +157,13 @@ set(CPP_CLIENT
 ${PROJECT_SOURCE_DIR}/cpp_client_example.cc
 )
 add_executable(cpp_client "${CPP_CLIENT}")
-target_link_libraries(cpp_client source )
+target_link_libraries(cpp_client source)
 
 set(C_CLIENT
 ${PROJECT_SOURCE_DIR}/c_client_example.c
 )
 add_executable(c_client "${C_CLIENT}")
-target_link_libraries(c_client source )
+target_link_libraries(c_client source)
 
 set(C_CLIENT_BUNDLE
 ${PROJECT_SOURCE_DIR}/c_client_example_bundle.c
