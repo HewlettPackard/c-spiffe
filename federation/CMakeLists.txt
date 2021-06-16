@@ -55,7 +55,7 @@ install(
 )
 
 set(WATCHER_EXAMPLE
-    src/watcher_example.c
+${PROJECT_SOURCE_DIR}/watcher_example.c
 )
 add_executable(watcher_example "${WATCHER_EXAMPLE}")
 target_link_libraries(watcher_example federation pthread)
