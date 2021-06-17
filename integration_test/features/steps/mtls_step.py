@@ -5,7 +5,7 @@ import socket
 
 from hamcrest import assert_that, is_, is_not
 from behave.matchers import register_type
-from utils import parse_nullable_string, is_wlc_entry_created
+from utils import parse_nullable_string, is_wlc_entry_created, remove_entry
 
 
 parse_nullable_string.pattern = r'.*'
@@ -17,9 +17,9 @@ def step_impl(context, process, container_name):
     if process != "agent" and process != "server":
         raise Exception("Invalid process '%s'. Choose 'agent' or 'server'." % process)
     workload_id = ""
-    if "WlB" in context.tags:
+    if context.workload_b in context.tags:
         workload_id = context.workload_b
-    elif "WlC" in context.tags:
+    elif context.workload_c in context.tags:
         workload_id = context.workload_c
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-stop-process.sh %s %s" % (process, container_name))
     time.sleep(5)
@@ -119,3 +119,9 @@ def step_impl(context, container_name):
 def step_impl(context):
     assert_that(context.result.find("Server replied:"), is_(-1), "Unexpected response from server: %s" % context.result)
     assert_that(context.result.find("could not create TLS connection"), is_not(-1), "Unexpected error from server: %s" % context.result)
+
+
+@given('The "{workload_id}" entry is removed from "{container_name}"')
+def step_impl(context, workload_id, container_name):
+    remove_entry(workload_id, container_name)
+    time.sleep(7)

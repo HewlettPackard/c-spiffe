@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#arguments: $1 = 'server' or 'agent'; $2 = hostname; $3 = workloadID (optional)
+#arguments: $1 = 'server' or 'agent'; $2 = hostname; $3 = workload_id (optional)
 if [ $3 ];
 then
 TOKEN=$(awk '{ print $2 }' /mnt/c-spiffe/integration_test/myagent${3}.token)
