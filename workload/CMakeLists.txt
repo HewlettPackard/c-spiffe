@@ -105,7 +105,7 @@ install(
 
 set(LIB_CLIENT
 ${PROJECT_SOURCE_DIR}/client.cc
-${PROJECT_SOURCE_DIR}/../svid/jwtsvid/svid.c
+${PROJECT_SOURCE_DIR}/../svid/jwtsvid/parse.c
 ${PROJECT_SOURCE_DIR}/../bundle/jwtbundle/source.c
 ${proto_srcs}
 ${grpc_srcs}
