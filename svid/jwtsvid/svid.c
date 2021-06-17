@@ -7,19 +7,6 @@
 // one minute leeway
 const time_t DEFAULT_LEEWAY = 60L;
 
-static void jwtsvid_JWT_Free(jwtsvid_JWT *jwt)
-{
-    if(jwt) {
-        free(jwt->header);
-        free(jwt->payload);
-        arrfree(jwt->header_str);
-        arrfree(jwt->payload_str);
-        arrfree(jwt->signature);
-
-        free(jwt);
-    }
-}
-
 const char *jwtsvid_SVID_Marshal(jwtsvid_SVID *svid)
 {
     if(svid)
