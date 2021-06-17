@@ -3,7 +3,6 @@
 
 #include "bundle/jwtbundle/source.h"
 #include "svid/jwtsvid/svid.h"
-#include <time.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -3,6 +3,7 @@
 #include <cjose/cjose.h>
 #include <openssl/ec.h>
 #include <openssl/ecdsa.h>
+#include <time.h>
 
 // one minute leeway
 const time_t DEFAULT_LEEWAY = 60L;

@@ -3,7 +3,7 @@
 
 #include "bundle/jwtbundle/bundle.h"
 #include "bundle/jwtbundle/set.h"
-// #include "workload/jwtsource.h"
+#include "workload/jwtsource.h"
 
 #ifdef __cplusplus
 extern "C" {

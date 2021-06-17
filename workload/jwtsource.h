@@ -3,7 +3,6 @@
 
 #include "bundle/jwtbundle/set.h"
 #include "svid/jwtsvid/svid.h"
-#include "workload/jwtcallback.h"
 #include "workload/jwtwatcher.h"
 #include <threads.h>
 

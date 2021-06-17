@@ -1,11 +1,9 @@
 #ifndef INCLUDE_SVID_JWTSVID_SVID_H
 #define INCLUDE_SVID_JWTSVID_SVID_H
 
-#include "bundle/jwtbundle/source.h"
 #include "spiffeid/id.h"
 #include "utils/util.h"
 #include <jansson.h>
-#include <time.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,8 +1,8 @@
-#include "bundle/jwtbundle/source.h"
 #include "spiffeid/id.h"
 #include "spiffetls/listen.h"
 #include "spiffetls/mode.h"
 #include "spiffetls/option.h"
+#include "svid/jwtsvid/parse.h"
 #include "workload/jwtsource.h"
 #include "workload/x509source.h"
 #include <unistd.h>

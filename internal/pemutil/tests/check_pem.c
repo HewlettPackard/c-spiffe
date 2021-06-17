@@ -1,7 +1,6 @@
 #include "internal/pemutil/pem.h"
 #include <check.h>
 
-#define STB_DS_IMPLEMENTATION
 #include "utils/stb_ds.h"
 
 START_TEST(test_pemutil_ParseCertificates)

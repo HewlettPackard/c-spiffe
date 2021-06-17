@@ -4,7 +4,6 @@
 #include "bundle/x509bundle/set.h"
 #include "svid/jwtsvid/svid.h"
 #include "svid/x509svid/svid.h"
-#include "utils/util.h"
 #include "workload/backoff.h"
 #include "workload/jwtwatcher.h"
 #include "workload/watcher.h"
