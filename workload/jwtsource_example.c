@@ -1,4 +1,5 @@
 #include "jwtsource.h"
+#include "svid/jwtsvid/parse.h"
 #include <threads.h>
 #include <time.h>
 

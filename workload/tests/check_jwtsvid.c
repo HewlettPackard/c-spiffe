@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #define STB_DS_IMPLEMENTATION
+#include "svid/jwtsvid/parse.h"
 #include "svid/jwtsvid/svid.h"
 
 // Check common fields
