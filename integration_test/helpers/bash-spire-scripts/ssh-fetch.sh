@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#arguments: $1 = 'c_client' or 'c_client_bundle'; $2 = 'svid' or 'bundle'; $3 = 'x509' or 'jwt'; $4 = hostname (optional)
 if [ $4 ];
 then 
     ssh root@$4 <<EOL
