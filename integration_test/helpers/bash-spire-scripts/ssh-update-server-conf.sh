@@ -1,5 +1,5 @@
 #!/bin/bash
-#arguments: $1 = field to be updated; $2 = new value for the field; $3 = 'server' or 'agent'; $4 = hostname (optional); $5 = workloadID (optional)
+#arguments: $1 = field to be updated; $2 = new value for the field; $3 = 'server' or 'agent'; $4 = hostname (optional); $5 = workload_id (optional)
 if [ $4 ];
 then
     ssh root@$4 <<EOL 

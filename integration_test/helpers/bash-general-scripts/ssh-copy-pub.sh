@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#arguments: $1 = hostname
 mkdir ~/.ssh
 if [ $1 = "workload" ];
 then
