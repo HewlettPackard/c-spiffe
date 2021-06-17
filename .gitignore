@@ -38,6 +38,8 @@ internal/x509util/tests/util.o
 integration_test/data
 integration_test/**/__pycache__
 integration_test/*.output
+integration_test/*.log
+integration_test/helpers/bash-general-scripts/authorized_keys
 *.token
 
 #files generated from the document generator

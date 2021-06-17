@@ -48,9 +48,10 @@ def step_impl(context, document):
 
 @then('I check that the "{document}" is not returned')
 def step_impl(context, document):
-    assert_that(context.result.find("error"), is_not(-1), "There was no error")
+    start_index = context.result.find("fetch error!")
+    assert_that(start_index, is_not(-1), "There was no error")
     assert_that(context.result.find("Address: "), is_not(-1), "There is no Address")
-    result = context.result.splitlines()
+    result = context.result[start_index:].splitlines()
     document_content = result[1].split(" ")[-1]
     if document.lower() == "svid":
         context.svid = document_content

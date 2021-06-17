@@ -1,4 +1,4 @@
-ARG TAG=latest
+ARG TAG=test-353-Implement-test-case-MT_04
 FROM cspiffe/workload:${TAG}
 
 RUN apt-get update \

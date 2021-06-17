@@ -81,3 +81,22 @@ Feature: Mutual TLS
             |     c     |      go     |
             |     go    |      c      |
             |     c     |      c      |
+
+
+    @Sprint15 @WlB @entry-removed
+    Scenario Outline: MT_004 - Check that it is not possible to establish mtls connection if one of the WLs does not have SVID
+        Given The second agent is turned on inside "workload" container
+        And   The "WlB" entry is removed from "spire-server"
+        When  I fetch external "X509" "SVID"
+        Then  I check that the "SVID" is not returned
+        When  I fetch "X509" "SVID"
+        Then  I check that the "SVID" is returned correctly
+        When  The "<listen_type>"-tls-listen is activated inside "workload" container
+        And   I send "Hello World!" to "workload" container through "<dial_type>"-tls-dial
+        Then  I check that mTLS connection did not succeed
+        And   The second "agent" is turned off inside "workload" container
+        And   The "<listen_type>"-tls-listen is disabled inside "workload" container
+        Examples:
+            | dial_type | listen_type |
+            |     go    |      c      |
+            |     c     |      c      |
