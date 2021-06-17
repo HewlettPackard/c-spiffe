@@ -1,4 +1,5 @@
 #include "bundle/x509bundle/source.h"
+#include "bundle/jwtbundle/source.h"
 #include <check.h>
 
 START_TEST(test_x509bundle_SourceFromSet)
@@ -43,6 +44,32 @@ START_TEST(test_x509bundle_Source_GetX509BundleForTrustDomain)
 }
 END_TEST
 
+START_TEST(test_jwtbundle_SourceFromSet)
+{
+    err_t err;
+    spiffeid_TrustDomain td = { string_new("example1.com") };
+    jwtbundle_Bundle *bundle
+        = jwtbundle_Load(td, "./resources/jwk_keys.json", &err);
+
+    ck_assert_uint_eq(err, NO_ERROR);
+
+    jwtbundle_Set *set = jwtbundle_NewSet(1, bundle);
+    jwtbundle_Source *source = jwtbundle_SourceFromSet(set);
+
+    ck_assert_uint_eq(err, NO_ERROR);
+    ck_assert_ptr_ne(source, NULL);
+
+    spiffeid_TrustDomain_Free(&td);
+    jwtbundle_Source_Free(source);
+}
+END_TEST
+
+START_TEST(test_jwtbundle_SourceFromSource)
+{
+
+}
+END_TEST
+
 Suite *bundlesource_suite(void)
 {
     Suite *s = suite_create("bundle source");
@@ -50,6 +77,7 @@ Suite *bundlesource_suite(void)
 
     tcase_add_test(tc_core, test_x509bundle_SourceFromSet);
     tcase_add_test(tc_core, test_x509bundle_Source_GetX509BundleForTrustDomain);
+    tcase_add_test(tc_core, test_jwtbundle_SourceFromSet);
 
     suite_add_tcase(s, tc_core);
 
