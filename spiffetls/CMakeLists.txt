@@ -33,7 +33,7 @@ target_link_libraries(${TARGET_NAME}
     spiffeid
     internal
     bundle
-    source
+    client
     uriparser
     jansson
     cjose
