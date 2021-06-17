@@ -7,7 +7,7 @@ project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C)
 
 set(LIB_SVID 
 ${PROJECT_SOURCE_DIR}/x509svid/svid.c
-# ${PROJECT_SOURCE_DIR}/jwtsvid/svid.c
+${PROJECT_SOURCE_DIR}/jwtsvid/svid.c
 ${PROJECT_SOURCE_DIR}/../utils/util.c)
 
 add_library(${TARGET_NAME} SHARED ${LIB_SVID})
