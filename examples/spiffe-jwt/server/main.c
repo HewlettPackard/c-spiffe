@@ -78,9 +78,7 @@ int main(void)
         printf("workloadapi_JWTSource_Start() failed: error %u\n", err);
         exit(-1);
     }
-    // jwtbundle_Source *source = jwtbundle_SourceFromSource(jwtsource);
-    /// WARNING: temporary solution
-    jwtbundle_Source *source = jwtbundle_SourceFromSet(jwtsource->bundles);
+    jwtbundle_Source *source = jwtbundle_SourceFromSource(jwtsource);
 
     // default port
     const in_port_t port = 8443U;
@@ -98,7 +96,6 @@ int main(void)
     } else {
         string_arr_t audience = NULL;
         arrput(audience, string_new("spiffe://example.org/server"));
-        /// TODO: create jwtbundle_SourceFromSource
         handleConnection(conn, source, audience);
         const int fd = SSL_get_fd(conn);
         SSL_shutdown(conn);
@@ -109,6 +106,7 @@ int main(void)
 
     spiffeid_ID_Free(&id);
     spiffetls_ListenMode_Free(mode);
+    jwtbundle_Source_Free(source);
 
     return 0;
 }
