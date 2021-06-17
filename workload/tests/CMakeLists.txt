@@ -68,9 +68,9 @@ target_link_libraries(check_jwtsource ${CHECK_LIBRARIES}
 
 add_test(check_jwtsource check_jwtsource)
 
-add_executable(check_jwtsvid check_jwtsvid.c)
+add_executable(check_parse check_parse.c)
 
-target_link_libraries(check_jwtsvid ${CHECK_LIBRARIES}
+target_link_libraries(check_parse ${CHECK_LIBRARIES}
   client)
 
-add_test(check_jwtsvid check_jwtsvid)
+add_test(check_parse check_parse)
