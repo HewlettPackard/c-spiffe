@@ -4,11 +4,6 @@
 
 #include <curl/curl.h>
 
-/**
- * TODO:
- * - set x509 certificates in curl
- */
-
 static size_t write_function(void *ptr, size_t size, size_t nmemb,
                              void *userdata)
 {
@@ -47,22 +42,40 @@ int main(int argc, char **argv)
     /// TODO: set audience with argv, if possible
     /// TODO: change audience type from string_t to char*
     jwtsvid_Params params
-        = { .audience = string_new("spiffe:example.com/server"),
+        = { .audience = string_new("spiffe://example.com/server"),
             .extra_audiences = NULL,
             .subject = NULL };
-    jwtsvid_SVID *svid
+    jwtsvid_SVID *jwtsvid
         = workloadapi_JWTSource_GetJWTSVID(jwtsource, &params, &err);
     arrfree(params.audience);
-    if(!svid || err != NO_ERROR) {
-        printf("workloadapi_JWTSource_GetJETSVID() failed: error %u\n", err);
+    if(!jwtsvid || err != NO_ERROR) {
+        printf("workloadapi_JWTSource_GetJWTSVID() failed: error %u\n", err);
         exit(-1);
     }
 
     string_t header_arg = string_new("Authorization: Bearer ");
-    header_arg = string_push(header_arg, jwtsvid_SVID_Marshal(svid));
+    header_arg = string_push(header_arg, jwtsvid_SVID_Marshal(jwtsvid));
     struct curl_slist *list = curl_slist_append(list, header_arg);
     arrfree(header_arg);
     string_t response = NULL;
+
+    x509svid_SVID *x509svid
+        = workloadapi_X509Source_GetX509SVID(x509source, &err);
+    if(!x509svid || err != NO_ERROR) {
+        printf("workloadapi_X509Source_GetX509SVID() failed: error %u\n", err);
+        exit(-1);
+    }
+
+    string_t cert_filename = string_new(tmpnam(NULL));
+    FILE *f = fopen(cert_filename, "w");
+    // leaf certificate to file
+    PEM_write_X509(f, x509svid->certs[0]);
+    fclose(f);
+    string_t key_filename = string_new(tmpnam(NULL));
+    f = fopen(key_filename, "w");
+    // leaf private key to file
+    PEM_write_PrivateKey(f, x509svid->private_key, NULL, NULL, 0, NULL, NULL);
+    fclose(f);
 
     CURL *curl = curl_easy_init();
     curl_easy_setopt(curl, CURLOPT_URL, "https://localhost");
@@ -71,11 +84,15 @@ int main(int argc, char **argv)
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_function);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+    curl_easy_setopt(curl, CURLOPT_SSLCERT, cert_filename);
+    curl_easy_setopt(curl, CURLOPT_SSLKEY, key_filename);
+    /// TODO: set CA
+    // curl_easy_setopt(curl, CURLOPT_CAINFO, pCACertFile);
 
     CURLcode res = curl_easy_perform(curl);
 
     if(res != CURLE_OK) {
-        printf("curl_easy_perfoem() failed: %s\n", curl_easy_strerror(res));
+        printf("curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
         exit(-1);
     }
 
@@ -85,9 +102,14 @@ int main(int argc, char **argv)
     curl_slist_free_all(list);
     arrfree(response);
 
+    remove(cert_filename);
+    remove(key_filename);
+    arrfree(cert_filename);
+    arrfree(key_filename);
     workloadapi_X509Source_Free(x509source);
     workloadapi_JWTSource_Free(jwtsource);
-    jwtsvid_SVID_Free(svid);
+    jwtsvid_SVID_Free(jwtsvid);
+    x509svid_SVID_Free(x509svid);
 
     return 0;
 }

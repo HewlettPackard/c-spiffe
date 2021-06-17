@@ -1,3 +1,4 @@
+#include "bundle/jwtbundle/source.h"
 #include "spiffeid/id.h"
 #include "spiffetls/listen.h"
 #include "spiffetls/mode.h"
@@ -26,7 +27,7 @@ void handleConnection(SSL *conn, jwtbundle_Source *source,
         return;
     } else {
         buff[read] = 0;
-        // printf("Client says: %s\n", buff);
+        printf("Request received\n");
     }
 
     char token[1034 * 16];
@@ -35,15 +36,16 @@ void handleConnection(SSL *conn, jwtbundle_Source *source,
     err_t err;
     jwtsvid_SVID *svid
         = jwtsvid_ParseAndValidate(token, source, audience, &err);
+    const char *message = NULL;
     if(err != NO_ERROR) {
         printf("Invalid token\n");
-        /// TODO: send HTTP unauthorized message
+        message = "HTTP/1.1 401 Unauthorized\r\n";
+    } else {
+        message = "HTTP/1.1 200 OK\r\n"
+                  "Content-Type: text/html\r\n"
+                  "Content-Length: 14\r\n\r\n"
+                  "Success!";
     }
-
-    const char message[] = "HTTP/1.1 200 OK\r\n"
-                           "Content-Type: text/html\r\n"
-                           "Content-Length: 14\r\n\r\n"
-                           "Hello, client!";
     const int write = SSL_write(conn, message, strlen(message));
     if(write < 0) {
         ERR_load_CRYPTO_strings();
