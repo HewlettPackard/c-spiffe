@@ -39,8 +39,6 @@ int main(int argc, char **argv)
         exit(-1);
     }
 
-    /// TODO: set audience with argv, if possible
-    /// TODO: change audience type from string_t to char*
     jwtsvid_Params params
         = { .audience = string_new("spiffe://example.com/server"),
             .extra_audiences = NULL,
@@ -86,8 +84,6 @@ int main(int argc, char **argv)
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
     curl_easy_setopt(curl, CURLOPT_SSLCERT, cert_filename);
     curl_easy_setopt(curl, CURLOPT_SSLKEY, key_filename);
-    /// TODO: set CA
-    // curl_easy_setopt(curl, CURLOPT_CAINFO, pCACertFile);
 
     CURLcode res = curl_easy_perform(curl);
 
