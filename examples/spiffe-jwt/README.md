@@ -33,7 +33,7 @@ The server creates a `workloadapi_JWTSource` to obtain up-to-date JWT bundles fr
 ```
 
 A middleware is added to authenticate client JWT-SVIDs provided in the `Authorization` header.
-This middleware validates the token using the [jwtsvid.ParseAndValidate](using bundles obtained from the workloadapi_JWTSource).
+This middleware validates the token using the [jwtsvid_ParseAndValidate](using bundles obtained from the workloadapi_JWTSource).
 
 ```C++
     err_t err;
