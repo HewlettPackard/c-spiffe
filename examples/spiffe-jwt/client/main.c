@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 
     string_t header_arg = string_new("Authorization: Bearer ");
     header_arg = string_push(header_arg, jwtsvid_SVID_Marshal(jwtsvid));
-    struct curl_slist *list = curl_slist_append(list, header_arg);
+    struct curl_slist *list = curl_slist_append(NULL, header_arg);
     arrfree(header_arg);
     string_t response = NULL;
 
@@ -64,11 +64,23 @@ int main(int argc, char **argv)
         exit(-1);
     }
 
+    // leaf certificate
     string_t cert_filename = string_new(tmpnam(NULL));
     FILE *f = fopen(cert_filename, "w");
     // leaf certificate to file
     PEM_write_X509(f, x509svid->certs[0]);
     fclose(f);
+
+    // certificate chain
+    string_t ca_filename = string_new(tmpnam(NULL));
+    f = fopen(ca_filename, "w");
+    // intermediate certificates to file
+    for(size_t i = 1, size = arrlenu(x509svid->certs); i < size; ++i) {
+        PEM_write_X509(f, x509svid->certs[i]);
+    }
+    fclose(f);
+    
+    // certificate private key
     string_t key_filename = string_new(tmpnam(NULL));
     f = fopen(key_filename, "w");
     // leaf private key to file
@@ -84,6 +96,7 @@ int main(int argc, char **argv)
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
     curl_easy_setopt(curl, CURLOPT_SSLCERT, cert_filename);
     curl_easy_setopt(curl, CURLOPT_SSLKEY, key_filename);
+    curl_easy_setopt(curl, CURLOPT_CAINFO, ca_filename);
 
     CURLcode res = curl_easy_perform(curl);
 
@@ -100,8 +113,10 @@ int main(int argc, char **argv)
 
     remove(cert_filename);
     remove(key_filename);
+    remove(ca_filename);
     arrfree(cert_filename);
     arrfree(key_filename);
+    arrfree(ca_filename);
     workloadapi_X509Source_Free(x509source);
     workloadapi_JWTSource_Free(jwtsource);
     jwtsvid_SVID_Free(jwtsvid);
