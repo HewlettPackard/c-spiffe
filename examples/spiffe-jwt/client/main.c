@@ -87,16 +87,21 @@ int main(int argc, char **argv)
     PEM_write_PrivateKey(f, x509svid->private_key, NULL, NULL, 0, NULL, NULL);
     fclose(f);
 
+    printf("Files:\n\t%s\n\t%s\n\t%s\n", cert_filename, key_filename, ca_filename);
+    getchar();
+
     CURL *curl = curl_easy_init();
     curl_easy_setopt(curl, CURLOPT_URL, "https://localhost");
     curl_easy_setopt(curl, CURLOPT_PORT, 8443);
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, list);
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_function);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
     curl_easy_setopt(curl, CURLOPT_SSLCERT, cert_filename);
     curl_easy_setopt(curl, CURLOPT_SSLKEY, key_filename);
-    curl_easy_setopt(curl, CURLOPT_CAINFO, ca_filename);
+    // curl_easy_setopt(curl, CURLOPT_CAINFO, ca_filename);
+    curl_easy_setopt(curl, CURLOPT_CAINFO, NULL);
+    curl_easy_setopt(curl, CURLOPT_CAPATH, NULL);
 
     CURLcode res = curl_easy_perform(curl);
 

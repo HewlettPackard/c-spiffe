@@ -30,8 +30,15 @@ void handleConnection(SSL *conn, jwtbundle_Source *source,
         printf("Request received\n");
     }
 
-    char token[1034 * 16];
-    sscanf(buff, "%*sAuthorization: Bearer %s", token);
+    char token[1024 * 16];
+    const char header[] = "Authorization: Bearer ";
+    const char *header_location = strstr(buff, header);
+    if(!header_location) {
+        printf("No valid token on the message\n");
+        return;
+    } else {
+        sscanf(header_location + strlen(header), "%s", token);
+    }
 
     err_t err;
     jwtsvid_SVID *svid
@@ -39,6 +46,8 @@ void handleConnection(SSL *conn, jwtbundle_Source *source,
     const char *message = NULL;
     if(err != NO_ERROR) {
         printf("Invalid token\n");
+        printf("Token: %s\n", token);
+        printf("Error: %u\n", err);
         message = "HTTP/1.1 401 Unauthorized\r\n";
     } else {
         message = "HTTP/1.1 200 OK\r\n"
@@ -85,8 +94,8 @@ int main(void)
     // default port
     const in_port_t port = 8443U;
     spiffeid_ID id = spiffeid_FromString("spiffe://example.org/client", &err);
-    spiffetls_ListenMode *mode = spiffetls_MTLSServerWithSource(
-        tlsconfig_AuthorizeID(id), x509source);
+    spiffetls_ListenMode *mode = spiffetls_TLSServerWithSource(
+        x509source);
     spiffetls_listenConfig config
         = { .base_TLS_conf = NULL, .listener_fd = -1 };
     int sock_fd;
