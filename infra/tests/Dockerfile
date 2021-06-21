@@ -1,4 +1,4 @@
-ARG TAG=test-353-Implement-test-case-MT_04
+ARG TAG=test-399-Move-test-case-MT_02-to-FXB_03
 FROM cspiffe/workload:${TAG}
 
 RUN apt-get update \

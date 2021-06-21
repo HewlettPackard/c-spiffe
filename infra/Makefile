@@ -24,7 +24,7 @@ clean:
 	docker-compose down
 
 integration-tests:
-	TAG=test-353-Implement-test-case-MT_04 docker-compose up -d
+	TAG=test-399-Move-test-case-MT_02-to-FXB_03 docker-compose up -d
 
 	docker exec infra_workload_1 service ssh restart
 	docker exec infra_workload2_1 service ssh restart
