@@ -1,4 +1,4 @@
-@mtls
+@mtls @x509
 Feature: Mutual TLS
 
 
@@ -30,35 +30,8 @@ Feature: Mutual TLS
             |     12345    |     c     |      c      |
 
 
-    @Sprint12 @updated-conf @WlC
-    Scenario Outline: MT_002 - Check that it is not possible to establish mtls connection with different key chains in the servers
-        Given I set the "server" "port" to "9090" inside "spire-server2" container
-        And   I set the "server" "trust domain" to "example2.org" inside "spire-server2" container
-        And   The second server is turned on inside "spire-server2" container
-        And   I set the "agent" "port" to "9090" inside "workload2" container
-        And   I set the "agent" "trust domain" to "example2.org" inside "workload2" container
-        And   I set the "agent" "server address" to "spire-server2" inside "workload2" container
-        And   The second agent is turned on inside "workload2" container with the second trust domain
-        When  I fetch external "X509" "SVID"
-        Then  I check that the "SVID" is returned correctly
-        When  I fetch "X509" "SVID"
-        Then  I check that the "SVID" is returned correctly
-        When  The "<listen_type>"-tls-listen is activated inside "workload2" container
-        And   I send "Hello World!" to "workload2" container through "<dial_type>"-tls-dial
-        Then  I check that mTLS connection did not succeed
-        And   The second "agent" is turned off inside "workload2" container
-        And   The second "server" is turned off inside "spire-server2" container
-        And   The "<listen_type>"-tls-listen is disabled inside "workload2" container
-        Examples:
-            | dial_type | listen_type |
-            |     go    |      go     |
-            |     c     |      go     |
-            |     go    |      c      |
-            |     c     |      c      |
-
-
     @Sprint15 @WlB
-    Scenario Outline: MT_003 - Check the behavior when the certificate rotates after mtls has been established
+    Scenario Outline: MT_002 - Check the behavior when the certificate rotates after mtls has been established
         Given The second agent is turned on inside "workload" container
         When  I fetch external "X509" "SVID"
         Then  I check that the "SVID" is returned correctly
@@ -84,7 +57,7 @@ Feature: Mutual TLS
 
 
     @Sprint15 @WlB @entry-removed
-    Scenario Outline: MT_004 - Check that it is not possible to establish mtls connection if one of the WLs does not have SVID
+    Scenario Outline: MT_003 - Check that it is not possible to establish mtls connection if one of the WLs does not have SVID
         Given The second agent is turned on inside "workload" container
         And   The "WlB" entry is removed from "spire-server"
         When  I fetch external "X509" "SVID"
