@@ -79,7 +79,7 @@ int main(int argc, char **argv)
         PEM_write_X509(f, x509svid->certs[i]);
     }
     fclose(f);
-    
+
     // certificate private key
     string_t key_filename = string_new(tmpnam(NULL));
     f = fopen(key_filename, "w");
