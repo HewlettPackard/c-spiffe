@@ -27,7 +27,7 @@ def after_all(context):
 
 
 def before_feature(context, feature):
-    if "mtls" in feature.tags:
+    if any(tag in feature.tags for tag in ("mtls", "federation")):
         os.system(PARENT_PATH + "bash-general-scripts/clean.sh")
         time.sleep(1)
 
