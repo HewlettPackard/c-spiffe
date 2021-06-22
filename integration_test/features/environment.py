@@ -18,7 +18,7 @@ def before_all(context):
     os.system(PARENT_PATH + "bash-spire-scripts/ssh-generate-token.sh")
     time.sleep(2)
     os.system(PARENT_PATH + "bash-spire-scripts/ssh-connect-agent.sh")
-    time.sleep(5)
+    time.sleep(7)
 
 
 def after_all(context):
