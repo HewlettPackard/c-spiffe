@@ -70,4 +70,4 @@ def step_impl(context):
 def step_impl(context):
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-generate-token.sh")
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect-agent.sh")
-    time.sleep(5)
+    time.sleep(7)

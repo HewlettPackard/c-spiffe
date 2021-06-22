@@ -28,8 +28,9 @@ def step_impl(context, process, container_name):
 @given('The second agent is turned on inside "{container_name}" container')
 def step_impl(context, container_name):
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-generate-token.sh")
+    time.sleep(2)
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect-agent.sh %s %s" % (context.workload_b, container_name))
-    time.sleep(5)
+    time.sleep(7)
 
 
 @when('The "{language}"-tls-listen is activated inside "{container_name}" container')
