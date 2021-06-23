@@ -9,8 +9,11 @@ static size_t write_function(void *ptr, size_t size, size_t nmemb,
 {
     const size_t len = size * nmemb;
     string_t *str = (string_t *) userdata;
-    string_t pos = arraddnptr(*str, len);
-    memcpy(pos, ptr, len);
+    arrsetlen(*str, len);
+    memcpy(*str, ptr, len);
+    // end of string
+    arrpush(*str, 0);
+
     return len;
 }
 
@@ -63,6 +66,15 @@ int main(int argc, char **argv)
         printf("workloadapi_X509Source_GetX509SVID() failed: error %u\n", err);
         exit(-1);
     }
+    x509bundle_Bundle *x509bundle
+        = workloadapi_X509Source_GetX509BundleForTrustDomain(
+            x509source, x509svid->id.td, &err);
+    if(!x509svid || err != NO_ERROR) {
+        printf("workloadapi_X509Source_GetX509BundleForTrustDomain() failed: "
+               "error %u\n",
+               err);
+        exit(-1);
+    }
 
     // leaf certificate
     string_t cert_filename = string_new(tmpnam(NULL));
@@ -75,8 +87,8 @@ int main(int argc, char **argv)
     string_t ca_filename = string_new(tmpnam(NULL));
     f = fopen(ca_filename, "w");
     // intermediate certificates to file
-    for(size_t i = 1, size = arrlenu(x509svid->certs); i < size; ++i) {
-        PEM_write_X509(f, x509svid->certs[i]);
+    for(size_t i = 0, size = arrlenu(x509bundle->auths); i < size; ++i) {
+        PEM_write_X509(f, x509bundle->auths[i]);
     }
     fclose(f);
 
@@ -87,27 +99,23 @@ int main(int argc, char **argv)
     PEM_write_PrivateKey(f, x509svid->private_key, NULL, NULL, 0, NULL, NULL);
     fclose(f);
 
-    printf("Files:\n\t%s\n\t%s\n\t%s\n", cert_filename, key_filename, ca_filename);
-    getchar();
-
     CURL *curl = curl_easy_init();
     curl_easy_setopt(curl, CURLOPT_URL, "https://localhost");
     curl_easy_setopt(curl, CURLOPT_PORT, 8443);
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, list);
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_function);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
     curl_easy_setopt(curl, CURLOPT_SSLCERT, cert_filename);
     curl_easy_setopt(curl, CURLOPT_SSLKEY, key_filename);
-    // curl_easy_setopt(curl, CURLOPT_CAINFO, ca_filename);
-    curl_easy_setopt(curl, CURLOPT_CAINFO, NULL);
-    curl_easy_setopt(curl, CURLOPT_CAPATH, NULL);
+    curl_easy_setopt(curl, CURLOPT_CAINFO, ca_filename);
 
     CURLcode res = curl_easy_perform(curl);
 
     if(res != CURLE_OK) {
+        printf("res: %d\n", res);
         printf("curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
-        exit(-1);
     }
 
     printf("%s\n", response);
@@ -124,8 +132,6 @@ int main(int argc, char **argv)
     arrfree(ca_filename);
     workloadapi_X509Source_Free(x509source);
     workloadapi_JWTSource_Free(jwtsource);
-    jwtsvid_SVID_Free(jwtsvid);
-    x509svid_SVID_Free(x509svid);
 
     return 0;
 }
