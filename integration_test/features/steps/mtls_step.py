@@ -30,7 +30,7 @@ def step_impl(context, container_name):
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-generate-token.sh")
     time.sleep(2)
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect-agent.sh %s %s" % (context.workload_b, container_name))
-    time.sleep(7)
+    time.sleep(5)
 
 
 @when('The "{language}"-tls-listen is activated inside "{container_name}" container')
@@ -82,7 +82,7 @@ def step_impl(context, container_name):
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-generate-token.sh 2")
     time.sleep(2)
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-connect-agent.sh %s %s" % (context.workload_c, container_name))
-    time.sleep(7)
+    time.sleep(5)
 
 
 @given('I set the "{process}" "{field_alias}" to "{new_value}" inside "{container_name}" container')
@@ -112,7 +112,7 @@ def step_impl(context, container_name):
     if container_name != "spire-server2":
         raise Exception("Unexpected container to run second server. Use 'spire-server2'.")
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-start-server.sh 2")
-    time.sleep(5)
+    time.sleep(7)
     if not is_wlc_entry_created(container_name):
         os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-create-entries.sh 2")
 
