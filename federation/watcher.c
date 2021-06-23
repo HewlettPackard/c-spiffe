@@ -123,8 +123,8 @@ static int watch_endpoint(void *arg)
         if(status->running == ENDPOINT_RUNNING) {
             int t_error = cnd_timedwait(status->cond_var,
                                         &status->endpoint->mutex, &waittime);
-            if(t_error == thrd_error) { // wait broke, cancel thread.
-                status->running = ENDPOINT_ERROR;   // ERROR STATE
+            if(t_error == thrd_error) {           // wait broke, cancel thread.
+                status->running = ENDPOINT_ERROR; // ERROR STATE
                 mtx_unlock(&(status->endpoint->mutex));
                 return -1; // cancel thread
             }
@@ -167,7 +167,7 @@ err_t spiffebundle_Watcher_Stop(spiffebundle_Watcher *watcher)
         }
         for(size_t i = 0, size = shlenu(watcher->endpoints); i < size; ++i) {
             spiffebundle_Endpoint_Status *status = watcher->endpoints[i].value;
-            if(status->running == ENDPOINT_RUNNING && status->thread) {
+            if(status->running == ENDPOINT_STOPPING && status->thread) {
                 thrd_join(*(status->thread), NULL);
                 status->running = ENDPOINT_STOPPED;
             }
@@ -177,8 +177,9 @@ err_t spiffebundle_Watcher_Stop(spiffebundle_Watcher *watcher)
     return ERROR1;
 }
 
-spiffebundle_Endpoint_StatusCode spiffebundle_Watcher_GetStatus(spiffebundle_Watcher *watcher,
-                                    const spiffeid_TrustDomain td, err_t *err)
+spiffebundle_Endpoint_StatusCode
+spiffebundle_Watcher_GetStatus(spiffebundle_Watcher *watcher,
+                               const spiffeid_TrustDomain td, err_t *err)
 {
     if(!watcher) {
         *err = ERROR1;

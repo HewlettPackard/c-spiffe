@@ -203,16 +203,16 @@ START_TEST(test_spiffebundle_Watcher_GetStatus)
     err_t err;
     int running_status = spiffebundle_Watcher_GetStatus(NULL, td, &err);
     ck_assert_uint_eq(err, ERROR1);
-    ck_assert_int_eq(running_status, -3);
+    ck_assert_int_eq(running_status, ENDPOINT_ERROR);
 
     spiffeid_TrustDomain null_td = { NULL };
     running_status = spiffebundle_Watcher_GetStatus(watcher, null_td, &err);
     ck_assert_uint_eq(err, ERROR2);
-    ck_assert_int_eq(running_status, -3);
+    ck_assert_int_eq(running_status, ENDPOINT_ERROR);
 
     running_status = spiffebundle_Watcher_GetStatus(watcher, td, &err);
     ck_assert_uint_eq(err, ERROR3);
-    ck_assert_int_eq(running_status, -3);
+    ck_assert_int_eq(running_status, ENDPOINT_ERROR);
     
     const char url[] = "https://example.org";
     err = spiffebundle_Watcher_AddHttpsWebEndpoint(watcher, url, td);
