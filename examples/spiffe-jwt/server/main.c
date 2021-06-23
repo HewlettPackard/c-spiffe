@@ -48,11 +48,14 @@ void handleConnection(SSL *conn, jwtbundle_Source *source,
         printf("Invalid token\n");
         printf("Token: %s\n", token);
         printf("Error: %u\n", err);
-        message = "HTTP/1.1 401 Unauthorized\r\n";
+        message = "HTTP/1.1 401 Unauthorized\r\n"
+                  "Content-Type: text/html\r\n"
+                  "Content-Length: 3\r\n\r\n"
+                  "NOT";
     } else {
         message = "HTTP/1.1 200 OK\r\n"
                   "Content-Type: text/html\r\n"
-                  "Content-Length: 14\r\n\r\n"
+                  "Content-Length: 8\r\n\r\n"
                   "Success!";
     }
     const int write = SSL_write(conn, message, strlen(message));
@@ -94,8 +97,8 @@ int main(void)
     // default port
     const in_port_t port = 8443U;
     spiffeid_ID id = spiffeid_FromString("spiffe://example.org/client", &err);
-    spiffetls_ListenMode *mode = spiffetls_TLSServerWithSource(
-        x509source);
+    spiffetls_ListenMode *mode = spiffetls_MTLSServerWithSource(
+        tlsconfig_AuthorizeID(id), x509source);
     spiffetls_listenConfig config
         = { .base_TLS_conf = NULL, .listener_fd = -1 };
     int sock_fd;
@@ -106,7 +109,7 @@ int main(void)
         printf("spiffetls_ListenWithMode() failed: error %u\n", err);
     } else {
         string_arr_t audience = NULL;
-        arrput(audience, string_new("spiffe://example.org/server"));
+        arrput(audience, string_new("spiffe://example.com/server"));
         handleConnection(conn, source, audience);
         const int fd = SSL_get_fd(conn);
         SSL_shutdown(conn);
