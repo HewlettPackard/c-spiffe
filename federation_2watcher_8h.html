@@ -70,6 +70,7 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">watcher.h File Reference</div>  </div>
@@ -139,12 +140,23 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:a0b2cdd6267e529b20b1b6a08b2d050bd"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="federation_2watcher_8h.html#a1a35083a15f2d52166bd546265be5ef0">spiffebundle_Endpoint_StatusCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="federation_2watcher_8h.html#a0b2cdd6267e529b20b1b6a08b2d050bd">spiffebundle_Endpoint_StatusCode</a></td></tr>
+<tr class="separator:a0b2cdd6267e529b20b1b6a08b2d050bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75f47b4dad1ce4244d2c0e37bfedc56e"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structspiffebundle__Endpoint__Status.html">spiffebundle_Endpoint_Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="federation_2watcher_8h.html#a75f47b4dad1ce4244d2c0e37bfedc56e">spiffebundle_Endpoint_Status</a></td></tr>
 <tr class="separator:a75f47b4dad1ce4244d2c0e37bfedc56e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a920a2f82cea09f9c17e270689b8b1145"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structmap__string__Endpoint__Status.html">map_string_Endpoint_Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="federation_2watcher_8h.html#a920a2f82cea09f9c17e270689b8b1145">map_string_Endpoint_Status</a></td></tr>
 <tr class="separator:a920a2f82cea09f9c17e270689b8b1145"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a674b78e07b7f00c015d10f45d8eb4905"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structspiffebundle__Watcher.html">spiffebundle_Watcher</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="federation_2watcher_8h.html#a674b78e07b7f00c015d10f45d8eb4905">spiffebundle_Watcher</a></td></tr>
 <tr class="separator:a674b78e07b7f00c015d10f45d8eb4905"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a1a35083a15f2d52166bd546265be5ef0"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="federation_2watcher_8h.html#a1a35083a15f2d52166bd546265be5ef0">spiffebundle_Endpoint_StatusCode</a> { <a class="el" href="federation_2watcher_8h.html#a1a35083a15f2d52166bd546265be5ef0aa16d91ab00e04cfdfea51895f77eaded">ENDPOINT_ERROR</a> = -2
+, <a class="el" href="federation_2watcher_8h.html#a1a35083a15f2d52166bd546265be5ef0ae104cf8a98074a5d77cde1750ed67a3f">ENDPOINT_STOPPING</a> = -1
+, <a class="el" href="federation_2watcher_8h.html#a1a35083a15f2d52166bd546265be5ef0a94b3eab40832f6a2192adf671119320f">ENDPOINT_STOPPED</a> = 0
+, <a class="el" href="federation_2watcher_8h.html#a1a35083a15f2d52166bd546265be5ef0a22c8046981925106e8ad830ad22af5db">ENDPOINT_RUNNING</a> = 1
+ }</td></tr>
+<tr class="separator:a1a35083a15f2d52166bd546265be5ef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -164,8 +176,8 @@ Functions</h2></td></tr>
 <tr class="separator:ad1c6689639697291c6bcc60b5dc6e9b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad27e12058b4e2aa2366c707cc296f6b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structspiffebundle__Bundle.html">spiffebundle_Bundle</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="federation_2watcher_8h.html#ad27e12058b4e2aa2366c707cc296f6b1">spiffebundle_Watcher_GetBundleForTrustDomain</a> (<a class="el" href="structspiffebundle__Watcher.html">spiffebundle_Watcher</a> *<a class="el" href="workload_2tests_2check__watcher_8c.html#aa38fc9fc816048bc443c79655f9704ed">watcher</a>, const <a class="el" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> <a class="el" href="check__x509source_8c.html#af961692354eb34b5aacc2fedfbdb664c">td</a>, <a class="el" href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="el" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>)</td></tr>
 <tr class="separator:ad27e12058b4e2aa2366c707cc296f6b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77aef3737fa38d846553b90a47c7354d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="federation_2watcher_8h.html#a77aef3737fa38d846553b90a47c7354d">spiffebundle_Watcher_GetStatus</a> (<a class="el" href="structspiffebundle__Watcher.html">spiffebundle_Watcher</a> *<a class="el" href="workload_2tests_2check__watcher_8c.html#aa38fc9fc816048bc443c79655f9704ed">watcher</a>, const <a class="el" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> <a class="el" href="check__x509source_8c.html#af961692354eb34b5aacc2fedfbdb664c">td</a>, <a class="el" href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="el" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>)</td></tr>
-<tr class="separator:a77aef3737fa38d846553b90a47c7354d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79784be2ea5438da35df573abb59faf9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="federation_2watcher_8h.html#a1a35083a15f2d52166bd546265be5ef0">spiffebundle_Endpoint_StatusCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="federation_2watcher_8h.html#a79784be2ea5438da35df573abb59faf9">spiffebundle_Watcher_GetStatus</a> (<a class="el" href="structspiffebundle__Watcher.html">spiffebundle_Watcher</a> *<a class="el" href="workload_2tests_2check__watcher_8c.html#aa38fc9fc816048bc443c79655f9704ed">watcher</a>, const <a class="el" href="structspiffeid__TrustDomain.html">spiffeid_TrustDomain</a> <a class="el" href="check__x509source_8c.html#af961692354eb34b5aacc2fedfbdb664c">td</a>, <a class="el" href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="el" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>)</td></tr>
+<tr class="separator:a79784be2ea5438da35df573abb59faf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a920a2f82cea09f9c17e270689b8b1145"></a>
@@ -196,6 +208,20 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a0b2cdd6267e529b20b1b6a08b2d050bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b2cdd6267e529b20b1b6a08b2d050bd">&#9670;&nbsp;</a></span>spiffebundle_Endpoint_StatusCode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef enum <a class="el" href="federation_2watcher_8h.html#a1a35083a15f2d52166bd546265be5ef0">spiffebundle_Endpoint_StatusCode</a> <a class="el" href="federation_2watcher_8h.html#a1a35083a15f2d52166bd546265be5ef0">spiffebundle_Endpoint_StatusCode</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a674b78e07b7f00c015d10f45d8eb4905"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a674b78e07b7f00c015d10f45d8eb4905">&#9670;&nbsp;</a></span>spiffebundle_Watcher</h2>
 
@@ -207,6 +233,27 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a1a35083a15f2d52166bd546265be5ef0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a35083a15f2d52166bd546265be5ef0">&#9670;&nbsp;</a></span>spiffebundle_Endpoint_StatusCode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="federation_2watcher_8h.html#a1a35083a15f2d52166bd546265be5ef0">spiffebundle_Endpoint_StatusCode</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a1a35083a15f2d52166bd546265be5ef0aa16d91ab00e04cfdfea51895f77eaded"></a>ENDPOINT_ERROR&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a1a35083a15f2d52166bd546265be5ef0ae104cf8a98074a5d77cde1750ed67a3f"></a>ENDPOINT_STOPPING&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a1a35083a15f2d52166bd546265be5ef0a94b3eab40832f6a2192adf671119320f"></a>ENDPOINT_STOPPED&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a1a35083a15f2d52166bd546265be5ef0a22c8046981925106e8ad830ad22af5db"></a>ENDPOINT_RUNNING&#160;</td><td class="fielddoc"></td></tr>
+</table>
 
 </div>
 </div>
@@ -343,14 +390,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a77aef3737fa38d846553b90a47c7354d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a77aef3737fa38d846553b90a47c7354d">&#9670;&nbsp;</a></span>spiffebundle_Watcher_GetStatus()</h2>
+<a id="a79784be2ea5438da35df573abb59faf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79784be2ea5438da35df573abb59faf9">&#9670;&nbsp;</a></span>spiffebundle_Watcher_GetStatus()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int spiffebundle_Watcher_GetStatus </td>
+          <td class="memname"><a class="el" href="federation_2watcher_8h.html#a1a35083a15f2d52166bd546265be5ef0">spiffebundle_Endpoint_StatusCode</a> spiffebundle_Watcher_GetStatus </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structspiffebundle__Watcher.html">spiffebundle_Watcher</a> *&#160;</td>
           <td class="paramname"><em>watcher</em>, </td>
