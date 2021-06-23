@@ -1,7 +1,7 @@
-#include "bundle/jwtbundle/set.h"
-#include "internal/cryptoutil/keys.h"
-#include "internal/jwtutil/util.h"
-#include "spiffeid/trustdomain.h"
+#include "c-spiffe/bundle/jwtbundle/set.h"
+#include "c-spiffe/internal/cryptoutil/keys.h"
+#include "c-spiffe/internal/jwtutil/util.h"
+#include "c-spiffe/spiffeid/trustdomain.h"
 #include <check.h>
 #include <openssl/pem.h>
 

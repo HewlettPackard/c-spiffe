@@ -1,4 +1,4 @@
-#include "spiffetls/mode.h"
+#include "c-spiffe/spiffetls/mode.h"
 #include <check.h>
 
 START_TEST(test_spiffetls_TLSClient)

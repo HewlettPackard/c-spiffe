@@ -1,5 +1,5 @@
-#include "bundle/spiffebundle/source.h"
-#include "federation/endpoint.h"
+#include "c-spiffe/bundle/spiffebundle/source.h"
+#include "c-spiffe/federation/endpoint.h"
 #include <check.h>
 #include <unistd.h>
 

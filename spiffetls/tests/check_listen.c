@@ -1,4 +1,4 @@
-#include "spiffetls/listen.h"
+#include "c-spiffe/spiffetls/listen.h"
 #include <check.h>
 #include <unistd.h>
 

@@ -1,4 +1,4 @@
-#include "spiffetls/tlsconfig/config.h"
+#include "c-spiffe/spiffetls/tlsconfig/config.h"
 #include <check.h>
 
 void option_dummy(tlsconfig_options *opt)

@@ -1,5 +1,5 @@
-#include "workload/x509source.h"
-#include "workload/watcher.h"
+#include "c-spiffe/workload/x509source.h"
+#include "c-spiffe/workload/watcher.h"
 
 void workloadapi_x509Source_onX509ContextCallback(
     workloadapi_X509Context *x509cntx, void *args)

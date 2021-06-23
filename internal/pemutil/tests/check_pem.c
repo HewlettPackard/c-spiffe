@@ -1,4 +1,4 @@
-#include "internal/pemutil/pem.h"
+#include "c-spiffe/internal/pemutil/pem.h"
 #include <check.h>
 
 #include "utils/stb_ds.h"

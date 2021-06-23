@@ -1,4 +1,4 @@
-#include "internal/x509util/util.h"
+#include "c-spiffe/internal/x509util/util.h"
 #include <check.h>
 #include <openssl/evp.h>
 #include <openssl/pem.h>

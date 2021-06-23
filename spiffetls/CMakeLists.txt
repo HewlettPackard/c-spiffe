@@ -45,11 +45,11 @@ target_link_libraries(${TARGET_NAME}
 
 # Install Headers:
 set(HEADERS_SPIFFETLS
-${PROJECT_SOURCE_DIR}/dial.h
-${PROJECT_SOURCE_DIR}/listen.h
-${PROJECT_SOURCE_DIR}/mode.h
-${PROJECT_SOURCE_DIR}/option.h
-${PROJECT_SOURCE_DIR}/peerid.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/spiffetls/dial.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/spiffetls/listen.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/spiffetls/mode.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/spiffetls/option.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/spiffetls/peerid.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
@@ -59,9 +59,9 @@ install(
 
 # Install Headers:
 set(HEADERS_TLSCONFIG
-${PROJECT_SOURCE_DIR}/tlsconfig/authorizer.h
-${PROJECT_SOURCE_DIR}/tlsconfig/config.h
-${PROJECT_SOURCE_DIR}/tlsconfig/trace.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/spiffetls/tlsconfig/authorizer.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/spiffetls/tlsconfig/config.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/spiffetls/tlsconfig/trace.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
@@ -71,8 +71,8 @@ install(
 
 # Install higher level header:
 set(HEADERS_MOD_SPIFFETLS
-${PROJECT_SOURCE_DIR}/spiffetls.h
-${PROJECT_SOURCE_DIR}/tlsconfig.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/spiffetls/spiffetls.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/spiffetls/tlsconfig.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/*.h
 install(

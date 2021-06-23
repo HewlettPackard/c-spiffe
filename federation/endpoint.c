@@ -1,4 +1,4 @@
-#include "endpoint.h"
+#include "c-spiffe/federation/endpoint.h"
 
 #include <openssl/pem.h>
 #include <openssl/ssl.h>

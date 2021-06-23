@@ -1,4 +1,4 @@
-#include "workload/client.h"
+#include "c-spiffe/workload/client.h"
 #include <stdio.h>
 #include <stdlib.h>
 

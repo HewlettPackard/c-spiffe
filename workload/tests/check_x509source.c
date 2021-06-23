@@ -1,6 +1,6 @@
-#include "svid/x509svid/svid.h"
-#include "workload/watcher.h"
-#include "workload/x509source.h"
+#include "c-spiffe/svid/x509svid/svid.h"
+#include "c-spiffe/workload/watcher.h"
+#include "c-spiffe/workload/x509source.h"
 #include <check.h>
 
 START_TEST(test_workloadapi_NewX509Source_creates_default_config);

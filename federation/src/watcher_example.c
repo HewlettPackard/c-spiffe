@@ -1,6 +1,6 @@
-#include "bundle/spiffebundle/src/source.h"
-#include "federation/src/watcher.h"
-#include "spiffeid/src/trustdomain.h"
+#include "c-spiffe/bundle/spiffebundle/src/source.h"
+#include "c-spiffe/federation/watcher.h"
+#include "c-spiffe/spiffeid/src/trustdomain.h"
 #include <check.h>
 #include <unistd.h>
 

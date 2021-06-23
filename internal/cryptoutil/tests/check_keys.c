@@ -1,4 +1,4 @@
-#include "internal/cryptoutil/keys.h"
+#include "c-spiffe/internal/cryptoutil/keys.h"
 #include <check.h>
 #include <openssl/pem.h>
 

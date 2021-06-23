@@ -1,4 +1,4 @@
-#include "source.h"
+#include "c-spiffe/bundle/spiffebundle/source.h"
 
 spiffebundle_Bundle *spiffebundle_Source_GetSpiffeBundleForTrustDomain(
     spiffebundle_Source *s, const spiffeid_TrustDomain td, err_t *err)

@@ -1,4 +1,4 @@
-#include "workload/watcher.h"
+#include "c-spiffe/workload/watcher.h"
 #include <check.h>
 
 // callback that sets an int to a value, and ignores the context.

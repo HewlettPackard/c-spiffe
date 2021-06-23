@@ -2,9 +2,9 @@
 #include <openssl/pem.h>
 #include <stdlib.h>
 
-#include "bundle/jwtbundle/source.h"
-#include "svid/jwtsvid/svid.h"
-#include "svid/jwtsvid/parse.h"
+#include "c-spiffe/bundle/jwtbundle/source.h"
+#include "c-spiffe/svid/jwtsvid/svid.h"
+#include "c-spiffe/svid/jwtsvid/parse.h"
 
 // precondition: valid elliptic curve jwt token
 // postcondition:  valid jwt svid corresponding

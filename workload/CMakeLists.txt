@@ -55,8 +55,8 @@ crypto)
 
 # Install Headers:
 set(HEADERS_SOURCE
-${PROJECT_SOURCE_DIR}/x509source.h
-${PROJECT_SOURCE_DIR}/jwtsource.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/workload/x509source.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/workload/jwtsource.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
@@ -71,10 +71,10 @@ ${PROJECT_SOURCE_DIR}/jwtwatcher.c
 
 # Install Headers:
 set(HEADERS_WATCHER
-${PROJECT_SOURCE_DIR}/watcher.h
-${PROJECT_SOURCE_DIR}/x509context.h
-${PROJECT_SOURCE_DIR}/jwtcallback.h
-${PROJECT_SOURCE_DIR}/jwtwatcher.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/workload/watcher.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/workload/x509context.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/workload/jwtcallback.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/workload/jwtwatcher.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
@@ -88,7 +88,7 @@ ${PROJECT_SOURCE_DIR}/backoff.c
 
 # Install Headers:
 set(HEADERS_BACKOFF
-${PROJECT_SOURCE_DIR}/backoff.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/workload/backoff.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
@@ -110,7 +110,7 @@ ${grpc_srcs}
 )
 # Install Headers:
 set(HEADERS_CLIENT
-${PROJECT_SOURCE_DIR}/client.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/workload/client.h
 ${proto_hdrs}
 ${grpc_hdrs}
 )
@@ -188,7 +188,7 @@ target_link_libraries(jwtsource_example client)
 
 # Install higher level header:
 set(HEADERS_MOD_WORKLOAD
-${PROJECT_SOURCE_DIR}/workload.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/workload/workload.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/*.h
 install(

@@ -1,4 +1,4 @@
-#include "utils/util.h"
+#include "c-spiffe/utils/util.h"
 #include <check.h>
 #include <stdlib.h>
 

@@ -1,6 +1,6 @@
-#include "spiffeid/id.h"
-#include "spiffeid/trustdomain.h"
-#include "utils/stb_ds.h"
+#include "c-spiffe/spiffeid/id.h"
+#include "c-spiffe/spiffeid/trustdomain.h"
+#include "c-spiffe/utils/stb_ds.h"
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>

@@ -29,8 +29,8 @@ install(
 
 # Install Headers:
 set(HEADERS_FEDERATION
-${PROJECT_SOURCE_DIR}/endpoint.h
-${PROJECT_SOURCE_DIR}/watcher.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/federation/endpoint.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/federation/watcher.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
@@ -46,7 +46,7 @@ target_link_libraries(endpoint_example federation)
 
 # Install higher level header:
 set(HEADERS_MOD_FEDERATION
-${PROJECT_SOURCE_DIR}/federation.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/federation/federation.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/*.h
 install(

@@ -24,9 +24,9 @@ install(
 
 # Install Headers:
 set(HEADERS_BUNDLE_JWT
-${PROJECT_SOURCE_DIR}/jwtbundle/bundle.h
-${PROJECT_SOURCE_DIR}/jwtbundle/set.h
-${PROJECT_SOURCE_DIR}/jwtbundle/source.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/bundle/jwtbundle/bundle.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/bundle/jwtbundle/set.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/bundle/jwtbundle/source.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
@@ -36,9 +36,9 @@ install(
 
 # Install Headers:
 set(HEADERS_BUNDLE_X509
-${PROJECT_SOURCE_DIR}/x509bundle/bundle.h
-${PROJECT_SOURCE_DIR}/x509bundle/set.h
-${PROJECT_SOURCE_DIR}/x509bundle/source.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/bundle/x509bundle/bundle.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/bundle/x509bundle/set.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/bundle/x509bundle/source.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
@@ -48,9 +48,9 @@ install(
 
 # Install Headers:
 set(HEADERS_BUNDLE_SPIFFE
-${PROJECT_SOURCE_DIR}/spiffebundle/bundle.h
-${PROJECT_SOURCE_DIR}/spiffebundle/set.h
-${PROJECT_SOURCE_DIR}/spiffebundle/source.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/bundle/spiffebundle/bundle.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/bundle/spiffebundle/set.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/bundle/spiffebundle/source.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
@@ -60,9 +60,9 @@ install(
 
 # Install higher level header:
 set(HEADERS_MOD_BUNDLE
-${PROJECT_SOURCE_DIR}/jwtbundle.h
-${PROJECT_SOURCE_DIR}/spiffebundle.h
-${PROJECT_SOURCE_DIR}/x509bundle.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/bundle/jwtbundle.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/bundle/spiffebundle.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/bundle/x509bundle.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/*.h
 install(

@@ -1,4 +1,4 @@
-#include "internal/jwtutil/util.h"
+#include "c-spiffe/internal/jwtutil/util.h"
 #include <check.h>
 #include <openssl/pem.h>
 
