@@ -3,6 +3,7 @@
 #include "bundle/x509bundle/bundle.h"
 #include "bundle/x509bundle/set.h"
 #include "internal/x509util/util.h"
+#include "svid/jwtsvid/parse.h"
 #include "svid/x509svid/svid.h"
 #include "workload.grpc.pb.h"
 #include "workload.pb.h"

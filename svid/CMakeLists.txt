@@ -32,6 +32,7 @@ install(
 # Install Headers:
 set(HEADERS_JWTSVID
 ${PROJECT_SOURCE_DIR}/jwtsvid/svid.h
+${PROJECT_SOURCE_DIR}/jwtsvid/parse.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(

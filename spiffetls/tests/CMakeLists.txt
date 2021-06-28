@@ -10,7 +10,7 @@ target_link_libraries(check_mode spiffetls ${CHECK_LIBRARIES}
   spiffeid
   internal
   svid
-  source
+  client
   uriparser
   bundle
   jansson
@@ -32,7 +32,7 @@ target_link_libraries(check_dial spiffetls ${CHECK_LIBRARIES}
   spiffeid
   internal
   svid
-  source
+  client
   uriparser
   bundle
   jansson
@@ -54,7 +54,7 @@ target_link_libraries(check_listen spiffetls ${CHECK_LIBRARIES}
   spiffeid
   internal
   svid
-  source
+  client
   uriparser
   bundle
   jansson
@@ -76,7 +76,7 @@ target_link_libraries(check_peerid spiffetls ${CHECK_LIBRARIES}
   spiffeid
   internal
   svid
-  source
+  client
   uriparser
   bundle
   jansson

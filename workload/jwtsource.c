@@ -1,8 +1,8 @@
 #include "jwtsource.h"
 #include "jwtwatcher.h"
 
-void workloadapi_JWTSource_onJWTBundle_SetCallback(
-    jwtbundle_Set *jwt_set, void *args)
+void workloadapi_JWTSource_onJWTBundle_SetCallback(jwtbundle_Set *jwt_set,
+                                                   void *args)
 {
     workloadapi_JWTSource *source = (workloadapi_JWTSource *) args;
     workloadapi_JWTSource_applyJWTBundle_Set(source, jwt_set);
@@ -63,23 +63,25 @@ err_t workloadapi_JWTSource_Close(workloadapi_JWTSource *source)
     return workloadapi_JWTWatcher_Close(source->watcher);
 }
 
-jwtsvid_SVID *
-workloadapi_JWTSource_GetJWTSVID(workloadapi_JWTSource *source, jwtsvid_Params* params, err_t *err)
+jwtsvid_SVID *workloadapi_JWTSource_GetJWTSVID(workloadapi_JWTSource *source,
+                                               jwtsvid_Params *params,
+                                               err_t *err)
 {
     *err = workloadapi_JWTSource_checkClosed(source);
     if(!(*err)) {
-        return workloadapi_Client_FetchJWTSVID(source->watcher->client,params, err);
+        return workloadapi_Client_FetchJWTSVID(source->watcher->client, params,
+                                               err);
     }
     return NULL;
 }
 
 jwtbundle_Bundle *workloadapi_JWTSource_GetJWTBundleForTrustDomain(
-    workloadapi_JWTSource *source, spiffeid_TrustDomain *td, err_t *err)
+    workloadapi_JWTSource *source, const spiffeid_TrustDomain td, err_t *err)
 {
     *err = workloadapi_JWTSource_checkClosed(source);
     if(!(*err)) {
         jwtbundle_Bundle *bundle = jwtbundle_Set_GetJWTBundleForTrustDomain(
-            source->bundles, *td, err);
+            source->bundles, td, err);
         if(*err == ERROR1) {
             *err = ERROR2;
         }
@@ -94,7 +96,7 @@ err_t workloadapi_JWTSource_WaitUntilUpdated(workloadapi_JWTSource *source)
 }
 
 void workloadapi_JWTSource_applyJWTBundle_Set(workloadapi_JWTSource *source,
-                                             jwtbundle_Set *set)
+                                              jwtbundle_Set *set)
 {
     mtx_lock(&(source->mtx));
     jwtbundle_Set_Free(source->bundles);

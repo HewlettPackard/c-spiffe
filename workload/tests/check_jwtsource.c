@@ -165,7 +165,7 @@ START_TEST(test_workloadapi_JWTSource_GetJWTBundleForTrustDomain);
     spiffeid_TrustDomain td = spiffeid_TrustDomainFromString(td_url, &err);
 
     jwtbundle_Bundle *bundle
-        = workloadapi_JWTSource_GetJWTBundleForTrustDomain(tested, &td, &err);
+        = workloadapi_JWTSource_GetJWTBundleForTrustDomain(tested, td, &err);
 
     ck_assert_ptr_eq(bundle, NULL);
     ck_assert_int_eq(err, ERROR1); // source closed
@@ -173,7 +173,7 @@ START_TEST(test_workloadapi_JWTSource_GetJWTBundleForTrustDomain);
     tested->closed = false;
     tested->bundles = jwtbundle_NewSet(0);
     bundle
-        = workloadapi_JWTSource_GetJWTBundleForTrustDomain(tested, &td, &err);
+        = workloadapi_JWTSource_GetJWTBundleForTrustDomain(tested, td, &err);
 
     ck_assert_ptr_eq(bundle, NULL);
     ck_assert_int_eq(err, ERROR2); // trust domain not available

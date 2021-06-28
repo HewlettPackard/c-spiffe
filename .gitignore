@@ -3,7 +3,6 @@
 DOCS/
 test.c
 test2.c
-privkey.pem
 test.json
 *.o
 # Visual Studio Code

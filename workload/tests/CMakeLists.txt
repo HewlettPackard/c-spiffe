@@ -28,7 +28,7 @@ add_test(check_watcher check_watcher)
 add_executable(check_x509verify "./check_verify.c")
 
 target_link_libraries(check_x509verify ${CHECK_LIBRARIES}
-  source
+  client
   crypto)
 
 add_test(check_x509verify check_x509verify)
@@ -43,27 +43,34 @@ add_test(check_jwtwatcher check_jwtwatcher)
 add_executable(check_x509source "./check_x509source.c")
 
 target_link_libraries(check_x509source ${CHECK_LIBRARIES} 
-  source)
+  client)
 
 add_test(check_x509source check_x509source)
 
 add_executable(check_svidsource "./check_svidsource.c")
 
 target_link_libraries(check_svidsource ${CHECK_LIBRARIES} 
-  source)
+  client)
 
 add_test(check_svidsource check_svidsource)
 
 add_executable(check_bundlesource "./check_bundlesource.c")
 
 target_link_libraries(check_bundlesource ${CHECK_LIBRARIES} 
-  source)
+  client)
 
 add_test(check_bundlesource check_bundlesource)
 
 add_executable(check_jwtsource "./check_jwtsource.c")
 
 target_link_libraries(check_jwtsource ${CHECK_LIBRARIES}
-  source)
+  client)
 
 add_test(check_jwtsource check_jwtsource)
+
+add_executable(check_parse check_parse.c)
+
+target_link_libraries(check_parse ${CHECK_LIBRARIES}
+  client)
+
+add_test(check_parse check_parse)

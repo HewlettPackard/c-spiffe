@@ -8,7 +8,6 @@ project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C)
 set(LIB_BUNDLE 
 ${PROJECT_SOURCE_DIR}/jwtbundle/bundle.c
 ${PROJECT_SOURCE_DIR}/jwtbundle/set.c
-${PROJECT_SOURCE_DIR}/jwtbundle/source.c
 ${PROJECT_SOURCE_DIR}/x509bundle/bundle.c
 ${PROJECT_SOURCE_DIR}/x509bundle/set.c
 ${PROJECT_SOURCE_DIR}/spiffebundle/bundle.c

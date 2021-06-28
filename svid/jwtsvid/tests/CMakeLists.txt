@@ -8,6 +8,7 @@ add_executable(check_jwtsvid check_svid.c)
 target_link_libraries(check_jwtsvid svid ${CHECK_LIBRARIES}
   spiffeid
   internal
+  client
   uriparser
   bundle
   jansson

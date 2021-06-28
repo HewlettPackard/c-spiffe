@@ -1,8 +1,8 @@
 #ifndef INCLUDE_WORKLOAD_JWTWATCHER_H
 #define INCLUDE_WORKLOAD_JWTWATCHER_H
 
+#include "bundle/jwtbundle/set.h"
 #include "workload/client.h"
-
 #include "workload/jwtcallback.h"
 
 #ifdef __cplusplus

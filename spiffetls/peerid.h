@@ -2,7 +2,6 @@
 #define INCLUDE_SPIFFETLS_PEERID_H
 
 #include "spiffeid/id.h"
-#include "svid/x509svid/verify.h"
 #include "utils/util.h"
 #include <openssl/ssl.h>
 

@@ -2,8 +2,6 @@
 #include <check.h>
 #include <stdlib.h>
 
-#define STBDS_UNIT_TESTS
-
 START_TEST(test_string_new)
 {
     const char res_str[] = "abcd";
@@ -76,13 +74,6 @@ START_TEST(test_FILE_to_string)
 }
 END_TEST
 
-START_TEST(test_stb_ds)
-{
-    stbds_unit_tests();
-    ck_assert(1);
-}
-END_TEST
-
 Suite *util_suite(void)
 {
     Suite *s = suite_create("util");
@@ -92,7 +83,6 @@ Suite *util_suite(void)
     tcase_add_test(tc_core, test_string_push);
     tcase_add_test(tc_core, test_string_new_range);
     tcase_add_test(tc_core, test_FILE_to_string);
-    tcase_add_test(tc_core, test_stb_ds);
 
     suite_add_tcase(s, tc_core);
 
