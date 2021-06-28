@@ -51,7 +51,7 @@ Build the c-spiffe project:
 ```bash
 cd /mnt
 mkdir build && cd build
-cmake ..
+cmake -DENABLE_TESTS=ON ..
 make
 make test
 ```
@@ -60,22 +60,33 @@ After running `make test`, you will find the test files in the `Testing` folder.
 
 ## Local building
 
-### Local Build Dependencies
+### Minimal Installation
 
-* Gcc
-* CMake
-* libssl-dev
-* liburiparser1
-* liburiparser-dev
-* protobuf-compiler
-* libprotobuf-dev
-* check
-* lcov
-* gcovr
-* libjansson-dev
-* libcjose-dev
-* libgtest-dev
-* libgmock-dev
+Refer to [Minimal Installation](MINOR-INSTALLATION.md) for more information.
+
+### Normal Installation
+
+#### Build Dependencies
+
+* gcc (9.3.0-17ubuntu1~20.04)
+* make (4.2.1-1.2)
+* libtool (2.4.6-14)
+* curl (7.68.0-1ubuntu2.5)
+* cmake (3.16.3-1ubuntu1)
+* libssl-dev (1.1.1f-1ubuntu2.4)
+* liburiparser1 (0.9.3-2)
+* liburiparser-dev (0.9.3-2)
+* protobuf-compiler (3.13.0)
+* libprotobuf-dev (3.13.0)
+* libjansson-dev (2.12-1build1)
+* libcjose-dev (0.6.1+dfsg1-1)
+* zlib1g-dev (1.2.11)
+* libcurl4-openssl-dev (7.68.0-1ubuntu2.5)
+* check (0.10.0-3build2)
+* lcov (1.14)
+* gcovr (9.3.0-17ubuntu1~20.04)
+* libgtest-dev (2.09-1)
+* libgmock-dev (1.10.0-2)
 
 ### Compile gRPC
 
