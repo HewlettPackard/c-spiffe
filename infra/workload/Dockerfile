@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libcurl4-openssl-dev;\
 apt-get clean
 
-ARG BRANCH=test-399-Move-test-case-MT_02-to-FXB_03
+ARG BRANCH=test-202-Implement-test-case-FXB_01
 RUN cd /mnt && git clone -b ${BRANCH} https://github.com/arianalima/c-spiffe.git
 RUN cd ${C_SPIFFE_DIR} && git pull
 
