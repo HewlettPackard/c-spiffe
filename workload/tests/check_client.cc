@@ -8,9 +8,9 @@
  */
 
 #include "c-spiffe/svid/x509svid/svid.h"
-#include "c-spiffe/workload.grpc.pb.h"
+#include "workload.grpc.pb.h"
 #include "workload.pb.h"
-#include "workload/client.h"
+#include "c-spiffe/workload/client.h"
 #include "workload_mock.grpc.pb.h"
 #include <check.h>
 #include <gmock/gmock.h>

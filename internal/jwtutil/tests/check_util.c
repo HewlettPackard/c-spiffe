@@ -2,7 +2,7 @@
 #include <check.h>
 #include <openssl/pem.h>
 
-#include "utils/stb_ds.h"
+#include "c-spiffe/utils/stb_ds.h"
 
 START_TEST(test_jwtutil_JWTAuthoritiesEqual)
 {
