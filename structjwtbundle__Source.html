@@ -78,12 +78,18 @@ Collaboration diagram for jwtbundle_Source:</div>
 <div class="dyncontent">
 <div class="center"><img src="structjwtbundle__Source__coll__graph.png" border="0" usemap="#ajwtbundle__Source_coll__map" alt="Collaboration graph"/></div>
 <map name="ajwtbundle__Source_coll__map" id="ajwtbundle__Source_coll__map">
-<area shape="rect" title=" " alt="" coords="103,377,228,404"/>
-<area shape="rect" href="structjwtbundle__Bundle.html" title=" " alt="" coords="103,95,227,121"/>
-<area shape="rect" href="structmap__string__jwtbundle__Bundle.html" title=" " alt="" coords="182,184,330,225"/>
-<area shape="rect" href="structspiffeid__TrustDomain.html" title=" " alt="" coords="5,5,149,32"/>
-<area shape="rect" href="structmap__string__EVP__PKEY.html" title=" " alt="" coords="174,5,335,32"/>
-<area shape="rect" href="structjwtbundle__Set.html" title=" " alt="" coords="192,288,296,315"/>
+<area shape="rect" title=" " alt="" coords="1821,164,1947,191"/>
+<area shape="rect" href="structjwtbundle__Bundle.html" title=" " alt="" coords="251,57,375,84"/>
+<area shape="rect" href="structmap__string__jwtbundle__Bundle.html" title=" " alt="" coords="457,101,605,142"/>
+<area shape="rect" href="structspiffeid__TrustDomain.html" title=" " alt="" coords="14,32,158,59"/>
+<area shape="rect" href="structmap__string__EVP__PKEY.html" title=" " alt="" coords="5,83,167,109"/>
+<area shape="rect" href="structworkloadapi__JWTSource.html" title=" " alt="" coords="1564,164,1731,191"/>
+<area shape="rect" href="structworkloadapi__JWTSourceConfig.html" title=" " alt="" coords="1264,79,1467,105"/>
+<area shape="rect" href="structworkloadapi__JWTWatcherConfig.html" title=" " alt="" coords="916,68,1125,95"/>
+<area shape="rect" href="structworkloadapi__Client.html" title=" " alt="" coords="703,96,833,123"/>
+<area shape="rect" href="structworkloadapi__JWTWatcher.html" title=" " alt="" coords="1279,164,1452,191"/>
+<area shape="rect" href="structworkloadapi__JWTCallback.html" title=" " alt="" coords="933,181,1108,208"/>
+<area shape="rect" href="structjwtbundle__Set.html" title=" " alt="" coords="716,208,820,235"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -91,6 +97,7 @@ Collaboration diagram for jwtbundle_Source:</div>
 Public Types</h2></td></tr>
 <tr class="memitem:a4eb7f17219c8d39a3a3e4e332cc8d587"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjwtbundle__Source.html#a4eb7f17219c8d39a3a3e4e332cc8d587">jwtbundle_Source_Cardinality</a> { <a class="el" href="structjwtbundle__Source.html#a4eb7f17219c8d39a3a3e4e332cc8d587a7273e6b8e9659f437924f4810b1b5587">JWTBUNDLE_BUNDLE</a>
 , <a class="el" href="structjwtbundle__Source.html#a4eb7f17219c8d39a3a3e4e332cc8d587aab4b97eac74b8ebfdd3edee136af95e5">JWTBUNDLE_SET</a>
+, <a class="el" href="structjwtbundle__Source.html#a4eb7f17219c8d39a3a3e4e332cc8d587ad9d8c35f1a813b1629092303b96e48fa">JWTBUNDLE_WORKLOADAPI_JWTSOURCE</a>
  }</td></tr>
 <tr class="separator:a4eb7f17219c8d39a3a3e4e332cc8d587"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -103,6 +110,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a2b577d5494d0668a524b455901e69e46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a898c61ef16879a811664e419635c4fbf"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="structjwtbundle__Set.html">jwtbundle_Set</a> *&#160;&#160;&#160;<a class="el" href="structjwtbundle__Source.html#a60d5fb13aea130f13a9eafb90a134731">set</a></td></tr>
 <tr class="separator:a898c61ef16879a811664e419635c4fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e295786d08e63b8e7bb18dbabff9d64"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="structworkloadapi__JWTSource.html">workloadapi_JWTSource</a> *&#160;&#160;&#160;<a class="el" href="structjwtbundle__Source.html#ad66a5f03f1229369cc7579995a9c6010">source</a></td></tr>
+<tr class="separator:a8e295786d08e63b8e7bb18dbabff9d64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3627b5e2226757acc2a6d66bfabe33dc"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjwtbundle__Source.html#a3627b5e2226757acc2a6d66bfabe33dc">source</a></td></tr>
 <tr class="separator:a3627b5e2226757acc2a6d66bfabe33dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -123,6 +132,7 @@ Public Attributes</h2></td></tr>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a4eb7f17219c8d39a3a3e4e332cc8d587a7273e6b8e9659f437924f4810b1b5587"></a>JWTBUNDLE_BUNDLE&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a4eb7f17219c8d39a3a3e4e332cc8d587aab4b97eac74b8ebfdd3edee136af95e5"></a>JWTBUNDLE_SET&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4eb7f17219c8d39a3a3e4e332cc8d587ad9d8c35f1a813b1629092303b96e48fa"></a>JWTBUNDLE_WORKLOADAPI_JWTSOURCE&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -156,8 +166,22 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ad66a5f03f1229369cc7579995a9c6010"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad66a5f03f1229369cc7579995a9c6010">&#9670;&nbsp;</a></span>source <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structworkloadapi__JWTSource.html">workloadapi_JWTSource</a>* jwtbundle_Source::source</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a3627b5e2226757acc2a6d66bfabe33dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3627b5e2226757acc2a6d66bfabe33dc">&#9670;&nbsp;</a></span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3627b5e2226757acc2a6d66bfabe33dc">&#9670;&nbsp;</a></span> <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

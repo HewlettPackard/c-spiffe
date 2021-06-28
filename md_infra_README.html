@@ -68,20 +68,20 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>This folder contains an orchestration for some integration test scenarios. It is composed by a server container, a test workload, and some tests scripts.</p>
-<h2><a class="anchor" id="autotoc_md37"></a>
+<h2><a class="anchor" id="autotoc_md43"></a>
 Run the Docker containers</h2>
-<h4><a class="anchor" id="autotoc_md38"></a>
+<h4><a class="anchor" id="autotoc_md44"></a>
 Prerequisites</h4>
 <ul>
 <li>Linux or macOS</li>
 <li><a href="https://docs.docker.com/install/">Docker</a></li>
 <li><a href="https://docs.docker.com/compose/install/">Docker Compose</a></li>
 </ul>
-<h4><a class="anchor" id="autotoc_md39"></a>
+<h4><a class="anchor" id="autotoc_md45"></a>
 1. Clone this c-spiffe</h4>
 <div class="fragment"><div class="line">$ git clone https://github.com/HewlettPackard/c-spiffe.git</div>
 <div class="line">$ cd c-spiffe</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md40"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md46"></a>
 2. Build and run the docker containers</h4>
 <div class="fragment"><div class="line">$ cd infra/</div>
 <div class="line">$ make build</div>
@@ -95,7 +95,7 @@ Prerequisites</h4>
 <div class="line">Creating infra_spire-server_1 ... done</div>
 <div class="line">Creating infra_workload_1     ... done</div>
 <div class="line">Creating infra_tests_1        ... done</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md41"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md47"></a>
 3. Run the SPIRE Server</h4>
 <p>On a console run:</p>
 <div class="fragment"><div class="line">$ make run-server </div>
@@ -111,7 +111,7 @@ Prerequisites</h4>
 <div class="line">INFO[0000] Plugin loaded                   built-in_plugin=true plugin_name=disk plugin_services=&quot;[]&quot; plugin_type=KeyManager subsystem_name=catalog</div>
 <div class="line">INFO[0000] Plugin loaded                   built-in_plugin=true plugin_name=join_token plugin_services=&quot;[]&quot; plugin_type=NodeAttestor subsystem_name=catalog</div>
 <div class="line">INFO[0000] Plugins started</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md42"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md48"></a>
 4. Create the workloads entries</h4>
 <p>On a console run:</p>
 <div class="fragment"><div class="line">$ make create-entries</div>
@@ -131,7 +131,7 @@ Prerequisites</h4>
 <div class="line">Revision         : 0</div>
 <div class="line">TTL              : default</div>
 <div class="line">Selector         : unix:user:root</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md43"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md49"></a>
 5. Generate Tokens</h4>
 <h5>5.1 Generate Agent Token for tests and Run the Agent</h5>
 <p>On the console run: </p><div class="fragment"><div class="line">$ make generate-token</div>
@@ -147,7 +147,7 @@ Prerequisites</h4>
 <div class="line">INFO[0000] Plugin loaded                  built-in_plugin=true plugin_name=unix plugin_services=&quot;[]&quot; plugin_type=WorkloadAttestor subsystem_name=catalog</div>
 <div class="line">INFO[0000] Bundle is not found            subsystem_name=attestor</div>
 <div class="line">DEBU[0000] No pre-existing agent SVID found. Will perform node attestation  path=data/agent/agent_svid.der subsystem_name=attestor</div>
-</div><!-- fragment --> <h4><a class="anchor" id="autotoc_md44"></a>
+</div><!-- fragment --> <h4><a class="anchor" id="autotoc_md50"></a>
 6. Clean the environment</h4>
 <p>Stop the docker containers:</p>
 <div class="fragment"><div class="line">$ make clean</div>
