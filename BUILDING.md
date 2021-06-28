@@ -80,7 +80,6 @@ Refer to [Minimal Installation](MINOR-INSTALLATION.md) for more information.
 * libprotobuf-dev (3.13.0)
 * libjansson-dev (2.12-1build1)
 * libcjose-dev (0.6.1+dfsg1-1)
-* zlib1g-dev (1.2.11)
 * libcurl4-openssl-dev (7.68.0-1ubuntu2.5)
 * check (0.10.0-3build2)
 * lcov (1.14)
