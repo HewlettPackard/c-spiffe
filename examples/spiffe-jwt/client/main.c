@@ -1,6 +1,6 @@
-#include "spiffetls/tlsconfig/config.h"
-#include "workload/jwtsource.h"
-#include "workload/x509source.h"
+#include "c-spiffe/spiffetls/tlsconfig/config.h"
+#include "c-spiffe/workload/jwtsource.h"
+#include "c-spiffe/workload/x509source.h"
 
 #include <curl/curl.h>
 
