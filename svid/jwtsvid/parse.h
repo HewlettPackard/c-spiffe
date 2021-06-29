@@ -1,8 +1,8 @@
 #ifndef INCLUDE_SVID_JWTSVID_PARSE_H
 #define INCLUDE_SVID_JWTSVID_PARSE_H
 
-#include "bundle/jwtbundle/source.h"
-#include "svid/jwtsvid/svid.h"
+#include "c-spiffe/bundle/jwtbundle/source.h"
+#include "c-spiffe/svid/jwtsvid/svid.h"
 
 #ifdef __cplusplus
 extern "C" {

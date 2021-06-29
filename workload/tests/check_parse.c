@@ -2,8 +2,8 @@
 #include <openssl/pem.h>
 #include <stdlib.h>
 
-#include "svid/jwtsvid/parse.h"
-#include "svid/jwtsvid/svid.h"
+#include "c-spiffe/svid/jwtsvid/parse.h"
+#include "c-spiffe/svid/jwtsvid/svid.h"
 
 // Check common fields
 void test_fields_verify(jwtsvid_SVID *svid, err_t err, char *token)
