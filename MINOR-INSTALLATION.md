@@ -46,6 +46,7 @@ git clone https://github.com/HewlettPackard/c-spiffe.git
 ```
 
 Once you meet all the requirements, building is straightforward with `CMake`
+Currently, we are using `NUM_JOBS=8`
 
 ```bash
 cd c-spiffe/
