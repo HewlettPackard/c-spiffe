@@ -30,6 +30,8 @@ git clone --recurse-submodules -b v${GRPC_VERSION} https://github.com/grpc/grpc
 
 * Build grpc
 
+Currently, we are using `NUM_JOBS=8`
+
 ```bash
 cmake -DgRPC_INSTALL=ON -DgRPC_SSL_PROVIDER=package ../.
 make -j${NUM_JOBS} && make install
