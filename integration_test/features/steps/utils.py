@@ -1,7 +1,9 @@
 import os
 import sys
+import time
 
 from pathlib2 import Path
+from subprocess import call
 
 
 PARENT_PATH = os.path.abspath("..")
@@ -39,22 +41,13 @@ def remove_entry(workload_id, container):
             os.system("ssh root@%s \"spire-server entry delete -entryID %s\"" % (container, entryId))
 
 
-def add_federation_block(trust_domain, bundle_endpoint, destination):
-    federation_path = "/mnt/c-spiffe/integration_test/resources/federation.conf"
-    federation_config_content = Path(federation_path).read_text()
-    if federation_config_content.find(trust_domain) == -1:
-        update_federation_block(trust_domain, bundle_endpoint)
-        federation_config_content = Path(federation_path).read_text()
-    server_conf = Path("/opt/spire/conf/server/server.conf")
-    #TODO: change it in the destination host
-    server_conf_content = server_conf.read_text()
-    start_index = server_conf_content.find("server {")
-    end_index = server_conf_content.find("}", start_index)-1
-    current_value  = server_conf_content[start_index:end_index]
-    new_value = current_value + "\n\n" + federation_config_content
-    server_conf_content = server_conf_content.replace(current_value, new_value)
-    server_conf.write_text(server_conf_content)
-
+def replace_text_content(content, field, new_value, edge_index=0):
+    start_index = content.find(field, edge_index) + len(field)
+    end_index = content.find("\"",start_index)
+    current_value = content[start_index:end_index]
+    content = content.replace(current_value, new_value)
+    return content, start_index
+    
 
 def update_federation_block(new_trust_domain, new_bundle_endpoint):
     path = Path("/mnt/c-spiffe/integration_test/resources/federation.conf")
@@ -66,9 +59,33 @@ def update_federation_block(new_trust_domain, new_bundle_endpoint):
     path.write_text(content)
 
 
-def replace_text_content(content, field, new_value, edge_index=0):
-    start_index = content.find(field, edge_index) + len(field)
-    end_index = content.find("\"",start_index)
-    current_value = content[start_index:end_index]
-    content = content.replace(current_value, new_value)
-    return content, start_index
+def copy_file_from_remote(remote, file_path):
+    cmd = "scp root@{0}:{1} {1}".format(remote, file_path)
+    call(cmd.split(" "))
+    time.sleep(2)
+
+
+def send_file_to_remote(remote, file_path):
+    cmd = "scp {0} root@{1}:{0}".format(file_path, remote)
+    call(cmd.split(" "))
+    time.sleep(2)
+
+
+def add_federation_block(trust_domain, bundle_endpoint, destination):
+    federation_path = "/mnt/c-spiffe/integration_test/resources/federation.conf"
+    federation_config_content = Path(federation_path).read_text()
+    if federation_config_content.find(trust_domain) == -1:
+        update_federation_block(trust_domain, bundle_endpoint)
+        federation_config_content = Path(federation_path).read_text()
+    
+    server_conf_path = "/opt/spire/conf/server/server.conf"
+    copy_file_from_remote(destination, server_conf_path)
+    server_conf = Path(server_conf_path)
+    server_conf_content = server_conf.read_text()
+    start_index = server_conf_content.find("server {")
+    end_index = server_conf_content.find("}", start_index)-1
+    current_value  = server_conf_content[start_index:end_index]
+    new_value = current_value + "\n\n" + federation_config_content
+    server_conf_content = server_conf_content.replace(current_value, new_value)
+    server_conf.write_text(server_conf_content)
+    send_file_to_remote(destination, server_conf_path)
