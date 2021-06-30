@@ -33,6 +33,7 @@ git clone --recurse-submodules -b v${GRPC_VERSION} https://github.com/grpc/grpc
 Currently, we are using `NUM_JOBS=8`
 
 ```bash
+cd grpc/cmake/build
 cmake -DgRPC_INSTALL=ON -DgRPC_SSL_PROVIDER=package ../.
 make -j${NUM_JOBS} && make install
 ```
@@ -47,6 +48,7 @@ git clone https://github.com/HewlettPackard/c-spiffe.git
 Once you meet all the requirements, building is straightforward with `CMake`
 
 ```bash
+cd c-spiffe/
 mkdir build && cd build
 cmake ..
 make -j${NUM_JOBS}
