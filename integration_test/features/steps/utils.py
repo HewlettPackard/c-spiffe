@@ -21,9 +21,11 @@ def list_entries(container):
     return os.popen("ssh root@%s \"spire-server entry show\"" % container).read()
 
 
-def is_wlc_entry_created(container):
+def is_entry_created(container, workload_id):
+    id = workload_id[-1]
+    if id == "A": id = ""
     entries = list_entries(container)
-    if entries.find("myworkloadC") == -1:
+    if entries.find("myworkload%s" % id) == -1:
         return False
     return True
 

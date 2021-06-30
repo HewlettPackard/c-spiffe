@@ -5,7 +5,7 @@ import socket
 
 from hamcrest import assert_that, is_, is_not
 from behave.matchers import register_type
-from utils import parse_nullable_string, is_wlc_entry_created, remove_entry
+from utils import parse_nullable_string, is_entry_created, remove_entry
 
 
 parse_nullable_string.pattern = r'.*'
@@ -113,7 +113,7 @@ def step_impl(context, container_name):
         raise Exception("Unexpected container to run second server. Use 'spire-server2'.")
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-start-server.sh 2")
     time.sleep(10)
-    if not is_wlc_entry_created(container_name):
+    if not is_entry_created(container_name, context.workload_c):
         os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-create-entries.sh 2")
         time.sleep(2)
 
