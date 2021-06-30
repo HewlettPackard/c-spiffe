@@ -71,7 +71,7 @@ def send_file_to_remote(remote, file_path):
     time.sleep(2)
 
 
-def add_federation_block(trust_domain, bundle_endpoint, destination):
+def add_federation_block(trust_domain, bundle_endpoint, remote):
     federation_path = "/mnt/c-spiffe/integration_test/resources/federation.conf"
     federation_config_content = Path(federation_path).read_text()
     if federation_config_content.find(trust_domain) == -1:
@@ -79,13 +79,27 @@ def add_federation_block(trust_domain, bundle_endpoint, destination):
         federation_config_content = Path(federation_path).read_text()
     
     server_conf_path = "/opt/spire/conf/server/server.conf"
-    copy_file_from_remote(destination, server_conf_path)
+    copy_file_from_remote(remote, server_conf_path)
     server_conf = Path(server_conf_path)
     server_conf_content = server_conf.read_text()
     start_index = server_conf_content.find("server {")
     end_index = server_conf_content.find("}", start_index)-1
     current_value  = server_conf_content[start_index:end_index]
-    new_value = current_value + "\n\n" + federation_config_content
+    new_value = current_value + "\n\n" + federation_config_content + "\n"
     server_conf_content = server_conf_content.replace(current_value, new_value)
     server_conf.write_text(server_conf_content)
-    send_file_to_remote(destination, server_conf_path)
+    send_file_to_remote(remote, server_conf_path)
+
+
+def remove_federation_block(remote):
+    server_conf_path = "/opt/spire/conf/server/server.conf"
+    copy_file_from_remote(remote, server_conf_path)
+    server_conf = Path(server_conf_path)
+    server_conf_content = server_conf.read_text()
+    start_index = server_conf_content.find("\n\n    federation")
+    federation_limit = "}\n        }\n    }\n"
+    end_index = server_conf_content.find(federation_limit, start_index) + len(federation_limit)
+    federation_block = server_conf_content[start_index:end_index]
+    server_conf_content = server_conf_content.replace(federation_block, "")
+    server_conf.write_text(server_conf_content)
+    send_file_to_remote(remote, server_conf_path)
