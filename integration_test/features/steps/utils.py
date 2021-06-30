@@ -50,13 +50,12 @@ def replace_text_content(content, field, new_value, edge_index=0):
     
 
 def update_federation_block(new_trust_domain, new_bundle_endpoint):
-    path = Path("/mnt/c-spiffe/integration_test/resources/federation.conf")
-    content = path.read_text()
+    content = Path("/mnt/c-spiffe/integration_test/resources/federation.conf").read_text()
     trust_domain_field = "federates_with \""
     content, start_index = replace_text_content(content, trust_domain_field, new_trust_domain)
     bundle_endpoint_field = "address = \""
     content, start_index = replace_text_content(content, bundle_endpoint_field, new_bundle_endpoint, start_index)
-    path.write_text(content)
+    return content
 
 
 def copy_file_from_remote(remote, file_path):
@@ -75,8 +74,7 @@ def add_federation_block(trust_domain, bundle_endpoint, remote):
     federation_path = "/mnt/c-spiffe/integration_test/resources/federation.conf"
     federation_config_content = Path(federation_path).read_text()
     if federation_config_content.find(trust_domain) == -1:
-        update_federation_block(trust_domain, bundle_endpoint)
-        federation_config_content = Path(federation_path).read_text()
+        federation_config_content = update_federation_block(trust_domain, bundle_endpoint)
     
     server_conf_path = "/opt/spire/conf/server/server.conf"
     copy_file_from_remote(remote, server_conf_path)
