@@ -29,13 +29,25 @@ def after_all(context):
 
 
 def before_feature(context, feature):
-    if any(tag in feature.tags for tag in ("mtls", "federation")):
+    if "mtls" in feature.tags:
         os.system(PARENT_PATH + "bash-general-scripts/clean.sh")
         time.sleep(1)
-    if context.workload_c in feature.tags:
-        context.current_workload = context.workload_c
+    if "federation" in feature.tags:
         os.system("ssh root@workload2 \"cp {0}/agent/agent.conf {0}/agent/agent{1}.conf\"".format(context.spire_conf, context.workload_c))
         time.sleep(2)
+        context.execute_steps('''
+            When The agent is turned off
+            And  The server is turned off
+        ''')
+        os.system(PARENT_PATH + "bash-general-scripts/clean.sh server")
+
+
+def after_feature(context, feature):
+    if context.workload_c in feature.tags:
+        context.execute_steps('''
+            When The server is turned on
+            And  The agent is turned on
+        ''') 
 
 
 def before_scenario(context, scenario):
@@ -45,11 +57,6 @@ def before_scenario(context, scenario):
         time.sleep(2)
     elif context.workload_c in scenario.tags:
         context.current_workload = context.workload_c
-        # context.execute_steps('''
-        #     When The agent is turned off
-        #     Then The second "server" is turned off inside "spire-server" container
-        # ''')
-        os.system(PARENT_PATH + "bash-general-scripts/clean.sh server")
 
 
 def after_scenario(context, scenario):
@@ -57,6 +64,7 @@ def after_scenario(context, scenario):
         host_number = ""
         if context.current_workload == context.workload_c:
             host_number = "2"
+            os.system(PARENT_PATH + "bash-general-scripts/clean.sh server")
         os.system("ssh root@workload%s \"rm -rf %s/agent/%s\"" % (host_number, context.spire_conf, context.current_workload))
         context.current_workload = ""
     if "updated-conf" in scenario.tags:

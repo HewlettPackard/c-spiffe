@@ -112,9 +112,10 @@ def step_impl(context, container_name):
     if container_name != "spire-server2":
         raise Exception("Unexpected container to run second server. Use 'spire-server2'.")
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-start-server.sh 2")
-    time.sleep(7)
+    time.sleep(10)
     if not is_wlc_entry_created(container_name):
         os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-create-entries.sh 2")
+        time.sleep(2)
 
 
 @then('I check that mTLS connection did not succeed')
