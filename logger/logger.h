@@ -27,6 +27,22 @@ void logger_Debug_Dumpf(FILE *f);
 
 string_t logger_Debug_Dumps(void);
 
+void logger_Error_Init(void);
+
+int logger_Error_BufferSize(void);
+
+void logger_Error_FmtPush(const char *fmt, ...);
+
+void logger_Error_Push(const char *str);
+
+const char *logger_Error_Back(void);
+
+void logger_Error_Pop(void);
+
+void logger_Error_Dumpf(FILE *f);
+
+string_t logger_Error_Dumps(void);
+
 void logger_Cleanup(void);
 
 #ifdef __cplusplus

@@ -5,11 +5,13 @@
 
 const size_t MAX_LOGGER_CAP = 1 << 7;
 const size_t MAX_STR_CAP = 1 << 8;
-char **__str_debug;
-int __str_debug_idx;
+char **__str_debug, **__str_error;
+int __str_debug_idx, __str_error_idx;
 
 const char DEBUG_PREFIX[] = "[DEBUG] ";
+const char ERROR_PREFIX[] = "[ERROR] ";
 const size_t DEBUG_PREFIX_LEN = sizeof DEBUG_PREFIX - 1;
+const size_t ERROR_PREFIX_LEN = sizeof ERROR_PREFIX - 1;
 
 static void vfmtPush(char *const *__str, int *__str_idx, const char *fmt,
                      va_list args)
@@ -99,6 +101,12 @@ static string_t dumps(char *const *__str, const int __str_idx)
     return res_str;
 }
 
+void logger_Init(void)
+{
+    logger_Debug_Init();
+    logger_Error_Init();
+}
+
 void logger_Debug_Init(void)
 {
     __str_debug = malloc(MAX_LOGGER_CAP * sizeof __str_debug[0]);
@@ -106,12 +114,6 @@ void logger_Debug_Init(void)
         __str_debug[i] = calloc(MAX_STR_CAP, sizeof __str_debug[0][0]);
     }
     __str_debug_idx = 0;
-}
-
-void logger_Init(void)
-{
-    /// TODO: init all loggers here
-    logger_Debug_Init();
 }
 
 int logger_Debug_BufferSize(void)
@@ -174,11 +176,89 @@ string_t logger_Debug_Dumps(void)
     return NULL;
 }
 
+void logger_Error_Init(void)
+{
+    __str_error = malloc(MAX_LOGGER_CAP * sizeof __str_error[0]);
+    for(size_t i = 0; i < MAX_LOGGER_CAP; ++i) {
+        __str_error[i] = calloc(MAX_STR_CAP, sizeof __str_error[0][0]);
+    }
+    __str_error_idx = 0;
+}
+
+int logger_Error_BufferSize(void)
+{
+    if(__str_error) {
+        return MAX_LOGGER_CAP;
+    }
+
+    return 0;
+}
+
+void logger_Error_FmtPush(const char *fmt, ...)
+{
+    if(__str_error && fmt) {
+        va_list args;
+        va_start(args, fmt);
+
+        vfmtPush(__str_error, &__str_error_idx, fmt, args);
+
+        va_end(args);
+    }
+}
+
+void logger_Error_Push(const char *str)
+{
+    if(__str_error && str) {
+        push(__str_error, &__str_error_idx, str);
+    }
+}
+
+const char *logger_Error_Back(void)
+{
+    if(__str_error) {
+        return back(__str_error, __str_error_idx);
+    }
+
+    return NULL;
+}
+
+void logger_Error_Pop(void)
+{
+    if(__str_error) {
+        return pop(__str_error, &__str_error_idx);
+    }
+}
+
+void logger_Error_Dumpf(FILE *f)
+{
+    if(__str_error && f) {
+        dumpf(__str_error, __str_error_idx, f);
+    }
+}
+
+string_t logger_Error_Dumps(void)
+{
+    if(__str_error) {
+        return dumps(__str_error, __str_error_idx);
+    }
+
+    return NULL;
+}
+
 void logger_Cleanup(void)
 {
     /// TODO: close all loggers here
-    for(size_t i = 0; i < MAX_LOGGER_CAP; ++i) {
-        free(__str_debug[i]);
+    if(__str_debug) {
+        for(size_t i = 0; i < MAX_LOGGER_CAP; ++i) {
+            free(__str_debug[i]);
+        }
+        free(__str_debug);
     }
-    free(__str_debug);
+
+    if(__str_error) {
+        for(size_t i = 0; i < MAX_LOGGER_CAP; ++i) {
+            free(__str_error[i]);
+        }
+        free(__str_error);
+    }
 }
