@@ -7,6 +7,7 @@ project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C)
 
 set(LIB_LOGGER
 ${PROJECT_SOURCE_DIR}/logger.c
+${PROJECT_SOURCE_DIR}/../utils/util.c
 )
 
 add_library(${TARGET_NAME} SHARED ${LIB_LOGGER})

@@ -5,7 +5,9 @@ add_executable(check_logger check_logger.c)
 
 target_link_libraries(check_logger logger ${CHECK_LIBRARIES}
   check
+  subunit
   rt
-  m)
+  m
+  pthread)
 
 add_test(check_logger check_logger)
