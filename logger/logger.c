@@ -1,5 +1,4 @@
 #include "logger/logger.h"
-#include "utils/util.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,7 +11,7 @@ int __str_debug_idx;
 const char DEBUG_PREFIX[] = "[DEBUG] ";
 const size_t DEBUG_PREFIX_LEN = sizeof DEBUG_PREFIX - 1;
 
-static void vfmtPush(char **__str, int *__str_idx, const char *fmt,
+static void vfmtPush(char *const *__str, int *__str_idx, const char *fmt,
                      va_list args)
 {
     // debug_fmt = "[DEBUG] " + fmt;
@@ -27,7 +26,7 @@ static void vfmtPush(char **__str, int *__str_idx, const char *fmt,
     arrfree(debug_fmt);
 }
 
-static void push(const char **__str, int *__str_idx, const char *str)
+static void push(char *const *__str, int *__str_idx, const char *str)
 {
     // circular buffer
     char *const new_str = __str[(*__str_idx)++];
@@ -36,7 +35,7 @@ static void push(const char **__str, int *__str_idx, const char *str)
     strncat(new_str, str, MAX_STR_CAP - DEBUG_PREFIX_LEN - 1);
 }
 
-static const char *back(char **__str, const int __str_idx)
+static const char *back(char *const *__str, const int __str_idx)
 {
     const char *rot_str;
     if(__str_idx > 0) {
@@ -47,7 +46,7 @@ static const char *back(char **__str, const int __str_idx)
     }
 }
 
-static const char *pop(char **__str, int *__str_idx)
+static const char *pop(char *const *__str, int *__str_idx)
 {
     const char *rot_str;
     if(*__str_idx > 0) {
@@ -59,7 +58,7 @@ static const char *pop(char **__str, int *__str_idx)
     }
 }
 
-static void dumpf(const char **__str, const int __str_idx, FILE *f)
+static void dumpf(char *const *__str, const int __str_idx, FILE *f)
 {
     if(!empty_str(__str[__str_idx])) {
         // if buffer is full, write till rotation
@@ -73,7 +72,7 @@ static void dumpf(const char **__str, const int __str_idx, FILE *f)
     }
 }
 
-static string_t dumps(const char **__str, const int __str_idx)
+static string_t dumps(char *const *__str, const int __str_idx)
 {
     string_t res_str = NULL;
 
