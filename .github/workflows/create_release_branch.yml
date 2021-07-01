@@ -1,4 +1,5 @@
 name: Publish Release
+show_downloads: true
 on:
   push:
     tags:
