@@ -2,6 +2,7 @@
 
 #### Build Dependencies
 * gcc (9.3.0-17ubuntu1~20.04)
+* g++ (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0
 * make (4.2.1-1.2)
 * libtool (2.4.6-14)
 * curl (7.68.0-1ubuntu2.5)
@@ -15,6 +16,13 @@
 * libcjose-dev (0.6.1+dfsg1-1)
 * libcurl4-openssl-dev (7.68.0-1ubuntu2.5)
 * check (0.10.0-3build2)
+
+#### Command-Line
+Open a terminal and execute 
+```bash
+apt-get update && apt-get install -y build-essential automake libtool curl cmake libssl-dev liburiparser1 liburiparser-dev protobuf-compiler libprotobuf-dev libjansson-dev libcjose-dev libcurl4-openssl-dev check
+```
+
 
 ### Compile gRPC
 
