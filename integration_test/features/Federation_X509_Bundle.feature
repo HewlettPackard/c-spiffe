@@ -11,35 +11,34 @@ Feature: Federation X509 Bundle
 
 
     @Sprint15 @updated-conf @WlC @wip
-    Scenario Outline: FXB_001 - Check that it is possible to establish mtls connection between two WLs connected to different servers in a Federation
-        When  The server is turned on
-        And   The agent is turned on
+    Scenario: FXB_001 - Check that it is possible to establish mtls connection between two WLs connected to different servers in a Federation
         Given I set federation config to "example.org" inside "spire-server2"
         And   I set federation config to "example2.org" inside "spire-server"
-        And   The second server is turned on inside "spire-server2" container
+        When  The server is turned on
+        Given The second server is turned on inside "spire-server2" container
         And   Federation is activated between "spire-server" and "spire-server2"
-
-        And   The second agent is turned on inside "workload2" container with the second trust domain        
+        When  The agent is turned on
+        Given The second agent is turned on inside "workload2" container with the second trust domain        
         When  I fetch external "X509" "SVID"
         Then  I check that the "SVID" is returned correctly
         When  I fetch "X509" "SVID"
         Then  I check that the "SVID" is returned correctly
-        When  The "<listen_type>"-tls-listen is activated inside "workload2" container
-        And   I send "Hello World!" to "workload2" container through "<dial_type>"-tls-dial
-        Then  I check that "Hello World!" was the answer from tls-listen
+        # When  The "<listen_type>"-tls-listen is activated inside "workload2" container
+        # And   I send "Hello World!" to "workload2" container through "<dial_type>"-tls-dial
+        # Then  I check that "Hello World!" was the answer from tls-listen
+        # And   The "<listen_type>"-tls-listen is disabled inside "workload2" container
         And   The second "agent" is turned off inside "workload2" container
         And   The second "server" is turned off inside "spire-server2" container
-        And   The "<listen_type>"-tls-listen is disabled inside "workload2" container
         When  The agent is turned off
         And   The server is turned off
         Then  I remove federation configuration from "spire-server"
         And   I remove federation configuration from "spire-server2"
-        Examples:
-            | dial_type | listen_type |
-            |     go    |      go     |
-            |     c     |      go     |
-            |     go    |      c      |
-            |     c     |      c      |
+        # Examples:
+        #     | dial_type | listen_type |
+        #     |     go    |      go     |
+        #     |     c     |      go     |
+        #     |     go    |      c      |
+        #     |     c     |      c      |
 
 
     @Sprint12 @updated-conf @WlC
