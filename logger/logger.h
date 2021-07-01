@@ -11,7 +11,9 @@ extern "C" {
 
 void logger_Init(void);
 
-void loffer_Debug_Init(void);
+void logger_Debug_Init(void);
+
+int logger_Debug_BufferSize(void);
 
 void logger_Debug_FmtPush(const char *fmt, ...);
 

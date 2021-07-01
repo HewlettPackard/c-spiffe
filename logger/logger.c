@@ -38,7 +38,6 @@ static void push(char *const *__str, int *__str_idx, const char *str)
 static const char *back(char *const *__str, const int __str_idx)
 {
     const char *rot_str;
-
     if(__str_idx > 0) {
         return __str[__str_idx - 1];
     } else if(!empty_str(rot_str = __str[MAX_LOGGER_CAP - 1])) {
@@ -52,7 +51,7 @@ static const char *back(char *const *__str, const int __str_idx)
 static void pop(char *const *__str, int *__str_idx)
 {
     if(*__str_idx > 0) {
-        __str[(*__str_idx)-- - 1][0] = 0;
+        __str[--(*__str_idx)][0] = 0;
         if(*__str_idx > 0) {
             if(empty_str(__str[*__str_idx - 1])) {
                 // reset stack
@@ -61,7 +60,7 @@ static void pop(char *const *__str, int *__str_idx)
         }
     } else if(!empty_str(__str[MAX_LOGGER_CAP - 1])) {
         // if buffer is full, rotate
-        __str[0][0] = 0;
+        __str[MAX_LOGGER_CAP - 1][0] = 0;
         *__str_idx = MAX_LOGGER_CAP - 1;
     }
 }
@@ -113,6 +112,15 @@ void logger_Init(void)
 {
     /// TODO: init all loggers here
     logger_Debug_Init();
+}
+
+int logger_Debug_BufferSize(void)
+{
+    if(__str_debug) {
+        return MAX_LOGGER_CAP;
+    }
+
+    return 0;
 }
 
 void logger_Debug_FmtPush(const char *fmt, ...)
