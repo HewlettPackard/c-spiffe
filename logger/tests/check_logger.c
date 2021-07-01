@@ -93,8 +93,6 @@ START_TEST(test_logger_Debug_Dumpf)
 
     rewind(f);
 
-    /// TODO: check for messages
-
     fclose(f);
     remove(filename);
     arrfree(filename);
@@ -192,8 +190,6 @@ START_TEST(test_logger_Error_Dumpf)
     logger_Error_Dumpf(f);
 
     rewind(f);
-
-    /// TODO: check for messages
 
     fclose(f);
     remove(filename);
