@@ -38,12 +38,13 @@ START_TEST(test_logger_Debug_Pop)
 {
     logger_Init();
 
-    const int ITERS = 10;
+    const int SIZE = logger_Debug_BufferSize();
+    const int ITERS = 3 * SIZE / 2;
     for(int i = 0; i < ITERS; ++i) {
         logger_Debug_FmtPush("Log %d", i);
     }
 
-    for(int i = 0; i < ITERS; ++i) {
+    for(int i = 0; i < SIZE; ++i) {
         const char *msg = logger_Debug_Back();
         ck_assert_ptr_ne(msg, NULL);
         logger_Debug_Pop();
