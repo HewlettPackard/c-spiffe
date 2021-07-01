@@ -59,14 +59,15 @@ START_TEST(test_logger_Debug_Dumps)
 {
     logger_Init();
 
-    const int ITERS = 64;
-    for(int i = 0; i < 64; ++i) {
+    const int SIZE = logger_Debug_BufferSize();
+    const int ITERS = 3 * SIZE / 2;
+    for(int i = 0; i < ITERS; ++i) {
         logger_Debug_FmtPush("Log %d", i);
     }
     string_t logs_str = logger_Debug_Dumps();
 
     char buff[64];
-    for(int i = 0; i < 64; ++i) {
+    for(int i = ITERS - SIZE; i < ITERS; ++i) {
         sprintf(buff, "Log %d\n", i);
         ck_assert_ptr_ne(strstr(logs_str, buff), NULL);
     }
