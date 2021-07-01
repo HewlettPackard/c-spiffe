@@ -36,8 +36,11 @@ def is_entry_created(container, workload_id):
 def remove_entry(container, workload_id="A"):
     workload = "myworkload%s" % workload_id[-1]
     entries = list_entries(container).split("\n\n")
-    entries_found = re.findall("Found \d entries\n", entries[0])[0]
-    entries[0] = entries[0].replace(entries_found,"")
+    try:
+        entries_found = re.findall("Found \d entries\n", entries[0])[0]
+        entries[0] = entries[0].replace(entries_found,"")
+    except IndexError:
+        pass
     for result in entries:
         if result.find(workload) != -1:
             entryId = result.splitlines()[0].split(":")[1].strip()
