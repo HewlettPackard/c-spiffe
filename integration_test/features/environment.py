@@ -14,7 +14,9 @@ def before_all(context):
     context.default_trust_domain = context.config.userdata['default_trust_domain']
     context.default_echo_server_port = context.config.userdata['default_echo_server_port']
     context.second_trust_domain = context.config.userdata['second_trust_domain']
-    
+
+    os.system(PARENT_PATH + "bash-spire-scripts/ssh-generate-token.sh")
+    time.sleep(2)
     os.system(PARENT_PATH + "bash-spire-scripts/ssh-connect-agent.sh")
     time.sleep(5)
 
@@ -27,7 +29,7 @@ def after_all(context):
 
 
 def before_feature(context, feature):
-    if "mtls" in feature.tags:
+    if any(tag in feature.tags for tag in ("mtls", "federation")):
         os.system(PARENT_PATH + "bash-general-scripts/clean.sh")
         time.sleep(1)
 
@@ -36,9 +38,11 @@ def before_scenario(context, scenario):
     if context.workload_b in scenario.tags:
         context.current_workload = context.workload_b
         os.system("ssh root@workload \"cp {0}/agent/agent.conf {0}/agent/agent{1}.conf\"".format(context.spire_conf, context.workload_b))
+        time.sleep(2)
     elif context.workload_c in scenario.tags:
         context.current_workload = context.workload_c
         os.system("ssh root@workload2 \"cp {0}/agent/agent.conf {0}/agent/agent{1}.conf\"".format(context.spire_conf, context.workload_c))
+        time.sleep(2)
 
 
 def after_scenario(context, scenario):
@@ -61,3 +65,4 @@ def after_scenario(context, scenario):
     if "entry-removed" in scenario.tags:
         if context.workload_b in scenario.tags:
             os.system("ssh root@spire-server spire-server entry create -parentID spiffe://example.org/myagent -spiffeID spiffe://example.org/myworkloadB -selector unix:user:server-workload")
+            time.sleep(2)
