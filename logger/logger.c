@@ -247,7 +247,6 @@ string_t logger_Error_Dumps(void)
 
 void logger_Cleanup(void)
 {
-
     if(__str_debug) {
         for(size_t i = 0; i < MAX_LOGGER_CAP; ++i) {
             free(__str_debug[i]);
