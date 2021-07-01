@@ -23,7 +23,6 @@ Open a terminal and execute
 apt-get update && apt-get install -y build-essential automake libtool curl cmake libssl-dev liburiparser1 liburiparser-dev protobuf-compiler libprotobuf-dev libjansson-dev libcjose-dev libcurl4-openssl-dev check
 ```
 
-
 ### Compile gRPC
 
 In order to create a pure C lib, supporting gRPC, which is a C++ lib, it is necessarty to compile gRPC code together with c-spiffe code. The following steps can be used for compiling gRPC:
