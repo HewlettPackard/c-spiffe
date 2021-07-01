@@ -32,7 +32,7 @@ def is_entry_created(container, workload_id):
     return True
 
 
-def remove_entry(workload_id, container):
+def remove_entry(container, workload_id):
     workload = "myworkload%s" % workload_id[-1]
     entries = list_entries(container).split("\n\n")
     for result in entries:
