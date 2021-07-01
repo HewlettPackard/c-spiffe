@@ -81,8 +81,9 @@ START_TEST(test_logger_Debug_Dumpf)
 {
     logger_Init();
 
-    const int ITERS = 64;
-    for(int i = 0; i < 64; ++i) {
+    const int SIZE = logger_Debug_BufferSize();
+    const int ITERS = 3 * SIZE / 2;
+    for(int i = 0; i < ITERS; ++i) {
         logger_Debug_FmtPush("Log %d", i);
     }
 
