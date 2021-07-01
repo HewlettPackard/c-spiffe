@@ -38,23 +38,31 @@ static void push(char *const *__str, int *__str_idx, const char *str)
 static const char *back(char *const *__str, const int __str_idx)
 {
     const char *rot_str;
+
     if(__str_idx > 0) {
         return __str[__str_idx - 1];
     } else if(!empty_str(rot_str = __str[MAX_LOGGER_CAP - 1])) {
         // if buffer is full, rotate
         return rot_str;
     }
+
+    return NULL;
 }
 
-static const char *pop(char *const *__str, int *__str_idx)
+static void pop(char *const *__str, int *__str_idx)
 {
-    const char *rot_str;
     if(*__str_idx > 0) {
-        return __str[(*__str_idx)-- - 1];
-    } else if(!empty_str(rot_str = __str[MAX_LOGGER_CAP - 1])) {
+        __str[(*__str_idx)-- - 1][0] = 0;
+        if(*__str_idx > 0) {
+            if(empty_str(__str[*__str_idx - 1])) {
+                // reset stack
+                *__str_idx = 0;
+            }
+        }
+    } else if(!empty_str(__str[MAX_LOGGER_CAP - 1])) {
         // if buffer is full, rotate
+        __str[0][0] = 0;
         *__str_idx = MAX_LOGGER_CAP - 1;
-        return rot_str;
     }
 }
 
@@ -74,7 +82,7 @@ static void dumpf(char *const *__str, const int __str_idx, FILE *f)
 
 static string_t dumps(char *const *__str, const int __str_idx)
 {
-    string_t res_str = NULL;
+    string_t res_str = string_new("");
 
     if(!empty_str(__str[__str_idx])) {
         // if buffer is full, write till rotation
@@ -92,14 +100,19 @@ static string_t dumps(char *const *__str, const int __str_idx)
     return res_str;
 }
 
-void logger_Init(void)
+void logger_Debug_Init(void)
 {
-    /// TODO: init all loggers here
     __str_debug = malloc(MAX_LOGGER_CAP * sizeof __str_debug[0]);
     for(size_t i = 0; i < MAX_LOGGER_CAP; ++i) {
         __str_debug[i] = calloc(MAX_STR_CAP, sizeof __str_debug[0][0]);
     }
     __str_debug_idx = 0;
+}
+
+void logger_Init(void)
+{
+    /// TODO: init all loggers here
+    logger_Debug_Init();
 }
 
 void logger_Debug_FmtPush(const char *fmt, ...)
@@ -130,13 +143,11 @@ const char *logger_Debug_Back(void)
     return NULL;
 }
 
-const char *logger_Debug_Pop(void)
+void logger_Debug_Pop(void)
 {
     if(__str_debug) {
         return pop(__str_debug, &__str_debug_idx);
     }
-
-    return NULL;
 }
 
 void logger_Debug_Dumpf(FILE *f)
