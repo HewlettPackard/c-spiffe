@@ -6,34 +6,110 @@
 
 const size_t MAX_LOGGER_CAP = 1 << 7;
 const size_t MAX_STR_CAP = 1 << 8;
-string_arr_t __str_debug;
+char **__str_debug;
+int __str_debug_idx;
 
-const char *DEBUG_PREFIX = "[DEBUG] ";
+const char DEBUG_PREFIX[] = "[DEBUG] ";
+const size_t DEBUG_PREFIX_LEN = sizeof DEBUG_PREFIX - 1;
+
+static void vfmtPush(char **__str, int *__str_idx, const char *fmt,
+                     va_list args)
+{
+    // debug_fmt = "[DEBUG] " + fmt;
+    string_t debug_fmt = string_new(DEBUG_PREFIX);
+    debug_fmt = string_push(debug_fmt, fmt);
+
+    // circular buffer
+    char *const new_str = __str[(*__str_idx)++];
+    *__str_idx %= MAX_LOGGER_CAP;
+    vsnprintf(new_str, MAX_STR_CAP, debug_fmt, args);
+
+    arrfree(debug_fmt);
+}
+
+static void push(const char **__str, int *__str_idx, const char *str)
+{
+    // circular buffer
+    char *const new_str = __str[(*__str_idx)++];
+    *__str_idx %= MAX_LOGGER_CAP;
+    strcpy(new_str, DEBUG_PREFIX);
+    strncat(new_str, str, MAX_STR_CAP - DEBUG_PREFIX_LEN - 1);
+}
+
+static const char *back(char **__str, const int __str_idx)
+{
+    const char *rot_str;
+    if(__str_idx > 0) {
+        return __str[__str_idx - 1];
+    } else if(!empty_str(rot_str = __str[MAX_LOGGER_CAP - 1])) {
+        // if buffer is full, rotate
+        return rot_str;
+    }
+}
+
+static const char *pop(char **__str, int *__str_idx)
+{
+    const char *rot_str;
+    if(*__str_idx > 0) {
+        return __str[(*__str_idx)-- - 1];
+    } else if(!empty_str(rot_str = __str[MAX_LOGGER_CAP - 1])) {
+        // if buffer is full, rotate
+        *__str_idx = MAX_LOGGER_CAP - 1;
+        return rot_str;
+    }
+}
+
+static void dumpf(const char **__str, const int __str_idx, FILE *f)
+{
+    if(!empty_str(__str[__str_idx])) {
+        // if buffer is full, write till rotation
+        for(size_t i = __str_idx; i < MAX_LOGGER_CAP; ++i) {
+            fprintf(f, "%s\n", __str[i]);
+        }
+    }
+
+    for(size_t i = 0; i < __str_idx; ++i) {
+        fprintf(f, "%s\n", __str[i]);
+    }
+}
+
+static string_t dumps(const char **__str, const int __str_idx)
+{
+    string_t res_str = NULL;
+
+    if(!empty_str(__str[__str_idx])) {
+        // if buffer is full, write till rotation
+        for(size_t i = __str_idx; i < MAX_LOGGER_CAP; ++i) {
+            res_str = string_push(res_str, __str[i]);
+            res_str = string_push(res_str, "\n");
+        }
+    }
+
+    for(size_t i = 0; i < __str_idx; ++i) {
+        res_str = string_push(res_str, __str[i]);
+        res_str = string_push(res_str, "\n");
+    }
+
+    return res_str;
+}
 
 void logger_Init(void)
 {
     /// TODO: init all loggers here
-    arrsetcap(__str_debug, MAX_LOGGER_CAP);
+    __str_debug = malloc(MAX_LOGGER_CAP * sizeof __str_debug[0]);
+    for(size_t i = 0; i < MAX_LOGGER_CAP; ++i) {
+        __str_debug[i] = calloc(MAX_STR_CAP, sizeof __str_debug[0][0]);
+    }
+    __str_debug_idx = 0;
 }
 
 void logger_Debug_FmtPush(const char *fmt, ...)
 {
     if(__str_debug && fmt) {
-        // debug_fmt = "[DEBUG] " + fmt + "\n";
-        string_t debug_fmt = string_new(DEBUG_PREFIX);
-        debug_fmt = string_push(debug_fmt, fmt);
-        debug_fmt = string_push(debug_fmt, "\n");
-
         va_list args;
         va_start(args, fmt);
 
-        string_t new_str = NULL;
-        arrsetcap(new_str, MAX_STR_CAP);
-        vsnprintf(new_str, arrcap(new_str), debug_fmt, &args);
-        arrsetlen(new_str, strlen(new_str) + 1);
-        arrpush(__str_debug, new_str);
-
-        arrfree(debug_fmt);
+        vfmtPush(__str_debug, &__str_debug_idx, fmt, args);
 
         va_end(args);
     }
@@ -42,20 +118,14 @@ void logger_Debug_FmtPush(const char *fmt, ...)
 void logger_Debug_Push(const char *str)
 {
     if(__str_debug && str) {
-        string_t new_str = string_new(DEBUG_PREFIX);
-        /// TODO: set max capacity?
-        new_str = string_push(new_str, str);
-        new_str = string_push(new_str, "\n");
-
-        arrpush(__str_debug, new_str);
+        push(__str_debug, &__str_debug_idx, str);
     }
 }
 
 const char *logger_Debug_Back(void)
 {
-    const size_t len = arrlenu(__str_debug);
-    if(len > 0) {
-        return __str_debug[len - 1];
+    if(__str_debug) {
+        return back(__str_debug, __str_debug_idx);
     }
 
     return NULL;
@@ -63,33 +133,34 @@ const char *logger_Debug_Back(void)
 
 const char *logger_Debug_Pop(void)
 {
-    if(arrlenu(__str_debug) > 0) {
-        return arrpop(__str_debug);
+    if(__str_debug) {
+        return pop(__str_debug, &__str_debug_idx);
     }
 
     return NULL;
 }
 
-const char **logger_Debug_Traceback(bool clean)
-{
-    // dummy
-    return NULL;
-}
-
 void logger_Debug_Dumpf(FILE *f)
 {
-    // dummy
+    if(__str_debug && f) {
+        dumpf(__str_debug, __str_debug_idx, f);
+    }
 }
 
 string_t logger_Debug_Dumps(void)
 {
-    // dummy
+    if(__str_debug) {
+        return dumps(__str_debug, __str_debug_idx);
+    }
+
     return NULL;
 }
 
 void logger_Cleanup(void)
 {
     /// TODO: close all loggers here
-    util_string_arr_t_Free(__str_debug);
-    
+    for(size_t i = 0; i < MAX_LOGGER_CAP; ++i) {
+        free(__str_debug[i]);
+    }
+    free(__str_debug);
 }

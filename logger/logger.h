@@ -19,8 +19,6 @@ const char *logger_Debug_Back(void);
 
 const char *logger_Debug_Pop(void);
 
-const char **logger_Debug_Traceback(bool clean);
-
 void logger_Debug_Dumpf(FILE *f);
 
 string_t logger_Debug_Dumps(void);
