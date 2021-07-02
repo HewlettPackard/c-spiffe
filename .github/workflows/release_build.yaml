@@ -1,24 +1,56 @@
-name: Release Build
-on: push
+name: "Publish new release"
+
+on:
+  pull_request:
+    branches:
+      - master
+    types:
+      - closed
 
 jobs:
-  release-build:
+  release:
+    name: Publish new release
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true # only merged pull requests must trigger this job
     steps:
+      - name: Extract version from branch name (for release branches)
+        if: startsWith(github.event.pull_request.head.ref, 'release/')
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          VERSION=${BRANCH_NAME#release/}
+
+          echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Extract version from branch name (for hotfix branches)
+        if: startsWith(github.event.pull_request.head.ref, 'hotfix/')
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          VERSION=${BRANCH_NAME#hotfix/}
+
+          echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
+
       - name: Create Release
+        uses: thomaseizinger/create-release@1.0.0
         env:
-          # GH_REPO is required for older releases of `gh`. Until we're
-          # reasonably confident that that the gh release is new enough,
-          # set GH_REPO to the repository to create the release in.
-          #
-          # See https://github.com/cli/cli/issues/3556
-          GH_REPO: ${{ github.repository }} 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # Create the release against the annotated tag. The GITHUB_REF envvar
-        # includes the "refs/tags" prefix, which is fine to pass to `gh release
-        # create` for the reference to create the release from. However we
-        # strip off the prefix to give the release a nice title with just the
-        # version number.
-        #
-        # See https://docs.github.com/en/actions/reference/environment-variables.
-        run: gh release create "${GITHUB_REF}" ./artifacts/*.tar.gz ./artifacts/*.txt --title "${GITHUB_REF#refs/tags/}"
+        with:
+          target_commitish: ${{ github.event.pull_request.merge_commit_sha }}
+          tag_name: ${{ env.RELEASE_VERSION }}
+          name: ${{ env.RELEASE_VERSION }}
+          draft: false
+          prerelease: false
+
+      - name: Merge master into dev branch
+        uses: thomaseizinger/create-pull-request@1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          head: master
+          base: dev
+          title: Merge master into dev branch
+          body: |
+            This PR merges the master branch back into dev.
+            This happens to ensure that the updates that happend on the release branch, i.e. CHANGELOG and manifest updates are also present on the dev branch.
+
+      # if needed, you can checkout the latest master here, build artifacts and publish / deploy them somewhere
+      # the create-release action has an output `upload_url` output that you can use to upload assets
