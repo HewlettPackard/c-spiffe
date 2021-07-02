@@ -47,7 +47,7 @@ def before_feature(context, feature):
 
 
 def after_feature(context, feature):
-    if context.workload_c in feature.tags:
+    if "federation" in feature.tags:
         context.execute_steps('''
             When The server is turned on
             And  The agent is turned on
