@@ -1,10 +1,9 @@
-
-#include "workload/client.h"
-#include "bundle/x509bundle/bundle.h"
-#include "bundle/x509bundle/set.h"
-#include "internal/x509util/util.h"
-#include "svid/jwtsvid/parse.h"
-#include "svid/x509svid/svid.h"
+#include "c-spiffe/workload/client.h"
+#include "c-spiffe/bundle/x509bundle/bundle.h"
+#include "c-spiffe/bundle/x509bundle/set.h"
+#include "c-spiffe/internal/x509util/util.h"
+#include "c-spiffe/svid/jwtsvid/parse.h"
+#include "c-spiffe/svid/x509svid/svid.h"
 #include "workload.grpc.pb.h"
 #include "workload.pb.h"
 #include <grpc/grpc.h>

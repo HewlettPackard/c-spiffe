@@ -1,4 +1,4 @@
-#include "spiffetls/mode.h"
+#include "c-spiffe/spiffetls/mode.h"
 
 static spiffetls_DialMode *malloc_dialmode(void)
 {

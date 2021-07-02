@@ -19,9 +19,9 @@ install(
 )
 # Install Headers:
 set(HEADERS_X509SVID 
-${PROJECT_SOURCE_DIR}/x509svid/svid.h
-${PROJECT_SOURCE_DIR}/x509svid/verify.h
-${PROJECT_SOURCE_DIR}/x509svid/source.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/svid/x509svid/svid.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/svid/x509svid/verify.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/svid/x509svid/source.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
@@ -31,8 +31,8 @@ install(
 
 # Install Headers:
 set(HEADERS_JWTSVID
-${PROJECT_SOURCE_DIR}/jwtsvid/svid.h
-${PROJECT_SOURCE_DIR}/jwtsvid/parse.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/svid/jwtsvid/svid.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/svid/jwtsvid/parse.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
@@ -42,8 +42,8 @@ install(
 
 # Install higher level header:
 set(HEADERS_MOD_SVID
-${PROJECT_SOURCE_DIR}/jwtsvid.h
-${PROJECT_SOURCE_DIR}/x509svid.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/svid/jwtsvid.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/svid/x509svid.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/*.h
 install(

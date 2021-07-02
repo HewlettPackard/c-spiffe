@@ -1,5 +1,5 @@
-#include "jwtsource.h"
-#include "jwtwatcher.h"
+#include "c-spiffe/workload/jwtsource.h"
+#include "c-spiffe/workload/jwtwatcher.h"
 
 void workloadapi_JWTSource_onJWTBundle_SetCallback(jwtbundle_Set *jwt_set,
                                                    void *args)

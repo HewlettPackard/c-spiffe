@@ -45,6 +45,7 @@ The project folder structure is described as follows:
 * [LICENSE](LICENSE) Project license.
 * [BUILDING.md](BUILDING.md) Instructions on how to build c-spiffe in your system.
 * [CONTRIBUTING.md](CONTRIBUTING.md) Guidelines for contributing to c-spiffe project.
+* [MINIMAL INSTALLATION](MINOR-INSTALLATION.md) Minimal Installation.
 
 ## Using C-Spiffe
 

@@ -1,5 +1,5 @@
-#include "spiffetls/peerid.h"
-#include "svid/x509svid/svid.h"
+#include "c-spiffe/spiffetls/peerid.h"
+#include "c-spiffe/svid/x509svid/svid.h"
 
 spiffeid_ID spiffetls_PeerIDFromConn(SSL *conn, err_t *err)
 {

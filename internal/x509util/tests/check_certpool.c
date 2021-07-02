@@ -1,4 +1,4 @@
-#include "internal/x509util/certpool.h"
+#include "c-spiffe/internal/x509util/certpool.h"
 #include <check.h>
 #include <openssl/pem.h>
 

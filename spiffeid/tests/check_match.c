@@ -1,5 +1,5 @@
-#include "spiffeid/match.h"
-#include "spiffeid/trustdomain.h"
+#include "c-spiffe/spiffeid/match.h"
+#include "c-spiffe/spiffeid/trustdomain.h"
 #include <check.h>
 
 START_TEST(test_spiffeid_MatchAny)

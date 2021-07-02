@@ -5,7 +5,7 @@
  * 
  */
 
-#include <workload/client.h>
+#include <c-spiffe/workload.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

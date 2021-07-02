@@ -1,4 +1,4 @@
-#include "spiffetls/listen.h"
+#include "c-spiffe/spiffetls/listen.h"
 #include <unistd.h>
 
 /* returns 1 if little endian, 0 otherwise */

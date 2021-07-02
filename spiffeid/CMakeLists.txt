@@ -22,9 +22,9 @@ install(
 
 # Install headers:
 set(HEADERS_SPIFFEID
-${PROJECT_SOURCE_DIR}/id.h
-${PROJECT_SOURCE_DIR}/match.h
-${PROJECT_SOURCE_DIR}/trustdomain.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/spiffeid/id.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/spiffeid/match.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/spiffeid/trustdomain.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
@@ -34,7 +34,7 @@ install(
 
 # Install higher level header:
 set(HEADERS_MOD_SPIFFEID
-${PROJECT_SOURCE_DIR}/spiffeid.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/spiffeid/spiffeid.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/*.h
 install(
