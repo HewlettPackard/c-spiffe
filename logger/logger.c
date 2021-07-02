@@ -31,16 +31,16 @@ static char **init(int *__str_idx)
 static void vfmtPush(char *const *__str, int *__str_idx, const char *prefix,
                      const char *fmt, va_list args)
 {
-    // debug_fmt = "[DEBUG] " + fmt;
-    string_t debug_fmt = string_new(prefix);
-    debug_fmt = string_push(debug_fmt, fmt);
+    // logger_fmt = prefix + fmt;
+    string_t logger_fmt = string_new(prefix);
+    logger_fmt = string_push(logger_fmt, fmt);
 
     // circular buffer
     char *const new_str = __str[(*__str_idx)++];
     *__str_idx %= MAX_LOGGER_CAP;
-    vsnprintf(new_str, MAX_STR_CAP, debug_fmt, args);
+    vsnprintf(new_str, MAX_STR_CAP, logger_fmt, args);
 
-    arrfree(debug_fmt);
+    arrfree(logger_fmt);
 }
 
 static void push(char *const *__str, int *__str_idx, const char *prefix,
