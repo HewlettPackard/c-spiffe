@@ -65,7 +65,6 @@ if (ENABLE_TESTS)
     find_package(GTest REQUIRED)
     enable_testing()
 
-    ### Todo: improve this
     add_subdirectory(${PROJECT_SOURCE_DIR}/logger/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/spiffeid/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/internal/cryptoutil/tests)
