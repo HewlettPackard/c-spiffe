@@ -1,7 +1,7 @@
 #ifndef INCLUDE_LOGGER_LOGGER_H
 #define INCLUDE_LOGGER_LOGGER_H
 
-#include "utils/util.h"
+#include "c-spiffe/utils/util.h"
 
 #include <stdio.h>
 
