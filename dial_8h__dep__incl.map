@@ -1,10 +1,10 @@
-<map id="spiffetls/dial.h" name="spiffetls/dial.h">
-<area shape="rect" id="node1" title=" " alt="" coords="485,5,587,32"/>
-<area shape="rect" id="node2" href="$spiffe-tls_2client_2main_8c.html" title=" " alt="" coords="5,80,136,121"/>
-<area shape="rect" id="node3" href="$c__dial__example_8c.html" title=" " alt="" coords="160,87,331,114"/>
-<area shape="rect" id="node4" href="$dial_8c.html" title=" " alt="" coords="355,87,456,114"/>
-<area shape="rect" id="node5" href="$listen_8c.html" title=" " alt="" coords="480,87,592,114"/>
-<area shape="rect" id="node6" href="$spiffetls_8h.html" title=" " alt="" coords="617,87,743,114"/>
-<area shape="rect" id="node7" href="$check__dial_8c.html" title=" " alt="" coords="768,80,907,121"/>
-<area shape="rect" id="node8" href="$check__peerid_8c.html" title=" " alt="" coords="931,80,1069,121"/>
+<map id="include/c&#45;spiffe/spiffetls/dial.h" name="include/c&#45;spiffe/spiffetls/dial.h">
+<area shape="rect" id="node1" title=" " alt="" coords="510,5,669,47"/>
+<area shape="rect" id="node2" href="$spiffe-tls_2client_2main_8c.html" title=" " alt="" coords="5,95,136,136"/>
+<area shape="rect" id="node3" href="$spiffetls_8h.html" title=" " alt="" coords="161,95,319,136"/>
+<area shape="rect" id="node4" href="$c__dial__example_8c.html" title=" " alt="" coords="344,102,515,129"/>
+<area shape="rect" id="node5" href="$dial_8c.html" title=" " alt="" coords="539,102,640,129"/>
+<area shape="rect" id="node6" href="$listen_8c.html" title=" " alt="" coords="664,102,776,129"/>
+<area shape="rect" id="node7" href="$check__dial_8c.html" title=" " alt="" coords="800,95,939,136"/>
+<area shape="rect" id="node8" href="$check__peerid_8c.html" title=" " alt="" coords="963,95,1101,136"/>
 </map>

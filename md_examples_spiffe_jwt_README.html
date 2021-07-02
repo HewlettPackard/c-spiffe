@@ -106,11 +106,11 @@ $(function() {
 <div class="line">   /* ... */</div>
 </div><!-- fragment --><p>That is it! The C-spiffe library fetches and automatically renews the X.509 SVID for the server and validates the client JWT SVIDs using the Workload API.</p>
 <p>As soon as the TLS connection is established, the client sends an HTTP request to the server and gets a response.</p>
-<h1><a class="anchor" id="autotoc_md27"></a>
+<h1><a class="anchor" id="autotoc_md29"></a>
 Building</h1>
 <p>To build the client and server workloads: </p><div class="fragment"><div class="line">cd build/examples/</div>
 <div class="line">make</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md28"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md30"></a>
 Running</h1>
 <p>This example assumes the following preconditions:</p><ul>
 <li>There is a SPIRE Server and Agent up and running.</li>
@@ -118,7 +118,7 @@ Running</h1>
 <li>The trust domain is <code>example.org</code></li>
 <li>The agent SPIFFE ID is <code>spiffe://example.org/host</code>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md29"></a>
+<h2><a class="anchor" id="autotoc_md31"></a>
 1. Create the registration entries</h2>
 <p>Create the registration entries for the client and server workloads:</p>
 <p>Server: </p><div class="fragment"><div class="line">spire-server entry create -spiffeID spiffe://example.org/server \</div>
@@ -127,10 +127,10 @@ Running</h1>
 </div><!-- fragment --><p>Client: </p><div class="fragment"><div class="line">spire-server entry create -spiffeID spiffe://example.org/client \</div>
 <div class="line">                          -parentID spiffe://example.org/host \</div>
 <div class="line">                          -selector unix:user:root</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md30"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md32"></a>
 2. Start the server</h2>
 <div class="fragment"><div class="line">./spiffe_jwt_server</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md31"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md33"></a>
 3. Run the client</h2>
 <div class="fragment"><div class="line">./spiffe_jwt_client</div>
 </div><!-- fragment --><p>The server should display a log <code>Request received</code> and client <code>Success!</code></p>

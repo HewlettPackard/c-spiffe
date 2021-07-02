@@ -77,7 +77,7 @@ $(function() {
 <li>The server reads the client's message, logs it to stdout, and sends a "Hello client" message as the response.</li>
 <li>The client reads the server's response and then closes the connection.</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md33"></a>
+<h1><a class="anchor" id="autotoc_md35"></a>
 Listening</h1>
 <p>To start listening for incoming connections the <b>server workload</b> uses the [spiffetls_ListenWithMode] function as follows: </p><div class="fragment"><div class="line">{C++}</div>
 <div class="line">   SSL *conn</div>
@@ -88,7 +88,7 @@ Listening</h1>
 <li>config is a preset variable if the user wishes to use a pre-configured <code>SSL_CTX</code> and/or an already created, binded and listening socket. <code>NULL</code> and a nonpositive integer are the default values, respectively. In this case, the function will configure a <code>SSL_CTX</code> variable and create a socket internally.</li>
 <li>sock_fd is the variable where the server socket will be returned. It must be closed when no longer needed.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md34"></a>
+<h1><a class="anchor" id="autotoc_md36"></a>
 Dialing</h1>
 <p>To establish a connection, the <b>client workload</b> uses the [spiffetls_DialWithMode] function as follows: </p><div class="fragment"><div class="line">{C++}</div>
 <div class="line">   SSL *conn = spiffetls_DialWithMode(port, addr, mode, &amp;config, &amp;err);</div>
@@ -98,14 +98,14 @@ Dialing</h1>
 <li>[spiffetls_MTLSClientWithSource] is used to configure the [<a class="el" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a>] used by the internal Workload API client.</li>
 <li>config is a preset variable if the user wishes to use a pre-configured <code>SSL_CTX</code> and/or an already created and connected socket. <code>NULL</code> and a nonpositive integer are the default values, respectively. In this case, the function will configure a <code>SSL_CTX</code> variable and create a socket internally.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md35"></a>
+<h1><a class="anchor" id="autotoc_md37"></a>
 That is it!</h1>
 <p>As we can see the C-spiffe library allows your application to use the Workload API transparently for both ends of the connection. The C-spiffe library takes care of fetching and automatically renewing the X.509 SVIDs needed to maintain a secure communication.</p>
-<h1><a class="anchor" id="autotoc_md36"></a>
+<h1><a class="anchor" id="autotoc_md38"></a>
 Building</h1>
 <p>To build the client and server workloads: </p><div class="fragment"><div class="line">cd build/examples/</div>
 <div class="line">make</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md37"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md39"></a>
 Running</h1>
 <p>This example assumes the following preconditions:</p><ul>
 <li>There is a SPIRE server and a SPIRE agent up and running.</li>
@@ -113,7 +113,7 @@ Running</h1>
 <li>The trust domain is <code>example.org</code>.</li>
 <li>The agent's SPIFFE ID is <code>spiffe://example.org/host</code>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md38"></a>
+<h2><a class="anchor" id="autotoc_md40"></a>
 1. Create the registration entries</h2>
 <p>Create the registration entries for the workloads:</p>
 <p>Server: </p><div class="fragment"><div class="line">spire-server entry create -spiffeID spiffe://example.org/server \</div>
@@ -122,10 +122,10 @@ Running</h1>
 </div><!-- fragment --><p>Client: </p><div class="fragment"><div class="line">spire-server entry create -spiffeID spiffe://example.org/client \</div>
 <div class="line">                          -parentID spiffe://example.org/host \</div>
 <div class="line">                          -selector unix:user:root</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md39"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md41"></a>
 2. Start the server</h2>
 <div class="fragment"><div class="line">./spiffe_tls_server</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md40"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md42"></a>
 3. Run the client</h2>
 <div class="fragment"><div class="line">./spiffe_tls_client</div>
 </div><!-- fragment --><p>The server should have received a _"Hello server"_ message and responded with a _"Hello client"_ message. </p>

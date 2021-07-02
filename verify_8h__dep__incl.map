@@ -1,7 +1,7 @@
-<map id="svid/x509svid/verify.h" name="svid/x509svid/verify.h">
-<area shape="rect" id="node1" title=" " alt="" coords="225,5,371,32"/>
-<area shape="rect" id="node2" href="$config_8c.html" title=" " alt="" coords="5,80,124,121"/>
-<area shape="rect" id="node3" href="$verify_8c.html" title=" " alt="" coords="149,87,295,114"/>
-<area shape="rect" id="node4" href="$x509svid_8h.html" title=" " alt="" coords="320,87,431,114"/>
-<area shape="rect" id="node5" href="$check__verify_8c.html" title=" " alt="" coords="455,80,602,121"/>
+<map id="include/c&#45;spiffe/svid/x509svid/verify.h" name="include/c&#45;spiffe/svid/x509svid/verify.h">
+<area shape="rect" id="node1" title=" " alt="" coords="236,5,373,47"/>
+<area shape="rect" id="node2" href="$x509svid_8h.html" title=" " alt="" coords="5,95,143,136"/>
+<area shape="rect" id="node3" href="$config_8c.html" title=" " alt="" coords="167,95,285,136"/>
+<area shape="rect" id="node4" href="$verify_8c.html" title=" " alt="" coords="310,102,457,129"/>
+<area shape="rect" id="node5" href="$check__verify_8c.html" title=" " alt="" coords="481,95,627,136"/>
 </map>

@@ -99,31 +99,40 @@ Docker Building</h3>
 <p>Build the c-spiffe project:</p>
 <div class="fragment"><div class="line">cd /mnt</div>
 <div class="line">mkdir build &amp;&amp; cd build</div>
-<div class="line">cmake ..</div>
+<div class="line">cmake -DENABLE_TESTS=ON ..</div>
 <div class="line">make</div>
 <div class="line">make test</div>
 </div><!-- fragment --><p>After running <code>make test</code>, you will find the test files in the <code>Testing</code> folder.</p>
 <h1><a class="anchor" id="autotoc_md9"></a>
 Local building</h1>
 <h2><a class="anchor" id="autotoc_md10"></a>
-Local Build Dependencies</h2>
-<ul>
-<li>Gcc</li>
-<li>CMake</li>
-<li>libssl-dev</li>
-<li>liburiparser1</li>
-<li>liburiparser-dev</li>
-<li>protobuf-compiler</li>
-<li>libprotobuf-dev</li>
-<li>check</li>
-<li>lcov</li>
-<li>gcovr</li>
-<li>libjansson-dev</li>
-<li>libcjose-dev</li>
-<li>libgtest-dev</li>
-<li>libgmock-dev</li>
-</ul>
+Minimal Installation</h2>
+<p>Refer to <a class="el" href="md_MINOR_INSTALLATION.html">Minimal Installation</a> for more information.</p>
 <h2><a class="anchor" id="autotoc_md11"></a>
+Normal Installation</h2>
+<h3><a class="anchor" id="autotoc_md12"></a>
+Build Dependencies</h3>
+<ul>
+<li>gcc (9.3.0-17ubuntu1~20.04)</li>
+<li>make (4.2.1-1.2)</li>
+<li>libtool (2.4.6-14)</li>
+<li>curl (7.68.0-1ubuntu2.5)</li>
+<li>cmake (3.16.3-1ubuntu1)</li>
+<li>libssl-dev (1.1.1f-1ubuntu2.4)</li>
+<li>liburiparser1 (0.9.3-2)</li>
+<li>liburiparser-dev (0.9.3-2)</li>
+<li>protobuf-compiler (3.13.0)</li>
+<li>libprotobuf-dev (3.13.0)</li>
+<li>libjansson-dev (2.12-1build1)</li>
+<li>libcjose-dev (0.6.1+dfsg1-1)</li>
+<li>libcurl4-openssl-dev (7.68.0-1ubuntu2.5)</li>
+<li>check (0.10.0-3build2)</li>
+<li>lcov (1.14)</li>
+<li>gcovr (9.3.0-17ubuntu1~20.04)</li>
+<li>libgtest-dev (2.09-1)</li>
+<li>libgmock-dev (1.10.0-2)</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md13"></a>
 Compile gRPC</h2>
 <p>In order to create a pure C lib, supporting gRPC, which is a C++ lib, it is necessarty to compile gRPC code together with c-spiffe code. The following steps can be used for compiling gRPC:</p>
 <ul>
@@ -140,17 +149,17 @@ Compile gRPC</h2>
 <div class="line">RUN sed -i &#39;7,13d&#39; /tmp/grpc/third_party/benchmark/test/cxx03_test.cc </div>
 <div class="line"> </div>
 <div class="line">RUN cd /tmp/grpc/cmake/build &amp;&amp; make -j${NUM_JOBS} &amp;&amp; make install</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md12"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md14"></a>
 Compile C-Spiffe library</h2>
 <p>Once you meet all the requirements, building is straightforward with <code>CMake</code></p>
 <div class="fragment"><div class="line">mkdir build &amp;&amp; cd build</div>
 <div class="line">cmake ..</div>
 <div class="line">make</div>
 <div class="line">make test</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md13"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md15"></a>
 Installing</h2>
 <div class="fragment"><div class="line">make install</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md14"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md16"></a>
 Code Coverage Support</h1>
 <p>This project generates Code Coverage Reports using either <code>gcov</code> and <code>lcov</code>. If you want to generate cover reports, you should run the following command after <code>make test</code>:</p>
 <div class="fragment"><div class="line">make gcov</div>

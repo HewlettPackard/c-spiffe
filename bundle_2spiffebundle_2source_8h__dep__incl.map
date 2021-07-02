@@ -1,15 +1,15 @@
-<map id="bundle/spiffebundle/source.h" name="bundle/spiffebundle/source.h">
-<area shape="rect" id="node1" title=" " alt="" coords="437,5,570,47"/>
-<area shape="rect" id="node2" href="$bundle_2spiffebundle_2source_8c.html" title=" " alt="" coords="53,95,186,136"/>
-<area shape="rect" id="node3" href="$spiffebundle_8h.html" title=" " alt="" coords="211,102,353,129"/>
-<area shape="rect" id="node4" href="$endpoint_8h.html" title=" " alt="" coords="377,102,520,129"/>
-<area shape="rect" id="node8" href="$check__endpoint_8c.html" title=" " alt="" coords="543,184,693,225"/>
-<area shape="rect" id="node9" href="$federation_2watcher_8h.html" title=" " alt="" coords="379,191,518,218"/>
-<area shape="rect" id="node12" href="$watcher__example_8c.html" title=" " alt="" coords="689,273,819,315"/>
-<area shape="rect" id="node13" href="$check__spiffebundle__source_8c.html" title=" " alt="" coords="769,95,923,136"/>
-<area shape="rect" id="node5" href="$endpoint_8c.html" title=" " alt="" coords="5,191,148,218"/>
-<area shape="rect" id="node6" href="$endpoint__example_8c.html" title=" " alt="" coords="172,184,304,225"/>
-<area shape="rect" id="node7" href="$federation_8h.html" title=" " alt="" coords="176,281,327,307"/>
-<area shape="rect" id="node10" href="$federation_2tests_2check__watcher_8c.html" title=" " alt="" coords="351,273,501,315"/>
-<area shape="rect" id="node11" href="$federation_2watcher_8c.html" title=" " alt="" coords="526,281,665,307"/>
+<map id="include/c&#45;spiffe/bundle/spiffebundle/source.h" name="include/c&#45;spiffe/bundle/spiffebundle/source.h">
+<area shape="rect" id="node1" title=" " alt="" coords="503,5,653,47"/>
+<area shape="rect" id="node2" href="$bundle_2spiffebundle_2source_8c.html" title=" " alt="" coords="223,95,357,136"/>
+<area shape="rect" id="node3" href="$check__endpoint_8c.html" title=" " alt="" coords="5,184,156,225"/>
+<area shape="rect" id="node4" href="$check__spiffebundle__source_8c.html" title=" " alt="" coords="799,95,954,136"/>
+<area shape="rect" id="node5" href="$watcher__example_8c.html" title=" " alt="" coords="819,273,948,315"/>
+<area shape="rect" id="node6" href="$spiffebundle_8h.html" title=" " alt="" coords="979,95,1129,136"/>
+<area shape="rect" id="node7" href="$endpoint_8h.html" title=" " alt="" coords="431,95,602,136"/>
+<area shape="rect" id="node11" href="$federation_2watcher_8h.html" title=" " alt="" coords="554,184,725,225"/>
+<area shape="rect" id="node8" href="$endpoint_8c.html" title=" " alt="" coords="180,191,323,218"/>
+<area shape="rect" id="node9" href="$endpoint__example_8c.html" title=" " alt="" coords="347,184,479,225"/>
+<area shape="rect" id="node10" href="$federation_8h.html" title=" " alt="" coords="285,273,455,315"/>
+<area shape="rect" id="node12" href="$federation_2tests_2check__watcher_8c.html" title=" " alt="" coords="480,273,631,315"/>
+<area shape="rect" id="node13" href="$federation_2watcher_8c.html" title=" " alt="" coords="655,281,794,307"/>
 </map>

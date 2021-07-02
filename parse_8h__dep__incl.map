@@ -1,10 +1,10 @@
-<map id="svid/jwtsvid/parse.h" name="svid/jwtsvid/parse.h">
-<area shape="rect" id="node1" title=" " alt="" coords="455,5,593,32"/>
-<area shape="rect" id="node2" href="$spiffe-jwt_2server_2main_8c.html" title=" " alt="" coords="5,80,139,121"/>
-<area shape="rect" id="node3" href="$parse_8c.html" title=" " alt="" coords="163,87,301,114"/>
-<area shape="rect" id="node4" href="$jwtsvid_2tests_2check__svid_8c.html" title=" " alt="" coords="325,80,449,121"/>
-<area shape="rect" id="node5" href="$jwtsvid_8h.html" title=" " alt="" coords="473,87,575,114"/>
-<area shape="rect" id="node6" href="$client_8cc.html" title=" " alt="" coords="599,87,726,114"/>
-<area shape="rect" id="node7" href="$jwtsource__example_8c.html" title=" " alt="" coords="750,80,885,121"/>
-<area shape="rect" id="node8" href="$check__parse_8c.html" title=" " alt="" coords="909,80,1056,121"/>
+<map id="include/c&#45;spiffe/svid/jwtsvid/parse.h" name="include/c&#45;spiffe/svid/jwtsvid/parse.h">
+<area shape="rect" id="node1" title=" " alt="" coords="479,5,617,47"/>
+<area shape="rect" id="node2" href="$spiffe-jwt_2server_2main_8c.html" title=" " alt="" coords="5,95,139,136"/>
+<area shape="rect" id="node3" href="$jwtsvid_8h.html" title=" " alt="" coords="163,95,301,136"/>
+<area shape="rect" id="node4" href="$parse_8c.html" title=" " alt="" coords="325,102,462,129"/>
+<area shape="rect" id="node5" href="$jwtsvid_2tests_2check__svid_8c.html" title=" " alt="" coords="486,95,610,136"/>
+<area shape="rect" id="node6" href="$client_8cc.html" title=" " alt="" coords="634,102,761,129"/>
+<area shape="rect" id="node7" href="$jwtsource__example_8c.html" title=" " alt="" coords="785,95,919,136"/>
+<area shape="rect" id="node8" href="$check__parse_8c.html" title=" " alt="" coords="944,95,1091,136"/>
 </map>

@@ -1,11 +1,11 @@
-<map id="internal/x509util/certpool.h" name="internal/x509util/certpool.h">
-<area shape="rect" id="node1" title=" " alt="" coords="129,5,301,32"/>
-<area shape="rect" id="node2" href="$stb__ds_8h.html" title=" " alt="" coords="79,155,178,181"/>
-<area shape="rect" id="node6" href="$utils_2util_8h.html" title=" " alt="" coords="177,80,254,107"/>
-<area shape="rect" id="node9" title=" " alt="" coords="279,80,387,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,229,73,256"/>
-<area shape="rect" id="node4" title=" " alt="" coords="185,229,249,256"/>
-<area shape="rect" id="node5" title=" " alt="" coords="97,229,160,256"/>
-<area shape="rect" id="node7" title=" " alt="" coords="253,155,356,181"/>
-<area shape="rect" id="node8" title=" " alt="" coords="381,155,455,181"/>
+<map id="include/c&#45;spiffe/internal/x509util/certpool.h" name="include/c&#45;spiffe/internal/x509util/certpool.h">
+<area shape="rect" id="node1" title=" " alt="" coords="155,5,310,47"/>
+<area shape="rect" id="node2" href="$stb__ds_8h.html" title=" " alt="" coords="49,169,195,196"/>
+<area shape="rect" id="node6" href="$utils_2util_8h.html" title=" " alt="" coords="171,95,294,121"/>
+<area shape="rect" id="node9" title=" " alt="" coords="319,95,427,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,244,73,271"/>
+<area shape="rect" id="node4" title=" " alt="" coords="195,244,259,271"/>
+<area shape="rect" id="node5" title=" " alt="" coords="97,244,160,271"/>
+<area shape="rect" id="node7" title=" " alt="" coords="271,169,373,196"/>
+<area shape="rect" id="node8" title=" " alt="" coords="398,169,473,196"/>
 </map>
