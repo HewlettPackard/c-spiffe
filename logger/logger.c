@@ -8,13 +8,14 @@ const size_t MAX_STR_CAP = 1 << 8;
 
 const char DEBUG_PREFIX[] = "[DEBUG] ";
 const char ERROR_PREFIX[] = "[ERROR] ";
-const size_t DEBUG_PREFIX_LEN = sizeof DEBUG_PREFIX - 1;
-const size_t ERROR_PREFIX_LEN = sizeof ERROR_PREFIX - 1;
+const char WARNING_PREFIX[] = "[WARNING] ";
 
-char **__str[LOGGER_LEN]; // = { __str_debug, __str_error };
+char **__str[LOGGER_LEN] = {};
 int __str_idx[LOGGER_LEN];
-const char *LOGGER_PREFIX[] = { DEBUG_PREFIX, ERROR_PREFIX };
-const size_t LOGGER_PREFIX_LEN[] = { DEBUG_PREFIX_LEN, ERROR_PREFIX_LEN };
+const char *LOGGER_PREFIX[] = { DEBUG_PREFIX, ERROR_PREFIX, WARNING_PREFIX };
+const size_t LOGGER_PREFIX_LEN[]
+    = { sizeof DEBUG_PREFIX - 1, sizeof ERROR_PREFIX - 1,
+        sizeof WARNING_PREFIX - 1 };
 
 static char **init(int *__str_idx)
 {
