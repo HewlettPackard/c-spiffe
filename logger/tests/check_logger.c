@@ -1,4 +1,4 @@
-#include "logger/logger.h"
+#include "c-spiffe/logger/logger.h"
 
 #include <check.h>
 
