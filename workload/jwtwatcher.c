@@ -1,5 +1,5 @@
-#include "workload/jwtwatcher.h"
-#include "workload/client.h"
+#include "c-spiffe/workload/jwtwatcher.h"
+#include "c-spiffe/workload/client.h"
 
 // Function that will run on thread spun for watcher
 int workloadapi_JWTWatcher_JWTbackgroundFunc(void *_watcher)

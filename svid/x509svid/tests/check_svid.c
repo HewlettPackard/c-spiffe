@@ -1,4 +1,4 @@
-#include "svid/x509svid/svid.h"
+#include "c-spiffe/svid/x509svid/svid.h"
 #include <check.h>
 
 START_TEST(test_x509svid_Load)

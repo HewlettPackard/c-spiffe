@@ -1,5 +1,5 @@
-#include "endpoint.h"
-#include "spiffeid/trustdomain.h"
+#include "c-spiffe/federation/endpoint.h"
+#include "c-spiffe/spiffeid/trustdomain.h"
 
 int main()
 {

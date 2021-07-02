@@ -23,7 +23,7 @@ install(
 
 # Install Headers:
 set(HEADERS_INTERNAL_CRYPTO
-${PROJECT_SOURCE_DIR}/cryptoutil/keys.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/internal/cryptoutil/keys.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
@@ -33,7 +33,7 @@ install(
 
 # Install Headers:
 set(HEADERS_INTERNAL_JWT
-${PROJECT_SOURCE_DIR}/jwtutil/util.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/internal/jwtutil/util.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
@@ -43,7 +43,7 @@ install(
 
 # Install Headers:
 set(HEADERS_INTERNAL_PEM
-${PROJECT_SOURCE_DIR}/pemutil/pem.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/internal/pemutil/pem.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
@@ -53,8 +53,8 @@ install(
 
 # Install Headers:
 set(HEADERS_INTERNAL_X509
-${PROJECT_SOURCE_DIR}/x509util/certpool.h
-${PROJECT_SOURCE_DIR}/x509util/util.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/internal/x509util/certpool.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/internal/x509util/util.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
@@ -64,8 +64,8 @@ install(
 
 # Install Headers:
 set(HEADERS_UTIL
-${PROJECT_SOURCE_DIR}/../utils/util.h
-${PROJECT_SOURCE_DIR}/../utils/stb_ds.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/utils/util.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/utils/stb_ds.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
@@ -75,10 +75,10 @@ install(
 
 # Install higher level header:
 set(HEADERS_MOD_INTERNAL
-${PROJECT_SOURCE_DIR}/cryptoutil.h
-${PROJECT_SOURCE_DIR}/jwtutil.h
-${PROJECT_SOURCE_DIR}/pemutil.h
-${PROJECT_SOURCE_DIR}/x509util.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/internal/cryptoutil.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/internal/jwtutil.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/internal/pemutil.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/internal/x509util.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/*.h
 install(

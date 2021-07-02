@@ -1,6 +1,6 @@
-#include "spiffetls/tlsconfig/config.h"
-#include "spiffetls/tlsconfig/authorizer.h"
-#include "svid/x509svid/verify.h"
+#include "c-spiffe/spiffetls/tlsconfig/config.h"
+#include "c-spiffe/spiffetls/tlsconfig/authorizer.h"
+#include "c-spiffe/svid/x509svid/verify.h"
 
 void tlsconfig_Option_apply(tlsconfig_Option *op, tlsconfig_options *options)
 {

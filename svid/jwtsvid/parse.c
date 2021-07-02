@@ -1,5 +1,5 @@
-#include "svid/jwtsvid/parse.h"
-#include "bundle/jwtbundle/source.h"
+#include "c-spiffe/svid/jwtsvid/parse.h"
+#include "c-spiffe/bundle/jwtbundle/source.h"
 #include <cjose/cjose.h>
 #include <openssl/ec.h>
 #include <openssl/ecdsa.h>

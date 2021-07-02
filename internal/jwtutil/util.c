@@ -1,5 +1,5 @@
-#include "internal/jwtutil/util.h"
-#include "internal/cryptoutil/keys.h"
+#include "c-spiffe/internal/jwtutil/util.h"
+#include "c-spiffe/internal/cryptoutil/keys.h"
 #include <cjose/cjose.h>
 #include <jansson.h>
 #include <openssl/x509.h>

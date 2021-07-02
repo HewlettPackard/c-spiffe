@@ -1,8 +1,8 @@
-#include "spiffeid/id.h"
-#include "spiffetls/listen.h"
-#include "spiffetls/mode.h"
-#include "spiffetls/option.h"
-#include "workload/x509source.h"
+#include "c-spiffe/spiffeid/id.h"
+#include "c-spiffe/spiffetls/listen.h"
+#include "c-spiffe/spiffetls/mode.h"
+#include "c-spiffe/spiffetls/option.h"
+#include "c-spiffe/workload/x509source.h"
 #include <unistd.h>
 
 void init_openssl()

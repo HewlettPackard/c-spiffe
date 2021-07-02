@@ -1,5 +1,5 @@
 #define STB_DS_IMPLEMENTATION
-#include "utils/util.h"
+#include "c-spiffe/utils/util.h"
 
 void util_string_t_Free(string_t str)
 {

@@ -1,7 +1,7 @@
-#include "workload/watcher.h"
-#include "workload/client.h"
-#include "workload/x509context.h"
-#include "workload/x509source.h"
+#include "c-spiffe/workload/watcher.h"
+#include "c-spiffe/workload/client.h"
+#include "c-spiffe/workload/x509context.h"
+#include "c-spiffe/workload/x509source.h"
 
 // Function that will run on thread spun for watcher
 int workloadapi_Watcher_X509backgroundFunc(void *_watcher)

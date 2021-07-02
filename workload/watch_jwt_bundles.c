@@ -1,4 +1,4 @@
-#include "workload/jwtwatcher.h"
+#include "c-spiffe/workload/jwtwatcher.h"
 
 void print_function(jwtbundle_Set *set, void *not_used)
 {

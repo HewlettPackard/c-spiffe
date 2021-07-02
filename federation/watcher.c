@@ -1,4 +1,4 @@
-#include "watcher.h"
+#include "c-spiffe/federation/watcher.h"
 
 spiffebundle_Watcher *spiffebundle_Watcher_New()
 {
