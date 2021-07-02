@@ -9,104 +9,73 @@
 extern "C" {
 #endif
 
+enum { LOGGER_DEBUG = 0, LOGGER_ERROR, LOGGER_WARNING, LOGGER_LEN };
+
 /**
  * Init all loggers.
  */
-void logger_Init(void);
+void logger_InitAll(void);
 
 /**
- * Init Debug logger.
+ * Init particular logger.
  */
-void logger_Debug_Init(void);
+void logger_Init(int type);
 
 /**
- * Get Debug logger size. The logger is implemented as a cyclic buffer,
+ * Init specified logger.
+ */
+void logger_Init(int type);
+
+/**
+ * Get specified logger size. The logger is implemented as a cyclic buffer,
  * thus having limited capacity.
  */
-int logger_Debug_BufferSize(void);
+int logger_BufferSize(int type);
 
 /**
- * Pushes message into Debug logger with printf format.
+ * Pushes message into the specified logger with printf format.
  */
-void logger_Debug_FmtPush(const char *fmt, ...);
+void logger_FmtPush(int type, const char *fmt, ...);
 
 /**
- * Pushes message into Debug logger.
+ * Pushes message into the specified logger.
  */
-void logger_Debug_Push(const char *str);
+void logger_Push(int type, const char *str);
 
 /**
  * Returns the logger last message. The value should be used or stored before
  * using any other logger operation.
  */
-const char *logger_Debug_Back(void);
+const char *logger_Back(int type);
 
 /**
- * Pops last Debug logger message.
+ * Pops speficied logger last message.
  */
-void logger_Debug_Pop(void);
+void logger_Pop(int type);
 
 /**
  * Dumps the stored logs on the file f, separating the messages by '\n'
  * character.
  */
-void logger_Debug_Dumpf(FILE *f);
+void logger_Dumpf(int type, FILE *f);
 
 /**
  * Dumps the stored logs on a new string, separating the messages by '\n'
  * character. The string should be freed using arrfree function.
  */
-string_t logger_Debug_Dumps(void);
+string_t logger_Dumps(int type);
 
 /**
- * Init Error logger.
+ * Cleans up a specific logger. Should be called when the logger respective
+ * functions will no longer be used.
  */
-void logger_Error_Init(void);
+void logger_Cleanup(int type);
 
 /**
- * Get Error logger size. The logger is implemented as a cyclic buffer,
- * thus having limited capacity.
- */
-int logger_Error_BufferSize(void);
-
-/**
- * Pushes message into Error logger with printf format.
- */
-void logger_Error_FmtPush(const char *fmt, ...);
-
-/**
- * Pushes message into Error logger.
- */
-void logger_Error_Push(const char *str);
-
-/**
- * Returns the logger last message. The value should be used or stored before
- * using any other logger operation.
- */
-const char *logger_Error_Back(void);
-
-/**
- * Pops last Error logger message.
- */
-void logger_Error_Pop(void);
-
-/**
- * Dumps the stored logs on the file f, separating the messages by '\n'
- * character.
- */
-void logger_Error_Dumpf(FILE *f);
-
-/**
- * Dumps the stored logs on a new string, separating the messages by '\n'
- * character. The string should be freed using arrfree function.
- */
-string_t logger_Error_Dumps(void);
-
-/**
- * Cleans up all loggers. Should be called when the logger functions will no
+ * Cleans up all logger. Should be called when the logger functions will no
  * longer be used.
  */
-void logger_Cleanup(void);
+void logger_CleanupAll(void);
 
 #ifdef __cplusplus
 }
