@@ -2,7 +2,7 @@ name: Release Build
 on: push
 
 jobs:
-  Release Build:
+  release-build:
     runs-on: ubuntu-latest
     steps:
       - name: Create Release
