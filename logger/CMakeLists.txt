@@ -18,16 +18,6 @@ install(
     LIBRARY DESTINATION  "${CMAKE_INSTALL_LIBDIR}"
 )
 
-# Install headers:
-# set(HEADERS_LOGGER
-# ${PROJECT_SOURCE_DIR}/logger.h
-# )
-#   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
-# install(
-#     FILES ${HEADERS_LOGGER}
-#     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}/${TARGET_NAME}"
-# )
-
 # Install higher level header:
 set(HEADERS_MOD_LOGGER
 ${PROJECT_SOURCE_DIR}/logger.h
