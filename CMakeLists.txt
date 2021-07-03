@@ -50,7 +50,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 include(GNUInstallDirs)
 
 # Set modules list
-set(modules bundle internal spiffeid svid workload spiffetls federation examples)
+set(modules logger bundle internal spiffeid svid workload spiffetls federation examples)
 
 # Add projects
 foreach(module ${modules})
@@ -65,7 +65,7 @@ if (ENABLE_TESTS)
     find_package(GTest REQUIRED)
     enable_testing()
 
-    ### Todo: improve this
+    add_subdirectory(${PROJECT_SOURCE_DIR}/logger/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/spiffeid/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/internal/cryptoutil/tests)
     add_subdirectory(${PROJECT_SOURCE_DIR}/internal/jwtutil/tests)
