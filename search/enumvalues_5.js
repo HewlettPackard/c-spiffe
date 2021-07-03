@@ -1,13 +1,7 @@
 var searchData=
 [
-  ['match_5fany_1887',['MATCH_ANY',['../match_8h.html#ae7e4cb0eef916f5a7f3a97eba4faf991a84ef15416531d7fe2811fe05f3251cc4',1,'match.h']]],
-  ['match_5fmemberof_1888',['MATCH_MEMBEROF',['../match_8h.html#ae7e4cb0eef916f5a7f3a97eba4faf991a9e2a729017415a0ff872d5f7d0a274de',1,'match.h']]],
-  ['match_5fok_1889',['MATCH_OK',['../match_8h.html#a94a7e0d96efbeacb90625249a0b6da1fa2655d6bcae95a5d2d442344fede95a62',1,'match.h']]],
-  ['match_5foneof_1890',['MATCH_ONEOF',['../match_8h.html#ae7e4cb0eef916f5a7f3a97eba4faf991aaa1d0b85be49e21add4f4425e04e19d8',1,'match.h']]],
-  ['match_5funexpected_5fid_1891',['MATCH_UNEXPECTED_ID',['../match_8h.html#a94a7e0d96efbeacb90625249a0b6da1fa092f42075647d58875fbe39c7c8ced08',1,'match.h']]],
-  ['match_5funexpected_5ftd_1892',['MATCH_UNEXPECTED_TD',['../match_8h.html#a94a7e0d96efbeacb90625249a0b6da1fa50c13aba538ebe7490615da0277e1b4a',1,'match.h']]],
-  ['mtls_5fclient_5fmode_1893',['MTLS_CLIENT_MODE',['../mode_8h.html#a8a655dfcca53fbd030e1600104da3b8aa70926a73fdd6ba60e46315d6860c3da4',1,'mode.h']]],
-  ['mtls_5fserver_5fmode_1894',['MTLS_SERVER_MODE',['../mode_8h.html#a0865f9bb6b2d685b5229b6e5c63085f5af82df623d52f2b68c1bf8ed2dd9a3bce',1,'mode.h']]],
-  ['mtls_5fwebclient_5fmode_1895',['MTLS_WEBCLIENT_MODE',['../mode_8h.html#a8a655dfcca53fbd030e1600104da3b8aa9724c9aefd4d7e1a381e677a58fc304d',1,'mode.h']]],
-  ['mtls_5fwebserver_5fmode_1896',['MTLS_WEBSERVER_MODE',['../mode_8h.html#a0865f9bb6b2d685b5229b6e5c63085f5a067d10c0a68e8dcae2d54880b29d4363',1,'mode.h']]]
+  ['logger_5fdebug_1939',['LOGGER_DEBUG',['../logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a30eb5eac34e7c2406c74fb78d9004f6c',1,'logger.h']]],
+  ['logger_5ferror_1940',['LOGGER_ERROR',['../logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a2974dee2fa00fbf9bb4978f96bb9f543',1,'logger.h']]],
+  ['logger_5flen_1941',['LOGGER_LEN',['../logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a75bad4f1774ac807939d5a98ce84ba42',1,'logger.h']]],
+  ['logger_5fwarning_1942',['LOGGER_WARNING',['../logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a236a2401a6ed3e96611f3a14352082ad',1,'logger.h']]]
 ];
