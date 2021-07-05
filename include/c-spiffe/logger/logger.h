@@ -22,11 +22,6 @@ void logger_InitAll(void);
 void logger_Init(int type);
 
 /**
- * Init specified logger.
- */
-void logger_Init(int type);
-
-/**
  * Get specified logger size. The logger is implemented as a cyclic buffer,
  * thus having limited capacity.
  */
