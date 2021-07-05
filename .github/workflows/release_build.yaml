@@ -1,56 +1,29 @@
-name: "Publish new release"
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
-on: push
-#  pull_request:
-#    branches:
-#      - master
-#    types:
-#      - closed
+name: Create Release
 
 jobs:
-  release:
-    name: Publish new release
+  build:
+    name: Create Release
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true # only merged pull requests must trigger this job
     steps:
-      - name: Extract version from branch name (for release branches)
-        if: startsWith(github.event.pull_request.head.ref, 'release/')
-        run: |
-          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
-          VERSION=${BRANCH_NAME#release/}
-
-          echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
-
-      - name: Extract version from branch name (for hotfix branches)
-        if: startsWith(github.event.pull_request.head.ref, 'hotfix/')
-        run: |
-          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
-          VERSION=${BRANCH_NAME#hotfix/}
-
-          echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
-
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Create Release
-        uses: thomaseizinger/create-release@1.0.0
+        id: create_release
+        uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GB }} # This token is provided by Actions, you do not need to create your own token
         with:
-          target_commitish: ${{ github.event.pull_request.merge_commit_sha }}
-          tag_name: ${{ env.RELEASE_VERSION }}
-          name: ${{ env.RELEASE_VERSION }}
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
           draft: false
           prerelease: false
-
-      - name: Merge master into dev branch
-        uses: thomaseizinger/create-pull-request@1.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          head: master
-          base: dev
-          title: Merge master into dev branch
-          body: |
-            This PR merges the master branch back into dev.
-            This happens to ensure that the updates that happend on the release branch, i.e. CHANGELOG and manifest updates are also present on the dev branch.
-
-      # if needed, you can checkout the latest master here, build artifacts and publish / deploy them somewhere
-      # the create-release action has an output `upload_url` output that you can use to upload assets
