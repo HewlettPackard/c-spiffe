@@ -26,7 +26,7 @@ def before_all(context):
 
 
 def after_all(context):
-    os.system("pkill spire-agent")
+    os.system("pkill -9 spire-agent")
     time.sleep(5)
     os.system(PARENT_PATH + "bash-general-scripts/clean.sh")
     time.sleep(1)
