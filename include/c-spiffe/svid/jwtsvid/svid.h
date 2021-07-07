@@ -4,6 +4,7 @@
 #include "c-spiffe/spiffeid/id.h"
 #include "c-spiffe/utils/util.h"
 #include <jansson.h>
+#include <time.h>
 
 #ifdef __cplusplus
 extern "C" {

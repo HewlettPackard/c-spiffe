@@ -3,10 +3,8 @@
 
 #include "c-spiffe/spiffetls/mode.h"
 #include "c-spiffe/spiffetls/option.h"
-#include "c-spiffe/spiffetls/tlsconfig/authorizer.h"
 #include <arpa/inet.h>
 #include <openssl/ssl.h>
-#include <sys/socket.h>
 
 #ifdef __cplusplus
 extern "C" {

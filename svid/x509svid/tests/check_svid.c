@@ -1,5 +1,9 @@
+#include "c-spiffe/internal/x509util/util.h"
 #include "c-spiffe/svid/x509svid/svid.h"
 #include <check.h>
+#include <openssl/pem.h>
+#include <openssl/x509.h>
+#include <stdlib.h>
 
 START_TEST(test_x509svid_Load)
 {

@@ -1,8 +1,8 @@
 #ifndef INCLUDE_BUNDLE_JWTBUNDLE_SET_H
 #define INCLUDE_BUNDLE_JWTBUNDLE_SET_H
 
-// qsort algorithm
 #include "c-spiffe/bundle/jwtbundle/bundle.h"
+// qsort algorithm
 #include <stdlib.h>
 
 #ifdef __cplusplus

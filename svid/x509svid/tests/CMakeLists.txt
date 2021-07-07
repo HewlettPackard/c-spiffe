@@ -10,7 +10,6 @@ target_link_libraries(check_x509svid svid ${CHECK_LIBRARIES}
   internal
   uriparser
   bundle
-  jansson
   cjose
   subunit
   check_pic

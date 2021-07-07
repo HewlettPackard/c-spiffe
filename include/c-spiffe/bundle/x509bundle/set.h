@@ -2,7 +2,6 @@
 #define INCLUDE_BUNDLE_X509BUNDLE_SET_H
 
 #include "c-spiffe/bundle/x509bundle/bundle.h"
-#include <stdlib.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,7 +1,6 @@
 #ifndef INCLUDE_INTERNAL_X509UTIL_CERTPOOL_H
 #define INCLUDE_INTERNAL_X509UTIL_CERTPOOL_H
 
-#include "c-spiffe/utils/stb_ds.h"
 #include "c-spiffe/utils/util.h"
 #include <openssl/x509.h>
 

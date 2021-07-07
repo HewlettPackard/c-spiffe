@@ -5,8 +5,6 @@ add_executable(check_id check_id.c)
 
 target_link_libraries(check_id spiffeid ${CHECK_LIBRARIES}
   uriparser
-  jansson
-  cjose
   subunit
   check_pic
   check
@@ -21,8 +19,6 @@ add_executable(check_match check_match.c)
 
 target_link_libraries(check_match spiffeid ${CHECK_LIBRARIES}
   uriparser
-  jansson
-  cjose
   subunit
   check_pic
   check
@@ -37,8 +33,6 @@ add_executable(check_trustdomain check_trustdomain.c)
 
 target_link_libraries(check_trustdomain spiffeid ${CHECK_LIBRARIES}
   uriparser
-  jansson
-  cjose
   subunit
   check_pic
   check

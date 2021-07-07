@@ -1,7 +1,8 @@
-#include "c-spiffe/spiffetls/dial.h"
+#include "c-spiffe/spiffetls/listen.h"
 #include "c-spiffe/spiffetls/mode.h"
 #include "c-spiffe/spiffetls/option.h"
 #include "c-spiffe/spiffetls/tlsconfig/config.h"
+#include <sys/socket.h>
 #include <unistd.h>
 
 static int createSocket(in_port_t port)

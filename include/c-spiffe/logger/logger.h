@@ -2,7 +2,6 @@
 #define INCLUDE_LOGGER_LOGGER_H
 
 #include "c-spiffe/utils/util.h"
-
 #include <stdio.h>
 
 #ifdef __cplusplus

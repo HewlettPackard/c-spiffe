@@ -5,7 +5,6 @@
 #include "c-spiffe/internal/x509util/certpool.h"
 #include "c-spiffe/spiffetls/tlsconfig/authorizer.h"
 #include "c-spiffe/svid/x509svid/source.h"
-#include "c-spiffe/svid/x509svid/svid.h"
 #include "c-spiffe/workload/x509source.h"
 
 #ifdef __cplusplus

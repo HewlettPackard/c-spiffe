@@ -13,11 +13,6 @@ set(SOURCES_CHECK
 add_executable(check_x509util ${SOURCES_CHECK})
 
 target_link_libraries(check_x509util internal ${CHECK_LIBRARIES}
-  spiffeid
-  uriparser
-  bundle
-  jansson
-  cjose
   subunit
   check_pic
   check
@@ -37,13 +32,7 @@ set(SOURCES_CHECK
 
 add_executable(check_certpool ${SOURCES_CHECK})
 
-target_link_libraries(check_certpool svid ${CHECK_LIBRARIES}
-  spiffeid
-  internal
-  uriparser
-  bundle
-  jansson
-  cjose
+target_link_libraries(check_certpool internal ${CHECK_LIBRARIES}
   subunit
   check_pic
   check

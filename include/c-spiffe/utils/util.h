@@ -4,7 +4,6 @@
 #include "c-spiffe/utils/stb_ds.h"
 #include <openssl/evp.h>
 #include <stdbool.h>
-#include <string.h>
 
 #ifdef __cplusplus
 extern "C" {

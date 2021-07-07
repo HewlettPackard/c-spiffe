@@ -3,6 +3,5 @@
 
 #include "c-spiffe/spiffetls/tlsconfig/authorizer.h"
 #include "c-spiffe/spiffetls/tlsconfig/config.h"
-#include "c-spiffe/spiffetls/tlsconfig/trace.h"
 
 #endif

@@ -3,9 +3,8 @@
 
 #include "c-spiffe/bundle/x509bundle/source.h"
 #include "c-spiffe/spiffeid/id.h"
-#include "c-spiffe/utils/util.h"
 #include <openssl/x509.h>
-#include <openssl/x509v3.h>
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {

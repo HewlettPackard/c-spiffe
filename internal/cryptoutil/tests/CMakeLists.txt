@@ -4,10 +4,6 @@ cmake_minimum_required(VERSION 3.13)
 add_executable(check_keys check_keys.c)
 
 target_link_libraries(check_keys internal ${CHECK_LIBRARIES}
-  spiffeid
-  uriparser
-  bundle
-  jansson
   cjose
   subunit
   check_pic
