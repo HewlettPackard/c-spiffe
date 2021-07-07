@@ -35,8 +35,11 @@ def step_impl(context, container_name):
 
 @when('The "{language}"-tls-listen is activated inside "{container_name}" container')
 def step_impl(context, language, container_name):
+    port = context.default_echo_server_port
+    if context.current_workload == context.workload_c:
+        port = context.second_echo_server_port
     if language == "go":
-        os.system("/mnt/c-spiffe/integration_test/helpers/bash-general-scripts/ssh-run-go-server.sh %s" % container_name)
+        os.system("/mnt/c-spiffe/integration_test/helpers/bash-general-scripts/ssh-run-go-server.sh %s %s" %(container_name, port))
         time.sleep(1)
     elif language == "c":
         os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-run-c-server.sh %s" % container_name)
@@ -59,13 +62,19 @@ def step_impl(context, language, container_name):
 @when('I send "{message:NullableString}" to "{container_name}" container through "{language}"-tls-dial')
 def step_impl(context, message, container_name, language):
     result = ""
+    workload_id = "myworkload%s" % context.current_workload[-1]
+    trust_domain = context.default_trust_domain
+    port = context.default_echo_server_port
+    if context.current_workload == context.workload_c:
+        trust_domain = context.second_trust_domain
+        port = context.second_echo_server_port
 
     if language == "go":
-        client = subprocess.run(["/mnt/c-spiffe/integration_test/helpers/bash-general-scripts/run-go-client.sh '%s' %s" % (message, container_name)], stderr=subprocess.PIPE, text=True, shell=True)
+        client = subprocess.run(["/mnt/c-spiffe/integration_test/helpers/bash-general-scripts/run-go-client.sh '%s' %s %s %s %s" % (message, container_name, port, trust_domain, workload_id)], stderr=subprocess.PIPE, text=True, shell=True)
         time.sleep(1)
         result = client.stderr
     elif language == "c":
-        client = os.popen("/mnt/c-spiffe/build/spiffetls/c_dial '%s' %s %s %s" % (message, socket.gethostbyname(container_name), context.default_echo_server_port, context.default_trust_domain))
+        client = os.popen("/mnt/c-spiffe/build/spiffetls/c_dial '%s' %s %s %s" % (message, socket.gethostbyname(container_name), context.default_echo_server_port, trust_domain))
         result = client.read()
     context.result = result
 
