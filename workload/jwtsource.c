@@ -110,7 +110,7 @@ err_t workloadapi_JWTSource_checkClosed(workloadapi_JWTSource *source)
     mtx_lock(&(source->closed_mutex));
     if(source->closed) {
         // source is closed
-        err = ERR_SOURCE_CLOSED;
+        err = ERR_CLOSED;
     }
     mtx_unlock(&(source->closed_mutex));
     return err;

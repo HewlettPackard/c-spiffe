@@ -251,7 +251,7 @@ err_t spiffebundle_Bundle_AddJWTAuthority(spiffebundle_Bundle *b,
                                           const char *keyID, EVP_PKEY *auth)
 {
     // empty string error
-    err_t err = ERR_EMPTY_STRING;
+    err_t err = ERR_EMPTY_DATA;
 
     if(!empty_str(keyID)) {
         mtx_lock(&(b->mtx));

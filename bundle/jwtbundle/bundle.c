@@ -115,7 +115,7 @@ err_t jwtbundle_Bundle_AddJWTAuthority(jwtbundle_Bundle *b, const char *keyID,
                                        EVP_PKEY *pkey)
 {
     // empty string error
-    err_t err = ERR_EMPTY_STRING;
+    err_t err = ERR_EMPTY_DATA;
 
     if(!empty_str(keyID)) {
         mtx_lock(&(b->mtx));

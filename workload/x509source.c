@@ -97,7 +97,7 @@ x509bundle_Bundle *workloadapi_X509Source_GetX509BundleForTrustDomain(
         x509bundle_Bundle *bundle = x509bundle_Set_GetX509BundleForTrustDomain(
             source->bundles, td, err);
         if(*err == ERR_TRUSTDOMAIN_NOTAVAILABLE) {
-            *err = ERR_SOURCE_CLOSED;
+            *err = ERR_CLOSED;
         }
         return bundle;
     }
@@ -129,7 +129,7 @@ err_t workloadapi_X509Source_checkClosed(workloadapi_X509Source *source)
     mtx_lock(&(source->closed_mutex));
     if(source->closed) {
         // source is closed
-        err = ERR_SOURCE_CLOSED;
+        err = ERR_CLOSED;
     }
     mtx_unlock(&(source->closed_mutex));
     return err;

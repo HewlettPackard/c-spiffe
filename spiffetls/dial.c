@@ -45,7 +45,7 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
             source = workloadapi_NewX509Source(NULL, err);
             if(*err) {
                 // could not create source
-                *err = ERROR1;
+                *err = ERR_CREATE;
                 goto error;
             }
 
@@ -64,7 +64,7 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
     SSL_CTX *tls_config
         = config->base_TLS_conf ? config->base_TLS_conf : createTLSContext();
     if(!tls_config) {
-        *err = ERROR2;
+        *err = ERR_NULL;
         goto error;
     }
 
@@ -80,7 +80,7 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
     case MTLS_WEBCLIENT_MODE:
     default:
         // unknown mode
-        *err = ERROR3;
+        *err = ERR_UNKNOW_MODE;
         goto error;
     }
 
@@ -88,16 +88,16 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
         = config->dialer_fd > 0 ? config->dialer_fd : createSocket(addr, port);
     if(sockfd < 0) {
         // could not create socket with given address and port
-        *err = ERROR4;
+        *err = ERR_CREATE;
         goto error;
     }
 
     SSL *conn = SSL_new(tls_config);
     if(!conn) {
-        *err = ERROR5;
+        *err = ERR_CONNECT;
         goto error;
     } else if(SSL_set_fd(conn, sockfd) != 1) {
-        *err = ERROR5;
+        *err = ERR_SET;
         goto error;
     }
 
@@ -107,7 +107,7 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
         SSL_shutdown(conn);
         SSL_free(conn);
         close(sockfd);
-        *err = ERROR5;
+        *err = ERR_CONNECT;
         goto error;
     }
     // successful handshake
