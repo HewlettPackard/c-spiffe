@@ -51,6 +51,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 pip3 install behave PyHamcrest pathlib2;\
 apt-get clean
 
+#install go-spiffe/v2 for tests
+RUN go get -u github.com/spiffe/go-spiffe/v2/bundle/spiffebundle && \
+go get -u github.com/spiffe/go-spiffe/v2/federation && \
+go get -u github.com/spiffe/go-spiffe/v2/logger && \
+go get -u github.com/spiffe/go-spiffe/v2/spiffeid && \
+go get -u github.com/spiffe/go-spiffe/v2/svid/x509svid
+
 # Install Docker Enginer
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 RUN echo \
