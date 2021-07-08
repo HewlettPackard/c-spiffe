@@ -178,7 +178,7 @@ x509bundle_Bundle *x509bundle_Bundle_GetX509BundleForTrustDomain(
     mtx_lock(&(b->mtx));
     x509bundle_Bundle *bundle = NULL;
     // different trust domains error
-    *err = ERR_TRUSTDOMAIN_INVALID;
+    *err = ERR_INVALID_TRUSTDOMAIN;
     // if the TDs are equal
     if(!strcmp(b->td.name, td.name)) {
         bundle = b;

@@ -190,7 +190,7 @@ jwtbundle_Bundle *jwtbundle_Bundle_GetJWTBundleForTrustDomain(
     mtx_lock(&(b->mtx));
     jwtbundle_Bundle *bundle = NULL;
     // different trust domains error
-    *err = ERR_TRUSTDOMAIN_INVALID;
+    *err = ERR_INVALID_TRUSTDOMAIN;
     // if the TDs are equal
     if(!strcmp(b->td.name, td.name)) {
         bundle = b;

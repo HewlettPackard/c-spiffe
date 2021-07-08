@@ -69,18 +69,18 @@ jwtutil_JWKS jwtutil_ParseJWKS(const char *bytes, err_t *err)
         json_t *root = json_loads(bytes, 0, &j_err);
         if(!root) {
             // could not load json
-            *err = ERROR2;
+            *err = ERR_NULL;
             goto error1;
         }
 
         json_t *keys = json_object_get(root, "keys");
         if(!keys) {
             // no key with name "keys"
-            *err = ERROR3;
+            *err = ERR_INVALID_DATA;
             goto error1;
         } else if(json_typeof(keys) != JSON_ARRAY) {
             // object is not an array
-            *err = ERROR3;
+            *err = ERR_INVALID_DATA;
             goto error1;
         }
         jwks.root = root;
@@ -182,7 +182,7 @@ error2:
         }
 
         if(err_flag) {
-            *err = ERROR4;
+            *err = ERR_BAD_REQUEST;
             jwtutil_JWKS_Free(&jwks);
             root = NULL;
         }
@@ -195,7 +195,7 @@ error1:
     }
 
     // null pointer error
-    *err = ERROR1;
+    *err = ERR_NULL;
     return jwks;
 }
 
@@ -397,7 +397,7 @@ string_t jwtutil_JWKS_Marshal(jwtutil_JWKS *jwks, err_t *err)
                    JSON_PRESERVE_ORDER | JSON_ENSURE_ASCII);
     } else {
         // null pointer error
-        *err = ERROR1;
+        *err = ERR_NULL;
     }
 
     return jwks_str;
