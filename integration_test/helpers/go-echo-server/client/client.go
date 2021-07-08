@@ -17,7 +17,6 @@ import (
 
 const (
 	socketPath = "unix:///tmp/agent.sock"
-	serverPort = "4433"
 )
 
 func main() {
@@ -26,15 +25,12 @@ func main() {
 	defer cancel()
 
 	// Allowed SPIFFE ID
-	spiffeID := spiffeid.Must("example.org", "myworkloadB")
+	//trust domain and workload id passed as arguments
+	spiffeID := spiffeid.Must(os.Args[4], os.Args[5])
 
-	//hostname for server passed as argument
-	serverAddress := os.Args[2] + ":" + serverPort
+	//hostname and port for server passed as arguments
+	serverAddress := os.Args[2] + ":" + os.Args[3]
 
-	// Create a TLS connection.
-	// The client expects the server to present an SVID with the spiffeID: 'spiffe://example.org/server'
-	//
-	// An alternative when creating Dial is using `spiffetls.Dial` that uses environment variable `SPIFFE_ENDPOINT_SOCKET`
 	conn, err := spiffetls.DialWithMode(ctx, "tcp", serverAddress,
 		spiffetls.MTLSClientWithSourceOptions(
 			tlsconfig.AuthorizeID(spiffeID),

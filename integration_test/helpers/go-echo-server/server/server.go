@@ -5,6 +5,7 @@ import (
 	"context"
 	"log"
 	"net"
+	"os"
 
 	"github.com/spiffe/go-spiffe/v2/spiffeid"
 	"github.com/spiffe/go-spiffe/v2/spiffetls"
@@ -13,8 +14,8 @@ import (
 )
 
 const (
-	socketPath    = "unix:///tmp/agent.sock"
-	serverAddress = "0.0.0.0:4433"
+	socketPath = "unix:///tmp/agent.sock"
+	hostname   = "0.0.0.0"
 )
 
 func main() {
@@ -25,8 +26,11 @@ func main() {
 	// Allowed SPIFFE ID
 	clientID := spiffeid.Must("example.org", "myworkloadA")
 
+	//hostname and port for server passed as argument
+	serverAddress := hostname + ":" + os.Args[1]
+
 	// Creates a TLS listener
-	// The server expects the client to present an SVID with the spiffeID: 'spiffe://example.org/client'
+	// The server expects the client to present an SVID with the spiffeID: 'spiffe://example.org/myworkloadA'
 	//
 	// An alternative when creating Listen is using `spiffetls.Listen` that uses environment variable `SPIFFE_ENDPOINT_SOCKET`
 	listener, err := spiffetls.ListenWithMode(ctx, "tcp", serverAddress,
