@@ -96,7 +96,7 @@ uint32_t jwtbundle_Set_Len(jwtbundle_Set *s)
 err_t jwtbundle_Set_print_BIO(jwtbundle_Set *s, int offset, BIO *out)
 {
     if(offset < 0) {
-        return ERROR3;
+        return ERR_BAD_REQUEST;
     } else if(s && out) {
         mtx_lock(&s->mtx); // lock the mutex so we guarantee no one changes the
                            // set before we print.
@@ -115,9 +115,9 @@ err_t jwtbundle_Set_print_BIO(jwtbundle_Set *s, int offset, BIO *out)
         mtx_unlock(&s->mtx); // unlock bundle mutex.
         return error;
     } else if(!s) {
-        return ERROR1;
+        return ERR_NULLDATA;
     } else {
-        return ERROR2;
+        return ERR_NULLBIO;
     }
 }
 
@@ -125,7 +125,7 @@ err_t jwtbundle_Set_print_fd(jwtbundle_Set *s, int offset, FILE *fd)
 {
     BIO *out = BIO_new_fp(fd, BIO_NOCLOSE);
     if(!out) {
-        return ERROR4;
+        return ERR_NULLDATA;
     }
     err_t error = jwtbundle_Set_print_BIO(s, offset, out);
     BIO_free(out);
@@ -150,7 +150,7 @@ jwtbundle_Bundle *jwtbundle_Set_GetJWTBundleForTrustDomain(
     mtx_lock(&(s->mtx));
     jwtbundle_Bundle *bundle = NULL;
     // trust domain not available
-    *err = ERROR1;
+    *err = ERR_TRUSTDOMAIN_NOTAVAILABLE;
     int idx = shgeti(s->bundles, td.name);
     if(idx >= 0) {
         bundle = s->bundles[idx].value;

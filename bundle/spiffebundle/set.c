@@ -99,7 +99,7 @@ spiffebundle_Bundle *spiffebundle_Set_GetBundleForTrustDomain(
     mtx_lock(&(s->mtx));
     spiffebundle_Bundle *bundle = NULL;
     // trust domain not available
-    *err = ERROR1;
+    *err = ERR_TRUSTDOMAIN_NOTAVAILABLE;
     int idx = shgeti(s->bundles, td.name);
     if(idx >= 0) {
         bundle = s->bundles[idx].value;
@@ -116,7 +116,7 @@ x509bundle_Bundle *spiffebundle_Set_GetX509BundleForTrustDomain(
     mtx_lock(&(s->mtx));
     x509bundle_Bundle *bundle = NULL;
     // trust domain not available
-    *err = ERROR1;
+    *err = ERR_TRUSTDOMAIN_NOTAVAILABLE;
     int idx = shgeti(s->bundles, td.name);
     if(idx >= 0) {
         bundle = spiffebundle_Bundle_X509Bundle(s->bundles[idx].value);
@@ -133,7 +133,7 @@ jwtbundle_Bundle *spiffebundle_Set_GetJWTBundleForTrustDomain(
     mtx_lock(&(s->mtx));
     jwtbundle_Bundle *bundle = NULL;
     // trust domain not available
-    *err = ERROR1;
+    *err = ERR_TRUSTDOMAIN_NOTAVAILABLE;
     int idx = shgeti(s->bundles, td.name);
     if(idx >= 0) {
         bundle = spiffebundle_Bundle_JWTBundle(s->bundles[idx].value);

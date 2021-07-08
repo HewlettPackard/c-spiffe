@@ -356,17 +356,17 @@ START_TEST(test_jwtbundle_Set_Print_Errors)
     // negative offset error
     int offset = -1;
     err = jwtbundle_Set_print_stdout(set, offset);
-    ck_assert_int_eq(err, ERROR3);
+    ck_assert_int_eq(err, ERR_BAD_REQUEST);
 
     // NULL set error
     offset = 0;
     err = jwtbundle_Set_Print(set);
-    ck_assert_int_eq(err, ERROR1);
+    ck_assert_int_eq(err, ERR_NULLDATA);
 
     // NULL BIO* error
     set =(jwtbundle_Set*) 1; //"valid" set
     err = jwtbundle_Set_print_BIO(set, offset, out);
-    ck_assert_int_eq(err, ERROR2);
+    ck_assert_int_eq(err, ERR_NULLBIO);
 }
 END_TEST
 

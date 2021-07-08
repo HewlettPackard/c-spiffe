@@ -99,7 +99,7 @@ x509bundle_Bundle *x509bundle_Set_GetX509BundleForTrustDomain(
     mtx_lock(&(s->mtx));
     x509bundle_Bundle *bundle = NULL;
     // trust domain not available
-    *err = ERROR1;
+    *err = ERR_TRUSTDOMAIN_NOTAVAILABLE;
     int idx = shgeti(s->bundles, td.name);
     if(idx >= 0) {
         bundle = s->bundles[idx].value;

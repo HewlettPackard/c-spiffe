@@ -41,7 +41,7 @@ x509bundle_Bundle *x509bundle_Load(const spiffeid_TrustDomain td,
         arrfree(buffer);
     } else {
         // could not open file
-        *err = ERROR1;
+        *err = ERR_FAILED_OPEN;
     }
 
     return bundleptr;
@@ -178,7 +178,7 @@ x509bundle_Bundle *x509bundle_Bundle_GetX509BundleForTrustDomain(
     mtx_lock(&(b->mtx));
     x509bundle_Bundle *bundle = NULL;
     // different trust domains error
-    *err = ERROR1;
+    *err = ERR_TRUSTDOMAIN_INVALID;
     // if the TDs are equal
     if(!strcmp(b->td.name, td.name)) {
         bundle = b;

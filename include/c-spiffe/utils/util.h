@@ -35,7 +35,20 @@ enum enum_err_t {
     ERROR3,
     ERROR4,
     ERROR5,
-    ERROR6
+    ERROR6,
+    ERR_BAD_REQUEST,
+    ERR_NULLDATA,
+    ERR_TRUSTDOMAIN_NOTAVAILABLE,
+    ERR_SOURCE_CLOSED,
+    ERR_NULLBIO,
+    ERR_NULLBUNDLE,
+    ERR_TRUSTDOMAIN_INVALID,
+    ERR_EMPTY_STRING,
+    ERR_FAILED_OPEN,
+    ERR_NEW_FP,
+    ERR_NOT_PARSE,
+    ERR_NULL,
+    ERR_UNKNOW_TYPE,
 };
 
 typedef enum enum_err_t err_t;
