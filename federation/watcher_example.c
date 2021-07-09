@@ -52,14 +52,21 @@ int main(void)
     err_t err;
 
     // endpoint info
-    const char url[]
-        = "https://raw.githubusercontent.com/HewlettPackard/c-spiffe/master/"
-          "bundle/jwtbundle/tests/resources/jwk_keys.json";
+    const char url[] = "https://example.org/";
     spiffeid_TrustDomain td = { "example.org" };
 
     // set up an endpoint
     printf("Adding Endpoint\n");
     err = spiffebundle_Watcher_AddHttpsWebEndpoint(watcher, url, td);
+    watcher->endpoints[0].value->endpoint->curl_handle = curl_easy_init();
+    // set certs for localhost
+    curl_easy_setopt(watcher->endpoints[0].value->endpoint->curl_handle,
+                     CURLOPT_CAINFO, "./resources/example.org.crt");
+    curl_easy_setopt(watcher->endpoints[0].value->endpoint->curl_handle,
+                     CURLOPT_SSL_VERIFYHOST, 0);
+    curl_easy_setopt(watcher->endpoints[0].value->endpoint->curl_handle,
+                     CURLOPT_SSL_VERIFYPEER, 0);
+
     // add any more endpoints you want
     // err = spiffebundle_Watcher_AddHttpsWebEndpoint(watcher, url2, td2);
     // ...

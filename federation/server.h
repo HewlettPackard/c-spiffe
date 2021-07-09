@@ -17,28 +17,38 @@ extern "C" {
 #endif
 
 typedef struct spiffebundle_EndpointServer spiffebundle_EndpointServer;
+typedef struct spiffebundle_EndpointInfo spiffebundle_EndpointInfo;
 
 uint SPIFFE_DEFAULT_HTTPS_PORT = 443;
 
-typedef struct spiffebundle_EndpointServer_EndpointInfo {
-    spiffebundle_EndpointServer *server;
+typedef struct spiffebundle_EndpointThread {
+    spiffebundle_EndpointInfo *endpoint_info;
     thrd_t thread;
-    spiffetls_ListenMode *listen_mode;
-    string_t url;
     uint port;
     bool active;
+} spiffebundle_EndpointThread;
+
+typedef struct map_port_endpoint_thread {
+    uint key;
+    spiffebundle_EndpointThread *value;
+} map_port_endpoint_thread;
+
+typedef struct spiffebundle_EndpointInfo {
+    spiffebundle_EndpointServer *server;
+    string_t url;
+    spiffetls_ListenMode *listen_mode;
+    map_port_endpoint_thread *threads;
     mtx_t mutex;
-} spiffebundle_EndpointServer_EndpointInfo;
+} spiffebundle_EndpointInfo;
 
-spiffebundle_EndpointServer_EndpointInfo *
-spiffebundle_EndpointServer_EndpointInfo_New();
+spiffebundle_EndpointInfo *spiffebundle_EndpointInfo_New();
 
-err_t spiffebundle_EndpointServer_EndpointInfo_Free(
-    spiffebundle_EndpointServer_EndpointInfo *e_info);
+err_t spiffebundle_EndpointInfo_Free(
+    spiffebundle_EndpointInfo *e_info);
 
 typedef struct map_string_endpoint_info {
     string_t key;
-    spiffebundle_EndpointServer_EndpointInfo *value;
+    spiffebundle_EndpointInfo *value;
 } map_string_endpoint_info;
 
 typedef struct map_string_spiffebundle_Source {
@@ -75,8 +85,7 @@ err_t spiffebundle_EndpointServer_RemoveBundle(
 // load keys to use with 'https_web'
 // register a HTTPS_WEB endpoint, for starting with
 // spiffebundle_EndpointServer_ServeEndpoint
-spiffebundle_EndpointServer_EndpointInfo *
-spiffebundle_EndpointServer_AddHttpsWebEndpoint(
+spiffebundle_EndpointInfo *spiffebundle_EndpointServer_AddHttpsWebEndpoint(
     spiffebundle_EndpointServer *server, const char *base_url, X509 **cert,
     EVP_PKEY *priv_key, err_t *error);
 
@@ -86,8 +95,7 @@ err_t spiffebundle_EndpointServer_SetHttpsWebEndpointAuth(
 
 // Register a HTTPS_SPIFFE endpoint, for starting with
 // spiffebundle_EndpointServer_ServeEndpoint.
-spiffebundle_EndpointServer_EndpointInfo *
-spiffebundle_EndpointServer_AddHttpsSpiffeEndpoint(
+spiffebundle_EndpointInfo *spiffebundle_EndpointServer_AddHttpsSpiffeEndpoint(
     spiffebundle_EndpointServer *server, const char *base_url,
     x509svid_Source *svid_source, err_t *error);
 
@@ -96,8 +104,7 @@ err_t spiffebundle_EndpointServer_SetHttpsSpiffeEndpointSource(
     x509svid_Source *svid_source);
 
 // Get info for serving thread.
-spiffebundle_EndpointServer_EndpointInfo *
-spiffebundle_EndpointServer_GetEndpointInfo(
+spiffebundle_EndpointInfo *spiffebundle_EndpointServer_GetEndpointInfo(
     spiffebundle_EndpointServer *server, const char *base_url, err_t *error);
 
 // Remove endpoint from server.
@@ -108,12 +115,16 @@ err_t spiffebundle_EndpointServer_RemoveEndpoint(
 err_t spiffebundle_EndpointServer_ServeEndpoint(
     spiffebundle_EndpointServer *server, const char *base_url, uint port);
 
-// Stop serving from indicated thread.
+// Stop serving from indicated endpoint.
 err_t spiffebundle_EndpointServer_StopEndpoint(
     spiffebundle_EndpointServer *server, const char *base_url);
 
-// Stops serving from all threads.
-err_t spiffebundle_EndpointServer_StopAll(spiffebundle_EndpointServer *server);
+// Stop serving from indicated thread.
+err_t spiffebundle_EndpointServer_StopEndpointThread(
+    spiffebundle_EndpointServer *server, const char *base_url, uint port);
+
+// Stops serving from all endpoints.
+err_t spiffebundle_EndpointServer_Stop(spiffebundle_EndpointServer *server);
 
 #ifdef __cplusplus
 }

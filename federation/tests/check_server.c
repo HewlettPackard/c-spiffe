@@ -5,22 +5,20 @@
 #include "utils/util.h"
 #include <check.h>
 
-START_TEST(test_spiffebundle_EndpointServer_Info_New_Free)
+START_TEST(test_spiffebundle_EndpointInfo_New_Free)
 {
-    spiffebundle_EndpointServer_EndpointInfo *info
-        = spiffebundle_EndpointServer_EndpointInfo_New();
+    spiffebundle_EndpointInfo *info
+        = spiffebundle_EndpointInfo_New();
 
     ck_assert_ptr_ne(info, NULL);
-    ck_assert_int_eq(info->active, false);
-    ck_assert_ptr_eq(info->listen_mode, NULL);
     ck_assert_ptr_eq(info->server, NULL);
-    ck_assert_int_eq(info->port, 0);
-    ck_assert_int_eq(info->thread, 0);
     ck_assert_ptr_eq(info->url, NULL);
+    ck_assert_ptr_eq(info->listen_mode, NULL);
+    ck_assert_ptr_eq(info->threads, NULL);
 
-    err_t error = spiffebundle_EndpointServer_EndpointInfo_Free(info);
+    err_t error = spiffebundle_EndpointInfo_Free(info);
     ck_assert_int_eq(error, NO_ERROR);
-    error = spiffebundle_EndpointServer_EndpointInfo_Free(NULL);
+    error = spiffebundle_EndpointInfo_Free(NULL);
     ck_assert_int_ne(error, NO_ERROR);
 }
 END_TEST
@@ -59,8 +57,10 @@ START_TEST(test_spiffebundle_EndpointServer_RegisterBundle)
     ck_assert_ptr_eq(server->bundle_sources[idx].value, source);
     ck_assert_str_eq(server->bundle_tds[idx].value, td.name);
 
-    spiffebundle_EndpointServer_UpdateBundle(server, "/", (spiffebundle_Source*)0x2, td);
-    ck_assert_ptr_eq(server->bundle_sources[idx].value, (spiffebundle_Source*)0x2);
+    spiffebundle_EndpointServer_UpdateBundle(server, "/",
+                                             (spiffebundle_Source *) 0x2, td);
+    ck_assert_ptr_eq(server->bundle_sources[idx].value,
+                     (spiffebundle_Source *) 0x2);
     ck_assert_str_eq(server->bundle_tds[idx].value, td.name);
     server->bundle_sources[idx].value = source;
 
@@ -86,18 +86,37 @@ START_TEST(test_spiffebundle_EndpointServer_AddEndpoints)
         = pemutil_ParseCertificates(FILE_to_bytes(certs_file), &error);
     EVP_PKEY *priv_key
         = pemutil_ParsePrivateKey(FILE_to_bytes(key_file), &error);
-    
-    spiffebundle_EndpointServer_AddHttpsWebEndpoint(server, "example.org",
-                                                    certs, priv_key, &error);
+
+    spiffebundle_EndpointInfo *e_info1
+        = spiffebundle_EndpointServer_AddHttpsWebEndpoint(
+            server, "example.org", certs, priv_key, &error);
+    ck_assert_ptr_ne(e_info1, NULL);
+    ck_assert_int_eq(error, NO_ERROR);
+
+    x509svid_SVID *svid = x509svid_newSVID(certs, priv_key, &error);
+    ck_assert_int_eq(error, NO_ERROR);
+
+    x509svid_Source *source = x509svid_SourceFromSVID(svid);
+    spiffebundle_EndpointInfo *e_info2
+        = spiffebundle_EndpointServer_AddHttpsSpiffeEndpoint(
+            server, "example.org", source, &error);
+    ck_assert_ptr_eq(e_info2, NULL);
+    ck_assert_int_eq(error, ERROR4);
+
+    e_info2 = spiffebundle_EndpointServer_AddHttpsSpiffeEndpoint(
+        server, "example2.org", source, &error);
+    ck_assert_ptr_ne(e_info2, NULL);
+    ck_assert_int_eq(error, NO_ERROR);
+
     error = spiffebundle_EndpointServer_Free(server);
-    ck_assert_int_ne(error, NO_ERROR);
+    ck_assert_int_eq(error, NO_ERROR);
 }
 END_TEST
 
 // // load keys to use with 'https_web'
 // // register a HTTPS_WEB endpoint, for starting with
 // // spiffebundle_EndpointServer_ServeEndpoint
-// spiffebundle_EndpointServer_EndpointInfo *
+// spiffebundle_EndpointInfo *
 // spiffebundle_EndpointServer_AddHttpsWebEndpoint(
 //     spiffebundle_EndpointServer *server, const char *base_url, X509 **cert,
 //     EVP_PKEY *priv_key, err_t *error);
@@ -108,7 +127,7 @@ END_TEST
 
 // // Register a HTTPS_SPIFFE endpoint, for starting with
 // // spiffebundle_EndpointServer_ServeEndpoint.
-// spiffebundle_EndpointServer_EndpointInfo *
+// spiffebundle_EndpointInfo *
 // spiffebundle_EndpointServer_AddHttpsSpiffeEndpoint(
 //     spiffebundle_EndpointServer *server, const char *base_url,
 //     x509svid_Source *svid_source, err_t *error);
@@ -118,7 +137,7 @@ END_TEST
 //     x509svid_Source *svid_source);
 
 // // Get info for serving thread.
-// spiffebundle_EndpointServer_EndpointInfo *
+// spiffebundle_EndpointInfo *
 // spiffebundle_EndpointServer_GetEndpointInfo(
 //     spiffebundle_EndpointServer *server, const char *base_url, err_t
 //     *error);
@@ -143,7 +162,7 @@ Suite *endpoint_server_suite(void)
 {
     Suite *s = suite_create("spiffebundle_server");
     TCase *tc_core = tcase_create("core");
-    tcase_add_test(tc_core, test_spiffebundle_EndpointServer_Info_New_Free);
+    tcase_add_test(tc_core, test_spiffebundle_EndpointInfo_New_Free);
     tcase_add_test(tc_core, test_spiffebundle_EndpointServer_New_Free);
     // tcase_add_test(tc_core, test_federation_Endpoint_Config_SPIFFE);
     // tcase_add_test(tc_core, test_federation_Endpoint_Config_WEB);
