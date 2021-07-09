@@ -382,7 +382,7 @@ Suite *watcher_suite(void)
 {
     Suite *s = suite_create("watcher");
     TCase *tc_core = tcase_create("core");
-    /* tcase_add_test(tc_core,
+    tcase_add_test(tc_core,
                    test_workloadapi_Watcher_callback_is_called_on_update_once);
     tcase_add_test(tc_core,
                    test_workloadapi_newWatcher_creates_client_if_null);
@@ -390,9 +390,9 @@ Suite *watcher_suite(void)
     tcase_add_test(tc_core, test_workloadapi_newWatcher_applies_Options);
     tcase_add_test(tc_core,
                    test_workloadapi_Watcher_TimedWaitUntilUpdated_blocks);
-     *///tcase_add_test(tc_core, test_workloadapi_Watcher_WaitUntilUpdated_blocks);
+    tcase_add_test(tc_core, test_workloadapi_Watcher_WaitUntilUpdated_blocks);
     tcase_add_test(tc_core, test_workloadapi_Watcher_Start_blocks);
-    //tcase_add_test(tc_core, test_workloadapi_Watcher_Close);
+    tcase_add_test(tc_core, test_workloadapi_Watcher_Close);
 
     suite_add_tcase(s, tc_core);
 

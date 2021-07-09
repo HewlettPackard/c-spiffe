@@ -188,7 +188,7 @@ START_TEST(test_spiffebundle_Watcher_Start)
 {
     spiffebundle_Watcher *watcher = spiffebundle_Watcher_New();
     err_t err = spiffebundle_Watcher_Start(NULL);
-    ck_assert_uint_eq(err, ERROR1);
+    ck_assert_uint_eq(err, ERR_START);
 
     err = spiffebundle_Watcher_Start(watcher);
     ck_assert_uint_eq(err, NO_ERROR);
@@ -197,7 +197,7 @@ START_TEST(test_spiffebundle_Watcher_Start)
     nanosleep(&sleep_time, NULL);
     
     err = spiffebundle_Watcher_Stop(NULL);
-    ck_assert_uint_eq(err, ERROR1);
+    ck_assert_uint_eq(err, ERR_STOP);
 
     err = spiffebundle_Watcher_Stop(watcher);
 
@@ -249,7 +249,7 @@ START_TEST(test_spiffebundle_Watcher_GetStatus)
     spiffeid_TrustDomain td = { "example.org" };
     err_t err;
     int running_status = spiffebundle_Watcher_GetStatus(NULL, td, &err);
-    ck_assert_uint_eq(err, ERROR1);
+    ck_assert_uint_eq(err, ERR_NULL);
     ck_assert_int_eq(running_status, ENDPOINT_ERROR);
 
     spiffeid_TrustDomain null_td = { NULL };

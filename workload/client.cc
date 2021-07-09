@@ -301,7 +301,7 @@ err_t workloadapi_Client_SetAddress(workloadapi_Client *client,
 
     client->address = string_new(address);
     if(!client->address) {
-        return ERROR3;
+        return ERR_CREATE;
     }
     return NO_ERROR;
 }
@@ -452,7 +452,7 @@ err_t workloadapi_Client_watchX509Context(workloadapi_Client *client,
                == (int) grpc::StatusCode::INVALID_ARGUMENT) {
                 return ERR_STATUS_INVALID;
             }
-            return ERROR4; // no more messages.
+            return ERR_NO_MESSAGE; // no more messages.
         }
         workloadapi_Backoff_Reset(backoff);
         err_t err = NO_ERROR;
@@ -493,7 +493,7 @@ err_t workloadapi_Client_HandleWatchError(workloadapi_Client *client,
             return NO_ERROR;
         } else if(wait_ret == thrd_success) { // signaled by closeClient
             mtx_unlock(&(client->closed_mutex));
-            return ERR_CLOSING; // ERROR1 == client closing
+            return ERR_CLOSING; // ERR_CLOSING == client closing
         } else {
             mtx_unlock(&(client->closed_mutex));
             return ERR_CLOSED;
@@ -792,7 +792,7 @@ err_t workloadapi_Client_watchJWTBundles(workloadapi_Client *client,
                == (int) grpc::StatusCode::INVALID_ARGUMENT) {
                 return ERR_STATUS_INVALID;
             }
-            return ERROR4; // no more messages.
+            return ERR_NO_MESSAGE; // no more messages.
         }
         workloadapi_Backoff_Reset(backoff);
         err_t err = NO_ERROR;

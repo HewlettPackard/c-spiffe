@@ -76,7 +76,7 @@ spiffebundle_Bundle *spiffebundle_Watcher_GetBundleForTrustDomain(
     err_t *err)
 {
     if(!watcher) {
-        *err = ERROR1;
+        *err = ERR_NULL;
         return NULL;
     }
     if(trust_domain.name) {
@@ -151,7 +151,7 @@ err_t spiffebundle_Watcher_Start(spiffebundle_Watcher *watcher)
         }
         return NO_ERROR;
     }
-    return ERROR1;
+    return ERR_START;
 }
 
 err_t spiffebundle_Watcher_Stop(spiffebundle_Watcher *watcher)
@@ -174,7 +174,7 @@ err_t spiffebundle_Watcher_Stop(spiffebundle_Watcher *watcher)
         }
         return NO_ERROR;
     }
-    return ERROR1;
+    return ERR_STOP;
 }
 
 spiffebundle_Endpoint_StatusCode
@@ -182,7 +182,7 @@ spiffebundle_Watcher_GetStatus(spiffebundle_Watcher *watcher,
                                const spiffeid_TrustDomain td, err_t *err)
 {
     if(!watcher) {
-        *err = ERROR1;
+        *err = ERR_NULL;
         return ENDPOINT_ERROR; // not found
     }
     if(td.name) {

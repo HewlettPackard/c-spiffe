@@ -82,7 +82,10 @@ enum enum_err_t {
     ERR_NULL_SVID,
     ERR_NULL_STUB,
     ERR_BAD_ARGUMENT,
-    ERR_TIMEOUT
+    ERR_TIMEOUT,
+    ERR_NO_MESSAGE,
+    ERR_START,
+    ERR_STOP,
 };
 
 typedef enum enum_err_t err_t;
