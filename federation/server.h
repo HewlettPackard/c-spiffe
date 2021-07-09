@@ -1,13 +1,11 @@
 #ifndef INCLUDE_FEDERATION_SERVER_H
 #define INCLUDE_FEDERATION_SERVER_H
 
-#include "bundle/spiffebundle/bundle.h"
-#include "bundle/spiffebundle/set.h"
-#include "bundle/spiffebundle/source.h"
+#include "bundle/spiffebundle.h"
+#include "spiffeid/spiffeid.h"
+#include "svid/x509svid.h"
 #include "endpoint.h"
-#include "spiffeid/id.h"
-#include "svid/x509svid/source.h"
-#include "spiffeid/trustdomain.h"
+#include "spiffetls/spiffetls.h"
 #include "utils/util.h"
 #include <curl/curl.h>
 #include <threads.h>
@@ -18,25 +16,35 @@
 extern "C" {
 #endif
 
-typedef struct map_int_thread{
+typedef struct spiffebundle_EndpointServer spiffebundle_EndpointServer;
+
+typedef struct server_thread_info {
+    thrd_t* thread;
+    spiffebundle_EndpointServer* server;
+    string_t url;
+    uint port;
+} server_thread_info;
+
+typedef struct map_int_thread_info{
     int key;
-    thrd_t value;
-} map_int_thread;
+    server_thread_info *value;
+} map_int_thread_info;
 
 typedef struct map_string_spiffebundle_Source {
     string_t key;
     spiffebundle_Source *value;
-}map_string_spiffebundle_Source;
+} map_string_spiffebundle_Source;
 
 typedef struct spiffebundle_EndpointServer
 {  
     map_string_spiffebundle_Source* bundle_sources;
-    map_int_thread* serving_threads;
+    map_int_thread_info* serving_threads;
     x509svid_Source* svid_source;
     ///TODO: set of keys
     mtx_t mutex;
     
 } spiffebundle_EndpointServer;
+
 
 //allocates server
 spiffebundle_EndpointServer* spiffebundle_EndpointServer_New();
@@ -52,12 +60,12 @@ err_t spiffebundle_EndpointServer_UpdateBundle(spiffebundle_EndpointServer* serv
 //removes bundle from server.
 err_t spiffebundle_EndpointServer_RemoveBundle(spiffebundle_EndpointServer* server, const char* path);
 
-//load keys to use with 'https_spiffe'
+//load keys to use with 'https_web'
 err_t spiffebundle_EndpointServer_LoadKeys(spiffebundle_EndpointServer* server, const char* path);
 //unload keys
 err_t spiffebundle_EndpointServer_ClearKeys(spiffebundle_EndpointServer* server);
 
-//register a X509 SVID source for use with 'https_web'
+//register a X509 SVID source for use with 'https_spiffe'
 err_t spiffebundle_EndpointServer_RegisterSVIDSource(spiffebundle_EndpointServer* server, x509svid_Source* svid_source);
 
 //remove SVID source.
