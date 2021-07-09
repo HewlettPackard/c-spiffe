@@ -484,7 +484,7 @@ err_t workloadapi_Client_HandleWatchError(workloadapi_Client *client,
     mtx_lock(&(client->closed_mutex));
     if(client->closed) {
         mtx_unlock(&(client->closed_mutex));
-        return ERROR4;
+        return ERR_CLOSED;
     } else {
         int wait_ret = cnd_timedwait(&(client->closed_cond),
                                      &(client->closed_mutex), &retryAfter);
@@ -493,7 +493,7 @@ err_t workloadapi_Client_HandleWatchError(workloadapi_Client *client,
             return NO_ERROR;
         } else if(wait_ret == thrd_success) { // signaled by closeClient
             mtx_unlock(&(client->closed_mutex));
-            return ERROR1; // ERROR1 == client closing
+            return ERR_CLOSING; // ERROR1 == client closing
         } else {
             mtx_unlock(&(client->closed_mutex));
             return ERROR6;
@@ -786,11 +786,11 @@ err_t workloadapi_Client_watchJWTBundles(workloadapi_Client *client,
         if(!ok) {
             auto status = c_reader->Finish();
             if(status.error_code() == (int) grpc::StatusCode::CANCELLED) {
-                return ERROR1;
+                return ERR_STATUS_CANCELLED;
             }
             if(status.error_code()
                == (int) grpc::StatusCode::INVALID_ARGUMENT) {
-                return ERROR3;
+                return ERR_STATUS_INVALID;
             }
             return ERROR4; // no more messages.
         }

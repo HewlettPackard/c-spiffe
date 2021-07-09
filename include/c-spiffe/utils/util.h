@@ -31,9 +31,13 @@ typedef struct map_string_string {
 enum enum_err_t {
     NO_ERROR = 0,
     ERROR1,
+    ERR_STATUS_CANCELLED = ERROR1,
+    ERR_CLOSING = ERROR1,
     ERROR2,
     ERROR3,
+    ERR_STATUS_INVALID = ERROR3,
     ERROR4,
+    ERR_CLOSED = ERROR4,
     ERROR5,
     ERROR6,
     ERR_BAD_REQUEST,
@@ -76,10 +80,6 @@ enum enum_err_t {
     ERR_INVALID_JWT,
     ERR_INVALID_SVID,
     ERR_NULL_STUB,
-    ERR_CLOSED,
-    ERR_CLOSING,
-    ERR_STATUS_CANCELLED,
-    ERR_STATUS_INVALID,
     ERR_BAD_ARGUMENT,
     ERR_TIMEOUT
 };
