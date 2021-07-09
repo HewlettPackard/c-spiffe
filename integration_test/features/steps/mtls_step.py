@@ -42,7 +42,7 @@ def step_impl(context, language, container_name):
         os.system("/mnt/c-spiffe/integration_test/helpers/bash-general-scripts/ssh-run-go-server.sh %s %s" %(container_name, port))
         time.sleep(1)
     elif language == "c":
-        os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-run-c-server.sh %s" % container_name)
+        os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-run-c-server.sh %s %s" %(container_name, port))
         time.sleep(1)
     else:
         raise Exception("'%s' is not an available language for tls-listen. Choose 'c' or 'go'." % language)

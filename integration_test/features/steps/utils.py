@@ -112,9 +112,15 @@ def remove_federation_block(remote):
 
 def create_federation_entries(hostname, trust_domain, federated_trust_domain, workload_id="A"):
     workload_id = workload_id[-1]
-    user = "root"
+    user = "client-workload"
     if workload_id == "C":
         user = "server-workload"
+    elif workload_id == "A":
+        run_federation_entries_creation(hostname, trust_domain, federated_trust_domain, workload_id, "root")    
+    run_federation_entries_creation(hostname, trust_domain, federated_trust_domain, workload_id, user)
+    
+
+def run_federation_entries_creation(hostname, trust_domain, federated_trust_domain, workload_id, user):
     os.system("ssh root@{0} spire-server entry create \
 	-parentID spiffe://{1}/myagent \
 	-spiffeID spiffe://{1}/myworkload{3} \
