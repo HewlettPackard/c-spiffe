@@ -69,7 +69,7 @@ x509svid_SVID **workloadapi_parseX509SVIDs(X509SVIDResponse *resp,
                                            bool firstOnly, err_t *err)
 {
     if(!resp) {
-        *err = ERROR2;
+        *err = ERR_NOT_PARSE;
         return NULL;
     }
     x509svid_SVID **x509svids = NULL;
@@ -399,7 +399,7 @@ err_t workloadapi_Client_WatchX509Context(workloadapi_Client *client,
         err = workloadapi_Client_HandleWatchError(client, err, &backoff);
         if(err == (int) grpc::CANCELLED
            || err == (int) grpc::INVALID_ARGUMENT) {
-            return err;
+            return ERR_INVALID_DATA;
         } else if(err != NO_ERROR) {
             return err;
         }

@@ -234,7 +234,7 @@ START_TEST(test_workloadapi_parseX509Context)
     ctx = workloadapi_parseX509Context(NULL, &err);
 
     ck_assert_ptr_eq(ctx, NULL);
-    ck_assert_int_eq(err, ERROR2);
+    ck_assert_int_eq(err, ERR_NOT_PARSE);
 }
 END_TEST
 
@@ -837,7 +837,7 @@ START_TEST(test_workloadapi_Client_WatchX509Context)
 
     err = workloadapi_Client_WatchX509Context(client, watcher);
 
-    ck_assert_int_eq(err, grpc::StatusCode::CANCELLED);
+    ck_assert_int_eq(err, ERR_INVALID_DATA);
 
     workloadapi_Client_Close(client);
     workloadapi_Client_Free(client);
