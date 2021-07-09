@@ -22,7 +22,6 @@ def step_impl(context, process, container_name):
     elif context.workload_c in context.tags:
         workload_id = context.workload_c
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-stop-process.sh %s %s" % (process, container_name))
-    time.sleep(5)
 
 
 @given('The second agent is turned on inside "{container_name}" container')
@@ -52,7 +51,6 @@ def step_impl(context, language, container_name):
 def step_impl(context, language, container_name):
     if language == "go":
         os.system("/mnt/c-spiffe/integration_test/helpers/bash-general-scripts/ssh-stop-go-server.sh %s" % container_name)
-        time.sleep(1)
     elif language == "c":
         os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-stop-c-server.sh %s" % container_name)
     else:

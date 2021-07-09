@@ -63,7 +63,6 @@ def step_impl(context, document):
 @when('The agent is turned off')
 def step_impl(context):
     os.system("pkill -9 spire-agent")
-    time.sleep(5)
 
 
 @when('The agent is turned on')

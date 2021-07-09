@@ -25,7 +25,6 @@ def step_impl(context, document):
 @when('The server is turned off')
 def step_impl(context):
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-stop-process.sh server spire-server")
-    time.sleep(5)
     
 
 @when('The server is turned on')
