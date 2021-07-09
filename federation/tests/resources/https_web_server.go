@@ -6,6 +6,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/spiffe/go-spiffe/v2/bundle/spiffebundle"
 	"github.com/spiffe/go-spiffe/v2/federation"
@@ -51,7 +52,10 @@ func (s *fakeSource) GetBundleForTrustDomain(trustDomain spiffeid.TrustDomain) (
 }
 
 func main() {
-
+	var address string = "127.0.0.1:433"
+	if len(os.Args) > 1 {
+		address = os.Args[1]
+	}
 	// generate a `Certificate` struct
 	cert, _ := tls.LoadX509KeyPair("./resources/example.org.crt", "./resources/example.org.key")
 	trustDomain, _ := spiffeid.TrustDomainFromString("example.org")
@@ -64,7 +68,7 @@ func main() {
 	handler := federation.Handler(trustDomain, source, logger.Writer(writer))
 	// create a custom server with `TLSConfig`
 	s := &http.Server{
-		Addr:    "example.org:443",
+		Addr:    address,
 		Handler: handler, // use `http.DefaultServeMux`
 		TLSConfig: &tls.Config{
 			Certificates: []tls.Certificate{cert},
