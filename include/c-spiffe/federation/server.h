@@ -1,12 +1,12 @@
 #ifndef INCLUDE_FEDERATION_SERVER_H
 #define INCLUDE_FEDERATION_SERVER_H
 
-#include "bundle/spiffebundle.h"
-#include "endpoint.h"
-#include "spiffeid/spiffeid.h"
-#include "spiffetls/spiffetls.h"
-#include "svid/x509svid.h"
-#include "utils/util.h"
+#include "c-spiffe/bundle/spiffebundle.h"
+#include "c-spiffe/federation/endpoint.h"
+#include "c-spiffe/spiffeid/spiffeid.h"
+#include "c-spiffe/spiffetls/spiffetls.h"
+#include "c-spiffe/svid/x509svid.h"
+#include "c-spiffe/utils/util.h"
 #include <curl/curl.h>
 #include <openssl/x509.h>
 #include <threads.h>
