@@ -36,9 +36,9 @@ Feature: Federation X509 Bundle
         Examples:
             | dial_type | listen_type |
             |     go    |      go     |
-            # |     c     |      go     |
-            # |     go    |      c      |
-            # |     c     |      c      |
+            |     c     |      go     |
+            |     go    |      c      |
+            |     c     |      c      |
 
 
     @Sprint12 @updated-conf @WlC

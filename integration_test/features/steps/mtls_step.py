@@ -74,7 +74,7 @@ def step_impl(context, message, container_name, language):
         time.sleep(1)
         result = client.stderr
     elif language == "c":
-        client = os.popen("/mnt/c-spiffe/build/spiffetls/c_dial '%s' %s %s %s" % (message, socket.gethostbyname(container_name), context.default_echo_server_port, trust_domain))
+        client = os.popen("/mnt/c-spiffe/build/spiffetls/c_dial '%s' %s %s %s" % (message, socket.gethostbyname(container_name), port, trust_domain))
         result = client.read()
     context.result = result
 
