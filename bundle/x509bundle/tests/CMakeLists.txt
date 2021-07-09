@@ -9,7 +9,6 @@ target_link_libraries(check_x509bundle bundle ${CHECK_LIBRARIES}
   spiffeid
   internal
   uriparser
-  jansson
   cjose
   subunit
   check_pic
@@ -27,7 +26,6 @@ target_link_libraries(check_x509set bundle ${CHECK_LIBRARIES}
   spiffeid
   internal
   uriparser
-  jansson
   cjose
   subunit
   check_pic

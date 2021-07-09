@@ -2,7 +2,6 @@
 #define INCLUDE_BUNDLE_X509BUNDLE_BUNDLE_H
 
 #include "c-spiffe/spiffeid/trustdomain.h"
-#include "c-spiffe/utils/util.h"
 #include <openssl/x509.h>
 #include <threads.h>
 

@@ -1,7 +1,7 @@
 #include "c-spiffe/federation/endpoint.h"
-
 #include <openssl/pem.h>
 #include <openssl/ssl.h>
+#include <uriparser/Uri.h>
 
 // from "spiffeid/id.h"
 static UriUriA URL_parse(const char *str, err_t *err)

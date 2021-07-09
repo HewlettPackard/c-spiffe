@@ -1,9 +1,6 @@
 #ifndef INCLUDE_WORKLOAD_WATCHER_H
 #define INCLUDE_WORKLOAD_WATCHER_H
 
-#include "c-spiffe/bundle/x509bundle/bundle.h"
-#include "c-spiffe/bundle/x509bundle/set.h"
-#include "c-spiffe/svid/x509svid/svid.h"
 #include "c-spiffe/workload/client.h"
 #include "c-spiffe/workload/x509context.h"
 #include <threads.h>

@@ -2,15 +2,10 @@
 #define INCLUDE_FEDERATION_WATCHER_H
 
 #include "c-spiffe/bundle/spiffebundle/bundle.h"
-#include "c-spiffe/bundle/spiffebundle/set.h"
 #include "c-spiffe/bundle/spiffebundle/source.h"
 #include "c-spiffe/federation/endpoint.h"
-#include "c-spiffe/spiffeid/id.h"
 #include "c-spiffe/spiffeid/trustdomain.h"
 #include "c-spiffe/utils/util.h"
-#include <curl/curl.h>
-#include <threads.h>
-#include <uriparser/Uri.h>
 
 #ifdef __cplusplus
 extern "C" {

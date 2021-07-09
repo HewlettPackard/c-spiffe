@@ -1,5 +1,10 @@
+#include "c-spiffe/internal/pemutil/pem.h"
+#include "c-spiffe/internal/x509util/util.h"
 #include "c-spiffe/svid/x509svid/svid.h"
 #include <openssl/bn.h>
+#include <openssl/ecdsa.h>
+#include <openssl/rsa.h>
+#include <openssl/x509v3.h>
 
 x509svid_SVID *x509svid_Load(const char *certfile, const char *keyfile,
                              err_t *err)

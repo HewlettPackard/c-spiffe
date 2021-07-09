@@ -1,7 +1,6 @@
 #ifndef INCLUDE_WORKLOAD_CLIENT_H
 #define INCLUDE_WORKLOAD_CLIENT_H
 
-#include "c-spiffe/bundle/x509bundle/set.h"
 #include "c-spiffe/svid/jwtsvid/svid.h"
 #include "c-spiffe/svid/x509svid/svid.h"
 #include "c-spiffe/workload/backoff.h"

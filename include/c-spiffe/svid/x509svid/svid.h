@@ -1,12 +1,8 @@
 #ifndef INCLUDE_SVID_X509SVID_SVID_H
 #define INCLUDE_SVID_X509SVID_SVID_H
 
-#include "c-spiffe/internal/pemutil/pem.h"
-#include "c-spiffe/internal/x509util/util.h"
 #include "c-spiffe/spiffeid/id.h"
-#include <openssl/ecdsa.h>
 #include <openssl/evp.h>
-#include <openssl/rsa.h>
 #include <openssl/x509.h>
 
 #ifdef __cplusplus
