@@ -17,13 +17,13 @@ def before_all(context):
     context.second_trust_domain = context.config.userdata['second_trust_domain']
 
     os.system(PARENT_PATH + "bash-spire-scripts/ssh-start-server.sh")
-    time.sleep(10)
+    time.sleep(5)
     os.system(PARENT_PATH + "bash-spire-scripts/ssh-create-entries.sh")
     time.sleep(2)
     os.system(PARENT_PATH + "bash-spire-scripts/ssh-generate-token.sh")
     time.sleep(2)
     os.system(PARENT_PATH + "bash-spire-scripts/ssh-connect-agent.sh")
-    time.sleep(5)
+    time.sleep(7)
 
 
 def after_all(context):
