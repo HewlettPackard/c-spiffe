@@ -1,8 +1,8 @@
-#include "bundle/spiffebundle.h"
-#include "federation/federation.h"
-#include "spiffeid/spiffeid.h"
-#include "spiffetls/spiffetls.h"
-#include "utils/util.h"
+#include "c-spiffe/bundle/spiffebundle.h"
+#include "c-spiffe/spiffeid/spiffeid.h"
+#include "c-spiffe/spiffetls/spiffetls.h"
+#include "c-spiffe/utils/util.h"
+#include "c-spiffe/federation/federation.h"
 #include <check.h>
 
 START_TEST(test_spiffebundle_EndpointInfo_New_Free)
