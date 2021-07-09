@@ -48,6 +48,7 @@ typedef struct map_string_spiffebundle_Source {
 
 typedef struct spiffebundle_EndpointServer {
     map_string_spiffebundle_Source *bundle_sources;
+    map_string_string *bundle_tds;
     map_string_endpoint_info *endpoints;
     mtx_t mutex;
 } spiffebundle_EndpointServer;
@@ -60,12 +61,12 @@ err_t spiffebundle_EndpointServer_Free(spiffebundle_EndpointServer *server);
 // adds bundle source to server, will be served at path.
 err_t spiffebundle_EndpointServer_RegisterBundle(
     spiffebundle_EndpointServer *server, const char *path,
-    spiffebundle_Source *bundle_source);
+    spiffebundle_Source *bundle_source, spiffeid_TrustDomain td);
 
 // updates bundle source.
 err_t spiffebundle_EndpointServer_UpdateBundle(
     spiffebundle_EndpointServer *server, const char *path,
-    spiffebundle_Source *new_source);
+    spiffebundle_Source *new_source, spiffeid_TrustDomain td);
 
 // removes bundle from server.
 err_t spiffebundle_EndpointServer_RemoveBundle(
@@ -76,11 +77,11 @@ err_t spiffebundle_EndpointServer_RemoveBundle(
 // spiffebundle_EndpointServer_ServeEndpoint
 spiffebundle_EndpointServer_EndpointInfo *
 spiffebundle_EndpointServer_AddHttpsWebEndpoint(
-    spiffebundle_EndpointServer *server, const char *base_url, X509 *cert,
+    spiffebundle_EndpointServer *server, const char *base_url, X509 **cert,
     EVP_PKEY *priv_key, err_t *error);
 
 err_t spiffebundle_EndpointServer_SetHttpsWebEndpointAuth(
-    spiffebundle_EndpointServer *server, const char *base_url, X509 *cert,
+    spiffebundle_EndpointServer *server, const char *base_url, X509 **cert,
     EVP_PKEY *priv_key);
 
 // Register a HTTPS_SPIFFE endpoint, for starting with
