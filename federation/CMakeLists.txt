@@ -8,6 +8,7 @@ project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C)
 set(LIB_FEDERATION 
 ${PROJECT_SOURCE_DIR}/endpoint.c
 ${PROJECT_SOURCE_DIR}/watcher.c
+${PROJECT_SOURCE_DIR}/server.c
 ${PROJECT_SOURCE_DIR}/../utils/util.c
 ${PROJECT_SOURCE_DIR}/../bundle/spiffebundle/source.c
 )
