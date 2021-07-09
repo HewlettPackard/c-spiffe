@@ -893,15 +893,15 @@ START_TEST(test_workloadapi_Client_WatchX509Context)
 
     err = workloadapi_Client_watchX509Context(client, watcher,
                                               (workloadapi_Backoff *) NULL);
-    ck_assert_int_eq(err, ERROR2);
+    ck_assert_int_eq(err, ERR_NULL);
 
     watcher = NULL;
     err = workloadapi_Client_WatchX509Context(client, watcher);
-    ck_assert_int_eq(err, ERROR2);
+    ck_assert_int_eq(err, ERR_NULL);
 
     err = workloadapi_Client_watchX509Context(client, watcher,
                                               (workloadapi_Backoff *) 0x1);
-    ck_assert_int_eq(err, ERROR2);
+    ck_assert_int_eq(err, ERR_NULL);
 
     client = NULL;
     err = workloadapi_Client_WatchX509Context(client, watcher);

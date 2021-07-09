@@ -388,7 +388,7 @@ err_t workloadapi_Client_WatchX509Context(workloadapi_Client *client,
     if(!client)
         return ERR_NULL;
     if(!watcher)
-        return ERROR2;
+        return ERR_NULL;
 
     workloadapi_Backoff backoff = workloadapi_NewBackoff({ 1, 0 }, { 30, 0 });
 
@@ -415,10 +415,10 @@ err_t workloadapi_Client_watchX509Context(workloadapi_Client *client,
         return ERR_NULL;
     }
     if(!watcher) {
-        return ERROR2;
+        return ERR_NULL;
     }
     if(!backoff) {
-        return ERROR2;
+        return ERR_NULL;
     }
 
     grpc::ClientContext *ctx = new grpc::ClientContext();
