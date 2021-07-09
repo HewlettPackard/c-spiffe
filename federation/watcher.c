@@ -113,9 +113,9 @@ static int watch_endpoint(void *arg)
         struct timespec waittime
             = { .tv_sec = DEFAULT_REFRESH_HINT, .tv_nsec = 0 };
 
-        if(bundle->refresh_hint.tv_sec > 0
-           || (bundle->refresh_hint.tv_sec == 0
-               && bundle->refresh_hint.tv_nsec > 0)) {
+        if((bundle->refresh_hint.tv_sec == 0
+            && bundle->refresh_hint.tv_nsec > 0)
+           || bundle->refresh_hint.tv_sec > 0) {
             waittime = bundle->refresh_hint;
         }
 
