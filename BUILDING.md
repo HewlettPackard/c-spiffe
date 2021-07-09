@@ -86,7 +86,16 @@ Refer to [Minimal Installation](MINOR-INSTALLATION.md) for more information.
 * gcovr (9.3.0-17ubuntu1~20.04)
 * libgtest-dev (2.09-1)
 * libgmock-dev (1.10.0-2)
-
+* go (1.13.8)
+* golang (1.13.8)
+* go-spiffe/v2:  
+    ```bash
+    go get -u github.com/spiffe/go-spiffe/v2/bundle/spiffebundle && \
+    go get -u github.com/spiffe/go-spiffe/v2/federation && \
+    go get -u github.com/spiffe/go-spiffe/v2/logger && \
+    go get -u github.com/spiffe/go-spiffe/v2/spiffeid && \
+    go get -u github.com/spiffe/go-spiffe/v2/svid/x509svid
+    ```  
 ### Compile gRPC
 
 In order to create a pure C lib, supporting gRPC, which is a C++ lib, it is necessarty to compile gRPC code together with c-spiffe code. The following steps can be used for compiling gRPC:
