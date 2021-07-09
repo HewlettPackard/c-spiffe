@@ -214,6 +214,7 @@ START_TEST(test_federation_Endpoint_fetch_SPIFFE);
               NULL); // sleep for half a second to let the server set itself up
     err_t err;
     spiffeid_TrustDomain td = { "example.org" };
+    spiffeid_TrustDomain null_td = { NULL };
     x509bundle_Bundle *x509bundle
         = x509bundle_Load(td, "./resources/example.org.crt", &err);
 
@@ -240,6 +241,13 @@ START_TEST(test_federation_Endpoint_fetch_SPIFFE);
     resolve_list
         = curl_slist_append(resolve_list, "example.org:443:127.0.0.1");
     curl_easy_setopt(tested->curl_handle, CURLOPT_RESOLVE, resolve_list);
+    
+    err = spiffebundle_Endpoint_Fetch(NULL);
+    ck_assert_int_eq(err, ERROR1);
+    tested->td = null_td;
+    err = spiffebundle_Endpoint_Fetch(tested);
+    ck_assert_int_eq(err, ERROR2);
+    tested->td = td;
 
     err = spiffebundle_Endpoint_Fetch(tested);
     nanosleep(&sleep_time, NULL);
