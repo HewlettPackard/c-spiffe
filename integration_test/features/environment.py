@@ -19,7 +19,6 @@ def before_all(context):
     os.system(PARENT_PATH + "bash-spire-scripts/ssh-start-server.sh")
     time.sleep(5)
     os.system(PARENT_PATH + "bash-spire-scripts/ssh-create-entries.sh")
-    time.sleep(2)
     os.system(PARENT_PATH + "bash-spire-scripts/ssh-generate-token.sh")
     time.sleep(2)
     os.system(PARENT_PATH + "bash-spire-scripts/ssh-connect-agent.sh")
@@ -85,4 +84,3 @@ def after_scenario(context, scenario):
     if "entry-removed" in scenario.tags:
         if context.workload_b in scenario.tags:
             os.system("ssh root@spire-server spire-server entry create -parentID spiffe://example.org/myagent -spiffeID spiffe://example.org/myworkloadB -selector unix:user:server-workload")
-            time.sleep(2)

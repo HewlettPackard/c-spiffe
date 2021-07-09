@@ -34,4 +34,3 @@ def step_impl(context):
     time.sleep(5)
     if not is_entry_created("spire-server", context.workload_b):
         os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-create-entries.sh")
-        time.sleep(2)

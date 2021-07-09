@@ -126,4 +126,3 @@ def run_federation_entries_creation(hostname, trust_domain, federated_trust_doma
 	-spiffeID spiffe://{1}/myworkload{3} \
 	-selector unix:user:{4} \
 	-federatesWith \"spiffe://{2}\"".format(hostname, trust_domain, federated_trust_domain, workload_id, user))
-    time.sleep(2)

@@ -124,7 +124,6 @@ def step_impl(context, container_name):
     time.sleep(5)
     if not is_entry_created(container_name, context.workload_c):
         os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-create-entries.sh 2")
-        time.sleep(2)
 
 
 @then('I check that mTLS connection did not succeed')
