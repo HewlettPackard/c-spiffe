@@ -32,6 +32,7 @@ install(
 set(HEADERS_FEDERATION
 ${PROJECT_SOURCE_DIR}/../include/c-spiffe/federation/endpoint.h
 ${PROJECT_SOURCE_DIR}/../include/c-spiffe/federation/watcher.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/federation/server.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
