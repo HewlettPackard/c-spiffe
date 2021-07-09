@@ -29,13 +29,11 @@ def after_all(context):
     os.system("pkill -9 spire-agent")
     time.sleep(5)
     os.system(PARENT_PATH + "bash-general-scripts/clean.sh")
-    time.sleep(1)
 
 
 def before_feature(context, feature):
     if "mtls" in feature.tags:
         os.system(PARENT_PATH + "bash-general-scripts/clean.sh")
-        time.sleep(1)
     if "federation" in feature.tags:
         os.system("ssh root@workload2 \"cp {0}/agent/agent.conf {0}/agent/agent{1}.conf\"".format(context.spire_conf, context.workload_c))
         time.sleep(2)
@@ -80,7 +78,6 @@ def after_scenario(context, scenario):
             And   I set the "agent" "server address" to "spire-server" inside "workload2" container
         ''')
         os.system(PARENT_PATH + "bash-general-scripts/clean.sh")
-        time.sleep(1)
     if "entry-removed" in scenario.tags:
         if context.workload_b in scenario.tags:
             os.system("ssh root@spire-server spire-server entry create -parentID spiffe://example.org/myagent -spiffeID spiffe://example.org/myworkloadB -selector unix:user:server-workload")
