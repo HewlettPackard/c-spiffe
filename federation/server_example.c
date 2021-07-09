@@ -1,4 +1,4 @@
-#include "server.h"
+#include "c-spiffe/federation/server.h"
 
 int main(void)
 {
@@ -51,8 +51,11 @@ int main(void)
                 error);
         exit(error);
     }
-    spiffebundle_EndpointServer_AddHttpsWebEndpoint(server, domain_name, certs,
-                                                    priv_key, &error);
+    x509svid_SVID* svid = x509svid_newSVID(certs,priv_key,&error);
+    x509svid_Source* source = x509svid_SourceFromSVID(svid);
+    spiffebundle_EndpointServer_AddHttpsSpiffeEndpoint(server, domain_name,source, &error);
+    // spiffebundle_EndpointServer_AddHttpsWebEndpoint(server, domain_name, certs,
+    //                                                 priv_key, &error);
     if(error) {
         fprintf(stderr, "error(%d): Couldn't add endpoint!!!!!", error);
         exit(error);
@@ -68,8 +71,9 @@ int main(void)
     printf("Press ENTER to stop.\n");
     char ch;
     scanf("%c", &ch);
-
+    printf("stopping server\n");
     error = spiffebundle_EndpointServer_Stop(server);
+    printf("freeing server\n");
     spiffebundle_EndpointServer_Free(server);
     BIO_free(stderr_bio);
     return 0;
