@@ -34,6 +34,8 @@ typedef struct spiffebundle_EndpointServer
     map_int_thread* serving_threads;
     x509svid_Source* svid_source;
     ///TODO: set of keys
+    mtx_t mutex;
+    
 } spiffebundle_EndpointServer;
 
 //allocates server
@@ -68,7 +70,7 @@ int spiffebundle_EndpointServer_ServeHTTPSWeb(spiffebundle_EndpointServer* serve
 int spiffebundle_EndpointServer_ServeHTTPSSpiffe(spiffebundle_EndpointServer* server, const char* base_url, uint port, err_t* error);
 
 //stops serving from indicated thread.
-err_t spiffebundle_EndpointServer_Stop(spiffebundle_EndpointServer* server, int thread_id);
+err_t spiffebundle_EndpointServer_Stop(spiffebundle_EndpointServer* server, int thread_key);
 
 //stops serving from all threads.
 err_t spiffebundle_EndpointServer_StopAll(spiffebundle_EndpointServer* server);
