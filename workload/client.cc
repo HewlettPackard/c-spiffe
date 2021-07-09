@@ -530,7 +530,7 @@ workloadapi_Client_FetchX509Context(workloadapi_Client *client, err_t *error)
         return ret;
     } else {
         // could not fetch x509 context
-        *error = ERROR1;
+        *error = ERR_BAD_REQUEST;
         return NULL;
     }
 }
@@ -562,7 +562,7 @@ x509bundle_Set *workloadapi_Client_FetchX509Bundles(workloadapi_Client *client,
         return ret_set;
     } else {
         // could not fetch x509 bundles
-        *err = ERROR1;
+        *err = ERR_BAD_REQUEST;
         return NULL;
     }
 }
@@ -594,7 +594,7 @@ x509svid_SVID **workloadapi_Client_FetchX509SVIDs(workloadapi_Client *client,
         return ret_svids;
     } else {
         // could not parse x509 svids
-        *err = ERROR1;
+        *err = ERR_BAD_REQUEST;
         return NULL;
     }
 }
@@ -634,7 +634,7 @@ x509svid_SVID *workloadapi_Client_FetchX509SVID(workloadapi_Client *client,
         return ret_svid; // no response -> no bundle
     } else {
         // could not fetch x509 svid;
-        *err = ERROR1;
+        *err = ERR_BAD_REQUEST;
         return NULL;
     }
 }
@@ -677,7 +677,7 @@ jwtsvid_SVID *workloadapi_Client_FetchJWTSVID(workloadapi_Client *client,
         return workloadapi_parseJWTSVID(&resp, params, err);
     } else {
         // could not fetch jwt svid
-        *err = ERROR1;
+        *err = ERR_BAD_REQUEST;
         return NULL;
     }
 }
@@ -704,7 +704,7 @@ jwtbundle_Set *workloadapi_Client_FetchJWTBundles(workloadapi_Client *client,
         return workloadapi_parseJWTBundles(&resp, err);
     } else {
         // could not fetch jwt bundles
-        *err = ERROR1;
+        *err = ERR_BAD_REQUEST;
         return NULL;
     }
 }
@@ -734,7 +734,7 @@ jwtsvid_SVID *workloadapi_Client_ValidateJWTSVID(workloadapi_Client *client,
         return svid;
     } else {
         // could not validate jwt svid
-        *err = ERROR1;
+        *err = ERR_BAD_REQUEST;
         return NULL;
     }
 }
