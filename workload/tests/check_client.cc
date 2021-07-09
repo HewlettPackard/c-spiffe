@@ -98,7 +98,7 @@ START_TEST(test_workloadapi_parseX509Bundles)
     set = workloadapi_parseX509Bundles(NULL, &err);
 
     ck_assert_ptr_eq(set, NULL);
-    ck_assert_int_eq(err, ERROR1);
+    ck_assert_int_eq(err, ERR_NULL);
 }
 END_TEST
 
@@ -121,7 +121,7 @@ START_TEST(test_workloadapi_NewClient)
 
     // NULL client test.
     error = workloadapi_Client_Free(NULL);
-    ck_assert_int_eq(error, ERROR1);
+    ck_assert_int_eq(error, ERR_NULL);
 }
 END_TEST
 
@@ -325,7 +325,7 @@ START_TEST(test_workloadapi_Client_Close)
 
     // NULL client test.
     err = workloadapi_Client_Close(NULL);
-    ck_assert_int_eq(err, ERROR1);
+    ck_assert_int_eq(err, ERR_NULL);
 
     // close client test.
     err = workloadapi_Client_Close(client);
@@ -336,12 +336,12 @@ START_TEST(test_workloadapi_Client_Close)
 
     // close client with null stub test.
     err = workloadapi_Client_Close(client);
-    ck_assert_int_eq(err, ERROR3);
+    ck_assert_int_eq(err, ERR_NULL_STUB);
 
     // close closed client test.
     client->stub = (workloadapi_Stub *) 0x1; // check-passing invalid value
     err = workloadapi_Client_Close(client);
-    ck_assert_int_eq(err, ERROR2);
+    ck_assert_int_eq(err, ERR_CLOSED);
 
     client->stub = NULL; // mem safety
 
@@ -357,7 +357,7 @@ START_TEST(test_workloadapi_Client_Connect_uses_stub)
 
     // NULL client test.
     err = workloadapi_Client_Connect(NULL);
-    ck_assert_int_eq(err, ERROR1);
+    ck_assert_int_eq(err, ERR_NULL);
 
     // normal constructor test
     workloadapi_Client *client = workloadapi_NewClient(&err);
@@ -382,14 +382,14 @@ START_TEST(test_workloadapi_Client_Connect_uses_stub)
 
     // null test to setStub
     err = workloadapi_Client_SetStub(NULL, NULL);
-    ck_assert_int_eq(err, ERROR1);
+    ck_assert_int_eq(err, ERR_NULL);
 
     // setAddress tests
     err = workloadapi_Client_SetAddress(NULL, NULL);
-    ck_assert_int_eq(err, ERROR1);
+    ck_assert_int_eq(err, ERR_NULL);
 
     err = workloadapi_Client_SetAddress(client, NULL);
-    ck_assert_int_eq(err, ERROR2);
+    ck_assert_int_eq(err, ERR_NOT_PARSE);
 
     // sets address to "fake"
     err = workloadapi_Client_SetAddress(client, "unix:///tmp/not_agent.sock");
@@ -406,7 +406,7 @@ START_TEST(test_workloadapi_Client_Connect_uses_stub)
 
     // setHeader tests
     err = workloadapi_Client_AddHeader(NULL, NULL, NULL);
-    ck_assert_int_eq(err, ERROR1);
+    ck_assert_int_eq(err, ERR_NULL);
 
     workloadapi_Client_setDefaultHeaderOption(client, NULL);
 
@@ -439,7 +439,7 @@ START_TEST(test_workloadapi_parseJWTSVID_null_or_empty)
 
     // then we should get no SVID, with an ERROR1 error
     ck_assert_ptr_eq(svid, NULL);
-    ck_assert_int_eq(err, ERROR1); // NULL pointer error
+    ck_assert_int_eq(err, ERR_NULL); // NULL pointer error
 
     // given misc parameters and an empty response (no svid)
     string_t aud = string_new("audience1");
@@ -450,9 +450,9 @@ START_TEST(test_workloadapi_parseJWTSVID_null_or_empty)
     // when we try to parse the response for a JWTSVID
     svid = workloadapi_parseJWTSVID(resp, &params, &err);
 
-    // then we should get no SVID, with a ERROR2 error
+    // then we should get no SVID, with a ERR_NULL_SVID error
     ck_assert_ptr_eq(svid, NULL);
-    ck_assert_int_eq(err, ERROR2);
+    ck_assert_int_eq(err, ERR_NULL_SVID);
     util_string_t_Free(aud);
 }
 END_TEST
@@ -466,7 +466,7 @@ START_TEST(test_workloadapi_parseJWTBundles_null_or_empty)
 
     // then we should get no SVID, with an ERROR1 error
     ck_assert_ptr_eq(set, NULL);
-    ck_assert_int_eq(err, ERROR1); // NULL pointer error
+    ck_assert_int_eq(err, ERR_NULL); // NULL pointer error
 }
 END_TEST
 
@@ -905,10 +905,10 @@ START_TEST(test_workloadapi_Client_WatchX509Context)
 
     client = NULL;
     err = workloadapi_Client_WatchX509Context(client, watcher);
-    ck_assert_int_eq(err, ERROR1);
+    ck_assert_int_eq(err, ERR_NULL);
     err = workloadapi_Client_watchX509Context(client, watcher,
                                               (workloadapi_Backoff *) 0x1);
-    ck_assert_int_eq(err, ERROR2);
+    ck_assert_int_eq(err, ERR_NULL);
 }
 END_TEST
 
@@ -985,22 +985,22 @@ START_TEST(test_workloadapi_Client_WatchJWTBundles)
 
     err = workloadapi_Client_watchJWTBundles(client, watcher,
                                              (workloadapi_Backoff *) NULL);
-    ck_assert_int_eq(err, ERROR2);
+    ck_assert_int_eq(err, ERR_NULL);
 
     watcher = NULL;
     err = workloadapi_Client_WatchJWTBundles(client, watcher);
-    ck_assert_int_eq(err, ERROR2);
+    ck_assert_int_eq(err, ERR_NULL);
 
     err = workloadapi_Client_watchJWTBundles(client, watcher,
                                              (workloadapi_Backoff *) 0x1);
-    ck_assert_int_eq(err, ERROR2);
+    ck_assert_int_eq(err, ERR_NULL);
 
     client = NULL;
     err = workloadapi_Client_WatchJWTBundles(client, watcher);
-    ck_assert_int_eq(err, ERROR1);
+    ck_assert_int_eq(err, ERR_NULL);
     err = workloadapi_Client_watchJWTBundles(client, watcher,
                                              (workloadapi_Backoff *) 0x1);
-    ck_assert_int_eq(err, ERROR2);
+    ck_assert_int_eq(err, ERR_NULL);
 }
 END_TEST
 

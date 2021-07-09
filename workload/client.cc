@@ -61,7 +61,7 @@ x509bundle_Set *workloadapi_parseX509Bundles(const X509SVIDResponse *rep,
         return set;
     }
     // null pointer error
-    *err = ERROR1;
+    *err = ERR_NULL;
     return NULL;
 }
 
@@ -114,7 +114,7 @@ workloadapi_X509Context *workloadapi_parseX509Context(X509SVIDResponse *resp,
         }
         arrfree(svids);
         x509bundle_Set_Free(bundles);
-        *err = ERROR5;
+        *err = ERR_NOT_PARSE;
         return NULL;
     }
     cntx->bundles = bundles;
@@ -144,12 +144,12 @@ jwtsvid_SVID *workloadapi_parseJWTSVID(const JWTSVIDResponse *resp,
             return svid;
         } else {
             // no SVID returned
-            *err = ERROR2;
+            *err = ERR_NULL_SVID;
             return NULL;
         }
     }
     // null pointer error
-    *err = ERROR1;
+    *err = ERR_NULL;
     return NULL;
 }
 
@@ -176,7 +176,7 @@ jwtbundle_Set *workloadapi_parseJWTBundles(const JWTBundlesResponse *resp,
         return set;
     }
     // null pointer error
-    *err = ERROR1;
+    *err = ERR_NULL;
     return NULL;
 }
 
@@ -185,7 +185,7 @@ workloadapi_Client *workloadapi_NewClient(err_t *error)
     workloadapi_Client *client
         = (workloadapi_Client *) calloc(1, sizeof *client);
     if(!client) {
-        *error = ERROR1;
+        *error = ERR_NULL;
         return NULL;
     }
     client->stub = NULL;
@@ -205,7 +205,7 @@ workloadapi_Client *workloadapi_NewClient(err_t *error)
 err_t workloadapi_Client_Free(workloadapi_Client *client)
 {
     if(!client) {
-        return ERROR1;
+        return ERR_NULL;
     }
 
     util_string_arr_t_Free(
@@ -223,19 +223,19 @@ err_t workloadapi_Client_Free(workloadapi_Client *client)
 err_t workloadapi_Client_Connect(workloadapi_Client *client)
 {
     if(!client) {
-        return ERROR1;
+        return ERR_NULL;
     }
     // if client already has a stub, we don't create a new one.
     if(!client->stub) {
         std::shared_ptr<grpc::ChannelInterface> chan = grpc::CreateChannel(
             client->address, grpc::InsecureChannelCredentials());
         if(!chan) {
-            return ERROR2;
+            return ERR_NULL;
         }
         std::unique_ptr<SpiffeWorkloadAPI::StubInterface> new_stub
             = SpiffeWorkloadAPI::NewStub(chan);
         if(!new_stub) {
-            return ERROR3;
+            return ERR_NULL_STUB;
         }
         // extends lifetime of pointer to outside this scope
         client->stub = new_stub.release();
@@ -251,15 +251,15 @@ err_t workloadapi_Client_Close(workloadapi_Client *client)
 {
 
     if(!client) {
-        return ERROR1;
+        return ERR_NULL;
     }
     if(!client->stub) {
-        return ERROR3; // can't close NULL stub.
+        return ERR_NULL_STUB; // can't close NULL stub.
     }
     mtx_lock(&(client->closed_mutex));
     if(client->closed) {
         mtx_unlock(&(client->closed_mutex));
-        return ERROR2; // already closed
+        return ERR_CLOSED; // already closed
     }
     client->closed = true;
     if(client->owns_stub) {
@@ -285,13 +285,13 @@ err_t workloadapi_Client_SetAddress(workloadapi_Client *client,
 {
     err_t error = NO_ERROR;
     if(!client) {
-        return ERROR1;
+        return ERR_NULL;
     }
     // validate address
     UriUriA uri;
     const char *err_pos;
     if(uriParseSingleUriA(&uri, address, &err_pos) != URI_SUCCESS) {
-        return ERROR2;
+        return ERR_NOT_PARSE;
     }
 
     if(client->address) {
@@ -310,7 +310,7 @@ err_t workloadapi_Client_AddHeader(workloadapi_Client *client, const char *key,
                                    const char *value)
 {
     if(!client) {
-        return ERROR1;
+        return ERR_NULL;
     } else {
         arrpush(client->headers, string_new(key));
         arrpush(client->headers, string_new(value));
@@ -336,7 +336,7 @@ err_t workloadapi_Client_SetStub(workloadapi_Client *client,
                                  workloadapi_Stub stub)
 {
     if(!client) {
-        return ERROR1;
+        return ERR_NULL;
     }
     if(client->owns_stub) {
         // delete it since grpc new'd it internally and we released it.
@@ -386,7 +386,7 @@ err_t workloadapi_Client_WatchX509Context(workloadapi_Client *client,
                                           workloadapi_Watcher *watcher)
 {
     if(!client)
-        return ERROR1;
+        return ERR_NULL;
     if(!watcher)
         return ERROR2;
 
@@ -412,7 +412,7 @@ err_t workloadapi_Client_watchX509Context(workloadapi_Client *client,
 {
 
     if(!client) {
-        return ERROR2;
+        return ERR_NULL;
     }
     if(!watcher) {
         return ERROR2;
@@ -446,11 +446,11 @@ err_t workloadapi_Client_watchX509Context(workloadapi_Client *client,
         if(!ok) {
             auto status = c_reader->Finish();
             if(status.error_code() == (int) grpc::StatusCode::CANCELLED) {
-                return ERROR1;
+                return ERR_STATUS_CANCELLED;
             }
             if(status.error_code()
                == (int) grpc::StatusCode::INVALID_ARGUMENT) {
-                return ERROR3;
+                return ERR_STATUS_INVALID;
             }
             return ERROR4; // no more messages.
         }
@@ -473,10 +473,10 @@ err_t workloadapi_Client_HandleWatchError(workloadapi_Client *client,
 {
 
     if(error == (int) grpc::StatusCode::CANCELLED) {
-        return error;
+        return ERR_STATUS_CANCELLED;
     }
     if(error == (int) grpc::StatusCode::INVALID_ARGUMENT) {
-        return error;
+        return ERR_STATUS_INVALID;
     }
 
     struct timespec retryAfter = workloadapi_Backoff_NextTime(backoff);
@@ -496,7 +496,7 @@ err_t workloadapi_Client_HandleWatchError(workloadapi_Client *client,
             return ERR_CLOSING; // ERROR1 == client closing
         } else {
             mtx_unlock(&(client->closed_mutex));
-            return ERROR6;
+            return ERR_CLOSED;
         }
     }
     return ERROR2; /// shouldn't reach this.
@@ -743,9 +743,9 @@ err_t workloadapi_Client_WatchJWTBundles(workloadapi_Client *client,
                                          workloadapi_JWTWatcher *watcher)
 {
     if(!client)
-        return ERROR1;
+        return ERR_NULL;
     if(!watcher)
-        return ERROR2;
+        return ERR_NULL;
     workloadapi_Backoff backoff = workloadapi_NewBackoff({ 1, 0 }, { 30, 0 });
     while(true) {
         err_t err
@@ -767,7 +767,7 @@ err_t workloadapi_Client_watchJWTBundles(workloadapi_Client *client,
                                          workloadapi_Backoff *backoff)
 {
     if(!client || !watcher || !backoff) {
-        return ERROR2;
+        return ERR_NULL;
     }
     grpc::ClientContext *ctx = new grpc::ClientContext();
     if(client->headers) {

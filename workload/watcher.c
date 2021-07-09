@@ -11,7 +11,7 @@ int workloadapi_Watcher_X509backgroundFunc(void *_watcher)
     err_t error = NO_ERROR;
     do {
         error = workloadapi_Client_WatchX509Context(watcher->client, watcher);
-    } while(error != ERROR3 && error != ERROR1); // error1 == client closed,
+    } while(error != ERR_INVALID_DATA && error != ERR_CLOSED); // error1 == client closed,
                                                  // error3 == INVALID_ARGUMENT
     return (int) error;
 }
