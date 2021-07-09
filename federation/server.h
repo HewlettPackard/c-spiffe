@@ -2,15 +2,15 @@
 #define INCLUDE_FEDERATION_SERVER_H
 
 #include "bundle/spiffebundle.h"
-#include "spiffeid/spiffeid.h"
-#include "svid/x509svid.h"
 #include "endpoint.h"
+#include "spiffeid/spiffeid.h"
 #include "spiffetls/spiffetls.h"
+#include "svid/x509svid.h"
 #include "utils/util.h"
 #include <curl/curl.h>
+#include <openssl/x509.h>
 #include <threads.h>
 #include <uriparser/Uri.h>
-#include <openssl/x509.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -18,70 +18,101 @@ extern "C" {
 
 typedef struct spiffebundle_EndpointServer spiffebundle_EndpointServer;
 
-typedef struct server_thread_info {
-    thrd_t* thread;
-    spiffebundle_EndpointServer* server;
+uint SPIFFE_DEFAULT_HTTPS_PORT = 443;
+
+typedef struct spiffebundle_EndpointServer_EndpointInfo {
+    spiffebundle_EndpointServer *server;
+    thrd_t thread;
+    spiffetls_ListenMode *listen_mode;
     string_t url;
     uint port;
-} server_thread_info;
+    bool active;
+    mtx_t mutex;
+} spiffebundle_EndpointServer_EndpointInfo;
 
-typedef struct map_int_thread_info{
-    int key;
-    server_thread_info *value;
-} map_int_thread_info;
+spiffebundle_EndpointServer_EndpointInfo *
+spiffebundle_EndpointServer_EndpointInfo_New();
+
+err_t spiffebundle_EndpointServer_EndpointInfo_Free(
+    spiffebundle_EndpointServer_EndpointInfo *e_info);
+
+typedef struct map_string_endpoint_info {
+    string_t key;
+    spiffebundle_EndpointServer_EndpointInfo *value;
+} map_string_endpoint_info;
 
 typedef struct map_string_spiffebundle_Source {
     string_t key;
     spiffebundle_Source *value;
 } map_string_spiffebundle_Source;
 
-typedef struct spiffebundle_EndpointServer
-{  
-    map_string_spiffebundle_Source* bundle_sources;
-    map_int_thread_info* serving_threads;
-    x509svid_Source* svid_source;
-    ///TODO: set of keys
+typedef struct spiffebundle_EndpointServer {
+    map_string_spiffebundle_Source *bundle_sources;
+    map_string_endpoint_info *endpoints;
     mtx_t mutex;
-    
 } spiffebundle_EndpointServer;
 
-
-//allocates server
-spiffebundle_EndpointServer* spiffebundle_EndpointServer_New();
-//frees server
+// allocates server
+spiffebundle_EndpointServer *spiffebundle_EndpointServer_New();
+// frees server
 err_t spiffebundle_EndpointServer_Free(spiffebundle_EndpointServer *server);
 
-//adds bundle source to server, will be served at path.
-err_t spiffebundle_EndpointServer_RegisterBundle(spiffebundle_EndpointServer* server, const char* path, spiffebundle_Source* bundle_source);
+// adds bundle source to server, will be served at path.
+err_t spiffebundle_EndpointServer_RegisterBundle(
+    spiffebundle_EndpointServer *server, const char *path,
+    spiffebundle_Source *bundle_source);
 
-//updates bundle source.
-err_t spiffebundle_EndpointServer_UpdateBundle(spiffebundle_EndpointServer* server, const char* path, spiffebundle_Source* new_source);
+// updates bundle source.
+err_t spiffebundle_EndpointServer_UpdateBundle(
+    spiffebundle_EndpointServer *server, const char *path,
+    spiffebundle_Source *new_source);
 
-//removes bundle from server.
-err_t spiffebundle_EndpointServer_RemoveBundle(spiffebundle_EndpointServer* server, const char* path);
+// removes bundle from server.
+err_t spiffebundle_EndpointServer_RemoveBundle(
+    spiffebundle_EndpointServer *server, const char *path);
 
-//load keys to use with 'https_web'
-err_t spiffebundle_EndpointServer_LoadKeys(spiffebundle_EndpointServer* server, const char* path);
-//unload keys
-err_t spiffebundle_EndpointServer_ClearKeys(spiffebundle_EndpointServer* server);
+// load keys to use with 'https_web'
+// register a HTTPS_WEB endpoint, for starting with
+// spiffebundle_EndpointServer_ServeEndpoint
+spiffebundle_EndpointServer_EndpointInfo *
+spiffebundle_EndpointServer_AddHttpsWebEndpoint(
+    spiffebundle_EndpointServer *server, const char *base_url, X509 *cert,
+    EVP_PKEY *priv_key, err_t *error);
 
-//register a X509 SVID source for use with 'https_spiffe'
-err_t spiffebundle_EndpointServer_RegisterSVIDSource(spiffebundle_EndpointServer* server, x509svid_Source* svid_source);
+err_t spiffebundle_EndpointServer_SetHttpsWebEndpointAuth(
+    spiffebundle_EndpointServer *server, const char *base_url, X509 *cert,
+    EVP_PKEY *priv_key);
 
-//remove SVID source.
-err_t spiffebundle_EndpointServer_ClearSVIDSource(spiffebundle_EndpointServer* server);
+// Register a HTTPS_SPIFFE endpoint, for starting with
+// spiffebundle_EndpointServer_ServeEndpoint.
+spiffebundle_EndpointServer_EndpointInfo *
+spiffebundle_EndpointServer_AddHttpsSpiffeEndpoint(
+    spiffebundle_EndpointServer *server, const char *base_url,
+    x509svid_Source *svid_source, err_t *error);
 
-//Serve bundles using the 'https_web' protocol. Spawns a thread. 
-int spiffebundle_EndpointServer_ServeHTTPSWeb(spiffebundle_EndpointServer* server, const char* base_url, uint port, err_t* error);
+err_t spiffebundle_EndpointServer_SetHttpsSpiffeEndpointSource(
+    spiffebundle_EndpointServer *server, const char *base_url,
+    x509svid_Source *svid_source);
 
-//Serve bundles using the 'https_spiffe' protocol. Spawns a thread. Returns an id that can be used to stop this serving thread.
-int spiffebundle_EndpointServer_ServeHTTPSSpiffe(spiffebundle_EndpointServer* server, const char* base_url, uint port, err_t* error);
+// Get info for serving thread.
+spiffebundle_EndpointServer_EndpointInfo *
+spiffebundle_EndpointServer_GetEndpointInfo(
+    spiffebundle_EndpointServer *server, const char *base_url, err_t *error);
 
-//stops serving from indicated thread.
-err_t spiffebundle_EndpointServer_Stop(spiffebundle_EndpointServer* server, int thread_key);
+// Remove endpoint from server.
+err_t spiffebundle_EndpointServer_RemoveEndpoint(
+    spiffebundle_EndpointServer *server, const char *base_url);
 
-//stops serving from all threads.
-err_t spiffebundle_EndpointServer_StopAll(spiffebundle_EndpointServer* server);
+// Serve bundles using the set up protocol. Spawns a thread.
+err_t spiffebundle_EndpointServer_ServeEndpoint(
+    spiffebundle_EndpointServer *server, const char *base_url, uint port);
+
+// Stop serving from indicated thread.
+err_t spiffebundle_EndpointServer_StopEndpoint(
+    spiffebundle_EndpointServer *server, const char *base_url);
+
+// Stops serving from all threads.
+err_t spiffebundle_EndpointServer_StopAll(spiffebundle_EndpointServer *server);
 
 #ifdef __cplusplus
 }
