@@ -1,5 +1,5 @@
-#include "server.h"
-#include "utils/picohttpparser.h"
+#include "c-spiffe/federation/server.h"
+#include "../utils/picohttpparser.h"
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -433,7 +433,7 @@ int serve_function(void *arg)
             exit(err);
         }
 
-        char buf[4096], *method, *path; /// TODO: change buffer size?
+        char buf[4096], *method, *path;
         int pret, minor_version;
         struct phr_header headers[100];
         size_t buflen = 0, prevbuflen = 0, method_len, path_len, num_headers;
@@ -462,22 +462,23 @@ int serve_function(void *arg)
                 return ERROR6;
             // get rest of request
         }
+        
+        /// LOG: log request @ which level?
+        printf( "Server received:\n%s\n", buf);
 
+        method[method_len] = '\0';
+        path[path_len] = '\0';
         char *http_res = NULL;
         string_t http_header = NULL;
         string_t bundle_string = NULL;
         char end_of_response[] = "\n\n";
 
-        /// LOG: log request @ which level?
-        printf("Server received: %s\n", buf);
-        fprintf(stderr, "METHOD: %s", method);
 
         if(strcmp(method, "GET") != 0) {
             http_res = HTTP_METHODNOTALLOWED;
             http_header = string_new("Content-Type: application/json\n\n");
             bundle_string = string_new("{}");
         } else {
-
             // LOG: log path
             mtx_lock(&server->mutex);
             spiffebundle_Source *source = shget(server->bundle_sources, path);
@@ -487,7 +488,7 @@ int serve_function(void *arg)
 
             if(source) {
                 // log info?
-                http_res = HTTP_NOTFOUND;
+                http_res = HTTP_OK;
                 http_header
                     = string_new("Content-Type: application/json\nHost: \n");
                 spiffebundle_Bundle *ret_bundle
@@ -496,7 +497,7 @@ int serve_function(void *arg)
                 bundle_string = spiffebundle_Bundle_Marshal(ret_bundle, &err);
             } else {
                 // log warn?
-                http_res = HTTP_OK;
+                http_res = HTTP_NOTFOUND;
                 http_header = string_new("Content-Type: application/json\n\n");
                 bundle_string = string_new("{}");
             }
@@ -643,7 +644,7 @@ err_t spiffebundle_EndpointServer_Stop(spiffebundle_EndpointServer *server)
     thrd_t *threads_to_join = NULL;
     for(size_t i = 0, size = shlenu(server->endpoints); i < size; ++i) {
         spiffebundle_EndpointInfo *e_info = server->endpoints[i].value;
-        for(size_t j = 0, size = shlenu(e_info->threads[i].value); j < size;
+        for(size_t j = 0, size2 = shlenu(e_info->threads); j < size2;
             ++j) {
             spiffebundle_EndpointThread *e_thread = e_info->threads[j].value;
             if(e_thread->active) {
