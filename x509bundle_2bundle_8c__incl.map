@@ -1,20 +1,19 @@
 <map id="bundle/x509bundle/bundle.c" name="bundle/x509bundle/bundle.c">
-<area shape="rect" id="node1" title=" " alt="" coords="499,5,680,32"/>
-<area shape="rect" id="node2" href="$x509bundle_2bundle_8h.html" title=" " alt="" coords="246,80,421,121"/>
-<area shape="rect" id="node15" href="$internal_2x509util_2util_8h.html" title=" " alt="" coords="641,169,799,211"/>
-<area shape="rect" id="node18" title=" " alt="" coords="627,87,733,114"/>
-<area shape="rect" id="node3" href="$trustdomain_8h.html" title=" " alt="" coords="105,177,295,203"/>
-<area shape="rect" id="node5" href="$utils_2util_8h.html" title=" " alt="" coords="323,348,445,375"/>
-<area shape="rect" id="node13" title=" " alt="" coords="565,348,673,375"/>
-<area shape="rect" id="node14" title=" " alt="" coords="5,177,80,203"/>
-<area shape="rect" id="node4" href="$id_8h.html" title=" " alt="" coords="112,266,245,293"/>
-<area shape="rect" id="node11" title=" " alt="" coords="196,423,271,449"/>
-<area shape="rect" id="node12" title=" " alt="" coords="195,348,298,375"/>
-<area shape="rect" id="node6" href="$stb__ds_8h.html" title=" " alt="" coords="422,423,567,449"/>
-<area shape="rect" id="node8" title=" " alt="" coords="363,497,427,524"/>
-<area shape="rect" id="node10" title=" " alt="" coords="630,423,733,449"/>
-<area shape="rect" id="node7" title=" " alt="" coords="543,497,611,524"/>
-<area shape="rect" id="node9" title=" " alt="" coords="457,497,519,524"/>
-<area shape="rect" id="node16" href="$certpool_8h.html" title=" " alt="" coords="422,259,581,300"/>
-<area shape="rect" id="node17" title=" " alt="" coords="757,266,880,293"/>
+<area shape="rect" id="node1" title=" " alt="" coords="289,5,470,32"/>
+<area shape="rect" id="node2" href="$x509bundle_2bundle_8h.html" title=" " alt="" coords="292,80,467,121"/>
+<area shape="rect" id="node15" href="$internal_2x509util_2util_8h.html" title=" " alt="" coords="65,169,224,211"/>
+<area shape="rect" id="node17" title=" " alt="" coords="491,87,598,114"/>
+<area shape="rect" id="node3" href="$trustdomain_8h.html" title=" " alt="" coords="351,177,541,203"/>
+<area shape="rect" id="node13" title=" " alt="" coords="79,348,187,375"/>
+<area shape="rect" id="node14" title=" " alt="" coords="566,177,641,203"/>
+<area shape="rect" id="node4" href="$id_8h.html" title=" " alt="" coords="401,266,534,293"/>
+<area shape="rect" id="node5" href="$utils_2util_8h.html" title=" " alt="" coords="211,348,334,375"/>
+<area shape="rect" id="node11" title=" " alt="" coords="415,423,490,449"/>
+<area shape="rect" id="node12" title=" " alt="" coords="359,348,461,375"/>
+<area shape="rect" id="node6" href="$stb__ds_8h.html" title=" " alt="" coords="200,423,345,449"/>
+<area shape="rect" id="node10" title=" " alt="" coords="5,423,108,449"/>
+<area shape="rect" id="node7" title=" " alt="" coords="148,497,216,524"/>
+<area shape="rect" id="node8" title=" " alt="" coords="241,497,305,524"/>
+<area shape="rect" id="node9" title=" " alt="" coords="329,497,392,524"/>
+<area shape="rect" id="node16" href="$certpool_8h.html" title=" " alt="" coords="65,259,224,300"/>
 </map>

@@ -73,33 +73,38 @@ $(function() {
 <div class="title">svid.c File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="x509svid_2svid_8h_source.html">c-spiffe/svid/x509svid/svid.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="pem_8h_source.html">c-spiffe/internal/pemutil/pem.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="internal_2x509util_2util_8h_source.html">c-spiffe/internal/x509util/util.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="x509svid_2svid_8h_source.html">c-spiffe/svid/x509svid/svid.h</a>&quot;</code><br />
 <code>#include &lt;openssl/bn.h&gt;</code><br />
+<code>#include &lt;openssl/ecdsa.h&gt;</code><br />
+<code>#include &lt;openssl/rsa.h&gt;</code><br />
+<code>#include &lt;openssl/x509v3.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for svid.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="x509svid_2svid_8c__incl.png" border="0" usemap="#asvid_2x509svid_2svid_8c" alt=""/></div>
 <map name="asvid_2x509svid_2svid_8c" id="asvid_2x509svid_2svid_8c">
-<area shape="rect" title=" " alt="" coords="454,5,593,32"/>
-<area shape="rect" href="x509svid_2svid_8h.html" title=" " alt="" coords="378,80,525,121"/>
-<area shape="rect" title=" " alt="" coords="550,87,644,114"/>
-<area shape="rect" href="pem_8h.html" title=" " alt="" coords="140,259,296,300"/>
-<area shape="rect" title=" " alt="" coords="103,423,206,449"/>
-<area shape="rect" title=" " alt="" coords="356,348,464,375"/>
-<area shape="rect" href="internal_2x509util_2util_8h.html" title=" " alt="" coords="372,169,531,211"/>
-<area shape="rect" href="id_8h.html" title=" " alt="" coords="657,266,790,293"/>
-<area shape="rect" title=" " alt="" coords="607,177,723,203"/>
-<area shape="rect" title=" " alt="" coords="748,177,846,203"/>
-<area shape="rect" href="utils_2util_8h.html" title=" " alt="" coords="540,348,662,375"/>
-<area shape="rect" title=" " alt="" coords="174,348,281,375"/>
-<area shape="rect" title=" " alt="" coords="28,348,150,375"/>
-<area shape="rect" href="stb__ds_8h.html" title=" " alt="" coords="430,423,575,449"/>
-<area shape="rect" title=" " alt="" coords="574,497,638,524"/>
-<area shape="rect" title=" " alt="" coords="656,423,730,449"/>
-<area shape="rect" title=" " alt="" coords="384,497,452,524"/>
-<area shape="rect" title=" " alt="" coords="476,497,539,524"/>
-<area shape="rect" href="certpool_8h.html" title=" " alt="" coords="423,259,582,300"/>
-<area shape="rect" title=" " alt="" coords="738,348,840,375"/>
+<area shape="rect" title=" " alt="" coords="568,5,707,32"/>
+<area shape="rect" href="pem_8h.html" title=" " alt="" coords="601,169,757,211"/>
+<area shape="rect" href="internal_2x509util_2util_8h.html" title=" " alt="" coords="355,80,514,121"/>
+<area shape="rect" href="x509svid_2svid_8h.html" title=" " alt="" coords="164,80,311,121"/>
+<area shape="rect" title=" " alt="" coords="590,87,685,114"/>
+<area shape="rect" title=" " alt="" coords="709,87,825,114"/>
+<area shape="rect" title=" " alt="" coords="849,87,948,114"/>
+<area shape="rect" title=" " alt="" coords="972,87,1095,114"/>
+<area shape="rect" href="utils_2util_8h.html" title=" " alt="" coords="241,259,364,285"/>
+<area shape="rect" title=" " alt="" coords="455,333,558,360"/>
+<area shape="rect" title=" " alt="" coords="651,259,757,285"/>
+<area shape="rect" title=" " alt="" coords="403,259,511,285"/>
+<area shape="rect" href="stb__ds_8h.html" title=" " alt="" coords="230,333,375,360"/>
+<area shape="rect" title=" " alt="" coords="45,333,120,360"/>
+<area shape="rect" title=" " alt="" coords="178,408,246,435"/>
+<area shape="rect" title=" " alt="" coords="271,408,335,435"/>
+<area shape="rect" title=" " alt="" coords="359,408,422,435"/>
+<area shape="rect" href="certpool_8h.html" title=" " alt="" coords="315,169,474,211"/>
+<area shape="rect" href="id_8h.html" title=" " alt="" coords="5,177,139,203"/>
+<area shape="rect" title=" " alt="" coords="35,259,138,285"/>
 </map>
 </div>
 </div><table class="memberdecls">

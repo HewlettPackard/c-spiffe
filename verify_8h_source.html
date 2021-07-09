@@ -76,28 +76,26 @@ $(function() {
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="bundle_2x509bundle_2source_8h.html">c-spiffe/bundle/x509bundle/source.h</a>&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="id_8h.html">c-spiffe/spiffeid/id.h</a>&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="utils_2util_8h.html">c-spiffe/utils/util.h</a>&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;openssl/x509.h&gt;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;openssl/x509v3.h&gt;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="verify_8h.html#a1a4515620398f5163d229e37b70d9c51">x509svid_Verify_cb</a>(X509_STORE_CTX *store_ctx, <a class="code" href="structx509bundle__Source.html">x509bundle_Source</a> *<a class="code" href="check__endpoint_8c.html#a97b40964d47e99b65b312e4afc894c07">source</a>,</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;                        <a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> *<span class="keywordtype">id</span>);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;}</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;openssl/x509.h&gt;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;stdbool.h&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="verify_8h.html#a1a4515620398f5163d229e37b70d9c51">x509svid_Verify_cb</a>(X509_STORE_CTX *store_ctx, <a class="code" href="structx509bundle__Source.html">x509bundle_Source</a> *<a class="code" href="check__endpoint_8c.html#a97b40964d47e99b65b312e4afc894c07">source</a>,</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                        <a class="code" href="structspiffeid__ID.html">spiffeid_ID</a> *<span class="keywordtype">id</span>);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;}</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="abundle_2x509bundle_2source_8h_html"><div class="ttname"><a href="bundle_2x509bundle_2source_8h.html">source.h</a></div></div>
 <div class="ttc" id="acheck__endpoint_8c_html_a97b40964d47e99b65b312e4afc894c07"><div class="ttname"><a href="check__endpoint_8c.html#a97b40964d47e99b65b312e4afc894c07">source</a></div><div class="ttdeci">spiffebundle_Source * source</div><div class="ttdef"><b>Definition:</b> check_endpoint.c:129</div></div>
 <div class="ttc" id="aid_8h_html"><div class="ttname"><a href="id_8h.html">id.h</a></div></div>
 <div class="ttc" id="astructspiffeid__ID_html"><div class="ttname"><a href="structspiffeid__ID.html">spiffeid_ID</a></div><div class="ttdef"><b>Definition:</b> id.h:19</div></div>
 <div class="ttc" id="astructx509bundle__Source_html"><div class="ttname"><a href="structx509bundle__Source.html">x509bundle_Source</a></div><div class="ttdef"><b>Definition:</b> source.h:13</div></div>
-<div class="ttc" id="autils_2util_8h_html"><div class="ttname"><a href="utils_2util_8h.html">util.h</a></div></div>
 <div class="ttc" id="averify_8h_html_a1a4515620398f5163d229e37b70d9c51"><div class="ttname"><a href="verify_8h.html#a1a4515620398f5163d229e37b70d9c51">x509svid_Verify_cb</a></div><div class="ttdeci">bool x509svid_Verify_cb(X509_STORE_CTX *store_ctx, x509bundle_Source *source, spiffeid_ID *id)</div><div class="ttdef"><b>Definition:</b> verify.c:6</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

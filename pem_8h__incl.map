@@ -1,13 +1,12 @@
 <map id="include/c&#45;spiffe/internal/pemutil/pem.h" name="include/c&#45;spiffe/internal/pemutil/pem.h">
-<area shape="rect" id="node1" title=" " alt="" coords="426,5,581,47"/>
-<area shape="rect" id="node2" href="$utils_2util_8h.html" title=" " alt="" coords="246,95,369,121"/>
-<area shape="rect" id="node7" title=" " alt="" coords="369,169,472,196"/>
-<area shape="rect" id="node9" title=" " alt="" coords="450,95,557,121"/>
-<area shape="rect" id="node10" title=" " alt="" coords="581,95,689,121"/>
-<area shape="rect" id="node11" title=" " alt="" coords="714,95,837,121"/>
-<area shape="rect" id="node3" href="$stb__ds_8h.html" title=" " alt="" coords="49,169,195,196"/>
-<area shape="rect" id="node5" title=" " alt="" coords="195,244,259,271"/>
-<area shape="rect" id="node8" title=" " alt="" coords="270,169,345,196"/>
+<area shape="rect" id="node1" title=" " alt="" coords="342,5,497,47"/>
+<area shape="rect" id="node2" href="$utils_2util_8h.html" title=" " alt="" coords="210,95,333,121"/>
+<area shape="rect" id="node7" title=" " alt="" coords="327,169,429,196"/>
+<area shape="rect" id="node9" title=" " alt="" coords="411,95,518,121"/>
+<area shape="rect" id="node10" title=" " alt="" coords="543,95,651,121"/>
+<area shape="rect" id="node3" href="$stb__ds_8h.html" title=" " alt="" coords="57,169,203,196"/>
+<area shape="rect" id="node8" title=" " alt="" coords="227,169,302,196"/>
 <area shape="rect" id="node4" title=" " alt="" coords="5,244,73,271"/>
-<area shape="rect" id="node6" title=" " alt="" coords="97,244,160,271"/>
+<area shape="rect" id="node5" title=" " alt="" coords="98,244,162,271"/>
+<area shape="rect" id="node6" title=" " alt="" coords="187,244,249,271"/>
 </map>

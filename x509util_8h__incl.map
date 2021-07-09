@@ -1,14 +1,13 @@
 <map id="include/c&#45;spiffe/internal/x509util.h" name="include/c&#45;spiffe/internal/x509util.h">
-<area shape="rect" id="node1" title=" " alt="" coords="115,5,270,47"/>
-<area shape="rect" id="node2" href="$certpool_8h.html" title=" " alt="" coords="5,184,164,225"/>
-<area shape="rect" id="node11" href="$internal_2x509util_2util_8h.html" title=" " alt="" coords="196,95,355,136"/>
-<area shape="rect" id="node3" href="$stb__ds_8h.html" title=" " alt="" coords="64,348,209,375"/>
-<area shape="rect" id="node7" href="$utils_2util_8h.html" title=" " alt="" coords="261,273,383,300"/>
-<area shape="rect" id="node10" title=" " alt="" coords="127,273,235,300"/>
-<area shape="rect" id="node4" title=" " alt="" coords="108,423,176,449"/>
-<area shape="rect" id="node5" title=" " alt="" coords="210,423,274,449"/>
-<area shape="rect" id="node6" title=" " alt="" coords="21,423,84,449"/>
-<area shape="rect" id="node8" title=" " alt="" coords="389,348,492,375"/>
-<area shape="rect" id="node9" title=" " alt="" coords="285,348,359,375"/>
-<area shape="rect" id="node12" title=" " alt="" coords="239,191,362,218"/>
+<area shape="rect" id="node1" title=" " alt="" coords="215,5,370,47"/>
+<area shape="rect" id="node2" href="$certpool_8h.html" title=" " alt="" coords="155,184,313,225"/>
+<area shape="rect" id="node11" href="$internal_2x509util_2util_8h.html" title=" " alt="" coords="272,95,431,136"/>
+<area shape="rect" id="node3" href="$utils_2util_8h.html" title=" " alt="" coords="173,273,295,300"/>
+<area shape="rect" id="node10" title=" " alt="" coords="320,273,428,300"/>
+<area shape="rect" id="node4" href="$stb__ds_8h.html" title=" " alt="" coords="57,348,203,375"/>
+<area shape="rect" id="node8" title=" " alt="" coords="385,348,488,375"/>
+<area shape="rect" id="node9" title=" " alt="" coords="227,348,302,375"/>
+<area shape="rect" id="node5" title=" " alt="" coords="5,423,73,449"/>
+<area shape="rect" id="node6" title=" " alt="" coords="98,423,162,449"/>
+<area shape="rect" id="node7" title=" " alt="" coords="187,423,249,449"/>
 </map>

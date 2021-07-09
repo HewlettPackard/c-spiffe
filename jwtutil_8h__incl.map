@@ -1,12 +1,12 @@
 <map id="include/c&#45;spiffe/internal/jwtutil.h" name="include/c&#45;spiffe/internal/jwtutil.h">
-<area shape="rect" id="node1" title=" " alt="" coords="350,5,505,47"/>
-<area shape="rect" id="node2" href="$internal_2jwtutil_2util_8h.html" title=" " alt="" coords="353,95,501,136"/>
-<area shape="rect" id="node3" href="$utils_2util_8h.html" title=" " alt="" coords="261,184,383,211"/>
-<area shape="rect" id="node9" title=" " alt="" coords="398,259,473,285"/>
-<area shape="rect" id="node10" title=" " alt="" coords="465,184,542,211"/>
-<area shape="rect" id="node4" href="$stb__ds_8h.html" title=" " alt="" coords="49,259,195,285"/>
-<area shape="rect" id="node6" title=" " alt="" coords="195,333,259,360"/>
-<area shape="rect" id="node8" title=" " alt="" coords="271,259,373,285"/>
+<area shape="rect" id="node1" title=" " alt="" coords="310,5,465,47"/>
+<area shape="rect" id="node2" href="$internal_2jwtutil_2util_8h.html" title=" " alt="" coords="313,95,461,136"/>
+<area shape="rect" id="node3" href="$utils_2util_8h.html" title=" " alt="" coords="223,184,346,211"/>
+<area shape="rect" id="node9" title=" " alt="" coords="354,259,429,285"/>
+<area shape="rect" id="node10" title=" " alt="" coords="425,184,502,211"/>
+<area shape="rect" id="node4" href="$stb__ds_8h.html" title=" " alt="" coords="57,259,203,285"/>
+<area shape="rect" id="node8" title=" " alt="" coords="227,259,329,285"/>
 <area shape="rect" id="node5" title=" " alt="" coords="5,333,73,360"/>
-<area shape="rect" id="node7" title=" " alt="" coords="97,333,160,360"/>
+<area shape="rect" id="node6" title=" " alt="" coords="98,333,162,360"/>
+<area shape="rect" id="node7" title=" " alt="" coords="187,333,249,360"/>
 </map>

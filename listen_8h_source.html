@@ -76,33 +76,30 @@ $(function() {
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="mode_8h.html">c-spiffe/spiffetls/mode.h</a>&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="option_8h.html">c-spiffe/spiffetls/option.h</a>&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="authorizer_8h.html">c-spiffe/spiffetls/tlsconfig/authorizer.h</a>&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;arpa/inet.h&gt;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;openssl/ssl.h&gt;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;sys/socket.h&gt;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;SSL *<a class="code" href="listen_8h.html#aa62c0f452b3ae79c70bdce7e25359fae">spiffetls_ListenWithMode</a>(in_port_t port, <a class="code" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a> *mode,</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;                              <a class="code" href="structspiffetls__listenConfig.html">spiffetls_listenConfig</a> *<a class="code" href="check__jwtsource_8c.html#ac4bce25b2f2c75b798ee2fe84c200d90">config</a>, <span class="keywordtype">int</span> *sock,</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                              <a class="code" href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="code" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// INCLUDE_SPIFFETLS_DIAL_H</span></div>
-<div class="ttc" id="aauthorizer_8h_html"><div class="ttname"><a href="authorizer_8h.html">authorizer.h</a></div></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;arpa/inet.h&gt;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;openssl/ssl.h&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;SSL *<a class="code" href="listen_8h.html#aa62c0f452b3ae79c70bdce7e25359fae">spiffetls_ListenWithMode</a>(in_port_t port, <a class="code" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a> *mode,</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                              <a class="code" href="structspiffetls__listenConfig.html">spiffetls_listenConfig</a> *<a class="code" href="check__jwtsource_8c.html#ac4bce25b2f2c75b798ee2fe84c200d90">config</a>, <span class="keywordtype">int</span> *sock,</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                              <a class="code" href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="code" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// INCLUDE_SPIFFETLS_DIAL_H</span></div>
 <div class="ttc" id="acheck__endpoint_8c_html_aac2cb6376062ef4d6f16d129f52ea9e4"><div class="ttname"><a href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a></div><div class="ttdeci">err</div><div class="ttdef"><b>Definition:</b> check_endpoint.c:43</div></div>
 <div class="ttc" id="acheck__jwtsource_8c_html_ac4bce25b2f2c75b798ee2fe84c200d90"><div class="ttname"><a href="check__jwtsource_8c.html#ac4bce25b2f2c75b798ee2fe84c200d90">config</a></div><div class="ttdeci">workloadapi_JWTSourceConfig * config</div><div class="ttdef"><b>Definition:</b> check_jwtsource.c:40</div></div>
-<div class="ttc" id="alisten_8h_html_aa62c0f452b3ae79c70bdce7e25359fae"><div class="ttname"><a href="listen_8h.html#aa62c0f452b3ae79c70bdce7e25359fae">spiffetls_ListenWithMode</a></div><div class="ttdeci">SSL * spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode, spiffetls_listenConfig *config, int *sock, err_t *err)</div><div class="ttdef"><b>Definition:</b> listen.c:51</div></div>
+<div class="ttc" id="alisten_8h_html_aa62c0f452b3ae79c70bdce7e25359fae"><div class="ttname"><a href="listen_8h.html#aa62c0f452b3ae79c70bdce7e25359fae">spiffetls_ListenWithMode</a></div><div class="ttdeci">SSL * spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode, spiffetls_listenConfig *config, int *sock, err_t *err)</div><div class="ttdef"><b>Definition:</b> listen.c:52</div></div>
 <div class="ttc" id="amode_8h_html"><div class="ttname"><a href="mode_8h.html">mode.h</a></div></div>
 <div class="ttc" id="aoption_8h_html"><div class="ttname"><a href="option_8h.html">option.h</a></div></div>
-<div class="ttc" id="astructspiffetls__ListenMode_html"><div class="ttname"><a href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a></div><div class="ttdef"><b>Definition:</b> mode.h:42</div></div>
+<div class="ttc" id="astructspiffetls__ListenMode_html"><div class="ttname"><a href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a></div><div class="ttdef"><b>Definition:</b> mode.h:41</div></div>
 <div class="ttc" id="astructspiffetls__listenConfig_html"><div class="ttname"><a href="structspiffetls__listenConfig.html">spiffetls_listenConfig</a></div><div class="ttdef"><b>Definition:</b> option.h:15</div></div>
-<div class="ttc" id="autils_2util_8h_html_a5362d878a3b55147d5cfd29820512556"><div class="ttname"><a href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a></div><div class="ttdeci">enum enum_err_t err_t</div><div class="ttdef"><b>Definition:</b> util.h:42</div></div>
+<div class="ttc" id="autils_2util_8h_html_a5362d878a3b55147d5cfd29820512556"><div class="ttname"><a href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a></div><div class="ttdeci">enum enum_err_t err_t</div><div class="ttdef"><b>Definition:</b> util.h:41</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

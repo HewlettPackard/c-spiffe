@@ -75,44 +75,41 @@ $(function() {
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define INCLUDE_LOGGER_LOGGER_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="utils_2util_8h.html">c-spiffe/utils/util.h</a>&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a30eb5eac34e7c2406c74fb78d9004f6c">   12</a></span>&#160;<span class="keyword">enum</span> { <a class="code" href="logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a30eb5eac34e7c2406c74fb78d9004f6c">LOGGER_DEBUG</a> = 0, <a class="code" href="logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a2974dee2fa00fbf9bb4978f96bb9f543">LOGGER_ERROR</a>, <a class="code" href="logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a236a2401a6ed3e96611f3a14352082ad">LOGGER_WARNING</a>, <a class="code" href="logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a75bad4f1774ac807939d5a98ce84ba42">LOGGER_LEN</a> };</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keywordtype">void</span> <a class="code" href="logger_8h.html#a2e979c79b5361225b0c7c7dace10561f">logger_InitAll</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">void</span> <a class="code" href="logger_8h.html#a11fe1802cc2323bff01de8abd4240d32">logger_Init</a>(<span class="keywordtype">int</span> type);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> <a class="code" href="logger_8h.html#a11fe1802cc2323bff01de8abd4240d32">logger_Init</a>(<span class="keywordtype">int</span> type);</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a30eb5eac34e7c2406c74fb78d9004f6c">   11</a></span>&#160;<span class="keyword">enum</span> { <a class="code" href="logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a30eb5eac34e7c2406c74fb78d9004f6c">LOGGER_DEBUG</a> = 0, <a class="code" href="logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a2974dee2fa00fbf9bb4978f96bb9f543">LOGGER_ERROR</a>, <a class="code" href="logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a236a2401a6ed3e96611f3a14352082ad">LOGGER_WARNING</a>, <a class="code" href="logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a75bad4f1774ac807939d5a98ce84ba42">LOGGER_LEN</a> };</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keywordtype">void</span> <a class="code" href="logger_8h.html#a2e979c79b5361225b0c7c7dace10561f">logger_InitAll</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> <a class="code" href="logger_8h.html#a11fe1802cc2323bff01de8abd4240d32">logger_Init</a>(<span class="keywordtype">int</span> type);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">int</span> <a class="code" href="logger_8h.html#a641891c63948f7d0c2b39e410210c971">logger_BufferSize</a>(<span class="keywordtype">int</span> type);</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keywordtype">int</span> <a class="code" href="logger_8h.html#a641891c63948f7d0c2b39e410210c971">logger_BufferSize</a>(<span class="keywordtype">int</span> type);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keywordtype">void</span> <a class="code" href="logger_8h.html#a82deed17c8e67e0cfd758b4309bc0369">logger_FmtPush</a>(<span class="keywordtype">int</span> type, <span class="keyword">const</span> <span class="keywordtype">char</span> *fmt, ...);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keywordtype">void</span> <a class="code" href="logger_8h.html#ac575b4cc35df0cad234879c9ab487a47">logger_Push</a>(<span class="keywordtype">int</span> type, <span class="keyword">const</span> <span class="keywordtype">char</span> *str);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keywordtype">void</span> <a class="code" href="logger_8h.html#a82deed17c8e67e0cfd758b4309bc0369">logger_FmtPush</a>(<span class="keywordtype">int</span> type, <span class="keyword">const</span> <span class="keywordtype">char</span> *fmt, ...);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">void</span> <a class="code" href="logger_8h.html#ac575b4cc35df0cad234879c9ab487a47">logger_Push</a>(<span class="keywordtype">int</span> type, <span class="keyword">const</span> <span class="keywordtype">char</span> *str);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="logger_8h.html#ae13a9aa92bcdeb742085f9bc3c52e9c8">logger_Back</a>(<span class="keywordtype">int</span> type);</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="logger_8h.html#ae13a9aa92bcdeb742085f9bc3c52e9c8">logger_Back</a>(<span class="keywordtype">int</span> type);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keywordtype">void</span> <a class="code" href="logger_8h.html#a09c75ff55b988a51b1be60182764c0e8">logger_Pop</a>(<span class="keywordtype">int</span> type);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keywordtype">void</span> <a class="code" href="logger_8h.html#a09c75ff55b988a51b1be60182764c0e8">logger_Pop</a>(<span class="keywordtype">int</span> type);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keywordtype">void</span> <a class="code" href="logger_8h.html#a6f9d0b516ea18d1e05e45702b5110b06">logger_Dumpf</a>(<span class="keywordtype">int</span> type, FILE *f);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keywordtype">void</span> <a class="code" href="logger_8h.html#a6f9d0b516ea18d1e05e45702b5110b06">logger_Dumpf</a>(<span class="keywordtype">int</span> type, FILE *f);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<a class="code" href="utils_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a> <a class="code" href="logger_8h.html#ac65a0cf65ac989ec74ba1a83ed8329d6">logger_Dumps</a>(<span class="keywordtype">int</span> type);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<a class="code" href="utils_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a> <a class="code" href="logger_8h.html#ac65a0cf65ac989ec74ba1a83ed8329d6">logger_Dumps</a>(<span class="keywordtype">int</span> type);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keywordtype">void</span> <a class="code" href="logger_8h.html#a99e8971b07e8734ec30b40ecd2efa8d2">logger_Cleanup</a>(<span class="keywordtype">int</span> type);</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keywordtype">void</span> <a class="code" href="logger_8h.html#a99e8971b07e8734ec30b40ecd2efa8d2">logger_Cleanup</a>(<span class="keywordtype">int</span> type);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keywordtype">void</span> <a class="code" href="logger_8h.html#a971194929921178e2680797948080079">logger_CleanupAll</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keywordtype">void</span> <a class="code" href="logger_8h.html#a971194929921178e2680797948080079">logger_CleanupAll</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="alogger_8h_html_a09c75ff55b988a51b1be60182764c0e8"><div class="ttname"><a href="logger_8h.html#a09c75ff55b988a51b1be60182764c0e8">logger_Pop</a></div><div class="ttdeci">void logger_Pop(int type)</div><div class="ttdef"><b>Definition:</b> logger.c:176</div></div>
 <div class="ttc" id="alogger_8h_html_a11fe1802cc2323bff01de8abd4240d32"><div class="ttname"><a href="logger_8h.html#a11fe1802cc2323bff01de8abd4240d32">logger_Init</a></div><div class="ttdeci">void logger_Init(int type)</div><div class="ttdef"><b>Definition:</b> logger.c:135</div></div>
 <div class="ttc" id="alogger_8h_html_a2e979c79b5361225b0c7c7dace10561f"><div class="ttname"><a href="logger_8h.html#a2e979c79b5361225b0c7c7dace10561f">logger_InitAll</a></div><div class="ttdeci">void logger_InitAll(void)</div><div class="ttdef"><b>Definition:</b> logger.c:128</div></div>
@@ -121,15 +118,15 @@ $(function() {
 <div class="ttc" id="alogger_8h_html_a82deed17c8e67e0cfd758b4309bc0369"><div class="ttname"><a href="logger_8h.html#a82deed17c8e67e0cfd758b4309bc0369">logger_FmtPush</a></div><div class="ttdeci">void logger_FmtPush(int type, const char *fmt,...)</div><div class="ttdef"><b>Definition:</b> logger.c:146</div></div>
 <div class="ttc" id="alogger_8h_html_a971194929921178e2680797948080079"><div class="ttname"><a href="logger_8h.html#a971194929921178e2680797948080079">logger_CleanupAll</a></div><div class="ttdeci">void logger_CleanupAll(void)</div><div class="ttdef"><b>Definition:</b> logger.c:206</div></div>
 <div class="ttc" id="alogger_8h_html_a99e8971b07e8734ec30b40ecd2efa8d2"><div class="ttname"><a href="logger_8h.html#a99e8971b07e8734ec30b40ecd2efa8d2">logger_Cleanup</a></div><div class="ttdeci">void logger_Cleanup(int type)</div><div class="ttdef"><b>Definition:</b> logger.c:199</div></div>
-<div class="ttc" id="alogger_8h_html_abc6126af1d45847bc59afa0aa3216b04a236a2401a6ed3e96611f3a14352082ad"><div class="ttname"><a href="logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a236a2401a6ed3e96611f3a14352082ad">LOGGER_WARNING</a></div><div class="ttdeci">@ LOGGER_WARNING</div><div class="ttdef"><b>Definition:</b> logger.h:12</div></div>
-<div class="ttc" id="alogger_8h_html_abc6126af1d45847bc59afa0aa3216b04a2974dee2fa00fbf9bb4978f96bb9f543"><div class="ttname"><a href="logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a2974dee2fa00fbf9bb4978f96bb9f543">LOGGER_ERROR</a></div><div class="ttdeci">@ LOGGER_ERROR</div><div class="ttdef"><b>Definition:</b> logger.h:12</div></div>
-<div class="ttc" id="alogger_8h_html_abc6126af1d45847bc59afa0aa3216b04a30eb5eac34e7c2406c74fb78d9004f6c"><div class="ttname"><a href="logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a30eb5eac34e7c2406c74fb78d9004f6c">LOGGER_DEBUG</a></div><div class="ttdeci">@ LOGGER_DEBUG</div><div class="ttdef"><b>Definition:</b> logger.h:12</div></div>
-<div class="ttc" id="alogger_8h_html_abc6126af1d45847bc59afa0aa3216b04a75bad4f1774ac807939d5a98ce84ba42"><div class="ttname"><a href="logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a75bad4f1774ac807939d5a98ce84ba42">LOGGER_LEN</a></div><div class="ttdeci">@ LOGGER_LEN</div><div class="ttdef"><b>Definition:</b> logger.h:12</div></div>
+<div class="ttc" id="alogger_8h_html_abc6126af1d45847bc59afa0aa3216b04a236a2401a6ed3e96611f3a14352082ad"><div class="ttname"><a href="logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a236a2401a6ed3e96611f3a14352082ad">LOGGER_WARNING</a></div><div class="ttdeci">@ LOGGER_WARNING</div><div class="ttdef"><b>Definition:</b> logger.h:11</div></div>
+<div class="ttc" id="alogger_8h_html_abc6126af1d45847bc59afa0aa3216b04a2974dee2fa00fbf9bb4978f96bb9f543"><div class="ttname"><a href="logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a2974dee2fa00fbf9bb4978f96bb9f543">LOGGER_ERROR</a></div><div class="ttdeci">@ LOGGER_ERROR</div><div class="ttdef"><b>Definition:</b> logger.h:11</div></div>
+<div class="ttc" id="alogger_8h_html_abc6126af1d45847bc59afa0aa3216b04a30eb5eac34e7c2406c74fb78d9004f6c"><div class="ttname"><a href="logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a30eb5eac34e7c2406c74fb78d9004f6c">LOGGER_DEBUG</a></div><div class="ttdeci">@ LOGGER_DEBUG</div><div class="ttdef"><b>Definition:</b> logger.h:11</div></div>
+<div class="ttc" id="alogger_8h_html_abc6126af1d45847bc59afa0aa3216b04a75bad4f1774ac807939d5a98ce84ba42"><div class="ttname"><a href="logger_8h.html#abc6126af1d45847bc59afa0aa3216b04a75bad4f1774ac807939d5a98ce84ba42">LOGGER_LEN</a></div><div class="ttdeci">@ LOGGER_LEN</div><div class="ttdef"><b>Definition:</b> logger.h:11</div></div>
 <div class="ttc" id="alogger_8h_html_ac575b4cc35df0cad234879c9ab487a47"><div class="ttname"><a href="logger_8h.html#ac575b4cc35df0cad234879c9ab487a47">logger_Push</a></div><div class="ttdeci">void logger_Push(int type, const char *str)</div><div class="ttdef"><b>Definition:</b> logger.c:159</div></div>
 <div class="ttc" id="alogger_8h_html_ac65a0cf65ac989ec74ba1a83ed8329d6"><div class="ttname"><a href="logger_8h.html#ac65a0cf65ac989ec74ba1a83ed8329d6">logger_Dumps</a></div><div class="ttdeci">string_t logger_Dumps(int type)</div><div class="ttdef"><b>Definition:</b> logger.c:190</div></div>
 <div class="ttc" id="alogger_8h_html_ae13a9aa92bcdeb742085f9bc3c52e9c8"><div class="ttname"><a href="logger_8h.html#ae13a9aa92bcdeb742085f9bc3c52e9c8">logger_Back</a></div><div class="ttdeci">const char * logger_Back(int type)</div><div class="ttdef"><b>Definition:</b> logger.c:167</div></div>
 <div class="ttc" id="autils_2util_8h_html"><div class="ttname"><a href="utils_2util_8h.html">util.h</a></div></div>
-<div class="ttc" id="autils_2util_8h_html_ab0dcbec9b4b3c60b939b1095f93cb1b9"><div class="ttname"><a href="utils_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a></div><div class="ttdeci">char * string_t</div><div class="ttdef"><b>Definition:</b> util.h:15</div></div>
+<div class="ttc" id="autils_2util_8h_html_ab0dcbec9b4b3c60b939b1095f93cb1b9"><div class="ttname"><a href="utils_2util_8h.html#ab0dcbec9b4b3c60b939b1095f93cb1b9">string_t</a></div><div class="ttdeci">char * string_t</div><div class="ttdef"><b>Definition:</b> util.h:14</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
