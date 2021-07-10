@@ -115,7 +115,7 @@ err_t jwtbundle_Set_print_BIO(jwtbundle_Set *s, int offset, BIO *out)
         mtx_unlock(&s->mtx); // unlock bundle mutex.
         return error;
     } else if(!s) {
-        return ERR_NULLDATA;
+        return ERR_NULL_DATA;
     } else {
         return ERR_NULLBIO;
     }
@@ -125,7 +125,7 @@ err_t jwtbundle_Set_print_fd(jwtbundle_Set *s, int offset, FILE *fd)
 {
     BIO *out = BIO_new_fp(fd, BIO_NOCLOSE);
     if(!out) {
-        return ERR_NULLDATA;
+        return ERR_NULL_DATA;
     }
     err_t error = jwtbundle_Set_print_BIO(s, offset, out);
     BIO_free(out);

@@ -969,7 +969,7 @@ START_TEST(test_jwtbundle_Bundle_Print_Errors)
     // NULL bundle error
     offset = 0;
     err = jwtbundle_Bundle_Print(bundle_ptr);
-    ck_assert_int_eq(err, ERR_NULLDATA);
+    ck_assert_int_eq(err, ERR_NULL_DATA);
 
     // NULL BIO* error
     bundle_ptr = (jwtbundle_Bundle *) 1; //"valid" bundle

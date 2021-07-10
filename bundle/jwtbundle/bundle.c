@@ -244,7 +244,7 @@ err_t jwtbundle_Bundle_print_BIO(jwtbundle_Bundle *b, int offset, BIO *out)
         mtx_unlock(&b->mtx); // unlock bundle mutex.
         return NO_ERROR;
     } else if(!b) {
-        return ERR_NULLDATA;
+        return ERR_NULL_DATA;
     } else {
         return ERR_NULLBUNDLE;
     }

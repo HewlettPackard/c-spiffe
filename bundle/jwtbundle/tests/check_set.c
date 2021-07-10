@@ -361,7 +361,7 @@ START_TEST(test_jwtbundle_Set_Print_Errors)
     // NULL set error
     offset = 0;
     err = jwtbundle_Set_Print(set);
-    ck_assert_int_eq(err, ERR_NULLDATA);
+    ck_assert_int_eq(err, ERR_NULL_DATA);
 
     // NULL BIO* error
     set =(jwtbundle_Set*) 1; //"valid" set

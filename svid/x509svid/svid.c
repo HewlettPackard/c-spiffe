@@ -26,7 +26,7 @@ x509svid_SVID *x509svid_Load(const char *certfile, const char *keyfile,
             return svid;
         } else {
             arrfree(certbytes);
-            *err = ERR_NULLDATA;
+            *err = ERR_NULL_DATA;
             return NULL;
         }
     } else {
