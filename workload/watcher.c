@@ -63,17 +63,17 @@ workloadapi_newWatcher(workloadapi_WatcherConfig config,
 
     int thread_error = mtx_init(&(newW->close_mutex), mtx_plain);
     if(thread_error != thrd_success) {
-        *error = ERROR2;
+        *error = ERR_NULL;
         return NULL;
     }
     thread_error = mtx_init(&(newW->update_mutex), mtx_plain);
     if(thread_error != thrd_success) {
-        *error = ERROR2;
+        *error = ERR_NULL;
         return NULL;
     }
     thread_error = cnd_init(&(newW->update_cond));
     if(thread_error != thrd_success) {
-        *error = ERROR2;
+        *error = ERR_NULL;
         return NULL;
     }
 
@@ -98,7 +98,7 @@ err_t workloadapi_Watcher_Start(workloadapi_Watcher *watcher)
 
     if(thread_error != thrd_success) {
         watcher->thread_error = thread_error;
-        return ERROR2; // THREAD ERROR, see watcher->threadERROR for error
+        return ERR_THREAD; // THREAD ERROR, see watcher->threadERROR for error
     }
 
     mtx_lock(&(watcher->close_mutex));
@@ -137,7 +137,7 @@ err_t workloadapi_Watcher_Close(workloadapi_Watcher *watcher)
     if(thread_error == thrd_success) {
         return (err_t) join_return;
     }
-    return ERROR2;
+    return ERR_CLOSING;
 }
 
 // Free's Watcher (if owns client) MUST ALREADY BE CLOSED.
@@ -197,7 +197,7 @@ err_t workloadapi_Watcher_TimedWaitUntilUpdated(workloadapi_Watcher *watcher,
         }
         mtx_unlock(&watcher->update_mutex);
         if(thread_error != thrd_success) {
-            return ERROR2;
+            return ERR_WAITING;
         } else {
             return NO_ERROR;
         }

@@ -499,7 +499,7 @@ err_t workloadapi_Client_HandleWatchError(workloadapi_Client *client,
             return ERR_CLOSED;
         }
     }
-    return ERROR2; /// shouldn't reach this.
+    return ERR_DEFAULT; /// shouldn't reach this.
 }
 
 workloadapi_X509Context *

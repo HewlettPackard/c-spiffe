@@ -94,7 +94,10 @@ enum enum_err_t {
     ERR_CRL_SIGN,
     ERR_WITHOUT_URI,
     ERR_MORE_THAN_URI,
-    ERR_READING
+    ERR_READING,
+    ERR_LEAF_CA,
+    ERR_THREAD,
+    ERR_WAITING
 };
 
 typedef enum enum_err_t err_t;

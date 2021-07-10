@@ -26,7 +26,7 @@ x509svid_SVID *x509svid_Load(const char *certfile, const char *keyfile,
             return svid;
         } else {
             arrfree(certbytes);
-            *err = ERROR2;
+            *err = ERR_NULLDATA;
             return NULL;
         }
     } else {
@@ -152,7 +152,7 @@ spiffeid_ID x509svid_validateLeafCertificate(X509 *cert, err_t *err)
                 return id;
         } else {
             // leaf is CA
-            *err = ERROR2;
+            *err = ERR_LEAF_CA;
         }
 
         spiffeid_ID_Free(&id);
@@ -225,7 +225,7 @@ EVP_PKEY *x509svid_validatePrivateKey(EVP_PKEY *priv_key, X509 *cert,
             return NULL;
         }
         // either non supported private key or diverging types
-        *err = ERROR2;
+        *err = ERR_DIVERGING_TYPE;
         return NULL;
     }
 
