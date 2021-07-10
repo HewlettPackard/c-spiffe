@@ -446,7 +446,7 @@ err_t workloadapi_Client_watchX509Context(workloadapi_Client *client,
         if(!ok) {
             auto status = c_reader->Finish();
             if(status.error_code() == (int) grpc::StatusCode::CANCELLED) {
-                return ERR_STATUS_CANCELLED;
+                return ERR_CANCELLED_STATUS;
             }
             if(status.error_code()
                == (int) grpc::StatusCode::INVALID_ARGUMENT) {
@@ -473,7 +473,7 @@ err_t workloadapi_Client_HandleWatchError(workloadapi_Client *client,
 {
 
     if(error == (int) grpc::StatusCode::CANCELLED) {
-        return ERR_STATUS_CANCELLED;
+        return ERR_CANCELLED_STATUS;
     }
     if(error == (int) grpc::StatusCode::INVALID_ARGUMENT) {
         return ERR_INVALID_STATUS;
@@ -786,7 +786,7 @@ err_t workloadapi_Client_watchJWTBundles(workloadapi_Client *client,
         if(!ok) {
             auto status = c_reader->Finish();
             if(status.error_code() == (int) grpc::StatusCode::CANCELLED) {
-                return ERR_STATUS_CANCELLED;
+                return ERR_CANCELLED_STATUS;
             }
             if(status.error_code()
                == (int) grpc::StatusCode::INVALID_ARGUMENT) {

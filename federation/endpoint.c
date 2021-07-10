@@ -253,7 +253,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
                     = spiffebundle_Parse(endpoint->td, response, &err);
                 if(err) {
                     mtx_unlock(&endpoint->mutex);
-                    return ERR_UNKNOW_TYPE;
+                    return ERR_UNKNOWN_TYPE;
                 }
                 endpoint->source = spiffebundle_SourceFromBundle(bundle);
                 endpoint->owns_bundle = true;
@@ -261,7 +261,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
 
                 util_string_t_Free(response);
             } else {
-                return ERR_UNKNOW_TYPE;
+                return ERR_UNKNOWN_TYPE;
             }
         } else {
             printf("ERROR CODE: %d\n", res);
@@ -292,7 +292,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
                 spiffebundle_Bundle *bundle
                     = spiffebundle_Parse(endpoint->td, response, &err);
                 if(err) {
-                    return ERR_UNKNOW_TYPE;
+                    return ERR_UNKNOWN_TYPE;
                 }
                 mtx_lock(&endpoint->mutex);
                 endpoint->source = spiffebundle_SourceFromBundle(bundle);
@@ -300,7 +300,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
                 mtx_unlock(&endpoint->mutex);
                 util_string_t_Free(response);
             } else {
-                return ERR_UNKNOW_TYPE;
+                return ERR_UNKNOWN_TYPE;
             }
         } else {
             printf("ERROR CODE: %d\n", res);
