@@ -9,7 +9,7 @@ int workloadapi_JWTWatcher_JWTbackgroundFunc(void *_watcher)
     err_t error = NO_ERROR;
     do {
         error = workloadapi_Client_WatchJWTBundles(watcher->client, watcher);
-    } while(error != ERROR3 && error != ERROR1); // error1 == client closed,
+    } while(error != ERR_INVALID_DATA && error != ERR_CLOSED); // error1 == client closed,
                                                  // error3 == INVALID_ARGUMENT
     return (int) error;
 }
@@ -82,7 +82,7 @@ err_t workloadapi_JWTWatcher_Start(workloadapi_JWTWatcher *watcher)
 {
     err_t error = NO_ERROR;
     if(!watcher) {
-        return ERROR1; /// NULL WATCHER;
+        return ERR_NULL; /// NULL WATCHER;
     }
 
     error = workloadapi_Client_Connect(watcher->client);
@@ -187,7 +187,7 @@ err_t workloadapi_JWTWatcher_TimedWaitUntilUpdated(
                                          &(watcher->update_mutex), timer);
             if(thread_error == thrd_timedout) {
                 mtx_unlock(&(watcher->update_mutex));
-                return ERROR1; // timed out
+                return ERR_TIMEOUT; // timed out
             }
         } else {
             thread_error

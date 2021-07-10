@@ -43,7 +43,7 @@ static void *parseBlock(BIO *bio_mem, const char *type, err_t *err)
                 parsed_pem = pkey;
             } else {
                 // PEM type not supported
-                *err = ERR_PEM_TYPE_UNSUPPORTED;
+                *err = ERR_TYPE_UNSUPPORTED;
             }
         } else {
             // diverging type
@@ -143,7 +143,7 @@ EVP_PKEY *pemutil_ParsePrivateKey(const byte *bytes, err_t *err)
         arrfree(objs);
     } else {
         // null pointer error
-        *err = ERROR1;
+        *err = ERR_NULL;
     }
     
     return pkey;
@@ -164,7 +164,7 @@ byte *pemutil_EncodePrivateKey(EVP_PKEY *pkey, err_t *err)
         i2d_PrivateKey(pkey, &tmp);
     } else {
         // error while reading
-        *err = ERROR1;
+        *err = ERR_READING;
     }
 
     return pem_bytes;

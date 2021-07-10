@@ -48,7 +48,7 @@ workloadapi_NewX509Source(workloadapi_X509SourceConfig *config, err_t *err)
 err_t workloadapi_X509Source_Start(workloadapi_X509Source *source)
 {
     if(!source) {
-        return ERROR1;
+        return ERR_NULL;
     }
     mtx_lock(&(source->closed_mutex));
     source->closed = false;
@@ -82,7 +82,7 @@ workloadapi_X509Source_GetX509SVID(workloadapi_X509Source *source, err_t *err)
             return svid;
         }
         // missing SVID
-        *err = ERROR1;
+        *err = ERR_NULL_SVID;
         return NULL;
     }
 

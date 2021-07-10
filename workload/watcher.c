@@ -85,7 +85,7 @@ err_t workloadapi_Watcher_Start(workloadapi_Watcher *watcher)
 {
     err_t error = NO_ERROR;
     if(!watcher) {
-        return ERROR1; /// NULL WATCHER;
+        return ERR_NULL; /// NULL WATCHER;
     }
     error = workloadapi_Client_Connect(watcher->client);
     if(error != NO_ERROR) {
@@ -189,7 +189,7 @@ err_t workloadapi_Watcher_TimedWaitUntilUpdated(workloadapi_Watcher *watcher,
                                          &(watcher->update_mutex), timer);
             if(thread_error == thrd_timedout) {
                 mtx_unlock(&(watcher->update_mutex));
-                return ERROR1; // timed out
+                return ERR_TIMEOUT; // timed out
             }
         } else {
             thread_error

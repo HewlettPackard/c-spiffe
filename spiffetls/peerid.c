@@ -12,7 +12,7 @@ spiffeid_ID spiffetls_PeerIDFromConn(SSL *conn, err_t *err)
 
             if(*err) {
                 // unable to get peer ID
-                *err = ERR_TO_GET_PEER;
+                *err = ERR_TO_GET;
             }
             X509_free(cert);
         } else {

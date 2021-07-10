@@ -958,7 +958,7 @@ START_TEST(test_workloadapi_Client_WatchJWTBundles)
 
     err = workloadapi_Client_WatchJWTBundles(client, watcher);
 
-    ck_assert_int_eq(err, grpc::StatusCode::CANCELLED);
+    ck_assert_int_eq(err, ERR_INVALID_DATA);
 
     workloadapi_Client_Close(client);
     workloadapi_Client_Free(client);

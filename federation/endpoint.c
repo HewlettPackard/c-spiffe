@@ -11,7 +11,7 @@ static UriUriA URL_parse(const char *str, err_t *err)
     if(uriParseSingleUriA(&uri, str, &err_pos) == URI_SUCCESS) {
         *err = NO_ERROR;
     } else {
-        *err = ERROR1;
+        *err = ERR_NOT_PARSE;
     }
 
     return uri;
@@ -62,7 +62,7 @@ err_t spiffebundle_Endpoint_ConfigHTTPSWEB(spiffebundle_Endpoint *endpoint,
 {
     err_t err = NO_ERROR;
     if(!endpoint) {
-        return ERROR1; // NULL endpoint pointer
+        return ERR_NULL; // NULL endpoint pointer
     }
     if(!url) {
         return ERROR2; // empty/NULL url string
@@ -97,7 +97,7 @@ err_t spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
 {
     err_t err = NO_ERROR;
     if(!endpoint) {
-        return ERROR1; // NULL endpoint pointer
+        return ERR_NULL; // NULL endpoint pointer
     }
     if(!url) {
         return ERROR2; // empty/NULL url string
@@ -139,7 +139,7 @@ spiffebundle_Bundle *spiffebundle_Endpoint_GetBundleForTrustDomain(
     err_t *err)
 {
     if(!endpoint) {
-        *err = ERROR1;
+        *err = ERR_NULL;
         return NULL;
     }
     if(!trust_domain.name) {
@@ -214,7 +214,7 @@ static CURLcode sslctx_function(CURL *curl, void *sslctx, void *parm)
 err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
 {
     if(!endpoint) {
-        return ERROR1;
+        return ERR_NULL;
     }
     if(!endpoint->td.name) {
         return ERROR2;
@@ -321,7 +321,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
 err_t spiffebundle_Endpoint_Cancel(spiffebundle_Endpoint *endpoint)
 {
     if(!endpoint) {
-        return ERROR1;
+        return ERR_NULL;
     }
     mtx_lock(&(endpoint->mutex));
     if(!endpoint->curl_handle) {

@@ -42,7 +42,7 @@ START_TEST(test_federation_Endpoint_Config_SPIFFE);
 
     err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         NULL, "example.com/bundle.json", td, sid, bundle_source);
-    ck_assert_int_eq(err, ERROR1);
+    ck_assert_int_eq(err, ERR_NULL);
 
     err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(tested, NULL, td, sid,
                                                   bundle_source);
@@ -89,7 +89,7 @@ START_TEST(test_federation_Endpoint_Config_WEB);
 
     err = spiffebundle_Endpoint_ConfigHTTPSWEB(NULL, "example.com/bundle.json",
                                                td);
-    ck_assert_int_eq(err, ERROR1);
+    ck_assert_int_eq(err, ERR_NULL);
 
     err = spiffebundle_Endpoint_ConfigHTTPSWEB(tested, NULL, td);
     ck_assert_int_eq(err, ERROR2);
@@ -132,7 +132,7 @@ START_TEST(test_federation_Endpoint_get_bundle);
 
     spiffebundle_Bundle *end_bundle
         = spiffebundle_Endpoint_GetBundleForTrustDomain(NULL, td, &err);
-    ck_assert_uint_eq(err, ERROR1);
+    ck_assert_uint_eq(err, ERR_NULL);
 
     spiffeid_TrustDomain err_td = { NULL };
     end_bundle
@@ -243,7 +243,7 @@ START_TEST(test_federation_Endpoint_fetch_SPIFFE);
     curl_easy_setopt(tested->curl_handle, CURLOPT_RESOLVE, resolve_list);
     
     err = spiffebundle_Endpoint_Fetch(NULL);
-    ck_assert_int_eq(err, ERROR1);
+    ck_assert_int_eq(err, ERR_NULL);
     tested->td = null_td;
     err = spiffebundle_Endpoint_Fetch(tested);
     ck_assert_int_eq(err, ERROR2);

@@ -85,7 +85,7 @@ static UriUriA URL_parse(const char *str, err_t *err)
     if(uriParseSingleUriA(&uri, str, &err_pos) == URI_SUCCESS) {
         *err = NO_ERROR;
     } else {
-        *err = ERROR1;
+        *err = ERR_NOT_PARSE;
     }
 
     return uri;

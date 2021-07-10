@@ -176,7 +176,7 @@ START_TEST(test_workloadapi_JWTSource_GetJWTBundleForTrustDomain);
         = workloadapi_JWTSource_GetJWTBundleForTrustDomain(tested, td, &err);
 
     ck_assert_ptr_eq(bundle, NULL);
-    ck_assert_int_eq(err, ERR_TRUSTDOMAIN_NOTAVAILABLE); // trust domain not available
+    ck_assert_int_eq(err, ERR_INVALID_TRUSTDOMAIN); // trust domain not available
 
     jwtbundle_Set_Free(tested->bundles);
     tested->bundles = NULL;

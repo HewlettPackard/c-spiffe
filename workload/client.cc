@@ -755,7 +755,7 @@ err_t workloadapi_Client_WatchJWTBundles(workloadapi_Client *client,
 
         if(err == (int) grpc::CANCELLED
            || err == (int) grpc::INVALID_ARGUMENT) {
-            return err;
+            return ERR_INVALID_DATA;
         } else if(err != NO_ERROR) {
             return err;
         }
