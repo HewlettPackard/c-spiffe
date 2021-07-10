@@ -109,7 +109,7 @@ err_t workloadapi_Watcher_Start(workloadapi_Watcher *watcher)
     error = workloadapi_Watcher_WaitUntilUpdated(watcher);
     if(error != NO_ERROR) {
         watcher->update_error = error;
-        return ERROR3;
+        return ERR_WAITING;
     }
 
     return error;

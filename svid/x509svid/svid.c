@@ -221,7 +221,7 @@ EVP_PKEY *x509svid_validatePrivateKey(EVP_PKEY *priv_key, X509 *cert,
                 return priv_key;
             }
             // leaf certificate and private key do not match
-            *err = ERROR3;
+            *err = ERR_NOT_MATCH;
             return NULL;
         }
         // either non supported private key or diverging types

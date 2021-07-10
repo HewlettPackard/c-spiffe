@@ -258,7 +258,7 @@ START_TEST(test_spiffebundle_Watcher_GetStatus)
     ck_assert_int_eq(running_status, ENDPOINT_ERROR);
 
     running_status = spiffebundle_Watcher_GetStatus(watcher, td, &err);
-    ck_assert_uint_eq(err, ERROR3);
+    ck_assert_uint_eq(err, ERR_NULL);
     ck_assert_int_eq(running_status, ENDPOINT_ERROR);
 
     const char url[] = "https://example.org";

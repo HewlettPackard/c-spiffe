@@ -225,7 +225,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
         = endpoint->curl_handle ? endpoint->curl_handle : curl_easy_init();
     if(!curl) {
         mtx_unlock(&endpoint->mutex);
-        return ERROR3;
+        return ERR_NULL;
     }
     endpoint->curl_handle = curl;
     mtx_unlock(&endpoint->mutex);

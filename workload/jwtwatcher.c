@@ -107,7 +107,7 @@ err_t workloadapi_JWTWatcher_Start(workloadapi_JWTWatcher *watcher)
     error = workloadapi_JWTWatcher_WaitUntilUpdated(watcher);
     if(error != NO_ERROR) {
         watcher->update_error = error;
-        return ERROR3;
+        return ERR_WAITING;
     }
 
     return error;

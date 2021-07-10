@@ -83,7 +83,7 @@ spiffebundle_Bundle *spiffebundle_Watcher_GetBundleForTrustDomain(
         spiffebundle_Endpoint_Status *status
             = shget(watcher->endpoints, trust_domain.name);
         if(status == NULL) {
-            *err = ERROR3;
+            *err = ERR_NULL;
             return NULL;
         } else {
             *err = NO_ERROR;
@@ -189,7 +189,7 @@ spiffebundle_Watcher_GetStatus(spiffebundle_Watcher *watcher,
         spiffebundle_Endpoint_Status *status
             = shget(watcher->endpoints, td.name);
         if(status == NULL) {
-            *err = ERROR3;
+            *err = ERR_NULL;
             return ENDPOINT_ERROR; // not found
         } else {
             *err = NO_ERROR;
