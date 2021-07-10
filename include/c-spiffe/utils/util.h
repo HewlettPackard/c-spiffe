@@ -30,9 +30,8 @@ typedef struct map_string_string {
 /** Error code enum */
 enum enum_err_t {
     NO_ERROR = 0,
-    ERROR1,
-    ERR_STATUS_CANCELLED = ERROR1,
-    ERR_CLOSING = ERROR1,
+    ERR_STATUS_CANCELLED,
+    ERR_CLOSING = ERR_STATUS_CANCELLED,
     ERROR2,
     ERROR3,
     ERR_STATUS_INVALID = ERROR3,

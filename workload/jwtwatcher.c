@@ -9,8 +9,8 @@ int workloadapi_JWTWatcher_JWTbackgroundFunc(void *_watcher)
     err_t error = NO_ERROR;
     do {
         error = workloadapi_Client_WatchJWTBundles(watcher->client, watcher);
-    } while(error != ERR_INVALID_DATA && error != ERR_CLOSED); // error1 == client closed,
-                                                 // error3 == INVALID_ARGUMENT
+    } while(error != ERR_INVALID_DATA && error != ERR_CLOSED); // ERR_CLOSED == client closed,
+                                                 // ERR_INVALID_DATA == INVALID_ARGUMENT
     return (int) error;
 }
 
