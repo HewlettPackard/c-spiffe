@@ -66,6 +66,7 @@ install(
 set(HEADERS_UTIL
 ${PROJECT_SOURCE_DIR}/../include/c-spiffe/utils/util.h
 ${PROJECT_SOURCE_DIR}/../include/c-spiffe/utils/stb_ds.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/utils/error.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(

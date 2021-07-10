@@ -246,7 +246,7 @@ err_t jwtbundle_Bundle_print_BIO(jwtbundle_Bundle *b, int offset, BIO *out)
     } else if(!b) {
         return ERR_NULL_DATA;
     } else {
-        return ERR_NULLBUNDLE;
+        return ERR_NULL_BUNDLE;
     }
 }
 

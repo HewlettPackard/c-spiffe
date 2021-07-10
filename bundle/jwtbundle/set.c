@@ -117,7 +117,7 @@ err_t jwtbundle_Set_print_BIO(jwtbundle_Set *s, int offset, BIO *out)
     } else if(!s) {
         return ERR_NULL_DATA;
     } else {
-        return ERR_NULLBIO;
+        return ERR_NULL_BIO;
     }
 }
 
