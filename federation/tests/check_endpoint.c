@@ -68,7 +68,7 @@ START_TEST(test_federation_Endpoint_Config_SPIFFE);
 
     err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", td, sid, NULL);
-    ck_assert_int_eq(err, ERROR6);
+    ck_assert_int_eq(err, ERR_INVALID_DATA);
 
     err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", td, sid, bundle_source);

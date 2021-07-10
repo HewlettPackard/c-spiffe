@@ -117,7 +117,7 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
 
     SSL *conn = SSL_new(tls_config);
     if(!conn) {
-        *err = ERROR6;
+        *err = ERR_CONNECT;
         goto error;
     } else if(SSL_set_fd(conn, clientfd) != 1) {
         *err = ERR_CONNECT;

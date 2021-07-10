@@ -440,7 +440,7 @@ static err_t validate_claims(jwtsvid_Claims *claims, string_arr_t audience)
         } else if(claims->issued_at > 0
                   && claims->issued_at > now + DEFAULT_LEEWAY) {
             // issued in the future
-            return ERROR5;
+            return ERR_DEFAULT;
         }
 
         return NO_ERROR;

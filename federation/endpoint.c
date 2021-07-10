@@ -103,7 +103,7 @@ err_t spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         return ERR_EMPTY_DATA; // empty/NULL url string
     }
     if(!source) {
-        return ERROR6; // no source of initial bundle provided
+        return ERR_INVALID_DATA; // no source of initial bundle provided
     }
     if(!trust_domain.name) {
         return ERR_INVALID_TRUSTDOMAIN; // empty/NULL trust domain name
@@ -253,7 +253,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
                     = spiffebundle_Parse(endpoint->td, response, &err);
                 if(err) {
                     mtx_unlock(&endpoint->mutex);
-                    return ERROR5;
+                    return ERR_UNKNOW_TYPE;
                 }
                 endpoint->source = spiffebundle_SourceFromBundle(bundle);
                 endpoint->owns_bundle = true;
@@ -261,11 +261,11 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
 
                 util_string_t_Free(response);
             } else {
-                return ERROR4;
+                return ERR_UNKNOW_TYPE;
             }
         } else {
             printf("ERROR CODE: %d\n", res);
-            return ERROR6;
+            return ERR_TO_GET;
         }
         break;
     }
@@ -292,7 +292,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
                 spiffebundle_Bundle *bundle
                     = spiffebundle_Parse(endpoint->td, response, &err);
                 if(err) {
-                    return ERROR5;
+                    return ERR_UNKNOW_TYPE;
                 }
                 mtx_lock(&endpoint->mutex);
                 endpoint->source = spiffebundle_SourceFromBundle(bundle);
@@ -300,11 +300,11 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
                 mtx_unlock(&endpoint->mutex);
                 util_string_t_Free(response);
             } else {
-                return ERROR4;
+                return ERR_UNKNOW_TYPE;
             }
         } else {
             printf("ERROR CODE: %d\n", res);
-            return ERROR6;
+            return ERR_TO_GET;
         }
         BIO_free(cert_bio);
         break;
@@ -312,7 +312,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
 
     case NONE:
     default:
-        return ERROR6; // NOT_IMPLEMENTED
+        return ERR_DEFAULT; // NOT_IMPLEMENTED
         break;
     }
     return NO_ERROR;
