@@ -437,7 +437,7 @@ START_TEST(test_workloadapi_parseJWTSVID_null_or_empty)
     err_t err = NO_ERROR;
     jwtsvid_SVID *svid = workloadapi_parseJWTSVID(NULL, NULL, &err);
 
-    // then we should get no SVID, with an ERROR1 error
+    // then we should get no SVID, with an ERR_NULL error
     ck_assert_ptr_eq(svid, NULL);
     ck_assert_int_eq(err, ERR_NULL); // NULL pointer error
 
@@ -464,7 +464,7 @@ START_TEST(test_workloadapi_parseJWTBundles_null_or_empty)
     err_t err = NO_ERROR;
     jwtbundle_Set *set = workloadapi_parseJWTBundles(NULL, &err);
 
-    // then we should get no SVID, with an ERROR1 error
+    // then we should get no SVID, with an ERR_NULL error
     ck_assert_ptr_eq(set, NULL);
     ck_assert_int_eq(err, ERR_NULL); // NULL pointer error
 }

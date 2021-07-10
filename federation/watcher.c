@@ -92,7 +92,7 @@ spiffebundle_Bundle *spiffebundle_Watcher_GetBundleForTrustDomain(
         }
 
     } else {
-        *err = ERROR2;
+        *err = ERR_INVALID_DATA;
         return NULL;
     }
 }
@@ -196,7 +196,7 @@ spiffebundle_Watcher_GetStatus(spiffebundle_Watcher *watcher,
             return status->running;
         }
     } else {
-        *err = ERROR2;
+        *err = ERR_INVALID_DATA;
         return ENDPOINT_ERROR; // not found
     }
 }

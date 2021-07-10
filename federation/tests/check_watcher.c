@@ -254,7 +254,7 @@ START_TEST(test_spiffebundle_Watcher_GetStatus)
 
     spiffeid_TrustDomain null_td = { NULL };
     running_status = spiffebundle_Watcher_GetStatus(watcher, null_td, &err);
-    ck_assert_uint_eq(err, ERROR2);
+    ck_assert_uint_eq(err, ERR_INVALID_DATA);
     ck_assert_int_eq(running_status, ENDPOINT_ERROR);
 
     running_status = spiffebundle_Watcher_GetStatus(watcher, td, &err);

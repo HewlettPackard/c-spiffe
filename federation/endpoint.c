@@ -65,15 +65,15 @@ err_t spiffebundle_Endpoint_ConfigHTTPSWEB(spiffebundle_Endpoint *endpoint,
         return ERR_NULL; // NULL endpoint pointer
     }
     if(!url) {
-        return ERROR2; // empty/NULL url string
+        return ERR_EMPTY_DATA; // empty/NULL url string
     }
     UriUriA temp_uri = URL_parse(url, &err);
     if(err) {
         uriFreeUriMembersA(&temp_uri);
-        return ERROR2; // invalid url string
+        return ERR_NOT_PARSE; // invalid url string
     }
     if(!trust_domain.name) {
-        return ERROR3; // empty/NULL trust domain name
+        return ERR_INVALID_TRUSTDOMAIN; // empty/NULL trust domain name
     }
     mtx_lock(&endpoint->mutex);
     endpoint->url = URI_to_string(&temp_uri);
@@ -82,7 +82,7 @@ err_t spiffebundle_Endpoint_ConfigHTTPSWEB(spiffebundle_Endpoint *endpoint,
     if(err) {
 
         mtx_unlock(&endpoint->mutex);
-        return ERROR3;
+        return ERR_INVALID_TRUSTDOMAIN;
     }
     endpoint->profile = HTTPS_WEB;
     endpoint->owns_bundle = false;
@@ -100,30 +100,30 @@ err_t spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         return ERR_NULL; // NULL endpoint pointer
     }
     if(!url) {
-        return ERROR2; // empty/NULL url string
+        return ERR_EMPTY_DATA; // empty/NULL url string
     }
     if(!source) {
         return ERROR6; // no source of initial bundle provided
     }
     if(!trust_domain.name) {
-        return ERROR3; // empty/NULL trust domain name
+        return ERR_INVALID_TRUSTDOMAIN; // empty/NULL trust domain name
     }
     UriUriA temp_uri = URL_parse(url, &err);
     if(err) {
         uriFreeUriMembersA(&temp_uri);
-        return ERROR2; // invalid url string
+        return ERR_INVALID_DATA; // invalid url string
     }
 
     mtx_lock(&endpoint->mutex);
     endpoint->td = spiffeid_TrustDomainFromString(trust_domain.name, &err);
     if(err) {
         mtx_unlock(&endpoint->mutex);
-        return ERROR3;
+        return ERR_INVALID_TRUSTDOMAIN;
     }
     endpoint->id = spiffeid_FromString(spiffe_id, &err);
     if(err) {
         mtx_unlock(&endpoint->mutex);
-        return ERROR5; // couldn't parse spiffeID
+        return ERR_NOT_PARSE; // couldn't parse spiffeID
     }
     endpoint->url = URI_to_string(&temp_uri);
     uriFreeUriMembersA(&temp_uri);
@@ -143,12 +143,12 @@ spiffebundle_Bundle *spiffebundle_Endpoint_GetBundleForTrustDomain(
         return NULL;
     }
     if(!trust_domain.name) {
-        *err = ERROR2;
+        *err = ERR_TRUSTDOMAIN_NOTAVAILABLE;
         return NULL;
     }
     mtx_lock(&endpoint->mutex);
     if(!endpoint->source) {
-        *err = ERROR3;
+        *err = ERR_NULL;
         mtx_unlock(&endpoint->mutex);
         return NULL;
     }
@@ -217,7 +217,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
         return ERR_NULL;
     }
     if(!endpoint->td.name) {
-        return ERROR2;
+        return ERR_INVALID_DATA;
     }
     // if handle exists, reuse.
     mtx_lock(&endpoint->mutex);
