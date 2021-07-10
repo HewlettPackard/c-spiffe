@@ -2,6 +2,7 @@
 #define INCLUDE_UTILS_UTIL_H
 
 #include "c-spiffe/utils/stb_ds.h"
+#include "c-spiffe/utils/error.h"
 #include <openssl/evp.h>
 #include <stdbool.h>
 
@@ -27,75 +28,6 @@ typedef struct map_string_string {
     string_t value;
 } map_string_string;
 
-/** Error code enum */
-enum enum_err_t {
-    NO_ERROR = 0,
-    ERR_STATUS_CANCELLED,
-    ERR_CLOSING = ERR_STATUS_CANCELLED,
-    ERR_FAILED_OPEN,
-    ERR_STATUS_INVALID,
-    ERR_CLOSED,
-    ERR_BAD_REQUEST,
-    ERR_NULLDATA,
-    ERR_TRUSTDOMAIN_NOTAVAILABLE,
-    ERR_NULLBIO,
-    ERR_NULLBUNDLE,
-    ERR_INVALID_TRUSTDOMAIN,
-    ERR_EMPTY_DATA,
-    ERR_NEW_FP,
-    ERR_NOT_PARSE,
-    ERR_NULL,
-    ERR_UNKNOW_TYPE,
-    ERR_UNKNOW_MODE,
-    ERR_INVALID_DATA,
-    ERR_NOT_ENCODE_CERTIFICATE,
-    ERR_TYPE_UNSUPPORTED,
-    ERR_DIVERGING_TYPE,
-    ERR_EOF,
-    ERR_DEFAULT,
-    ERR_NULL_ID,
-    ERR_CREATE,
-    ERR_CONNECT,
-    ERR_SET,
-    ERR_NOT_ACCEPT,
-    ERR_NO_PEER_CERTIFICATE,
-    ERR_TO_GET,
-    ERR_NULL_TOKEN,
-    ERR_INITIALIZE,
-    ERR_NOT_MATCH,
-    ERR_INVALID_ALGORITHM,
-    ERR_NULL_JWT,
-    ERR_NOT_FOUND,
-    ERR_NOAUTHORITY,
-    ERR_PAYLOAD,
-    ERR_EXPIRED,
-    ERR_NULL_CLAIMS,
-    ERR_INVALID_CLAIM,
-    ERR_INVALID_JWT,
-    ERR_INVALID_SVID,
-    ERR_NULL_SVID,
-    ERR_NULL_STUB,
-    ERR_BAD_ARGUMENT,
-    ERR_TIMEOUT,
-    ERR_NO_MESSAGE,
-    ERR_START,
-    ERR_STOP,
-    ERR_CERTIFICATE_VALIDATION,
-    ERR_PRIVKEY_VALIDATION,
-    ERR_CANNOT_CERTIFICATE,
-    ERR_CERTIFICATE_NOT_CA,
-    ERR_SIGNATURE_FLAG,
-    ERR_CERT_SIGN,
-    ERR_CRL_SIGN,
-    ERR_WITHOUT_URI,
-    ERR_MORE_THAN_URI,
-    ERR_READING,
-    ERR_LEAF_CA,
-    ERR_THREAD,
-    ERR_WAITING
-};
-
-typedef enum enum_err_t err_t;
 
 /**
  * Frees stb string.
