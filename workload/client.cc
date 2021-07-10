@@ -450,7 +450,7 @@ err_t workloadapi_Client_watchX509Context(workloadapi_Client *client,
             }
             if(status.error_code()
                == (int) grpc::StatusCode::INVALID_ARGUMENT) {
-                return ERR_STATUS_INVALID;
+                return ERR_INVALID_STATUS;
             }
             return ERR_NO_MESSAGE; // no more messages.
         }
@@ -476,7 +476,7 @@ err_t workloadapi_Client_HandleWatchError(workloadapi_Client *client,
         return ERR_STATUS_CANCELLED;
     }
     if(error == (int) grpc::StatusCode::INVALID_ARGUMENT) {
-        return ERR_STATUS_INVALID;
+        return ERR_INVALID_STATUS;
     }
 
     struct timespec retryAfter = workloadapi_Backoff_NextTime(backoff);
@@ -790,7 +790,7 @@ err_t workloadapi_Client_watchJWTBundles(workloadapi_Client *client,
             }
             if(status.error_code()
                == (int) grpc::StatusCode::INVALID_ARGUMENT) {
-                return ERR_STATUS_INVALID;
+                return ERR_INVALID_STATUS;
             }
             return ERR_NO_MESSAGE; // no more messages.
         }
