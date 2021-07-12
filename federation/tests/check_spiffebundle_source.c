@@ -131,7 +131,7 @@ START_TEST(test_spiffebundle_Source_GetspiffeBundleForTrustDomain)
     ret_bundle
         = spiffebundle_Source_GetSpiffeBundleForTrustDomain(NULL, td, &err);
     ck_assert_ptr_eq(ret_bundle, NULL);
-    ck_assert_int_eq(err, ERR_TO_GET);
+    ck_assert_int_eq(err, ERR_GET);
     
     spiffeid_TrustDomain_Free(&td);
         

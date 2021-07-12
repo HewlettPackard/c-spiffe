@@ -41,7 +41,7 @@ x509bundle_Bundle *x509bundle_Load(const spiffeid_TrustDomain td,
         arrfree(buffer);
     } else {
         // could not open file
-        *err = ERR_FAILED_OPEN;
+        *err = ERR_OPENING;
     }
 
     return bundleptr;

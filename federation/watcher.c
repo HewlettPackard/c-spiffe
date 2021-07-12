@@ -151,7 +151,7 @@ err_t spiffebundle_Watcher_Start(spiffebundle_Watcher *watcher)
         }
         return NO_ERROR;
     }
-    return ERR_START;
+    return ERR_STARTING;
 }
 
 err_t spiffebundle_Watcher_Stop(spiffebundle_Watcher *watcher)
@@ -174,7 +174,7 @@ err_t spiffebundle_Watcher_Stop(spiffebundle_Watcher *watcher)
         }
         return NO_ERROR;
     }
-    return ERR_STOP;
+    return ERR_STOPPING;
 }
 
 spiffebundle_Endpoint_StatusCode

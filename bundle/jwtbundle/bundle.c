@@ -51,7 +51,7 @@ jwtbundle_Bundle *jwtbundle_Load(const spiffeid_TrustDomain td,
         bundleptr = jwtbundle_Parse(td, buffer, err);
         arrfree(buffer);
     } else
-        *err = ERR_FAILED_OPEN;
+        *err = ERR_OPENING;
 
     return bundleptr;
 }

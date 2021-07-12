@@ -187,7 +187,7 @@ byte **pemutil_EncodeCertificates(X509 **certs, err_t *err)
             arrput(pem_bytes_arr, pem_bytes);
         } else {
             // could not encode one certificate
-            *err = ERR_NOT_ENCODE_CERTIFICATE;
+            *err = ERR_CERTIFICATE_NOT_ENCODED;
             // freeing all stb array alocated so far
             for(size_t i = 0, size = arrlenu(pem_bytes_arr); i < size; ++i) {
                 arrfree(pem_bytes_arr[i]);

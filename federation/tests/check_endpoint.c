@@ -64,7 +64,7 @@ START_TEST(test_federation_Endpoint_Config_SPIFFE);
     string_t err_id = "https://not.a.spiffe.id/wrong";
     err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", td, err_id, bundle_source);
-    ck_assert_int_eq(err, ERR_NOT_PARSE);
+    ck_assert_int_eq(err, ERR_PARSING);
 
     err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", td, sid, NULL);
@@ -95,7 +95,7 @@ START_TEST(test_federation_Endpoint_Config_WEB);
     ck_assert_int_eq(err, ERR_EMPTY_DATA);
 
     err = spiffebundle_Endpoint_ConfigHTTPSWEB(tested, "not a URL", td);
-    ck_assert_int_eq(err, ERR_NOT_PARSE);
+    ck_assert_int_eq(err, ERR_PARSING);
 
     spiffeid_TrustDomain err_td = { NULL };
     err = spiffebundle_Endpoint_ConfigHTTPSWEB(

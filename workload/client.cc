@@ -69,7 +69,7 @@ x509svid_SVID **workloadapi_parseX509SVIDs(X509SVIDResponse *resp,
                                            bool firstOnly, err_t *err)
 {
     if(!resp) {
-        *err = ERR_NOT_PARSE;
+        *err = ERR_PARSING;
         return NULL;
     }
     x509svid_SVID **x509svids = NULL;
@@ -114,7 +114,7 @@ workloadapi_X509Context *workloadapi_parseX509Context(X509SVIDResponse *resp,
         }
         arrfree(svids);
         x509bundle_Set_Free(bundles);
-        *err = ERR_NOT_PARSE;
+        *err = ERR_PARSING;
         return NULL;
     }
     cntx->bundles = bundles;
@@ -291,7 +291,7 @@ err_t workloadapi_Client_SetAddress(workloadapi_Client *client,
     UriUriA uri;
     const char *err_pos;
     if(uriParseSingleUriA(&uri, address, &err_pos) != URI_SUCCESS) {
-        return ERR_NOT_PARSE;
+        return ERR_PARSING;
     }
 
     if(client->address) {

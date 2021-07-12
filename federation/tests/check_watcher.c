@@ -188,7 +188,7 @@ START_TEST(test_spiffebundle_Watcher_Start)
 {
     spiffebundle_Watcher *watcher = spiffebundle_Watcher_New();
     err_t err = spiffebundle_Watcher_Start(NULL);
-    ck_assert_uint_eq(err, ERR_START);
+    ck_assert_uint_eq(err, ERR_STARTING);
 
     err = spiffebundle_Watcher_Start(watcher);
     ck_assert_uint_eq(err, NO_ERROR);
@@ -197,7 +197,7 @@ START_TEST(test_spiffebundle_Watcher_Start)
     nanosleep(&sleep_time, NULL);
     
     err = spiffebundle_Watcher_Stop(NULL);
-    ck_assert_uint_eq(err, ERR_STOP);
+    ck_assert_uint_eq(err, ERR_STOPPING);
 
     err = spiffebundle_Watcher_Stop(watcher);
 

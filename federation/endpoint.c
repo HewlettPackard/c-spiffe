@@ -11,7 +11,7 @@ static UriUriA URL_parse(const char *str, err_t *err)
     if(uriParseSingleUriA(&uri, str, &err_pos) == URI_SUCCESS) {
         *err = NO_ERROR;
     } else {
-        *err = ERR_NOT_PARSE;
+        *err = ERR_PARSING;
     }
 
     return uri;
@@ -70,7 +70,7 @@ err_t spiffebundle_Endpoint_ConfigHTTPSWEB(spiffebundle_Endpoint *endpoint,
     UriUriA temp_uri = URL_parse(url, &err);
     if(err) {
         uriFreeUriMembersA(&temp_uri);
-        return ERR_NOT_PARSE; // invalid url string
+        return ERR_PARSING; // invalid url string
     }
     if(!trust_domain.name) {
         return ERR_INVALID_TRUSTDOMAIN; // empty/NULL trust domain name
@@ -123,7 +123,7 @@ err_t spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
     endpoint->id = spiffeid_FromString(spiffe_id, &err);
     if(err) {
         mtx_unlock(&endpoint->mutex);
-        return ERR_NOT_PARSE; // couldn't parse spiffeID
+        return ERR_PARSING; // couldn't parse spiffeID
     }
     endpoint->url = URI_to_string(&temp_uri);
     uriFreeUriMembersA(&temp_uri);
@@ -265,7 +265,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
             }
         } else {
             printf("ERROR CODE: %d\n", res);
-            return ERR_TO_GET;
+            return ERR_GET;
         }
         break;
     }
@@ -304,7 +304,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
             }
         } else {
             printf("ERROR CODE: %d\n", res);
-            return ERR_TO_GET;
+            return ERR_GET;
         }
         BIO_free(cert_bio);
         break;

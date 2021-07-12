@@ -73,7 +73,7 @@ static jwtsvid_JWT *token_to_jwt(char *token, err_t *err)
                 }
                 // error parsing
                 jwtsvid_JWT_Free(jwt);
-                *err = ERR_NOT_PARSE;
+                *err = ERR_PARSING;
                 return NULL;
             }
             arrfree(header_new);
@@ -153,7 +153,7 @@ static err_t validate_jwt(jwtsvid_JWT *jwt, EVP_PKEY *pkey)
                 if(init != 1) {
                     EVP_MD_CTX_free(ctx);
                     // could not initialize ctx with public key
-                    return ERR_INITIALIZE;
+                    return ERR_INITIALIZING;
                 }
 
                 string_t md = string_new(jwt->header_str);
@@ -172,7 +172,7 @@ static err_t validate_jwt(jwtsvid_JWT *jwt, EVP_PKEY *pkey)
                     arrfree(md);
                     free(buffer);
                     // could not initialize ctx with message digest
-                    return ERR_INITIALIZE;
+                    return ERR_INITIALIZING;
                 }
 
                 const int key_type = EVP_PKEY_base_id(pkey);
@@ -204,7 +204,7 @@ static err_t validate_jwt(jwtsvid_JWT *jwt, EVP_PKEY *pkey)
                 if(ret == 1)
                     return NO_ERROR;
                 // the signature does not match the MD
-                return ERR_NOT_MATCH;
+                return ERR_UNMATCH;
             }
             // invalid algorithm
             return ERR_INVALID_ALGORITHM;
@@ -301,7 +301,7 @@ static map_string_claim *parseAndValidate(jwtsvid_JWT *jwt,
                         return claims;
                     }
                     // error converting payload to a map
-                    *err = ERR_NOT_PARSE;
+                    *err = ERR_PARSING;
                     return NULL;
                 }
                 // not validated
@@ -557,7 +557,7 @@ jwtsvid_SVID *jwtsvid_parse(char *token, string_arr_t audience,
             }
         }
         // unable to parse token
-        *err = ERR_NOT_PARSE;
+        *err = ERR_PARSING;
         goto ret;
     }
     // token is NULL

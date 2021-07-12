@@ -110,7 +110,7 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
     if(clientfd < 0) {
         // could not accept client
         close(sockfd);
-        *err = ERR_NOT_ACCEPT;
+        *err = ERR_NOT_ACCEPTED;
         goto error;
     }
     *sock = sockfd;

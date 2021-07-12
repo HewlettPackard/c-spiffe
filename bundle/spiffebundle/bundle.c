@@ -30,7 +30,7 @@ spiffebundle_Bundle *spiffebundle_Load(const spiffeid_TrustDomain td,
         bundleptr = spiffebundle_Parse(td, buffer, err);
         arrfree(buffer);
     } else {
-        *err = ERR_FAILED_OPEN;
+        *err = ERR_OPENING;
     }
 
     return bundleptr;
@@ -76,7 +76,7 @@ spiffebundle_Bundle *spiffebundle_Parse(const spiffeid_TrustDomain td,
 
         } else {
             // could not parse jwks
-            *err = ERR_NOT_PARSE;
+            *err = ERR_PARSING;
         }
     } else {
         // NULL error

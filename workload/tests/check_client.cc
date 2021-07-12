@@ -234,7 +234,7 @@ START_TEST(test_workloadapi_parseX509Context)
     ctx = workloadapi_parseX509Context(NULL, &err);
 
     ck_assert_ptr_eq(ctx, NULL);
-    ck_assert_int_eq(err, ERR_NOT_PARSE);
+    ck_assert_int_eq(err, ERR_PARSING);
 }
 END_TEST
 
@@ -389,7 +389,7 @@ START_TEST(test_workloadapi_Client_Connect_uses_stub)
     ck_assert_int_eq(err, ERR_NULL);
 
     err = workloadapi_Client_SetAddress(client, NULL);
-    ck_assert_int_eq(err, ERR_NOT_PARSE);
+    ck_assert_int_eq(err, ERR_PARSING);
 
     // sets address to "fake"
     err = workloadapi_Client_SetAddress(client, "unix:///tmp/not_agent.sock");
