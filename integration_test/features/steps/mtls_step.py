@@ -12,7 +12,7 @@ parse_nullable_string.pattern = r'.*'
 register_type(NullableString=parse_nullable_string)
 
 
-@then('The second "{process}" is turned off inside "{container_name}" container')
+@step('The second "{process}" is turned off inside "{container_name}" container')
 def step_impl(context, process, container_name):
     if process != "agent" and process != "server":
         raise Exception("Invalid process '%s'. Choose 'agent' or 'server'." % process)
@@ -24,7 +24,7 @@ def step_impl(context, process, container_name):
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-stop-process.sh %s %s" % (process, container_name))
 
 
-@given('The second agent is turned on inside "{container_name}" container')
+@step('The second agent is turned on inside "{container_name}" container')
 def step_impl(context, container_name):
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-generate-token.sh")
     time.sleep(2)
@@ -32,7 +32,7 @@ def step_impl(context, container_name):
     time.sleep(7)
 
 
-@when('The "{language}"-tls-listen is activated inside "{container_name}" container')
+@step('The "{language}"-tls-listen is activated inside "{container_name}" container')
 def step_impl(context, language, container_name):
     port = context.default_echo_server_port
     if context.current_workload == context.workload_c:
@@ -47,7 +47,7 @@ def step_impl(context, language, container_name):
         raise Exception("'%s' is not an available language for tls-listen. Choose 'c' or 'go'." % language)
 
 
-@then('The "{language}"-tls-listen is disabled inside "{container_name}" container')
+@step('The "{language}"-tls-listen is disabled inside "{container_name}" container')
 def step_impl(context, language, container_name):
     if language == "go":
         os.system("/mnt/c-spiffe/integration_test/helpers/bash-general-scripts/ssh-stop-go-server.sh %s" % container_name)
@@ -57,7 +57,7 @@ def step_impl(context, language, container_name):
         raise Exception("'%s' is not an available language for tls-listen. Choose 'c' or 'go'." % language)
 
 
-@when('I send "{message:NullableString}" to "{container_name}" container through "{language}"-tls-dial')
+@step('I send "{message:NullableString}" to "{container_name}" container through "{language}"-tls-dial')
 def step_impl(context, message, container_name, language):
     result = ""
     workload_id = "myworkload%s" % context.current_workload[-1]
@@ -84,7 +84,7 @@ def step_impl(context, message):
     assert_that(actual_message, is_(message), "Unexpected response from server: %s" % message)
 
 
-@given('The second agent is turned on inside "{container_name}" container with the second trust domain')
+@step('The second agent is turned on inside "{container_name}" container with the second trust domain')
 def step_impl(context, container_name):
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-generate-token.sh 2")
     time.sleep(2)
@@ -92,7 +92,7 @@ def step_impl(context, container_name):
     time.sleep(7)
 
 
-@given('I set the "{process}" "{field_alias}" to "{new_value}" inside "{container_name}" container')
+@step('I set the "{process}" "{field_alias}" to "{new_value}" inside "{container_name}" container')
 def step_impl(context, process, field_alias, new_value, container_name):
     if process != "agent" and process != "server":
         raise Exception("Invalid process '%s' to update the conf file. Choose 'agent' or 'server'." % process)
@@ -114,7 +114,7 @@ def step_impl(context, process, field_alias, new_value, container_name):
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-update-server-conf.sh %s %s %s %s %s" % (field_name, new_value, process, container_name, workload))
 
 
-@given('The second server is turned on inside "{container_name}" container')
+@step('The second server is turned on inside "{container_name}" container')
 def step_impl(context, container_name):
     if container_name != "spire-server2":
         raise Exception("Unexpected container to run second server. Use 'spire-server2'.")
@@ -130,6 +130,6 @@ def step_impl(context):
     assert_that(context.result.find("could not create TLS connection"), is_not(-1), "Unexpected error from server: %s" % context.result)
 
 
-@given('The "{workload_id}" entry is removed from "{container_name}"')
+@step('The "{workload_id}" entry is removed from "{container_name}"')
 def step_impl(context, workload_id, container_name):
     remove_entry(container_name, workload_id)

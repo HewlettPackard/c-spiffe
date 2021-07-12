@@ -10,7 +10,7 @@ parse_optional.pattern = r'\s?\w*\s?'
 register_type(optional=parse_optional)
 
 
-@when('I fetch{external:optional}"{profile}" "{document}"')
+@step('I fetch{external:optional}"{profile}" "{document}"')
 def step_impl(context, external, profile, document):
     host, host_number = "", ""
     if external == "external":
@@ -60,12 +60,12 @@ def step_impl(context, document):
     assert_that(document_content, is_("(nil)"))
 
 
-@when('The agent is turned off')
+@step('The agent is turned off')
 def step_impl(context):
     os.system("pkill -9 spire-agent")
 
 
-@when('The agent is turned on')
+@step('The agent is turned on')
 def step_impl(context):
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-generate-token.sh")
     time.sleep(2)

@@ -37,8 +37,8 @@ def before_feature(context, feature):
         os.system("ssh root@workload2 \"cp {0}/agent/agent.conf {0}/agent/agent{1}.conf\"".format(context.spire_conf, context.workload_c))
         time.sleep(2)
         context.execute_steps('''
-            When The agent is turned off
-            And  The server is turned off
+            Given The agent is turned off
+            And   The server is turned off
         ''')
         os.system(PARENT_PATH + "bash-general-scripts/clean.sh server")
 
@@ -46,7 +46,7 @@ def before_feature(context, feature):
 def after_feature(context, feature):
     if "federation" in feature.tags:
         context.execute_steps('''
-            When The server is turned on
+            Then The server is turned on
             And  The agent is turned on
         ''') 
 

@@ -16,35 +16,15 @@ Feature: Fetch X509
 
     @Sprint6 @SVID
     Scenario: FX_003 - Check that it is not possible to fetch X509 SVID with the agent down
-        When The agent is turned off
-        And  I fetch "X509" "SVID"
-        Then I check that the "SVID" is not returned
-        # Tear Down
-        When The agent is turned on
+        Given The agent is turned off
+        When  I fetch "X509" "SVID"
+        Then  I check that the "SVID" is not returned
+        And   The agent is turned on
 
 
     @Sprint6 @Bundle
     Scenario: FX_004 - Check that it is not possible to fetch the X509 Bundle with the agent down
-        When The agent is turned off
-        And  I fetch "X509" "Bundle"
-        Then I check that the "Bundle" is not returned
-        # Tear Down
-        When The agent is turned on
-
-
-    @Sprint8 @SVID @server-off
-    Scenario: FX_005 - Check that it is possible to fetch X509 SVID with the server down
-        When The server is turned off
-        And  I fetch "X509" "SVID"
-        Then I check that the "SVID" is returned correctly
-        # Tear Down
-        When The server is turned on
-
-
-    @Sprint8 @Bundle @server-off
-    Scenario: FX_006 - Check that it is possible to fetch the X509 Bundle with the server down
-        When The server is turned off
-        And  I fetch "X509" "Bundle"
-        Then I check that the "Bundle" is returned correctly
-        # Tear Down
-        When The server is turned on
+        Given The agent is turned off
+        When  I fetch "X509" "Bundle"
+        Then  I check that the "Bundle" is not returned
+        And   The agent is turned on
