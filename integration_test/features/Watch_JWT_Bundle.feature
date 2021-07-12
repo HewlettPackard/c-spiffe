@@ -12,20 +12,8 @@ Feature: Watch JWT Bundle
         And   The "Bundle" was updated
 
 
-    @Sprint9 @server-off
-    Scenario: WJB_002 - Check the behavior when taking down the server with watch bundle running and later turn the server on
-        When  I fetch "JWT" "Bundle"
-        Then  I check that the "Bundle" is returned correctly
-        When  I store the "Bundle"
-        And   The server is turned off
-        And   The server is turned on
-        And   I fetch "JWT" "Bundle"
-        Then  I check that the "Bundle" is returned correctly
-        And   The "Bundle" was updated
-
-
     @Sprint9
-    Scenario: WJB_003 - Check the behavior when taking down the agent with watch bundle running and later turn the agent on
+    Scenario: WJB_002 - Check the behavior when taking down the agent with watch bundle running and later turn the agent on
         When  I fetch "JWT" "Bundle"
         Then  I check that the "Bundle" is returned correctly
         When  I store the "Bundle"
@@ -37,7 +25,7 @@ Feature: Watch JWT Bundle
 
 
     @Sprint9 
-    Scenario: WJB_004 - Check the behavior when executing the watch bundle with the agent turned off
+    Scenario: WJB_003 - Check the behavior when executing the watch bundle with the agent turned off
         When  I fetch "JWT" "Bundle"
         Then  I check that the "Bundle" is returned correctly
         When  I store the "Bundle"
