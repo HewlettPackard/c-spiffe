@@ -328,7 +328,7 @@ bool x509svid_keyMatches(EVP_PKEY *priv_key, EVP_PKEY *pub_key, err_t *err)
         }
 
         // type not supported
-        *err = ERR_TYPE_UNSUPPORTED;
+        *err = ERR_UNSUPPORTED_TYPE;
     }
 
     // diverging types

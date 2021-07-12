@@ -43,7 +43,7 @@ static void *parseBlock(BIO *bio_mem, const char *type, err_t *err)
                 parsed_pem = pkey;
             } else {
                 // PEM type not supported
-                *err = ERR_TYPE_UNSUPPORTED;
+                *err = ERR_UNSUPPORTED_TYPE;
             }
         } else {
             // diverging type
