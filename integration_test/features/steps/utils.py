@@ -102,7 +102,7 @@ def remove_federation_block(remote):
     server_conf = Path(server_conf_path)
     server_conf_content = server_conf.read_text()
     start_index = server_conf_content.find("\n\n    federation")
-    federation_limit = "}\n        }\n    }\n"
+    federation_limit = "}\n        }\n    }\n\n"
     end_index = server_conf_content.find(federation_limit, start_index) + len(federation_limit)
     federation_block = server_conf_content[start_index:end_index]
     server_conf_content = server_conf_content.replace(federation_block, "")
