@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['fetch_5fstep_1103',['fetch_step',['../namespacefetch__step.html',1,'']]]
+  ['get_2dentries_1111',['get-entries',['../namespaceget-entries.html',1,'']]]
 ];
