@@ -80,7 +80,7 @@ SSL *spiffetls_DialWithMode(in_port_t port, in_addr_t addr,
     case MTLS_WEBCLIENT_MODE:
     default:
         // unknown mode
-        *err = ERR_UNKNOW_MODE;
+        *err = ERR_UNKNOWN_MODE;
         goto error;
     }
 

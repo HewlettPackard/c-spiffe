@@ -170,7 +170,7 @@ void x509svid_validateSigningCertificates(X509 **certs, err_t *err)
     for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
         if(!X509_check_ca(certs[i])) {
             // certificate is not CA
-            *err = ERR_CERTIFICATE_NOT_CA;
+            *err = ERR_NOT_CA;
             return;
         }
 
@@ -378,10 +378,10 @@ spiffeid_ID x509svid_IDFromCert(X509 *cert, err_t *err)
             arrfree(uri_name);
         } else if(san_name_num == 0) {
             // certificate contains no URI SAN
-            *err = ERR_WITHOUT_URI;
+            *err = ERR_NO_URI;
         } else {
             // certificate contains more than one URI SAN
-            *err = ERR_MORE_THAN_URI;
+            *err = ERR_MORE_THAN_ONE_URI;
         }
 
         sk_GENERAL_NAME_pop_free(san_names, GENERAL_NAME_free);

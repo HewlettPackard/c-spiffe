@@ -92,7 +92,7 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
     case MTLS_WEBSERVER_MODE:
     default:
         // unknown mode
-        *err = ERR_UNKNOW_MODE;
+        *err = ERR_UNKNOWN_MODE;
         goto error;
     }
 
