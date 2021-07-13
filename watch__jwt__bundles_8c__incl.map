@@ -1,29 +1,31 @@
 <map id="workload/watch_jwt_bundles.c" name="workload/watch_jwt_bundles.c">
-<area shape="rect" id="node1" title=" " alt="" coords="488,5,625,47"/>
-<area shape="rect" id="node2" href="$jwtwatcher_8h.html" title=" " alt="" coords="458,95,655,121"/>
-<area shape="rect" id="node3" href="$jwtbundle_2set_8h.html" title=" " alt="" coords="799,408,965,449"/>
-<area shape="rect" id="node16" href="$client_8h.html" title=" " alt="" coords="371,169,537,196"/>
-<area shape="rect" id="node27" href="$jwtcallback_8h.html" title=" " alt="" coords="660,169,859,196"/>
-<area shape="rect" id="node4" href="$jwtbundle_2bundle_8h.html" title=" " alt="" coords="549,497,714,539"/>
-<area shape="rect" id="node11" title=" " alt="" coords="619,885,681,912"/>
-<area shape="rect" id="node5" href="$trustdomain_8h.html" title=" " alt="" coords="299,587,489,613"/>
-<area shape="rect" id="node15" title=" " alt="" coords="514,587,589,613"/>
-<area shape="rect" id="node6" href="$id_8h.html" title=" " alt="" coords="349,661,482,688"/>
-<area shape="rect" id="node7" href="$utils_2util_8h.html" title=" " alt="" coords="217,736,339,763"/>
-<area shape="rect" id="node13" title=" " alt="" coords="445,811,519,837"/>
-<area shape="rect" id="node14" title=" " alt="" coords="364,736,467,763"/>
-<area shape="rect" id="node8" href="$stb__ds_8h.html" title=" " alt="" coords="229,811,375,837"/>
-<area shape="rect" id="node12" title=" " alt="" coords="5,811,108,837"/>
-<area shape="rect" id="node9" title=" " alt="" coords="313,885,381,912"/>
-<area shape="rect" id="node10" title=" " alt="" coords="225,885,289,912"/>
-<area shape="rect" id="node17" href="$jwtsvid_2svid_8h.html" title=" " alt="" coords="700,244,837,285"/>
-<area shape="rect" id="node20" href="$x509svid_2svid_8h.html" title=" " alt="" coords="77,497,223,539"/>
-<area shape="rect" id="node22" href="$backoff_8h.html" title=" " alt="" coords="499,251,675,278"/>
-<area shape="rect" id="node23" href="$workload_2watcher_8h.html" title=" " alt="" coords="295,251,475,278"/>
-<area shape="rect" id="node24" href="$x509context_8h.html" title=" " alt="" coords="213,333,415,360"/>
-<area shape="rect" id="node18" title=" " alt="" coords="779,333,857,360"/>
-<area shape="rect" id="node19" title=" " alt="" coords="549,333,607,360"/>
-<area shape="rect" id="node21" title=" " alt="" coords="115,587,223,613"/>
-<area shape="rect" id="node25" href="$x509bundle_2set_8h.html" title=" " alt="" coords="247,408,421,449"/>
-<area shape="rect" id="node26" href="$x509bundle_2bundle_8h.html" title=" " alt="" coords="299,497,473,539"/>
+<area shape="rect" id="node1" title=" " alt="" coords="342,5,479,47"/>
+<area shape="rect" id="node2" href="$jwtwatcher_8h.html" title=" " alt="" coords="312,95,509,121"/>
+<area shape="rect" id="node3" href="$jwtbundle_2set_8h.html" title=" " alt="" coords="716,408,881,449"/>
+<area shape="rect" id="node18" href="$client_8h.html" title=" " alt="" coords="225,169,391,196"/>
+<area shape="rect" id="node29" href="$jwtcallback_8h.html" title=" " alt="" coords="514,169,713,196"/>
+<area shape="rect" id="node4" href="$jwtbundle_2bundle_8h.html" title=" " alt="" coords="477,497,643,539"/>
+<area shape="rect" id="node11" title=" " alt="" coords="765,885,827,912"/>
+<area shape="rect" id="node5" href="$trustdomain_8h.html" title=" " alt="" coords="451,587,642,613"/>
+<area shape="rect" id="node17" title=" " alt="" coords="301,587,376,613"/>
+<area shape="rect" id="node6" href="$id_8h.html" title=" " alt="" coords="345,661,479,688"/>
+<area shape="rect" id="node7" href="$utils_2util_8h.html" title=" " alt="" coords="488,736,611,763"/>
+<area shape="rect" id="node15" title=" " alt="" coords="321,811,396,837"/>
+<area shape="rect" id="node16" title=" " alt="" coords="361,736,463,763"/>
+<area shape="rect" id="node8" href="$stb__ds_8h.html" title=" " alt="" coords="615,811,761,837"/>
+<area shape="rect" id="node12" href="$error_8h.html" title=" " alt="" coords="459,811,591,837"/>
+<area shape="rect" id="node14" title=" " alt="" coords="129,811,231,837"/>
+<area shape="rect" id="node9" title=" " alt="" coords="671,885,739,912"/>
+<area shape="rect" id="node10" title=" " alt="" coords="583,885,647,912"/>
+<area shape="rect" id="node13" title=" " alt="" coords="495,885,556,912"/>
+<area shape="rect" id="node19" href="$jwtsvid_2svid_8h.html" title=" " alt="" coords="573,244,710,285"/>
+<area shape="rect" id="node22" href="$x509svid_2svid_8h.html" title=" " alt="" coords="5,497,152,539"/>
+<area shape="rect" id="node24" href="$backoff_8h.html" title=" " alt="" coords="372,251,548,278"/>
+<area shape="rect" id="node25" href="$workload_2watcher_8h.html" title=" " alt="" coords="167,251,347,278"/>
+<area shape="rect" id="node26" href="$x509context_8h.html" title=" " alt="" coords="133,333,336,360"/>
+<area shape="rect" id="node20" title=" " alt="" coords="509,333,587,360"/>
+<area shape="rect" id="node21" title=" " alt="" coords="427,333,485,360"/>
+<area shape="rect" id="node23" title=" " alt="" coords="169,587,277,613"/>
+<area shape="rect" id="node27" href="$x509bundle_2set_8h.html" title=" " alt="" coords="174,408,349,449"/>
+<area shape="rect" id="node28" href="$x509bundle_2bundle_8h.html" title=" " alt="" coords="177,497,351,539"/>
 </map>

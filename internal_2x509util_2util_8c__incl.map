@@ -1,13 +1,15 @@
 <map id="internal/x509util/util.c" name="internal/x509util/util.c">
-<area shape="rect" id="node1" title=" " alt="" coords="23,5,165,32"/>
-<area shape="rect" id="node2" href="$internal_2x509util_2util_8h.html" title=" " alt="" coords="99,80,257,121"/>
-<area shape="rect" id="node11" title=" " alt="" coords="5,259,113,285"/>
-<area shape="rect" id="node3" href="$certpool_8h.html" title=" " alt="" coords="99,169,257,211"/>
-<area shape="rect" id="node4" href="$utils_2util_8h.html" title=" " alt="" coords="138,259,261,285"/>
-<area shape="rect" id="node9" title=" " alt="" coords="296,333,399,360"/>
-<area shape="rect" id="node5" href="$stb__ds_8h.html" title=" " alt="" coords="127,333,272,360"/>
-<area shape="rect" id="node10" title=" " alt="" coords="27,333,102,360"/>
-<area shape="rect" id="node6" title=" " alt="" coords="75,408,143,435"/>
-<area shape="rect" id="node7" title=" " alt="" coords="167,408,231,435"/>
-<area shape="rect" id="node8" title=" " alt="" coords="256,408,319,435"/>
+<area shape="rect" id="node1" title=" " alt="" coords="157,5,300,32"/>
+<area shape="rect" id="node2" href="$internal_2x509util_2util_8h.html" title=" " alt="" coords="233,80,392,121"/>
+<area shape="rect" id="node13" title=" " alt="" coords="140,259,248,285"/>
+<area shape="rect" id="node3" href="$certpool_8h.html" title=" " alt="" coords="233,169,392,211"/>
+<area shape="rect" id="node4" href="$utils_2util_8h.html" title=" " alt="" coords="273,259,395,285"/>
+<area shape="rect" id="node11" title=" " alt="" coords="431,333,533,360"/>
+<area shape="rect" id="node5" href="$stb__ds_8h.html" title=" " alt="" coords="261,333,407,360"/>
+<area shape="rect" id="node9" href="$error_8h.html" title=" " alt="" coords="5,333,137,360"/>
+<area shape="rect" id="node12" title=" " alt="" coords="162,333,237,360"/>
+<area shape="rect" id="node6" title=" " alt="" coords="389,408,457,435"/>
+<area shape="rect" id="node7" title=" " alt="" coords="214,408,278,435"/>
+<area shape="rect" id="node8" title=" " alt="" coords="303,408,365,435"/>
+<area shape="rect" id="node10" title=" " alt="" coords="41,408,102,435"/>
 </map>

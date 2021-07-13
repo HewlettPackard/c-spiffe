@@ -1,18 +1,20 @@
 <map id="include/c&#45;spiffe/workload/x509context.h" name="include/c&#45;spiffe/workload/x509context.h">
 <area shape="rect" id="node1" title=" " alt="" coords="88,5,253,47"/>
 <area shape="rect" id="node2" href="$x509bundle_2set_8h.html" title=" " alt="" coords="161,95,335,136"/>
-<area shape="rect" id="node16" href="$x509svid_2svid_8h.html" title=" " alt="" coords="5,184,152,225"/>
+<area shape="rect" id="node18" href="$x509svid_2svid_8h.html" title=" " alt="" coords="5,184,152,225"/>
 <area shape="rect" id="node3" href="$x509bundle_2bundle_8h.html" title=" " alt="" coords="182,184,357,225"/>
 <area shape="rect" id="node4" href="$trustdomain_8h.html" title=" " alt="" coords="338,273,529,300"/>
-<area shape="rect" id="node14" title=" " alt="" coords="106,273,214,300"/>
-<area shape="rect" id="node15" title=" " alt="" coords="239,273,313,300"/>
+<area shape="rect" id="node16" title=" " alt="" coords="106,273,214,300"/>
+<area shape="rect" id="node17" title=" " alt="" coords="239,273,313,300"/>
 <area shape="rect" id="node5" href="$id_8h.html" title=" " alt="" coords="196,348,329,375"/>
-<area shape="rect" id="node6" href="$utils_2util_8h.html" title=" " alt="" coords="300,423,423,449"/>
-<area shape="rect" id="node12" title=" " alt="" coords="225,497,300,524"/>
-<area shape="rect" id="node13" title=" " alt="" coords="122,423,225,449"/>
-<area shape="rect" id="node7" href="$stb__ds_8h.html" title=" " alt="" coords="325,497,470,524"/>
-<area shape="rect" id="node11" title=" " alt="" coords="66,497,169,524"/>
-<area shape="rect" id="node8" title=" " alt="" coords="273,572,341,599"/>
-<area shape="rect" id="node9" title=" " alt="" coords="365,572,429,599"/>
-<area shape="rect" id="node10" title=" " alt="" coords="454,572,517,599"/>
+<area shape="rect" id="node6" href="$utils_2util_8h.html" title=" " alt="" coords="311,423,433,449"/>
+<area shape="rect" id="node14" title=" " alt="" coords="212,497,287,524"/>
+<area shape="rect" id="node15" title=" " alt="" coords="122,423,225,449"/>
+<area shape="rect" id="node7" href="$stb__ds_8h.html" title=" " alt="" coords="311,497,457,524"/>
+<area shape="rect" id="node11" href="$error_8h.html" title=" " alt="" coords="486,497,618,524"/>
+<area shape="rect" id="node13" title=" " alt="" coords="67,497,170,524"/>
+<area shape="rect" id="node8" title=" " alt="" coords="255,572,323,599"/>
+<area shape="rect" id="node9" title=" " alt="" coords="348,572,412,599"/>
+<area shape="rect" id="node10" title=" " alt="" coords="437,572,499,599"/>
+<area shape="rect" id="node12" title=" " alt="" coords="524,572,585,599"/>
 </map>

@@ -1,13 +1,15 @@
 <map id="include/c&#45;spiffe/svid/x509svid/svid.h" name="include/c&#45;spiffe/svid/x509svid/svid.h">
-<area shape="rect" id="node1" title=" " alt="" coords="278,5,415,47"/>
-<area shape="rect" id="node2" href="$id_8h.html" title=" " alt="" coords="111,95,244,121"/>
-<area shape="rect" id="node8" title=" " alt="" coords="295,244,398,271"/>
-<area shape="rect" id="node11" title=" " alt="" coords="385,95,493,121"/>
-<area shape="rect" id="node3" href="$utils_2util_8h.html" title=" " alt="" coords="187,169,309,196"/>
-<area shape="rect" id="node9" title=" " alt="" coords="5,244,80,271"/>
-<area shape="rect" id="node10" title=" " alt="" coords="59,169,162,196"/>
-<area shape="rect" id="node4" href="$stb__ds_8h.html" title=" " alt="" coords="126,244,271,271"/>
-<area shape="rect" id="node5" title=" " alt="" coords="74,319,142,345"/>
-<area shape="rect" id="node6" title=" " alt="" coords="167,319,231,345"/>
-<area shape="rect" id="node7" title=" " alt="" coords="255,319,318,345"/>
+<area shape="rect" id="node1" title=" " alt="" coords="382,5,519,47"/>
+<area shape="rect" id="node2" href="$id_8h.html" title=" " alt="" coords="215,95,348,121"/>
+<area shape="rect" id="node10" title=" " alt="" coords="430,244,533,271"/>
+<area shape="rect" id="node13" title=" " alt="" coords="489,95,597,121"/>
+<area shape="rect" id="node3" href="$utils_2util_8h.html" title=" " alt="" coords="260,169,383,196"/>
+<area shape="rect" id="node11" title=" " alt="" coords="5,244,80,271"/>
+<area shape="rect" id="node12" title=" " alt="" coords="133,169,235,196"/>
+<area shape="rect" id="node4" href="$stb__ds_8h.html" title=" " alt="" coords="105,244,250,271"/>
+<area shape="rect" id="node8" href="$error_8h.html" title=" " alt="" coords="274,244,406,271"/>
+<area shape="rect" id="node5" title=" " alt="" coords="225,319,293,345"/>
+<area shape="rect" id="node6" title=" " alt="" coords="49,319,113,345"/>
+<area shape="rect" id="node7" title=" " alt="" coords="138,319,201,345"/>
+<area shape="rect" id="node9" title=" " alt="" coords="317,319,379,345"/>
 </map>

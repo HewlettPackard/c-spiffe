@@ -1,11 +1,13 @@
 <map id="include/c&#45;spiffe/spiffeid/id.h" name="include/c&#45;spiffe/spiffeid/id.h">
-<area shape="rect" id="node1" title=" " alt="" coords="298,5,477,32"/>
-<area shape="rect" id="node2" href="$utils_2util_8h.html" title=" " alt="" coords="223,80,346,107"/>
-<area shape="rect" id="node8" title=" " alt="" coords="354,155,429,181"/>
-<area shape="rect" id="node9" title=" " alt="" coords="425,80,528,107"/>
-<area shape="rect" id="node3" href="$stb__ds_8h.html" title=" " alt="" coords="57,155,203,181"/>
-<area shape="rect" id="node7" title=" " alt="" coords="227,155,329,181"/>
+<area shape="rect" id="node1" title=" " alt="" coords="458,5,637,32"/>
+<area shape="rect" id="node2" href="$utils_2util_8h.html" title=" " alt="" coords="381,80,503,107"/>
+<area shape="rect" id="node10" title=" " alt="" coords="518,155,593,181"/>
+<area shape="rect" id="node11" title=" " alt="" coords="585,80,688,107"/>
+<area shape="rect" id="node3" href="$stb__ds_8h.html" title=" " alt="" coords="63,155,208,181"/>
+<area shape="rect" id="node7" href="$error_8h.html" title=" " alt="" coords="235,155,367,181"/>
+<area shape="rect" id="node9" title=" " alt="" coords="391,155,493,181"/>
 <area shape="rect" id="node4" title=" " alt="" coords="5,229,73,256"/>
 <area shape="rect" id="node5" title=" " alt="" coords="98,229,162,256"/>
 <area shape="rect" id="node6" title=" " alt="" coords="187,229,249,256"/>
+<area shape="rect" id="node8" title=" " alt="" coords="274,229,335,256"/>
 </map>

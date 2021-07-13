@@ -70,13 +70,13 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">util.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="stb__ds_8h_source.html">c-spiffe/utils/stb_ds.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="error_8h_source.html">c-spiffe/utils/error.h</a>&quot;</code><br />
 <code>#include &lt;openssl/evp.h&gt;</code><br />
 <code>#include &lt;stdbool.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -84,13 +84,15 @@ Include dependency graph for util.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="utils_2util_8h__incl.png" border="0" usemap="#ainclude_2c-spiffe_2utils_2util_8h" alt=""/></div>
 <map name="ainclude_2c-spiffe_2utils_2util_8h" id="ainclude_2c-spiffe_2utils_2util_8h">
-<area shape="rect" title=" " alt="" coords="209,5,347,47"/>
-<area shape="rect" href="stb__ds_8h.html" title=" " alt="" coords="57,95,203,121"/>
-<area shape="rect" title=" " alt="" coords="227,95,329,121"/>
-<area shape="rect" title=" " alt="" coords="354,95,429,121"/>
+<area shape="rect" title=" " alt="" coords="303,5,440,47"/>
+<area shape="rect" href="stb__ds_8h.html" title=" " alt="" coords="63,95,208,121"/>
+<area shape="rect" href="error_8h.html" title=" " alt="" coords="235,95,367,121"/>
+<area shape="rect" title=" " alt="" coords="391,95,493,121"/>
+<area shape="rect" title=" " alt="" coords="518,95,593,121"/>
 <area shape="rect" title=" " alt="" coords="5,169,73,196"/>
 <area shape="rect" title=" " alt="" coords="98,169,162,196"/>
 <area shape="rect" title=" " alt="" coords="187,169,249,196"/>
+<area shape="rect" title=" " alt="" coords="274,169,335,196"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -172,23 +174,6 @@ Typedefs</h2></td></tr>
 <tr class="separator:a953283d6441a646b10693a160ccd3dab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a762639aec4102c48c055f981b8862634"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structmap__string__string.html">map_string_string</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_2util_8h.html#a762639aec4102c48c055f981b8862634">map_string_string</a></td></tr>
 <tr class="separator:a762639aec4102c48c055f981b8862634"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5362d878a3b55147d5cfd29820512556"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="utils_2util_8h.html#a7e02898e99df1995ce7f4edc41644f59">enum_err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a></td></tr>
-<tr class="separator:a5362d878a3b55147d5cfd29820512556"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:a7e02898e99df1995ce7f4edc41644f59"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_2util_8h.html#a7e02898e99df1995ce7f4edc41644f59">enum_err_t</a> { <br />
-&#160;&#160;<a class="el" href="utils_2util_8h.html#a7e02898e99df1995ce7f4edc41644f59abf350750d0d4fabd8954c0f1e9bbae94">NO_ERROR</a> = 0
-, <a class="el" href="utils_2util_8h.html#a7e02898e99df1995ce7f4edc41644f59aa4f3d8863f30f74511da6ee883d39989">ERROR1</a>
-, <a class="el" href="utils_2util_8h.html#a7e02898e99df1995ce7f4edc41644f59acb24d5b63cd7185f72cdcd48e68520ac">ERROR2</a>
-, <a class="el" href="utils_2util_8h.html#a7e02898e99df1995ce7f4edc41644f59ac3585d2e502f54015f0fb5eea51afb3d">ERROR3</a>
-, <br />
-&#160;&#160;<a class="el" href="utils_2util_8h.html#a7e02898e99df1995ce7f4edc41644f59a99e90a6ae10211be41c9c505e40653f7">ERROR4</a>
-, <a class="el" href="utils_2util_8h.html#a7e02898e99df1995ce7f4edc41644f59ab032277ced2fc8b19b2e667f57ad1b91">ERROR5</a>
-, <a class="el" href="utils_2util_8h.html#a7e02898e99df1995ce7f4edc41644f59a881c295f011150fe4165d428f2e8ec4a">ERROR6</a>
-<br />
- }</td></tr>
-<tr class="separator:a7e02898e99df1995ce7f4edc41644f59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -220,20 +205,6 @@ Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">typedef unsigned char <a class="el" href="utils_2util_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a5362d878a3b55147d5cfd29820512556"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5362d878a3b55147d5cfd29820512556">&#9670;&nbsp;</a></span>err_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef enum <a class="el" href="utils_2util_8h.html#a7e02898e99df1995ce7f4edc41644f59">enum_err_t</a> <a class="el" href="utils_2util_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -295,31 +266,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>string_t is an stb allocated string. Treat it as a regular string, but deallocate id with util_string_t_Free or arrfree functions. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="a7e02898e99df1995ce7f4edc41644f59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e02898e99df1995ce7f4edc41644f59">&#9670;&nbsp;</a></span>enum_err_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="utils_2util_8h.html#a7e02898e99df1995ce7f4edc41644f59">enum_err_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Error code enum </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7e02898e99df1995ce7f4edc41644f59abf350750d0d4fabd8954c0f1e9bbae94"></a>NO_ERROR&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a7e02898e99df1995ce7f4edc41644f59aa4f3d8863f30f74511da6ee883d39989"></a>ERROR1&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a7e02898e99df1995ce7f4edc41644f59acb24d5b63cd7185f72cdcd48e68520ac"></a>ERROR2&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a7e02898e99df1995ce7f4edc41644f59ac3585d2e502f54015f0fb5eea51afb3d"></a>ERROR3&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a7e02898e99df1995ce7f4edc41644f59a99e90a6ae10211be41c9c505e40653f7"></a>ERROR4&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a7e02898e99df1995ce7f4edc41644f59ab032277ced2fc8b19b2e667f57ad1b91"></a>ERROR5&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a7e02898e99df1995ce7f4edc41644f59a881c295f011150fe4165d428f2e8ec4a"></a>ERROR6&#160;</td><td class="fielddoc"></td></tr>
-</table>
 
 </div>
 </div>
