@@ -201,7 +201,7 @@ START_TEST(test_jwtutil_ParseJWKS)
             "./resources/jwks_no_keys.json",
             "./resources/jwks_multiple_x509.json" };
 
-    err_t errs[] = { NO_ERROR, NO_ERROR, ERROR4, ERROR3, ERROR4 };
+    err_t errs[] = { NO_ERROR, NO_ERROR, ERR_BAD_REQUEST, ERR_INVALID_DATA, ERR_BAD_REQUEST };
     size_t map_lens[] = { 1, 7, 0, 0, 0 };
     size_t arr_lens[] = { 1, 1, 0, 0, 0 };
 

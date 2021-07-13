@@ -220,7 +220,7 @@ START_TEST(test_workloadapi_X509Source_Closes_watcher);
 
     workloadapi_X509Source_Close(tested);
 
-    ck_assert_int_eq(workloadapi_X509Source_checkClosed(tested), ERROR1);
+    ck_assert_int_eq(workloadapi_X509Source_checkClosed(tested), ERR_CLOSED);
     ck_assert(tested->watcher->closed);
 
     tested->bundles = NULL;
@@ -240,7 +240,7 @@ START_TEST(test_workloadapi_X509Source_GetX509BundleForTrustDomain);
         = workloadapi_X509Source_GetX509BundleForTrustDomain(tested, td, &err);
 
     ck_assert_ptr_eq(bundle, NULL);
-    ck_assert_int_eq(err, ERROR1); // source closed
+    ck_assert_int_eq(err, ERR_CLOSED); // source closed
 
     tested->closed = false;
     tested->bundles = x509bundle_NewSet(0);
@@ -248,7 +248,7 @@ START_TEST(test_workloadapi_X509Source_GetX509BundleForTrustDomain);
         = workloadapi_X509Source_GetX509BundleForTrustDomain(tested, td, &err);
 
     ck_assert_ptr_eq(bundle, NULL);
-    ck_assert_int_eq(err, ERROR2); // trust domain not available
+    ck_assert_int_eq(err, ERR_CLOSED); // trust domain not available
 
     x509bundle_Set_Free(tested->bundles);
     tested->bundles = NULL;

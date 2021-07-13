@@ -2,6 +2,7 @@
 #define INCLUDE_UTILS_UTIL_H
 
 #include "c-spiffe/utils/stb_ds.h"
+#include "c-spiffe/utils/error.h"
 #include <openssl/evp.h>
 #include <stdbool.h>
 
@@ -27,18 +28,6 @@ typedef struct map_string_string {
     string_t value;
 } map_string_string;
 
-/** Error code enum */
-enum enum_err_t {
-    NO_ERROR = 0,
-    ERROR1,
-    ERROR2,
-    ERROR3,
-    ERROR4,
-    ERROR5,
-    ERROR6
-};
-
-typedef enum enum_err_t err_t;
 
 /**
  * Frees stb string.

@@ -188,7 +188,7 @@ START_TEST(test_spiffebundle_Watcher_Start)
 {
     spiffebundle_Watcher *watcher = spiffebundle_Watcher_New();
     err_t err = spiffebundle_Watcher_Start(NULL);
-    ck_assert_uint_eq(err, ERROR1);
+    ck_assert_uint_eq(err, ERR_STARTING);
 
     err = spiffebundle_Watcher_Start(watcher);
     ck_assert_uint_eq(err, NO_ERROR);
@@ -197,7 +197,7 @@ START_TEST(test_spiffebundle_Watcher_Start)
     nanosleep(&sleep_time, NULL);
     
     err = spiffebundle_Watcher_Stop(NULL);
-    ck_assert_uint_eq(err, ERROR1);
+    ck_assert_uint_eq(err, ERR_STOPPING);
 
     err = spiffebundle_Watcher_Stop(watcher);
 
@@ -249,16 +249,16 @@ START_TEST(test_spiffebundle_Watcher_GetStatus)
     spiffeid_TrustDomain td = { "example.org" };
     err_t err;
     int running_status = spiffebundle_Watcher_GetStatus(NULL, td, &err);
-    ck_assert_uint_eq(err, ERROR1);
+    ck_assert_uint_eq(err, ERR_NULL);
     ck_assert_int_eq(running_status, ENDPOINT_ERROR);
 
     spiffeid_TrustDomain null_td = { NULL };
     running_status = spiffebundle_Watcher_GetStatus(watcher, null_td, &err);
-    ck_assert_uint_eq(err, ERROR2);
+    ck_assert_uint_eq(err, ERR_INVALID_DATA);
     ck_assert_int_eq(running_status, ENDPOINT_ERROR);
 
     running_status = spiffebundle_Watcher_GetStatus(watcher, td, &err);
-    ck_assert_uint_eq(err, ERROR3);
+    ck_assert_uint_eq(err, ERR_NULL);
     ck_assert_int_eq(running_status, ENDPOINT_ERROR);
 
     const char url[] = "https://example.org";

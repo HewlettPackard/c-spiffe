@@ -14,7 +14,7 @@ x509bundle_Bundle *x509bundle_Source_GetX509BundleForTrustDomain(
             s->source.source, td, err);
     } else {
         // unknown type
-        *err = ERROR2;
+        *err = ERR_UNKNOWN_TYPE;
     }
 
     return NULL;

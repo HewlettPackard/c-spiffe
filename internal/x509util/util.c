@@ -4,7 +4,7 @@
 X509 **x509util_ParseCertificates(const byte *bytes, const size_t len,
                                   err_t *err)
 {
-    *err = ERROR1;
+    *err = ERR_DEFAULT;
     BIO *bio_mem = BIO_new(BIO_s_mem());
 
     if(BIO_write(bio_mem, bytes, len) > 0) {
@@ -30,7 +30,7 @@ X509 **x509util_ParseCertificates(const byte *bytes, const size_t len,
 EVP_PKEY *x509util_ParsePrivateKey(const byte *bytes, const size_t len,
                                    err_t *err)
 {
-    *err = ERROR1;
+    *err = ERR_DEFAULT;
     BIO *bio_mem = BIO_new(BIO_s_mem());
 
     if(BIO_write(bio_mem, bytes, len) > 0) {

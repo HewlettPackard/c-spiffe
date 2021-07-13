@@ -193,7 +193,7 @@ START_TEST(test_jwtsvid_error_invalid_signature)
     jwtbundle_Source *source = jwtbundle_SourceFromBundle(bundle);
     jwtsvid_SVID *svid = jwtsvid_ParseAndValidate(token, source, NULL, &err);
 
-    ck_assert_uint_eq(err, ERROR5);
+    ck_assert_uint_eq(err, ERR_INVALID_JWT);
 
     jwtbundle_Source_Free(source);
     EVP_PKEY_free(pkey);
@@ -216,7 +216,7 @@ START_TEST(test_jwtsvid_error_subject_not_spiffeid)
 
     err_t err;
     jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, NULL, &err);
-    ck_assert_uint_eq(err, ERROR4);
+    ck_assert_uint_eq(err, ERR_INVALID_CLAIM);
     ck_assert_ptr_eq(svid, NULL);
     jwtsvid_SVID_Free(svid);
 }
@@ -236,7 +236,7 @@ START_TEST(test_jwtsvid_error_without_exp)
 
     err_t err;
     jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, NULL, &err);
-    ck_assert_uint_eq(err, ERROR3);
+    ck_assert_uint_eq(err, ERR_INVALID_DATA);
     ck_assert_ptr_eq(svid, NULL);
     jwtsvid_SVID_Free(svid);
 }
@@ -258,7 +258,7 @@ START_TEST(test_jwtsvid_error_issuer_jti_aud)
 
     err_t err;
     jwtsvid_SVID *svid = jwtsvid_ParseInsecure(token, NULL, &err);
-    ck_assert_uint_eq(err, ERROR3);
+    ck_assert_uint_eq(err, ERR_INVALID_DATA);
     ck_assert_ptr_eq(svid, NULL);
     jwtsvid_SVID_Free(svid);
 }

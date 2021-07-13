@@ -37,7 +37,7 @@ int main(int argc, char const *argv[])
     printf("Stopping.\n");
 
     error = workloadapi_JWTWatcher_Close(watcher);
-    if(error != ERROR1) {
+    if(error != ERR_CLOSING) {
         printf("error %d on JWTWatcher_Close()\n", error);
     }
     error = workloadapi_JWTWatcher_Free(watcher);

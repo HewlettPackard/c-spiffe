@@ -964,17 +964,17 @@ START_TEST(test_jwtbundle_Bundle_Print_Errors)
     // negative offset error
     int offset = -1;
     err = jwtbundle_Bundle_print_stdout(bundle_ptr, offset);
-    ck_assert_int_eq(err, ERROR3);
+    ck_assert_int_eq(err, ERR_BAD_REQUEST);
 
     // NULL bundle error
     offset = 0;
     err = jwtbundle_Bundle_Print(bundle_ptr);
-    ck_assert_int_eq(err, ERROR1);
+    ck_assert_int_eq(err, ERR_NULL_DATA);
 
     // NULL BIO* error
     bundle_ptr = (jwtbundle_Bundle *) 1; //"valid" bundle
     err = jwtbundle_Bundle_print_BIO(bundle_ptr, offset, out);
-    ck_assert_int_eq(err, ERROR2);
+    ck_assert_int_eq(err, ERR_NULL_BUNDLE);
 }
 END_TEST
 

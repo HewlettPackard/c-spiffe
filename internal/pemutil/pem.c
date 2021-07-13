@@ -43,15 +43,15 @@ static void *parseBlock(BIO *bio_mem, const char *type, err_t *err)
                 parsed_pem = pkey;
             } else {
                 // PEM type not supported
-                *err = ERROR1;
+                *err = ERR_UNSUPPORTED_TYPE;
             }
         } else {
             // diverging type
-            *err = ERROR2;
+            *err = ERR_DIVERGING_TYPE;
         }
     } else {
         // no PEM data found or nothing left to read
-        *err = ERROR3;
+        *err = ERR_EOF;
     }
 
     OPENSSL_free(pem_name);
@@ -75,7 +75,7 @@ static void **parseBlocks(const byte *pem_byte, const char *type, err_t *err)
         if(block && !(*err)) {
             // insert new block
             arrput(parsed_blocks_arr, block);
-        } else if(*err == ERROR3) {
+        } else if(*err == ERR_EOF) {
             // end of blocks, stop the loop
             *err = NO_ERROR;
             break;
@@ -116,7 +116,7 @@ X509 **pemutil_ParseCertificates(const byte *bytes, err_t *err)
         }
     } else {
         // null pointer error
-        *err = ERROR1;
+        *err = ERR_NULL;
     }
 
     return x509_arr;
@@ -143,7 +143,7 @@ EVP_PKEY *pemutil_ParsePrivateKey(const byte *bytes, err_t *err)
         arrfree(objs);
     } else {
         // null pointer error
-        *err = ERROR1;
+        *err = ERR_NULL;
     }
     
     return pkey;
@@ -164,7 +164,7 @@ byte *pemutil_EncodePrivateKey(EVP_PKEY *pkey, err_t *err)
         i2d_PrivateKey(pkey, &tmp);
     } else {
         // error while reading
-        *err = ERROR1;
+        *err = ERR_READING;
     }
 
     return pem_bytes;
@@ -187,7 +187,7 @@ byte **pemutil_EncodeCertificates(X509 **certs, err_t *err)
             arrput(pem_bytes_arr, pem_bytes);
         } else {
             // could not encode one certificate
-            *err = ERROR1;
+            *err = ERR_CERTIFICATE_NOT_ENCODED;
             // freeing all stb array alocated so far
             for(size_t i = 0, size = arrlenu(pem_bytes_arr); i < size; ++i) {
                 arrfree(pem_bytes_arr[i]);
