@@ -39,11 +39,11 @@ x509svid_SVID *x509svid_Source_GetX509SVID(x509svid_Source *source, err_t *err)
                                                       err);
         } else {
             // unknown type
-            *err = ERROR2;
+            *err = ERR_UNKNOWN_TYPE;
         }
     } else {
         // source is NULL
-        *err = ERROR1;
+        *err = ERR_NULL;
     }
 
     return svid;

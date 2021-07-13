@@ -42,33 +42,33 @@ START_TEST(test_federation_Endpoint_Config_SPIFFE);
 
     err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         NULL, "example.com/bundle.json", td, sid, bundle_source);
-    ck_assert_int_eq(err, ERROR1);
+    ck_assert_int_eq(err, ERR_NULL);
 
     err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(tested, NULL, td, sid,
                                                   bundle_source);
-    ck_assert_int_eq(err, ERROR2);
+    ck_assert_int_eq(err, ERR_EMPTY_DATA);
 
     err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(tested, "not an URL", td,
                                                   sid, bundle_source);
-    ck_assert_int_eq(err, ERROR2);
+    ck_assert_int_eq(err, ERR_INVALID_DATA);
 
     spiffeid_TrustDomain err_td = { NULL };
     err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", err_td, sid, bundle_source);
-    ck_assert_int_eq(err, ERROR3);
+    ck_assert_int_eq(err, ERR_INVALID_TRUSTDOMAIN);
     spiffeid_TrustDomain err_td2 = { "not_a_td://NU,,LL" };
     err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", err_td2, sid, bundle_source);
-    ck_assert_int_eq(err, ERROR3);
+    ck_assert_int_eq(err, ERR_INVALID_TRUSTDOMAIN);
 
     string_t err_id = "https://not.a.spiffe.id/wrong";
     err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", td, err_id, bundle_source);
-    ck_assert_int_eq(err, ERROR5);
+    ck_assert_int_eq(err, ERR_PARSING);
 
     err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", td, sid, NULL);
-    ck_assert_int_eq(err, ERROR6);
+    ck_assert_int_eq(err, ERR_INVALID_DATA);
 
     err = spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
         tested, "example.com/bundle.json", td, sid, bundle_source);
@@ -89,22 +89,22 @@ START_TEST(test_federation_Endpoint_Config_WEB);
 
     err = spiffebundle_Endpoint_ConfigHTTPSWEB(NULL, "example.com/bundle.json",
                                                td);
-    ck_assert_int_eq(err, ERROR1);
+    ck_assert_int_eq(err, ERR_NULL);
 
     err = spiffebundle_Endpoint_ConfigHTTPSWEB(tested, NULL, td);
-    ck_assert_int_eq(err, ERROR2);
+    ck_assert_int_eq(err, ERR_EMPTY_DATA);
 
     err = spiffebundle_Endpoint_ConfigHTTPSWEB(tested, "not a URL", td);
-    ck_assert_int_eq(err, ERROR2);
+    ck_assert_int_eq(err, ERR_PARSING);
 
     spiffeid_TrustDomain err_td = { NULL };
     err = spiffebundle_Endpoint_ConfigHTTPSWEB(
         tested, "example.com/bundle.json", err_td);
-    ck_assert_int_eq(err, ERROR3);
+    ck_assert_int_eq(err, ERR_INVALID_TRUSTDOMAIN);
     spiffeid_TrustDomain err_td2 = { "not_a_td://NU,,LL" };
     err = spiffebundle_Endpoint_ConfigHTTPSWEB(
         tested, "example.com/bundle.json", err_td2);
-    ck_assert_int_eq(err, ERROR3);
+    ck_assert_int_eq(err, ERR_INVALID_TRUSTDOMAIN);
 
     err = spiffebundle_Endpoint_ConfigHTTPSWEB(tested,
                                                "example.com/bundle.json", td);
@@ -132,17 +132,17 @@ START_TEST(test_federation_Endpoint_get_bundle);
 
     spiffebundle_Bundle *end_bundle
         = spiffebundle_Endpoint_GetBundleForTrustDomain(NULL, td, &err);
-    ck_assert_uint_eq(err, ERROR1);
+    ck_assert_uint_eq(err, ERR_NULL);
 
     spiffeid_TrustDomain err_td = { NULL };
     end_bundle
         = spiffebundle_Endpoint_GetBundleForTrustDomain(tested, err_td, &err);
-    ck_assert_uint_eq(err, ERROR2);
+    ck_assert_uint_eq(err, ERR_TRUSTDOMAIN_NOTAVAILABLE);
 
     tested->source = NULL;
     end_bundle
         = spiffebundle_Endpoint_GetBundleForTrustDomain(tested, td, &err);
-    ck_assert_uint_eq(err, ERROR3);
+    ck_assert_uint_eq(err, ERR_NULL);
 
     tested->source = source;
     end_bundle
@@ -243,10 +243,10 @@ START_TEST(test_federation_Endpoint_fetch_SPIFFE);
     curl_easy_setopt(tested->curl_handle, CURLOPT_RESOLVE, resolve_list);
     
     err = spiffebundle_Endpoint_Fetch(NULL);
-    ck_assert_int_eq(err, ERROR1);
+    ck_assert_int_eq(err, ERR_NULL);
     tested->td = null_td;
     err = spiffebundle_Endpoint_Fetch(tested);
-    ck_assert_int_eq(err, ERROR2);
+    ck_assert_int_eq(err, ERR_INVALID_DATA);
     tested->td = td;
 
     err = spiffebundle_Endpoint_Fetch(tested);

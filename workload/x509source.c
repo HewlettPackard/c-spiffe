@@ -48,7 +48,7 @@ workloadapi_NewX509Source(workloadapi_X509SourceConfig *config, err_t *err)
 err_t workloadapi_X509Source_Start(workloadapi_X509Source *source)
 {
     if(!source) {
-        return ERROR1;
+        return ERR_NULL;
     }
     mtx_lock(&(source->closed_mutex));
     source->closed = false;
@@ -82,7 +82,7 @@ workloadapi_X509Source_GetX509SVID(workloadapi_X509Source *source, err_t *err)
             return svid;
         }
         // missing SVID
-        *err = ERROR1;
+        *err = ERR_NULL_SVID;
         return NULL;
     }
 
@@ -96,8 +96,8 @@ x509bundle_Bundle *workloadapi_X509Source_GetX509BundleForTrustDomain(
     if(!(*err)) {
         x509bundle_Bundle *bundle = x509bundle_Set_GetX509BundleForTrustDomain(
             source->bundles, td, err);
-        if(*err == ERROR1) {
-            *err = ERROR2;
+        if(*err == ERR_TRUSTDOMAIN_NOTAVAILABLE) {
+            *err = ERR_CLOSED;
         }
         return bundle;
     }
@@ -129,7 +129,7 @@ err_t workloadapi_X509Source_checkClosed(workloadapi_X509Source *source)
     mtx_lock(&(source->closed_mutex));
     if(source->closed) {
         // source is closed
-        err = ERROR1;
+        err = ERR_CLOSED;
     }
     mtx_unlock(&(source->closed_mutex));
     return err;

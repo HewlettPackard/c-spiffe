@@ -30,7 +30,7 @@ spiffebundle_Bundle *spiffebundle_Load(const spiffeid_TrustDomain td,
         bundleptr = spiffebundle_Parse(td, buffer, err);
         arrfree(buffer);
     } else {
-        *err = ERROR1;
+        *err = ERR_OPENING;
     }
 
     return bundleptr;
@@ -76,11 +76,11 @@ spiffebundle_Bundle *spiffebundle_Parse(const spiffeid_TrustDomain td,
 
         } else {
             // could not parse jwks
-            *err = ERROR1;
+            *err = ERR_PARSING;
         }
     } else {
         // NULL error
-        *err = ERROR2;
+        *err = ERR_NULL;
     }
 
     return bundleptr;
@@ -251,7 +251,7 @@ err_t spiffebundle_Bundle_AddJWTAuthority(spiffebundle_Bundle *b,
                                           const char *keyID, EVP_PKEY *auth)
 {
     // empty string error
-    err_t err = ERROR1;
+    err_t err = ERR_EMPTY_DATA;
 
     if(!empty_str(keyID)) {
         mtx_lock(&(b->mtx));
@@ -409,7 +409,7 @@ spiffebundle_Bundle *spiffebundle_Bundle_GetBundleForTrustDomain(
     mtx_lock(&(b->mtx));
     spiffebundle_Bundle *bundle = NULL;
     // trust domain not available
-    *err = ERROR1;
+    *err = ERR_TRUSTDOMAIN_NOTAVAILABLE;
     if(!strcmp(b->td.name, td.name)) {
         bundle = b;
         *err = NO_ERROR;
@@ -425,7 +425,7 @@ x509bundle_Bundle *spiffebundle_Bundle_GetX509BundleForTrustDomain(
     mtx_lock(&(b->mtx));
     x509bundle_Bundle *bundle = NULL;
     // trust domain not available
-    *err = ERROR1;
+    *err = ERR_TRUSTDOMAIN_NOTAVAILABLE;
     if(!strcmp(b->td.name, td.name)) {
         bundle = x509bundle_FromX509Authorities(b->td, b->x509_auths);
         *err = NO_ERROR;
@@ -441,7 +441,7 @@ jwtbundle_Bundle *spiffebundle_Bundle_GetJWTBundleForTrustDomain(
     mtx_lock(&(b->mtx));
     jwtbundle_Bundle *bundle = NULL;
     // trust domain not available
-    *err = ERROR1;
+    *err = ERR_TRUSTDOMAIN_NOTAVAILABLE;
     if(!strcmp(b->td.name, td.name)) {
         bundle = jwtbundle_FromJWTAuthorities(b->td, b->jwt_auths);
         *err = NO_ERROR;

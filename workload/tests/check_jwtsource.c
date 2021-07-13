@@ -136,7 +136,7 @@ START_TEST(test_workloadapi_JWTSource_Closes_watcher);
 
     workloadapi_JWTSource_Close(tested);
 
-    ck_assert_int_eq(workloadapi_JWTSource_checkClosed(tested), ERROR1);
+    ck_assert_int_eq(workloadapi_JWTSource_checkClosed(tested), ERR_CLOSED);
     ck_assert(tested->watcher->closed);
 
     tested->bundles = NULL;
@@ -151,7 +151,7 @@ START_TEST(test_workloadapi_JWTSource_GetJWTSVID_fails_if_closed);
     jwtsvid_SVID *svid = workloadapi_JWTSource_GetJWTSVID(tested, NULL, &err);
 
     ck_assert_ptr_eq(svid, NULL);
-    ck_assert_int_eq(err, ERROR1);
+    ck_assert_int_eq(err, ERR_CLOSED);
 
     workloadapi_JWTSource_Free(tested);
 }
@@ -168,7 +168,7 @@ START_TEST(test_workloadapi_JWTSource_GetJWTBundleForTrustDomain);
         = workloadapi_JWTSource_GetJWTBundleForTrustDomain(tested, td, &err);
 
     ck_assert_ptr_eq(bundle, NULL);
-    ck_assert_int_eq(err, ERROR1); // source closed
+    ck_assert_int_eq(err, ERR_CLOSED); // source closed
 
     tested->closed = false;
     tested->bundles = jwtbundle_NewSet(0);
@@ -176,7 +176,7 @@ START_TEST(test_workloadapi_JWTSource_GetJWTBundleForTrustDomain);
         = workloadapi_JWTSource_GetJWTBundleForTrustDomain(tested, td, &err);
 
     ck_assert_ptr_eq(bundle, NULL);
-    ck_assert_int_eq(err, ERROR2); // trust domain not available
+    ck_assert_int_eq(err, ERR_INVALID_TRUSTDOMAIN); // trust domain not available
 
     jwtbundle_Set_Free(tested->bundles);
     tested->bundles = NULL;

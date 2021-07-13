@@ -316,7 +316,7 @@ START_TEST(test_workloadapi_Watcher_Start_blocks);
     ck_assert(!watcher->closed);
     struct timespec now;
     timespec_get(&now, TIME_UTC);
-
+    
     ck_assert_int_ge(now.tv_sec, then.tv_sec + 2);
     ck_assert_int_lt(now.tv_sec, then.tv_sec + 5);
 

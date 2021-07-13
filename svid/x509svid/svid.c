@@ -26,11 +26,11 @@ x509svid_SVID *x509svid_Load(const char *certfile, const char *keyfile,
             return svid;
         } else {
             arrfree(certbytes);
-            *err = ERROR2;
+            *err = ERR_NULL_DATA;
             return NULL;
         }
     } else {
-        *err = ERROR1;
+        *err = ERR_NULL;
         return NULL;
     }
 }
@@ -107,11 +107,11 @@ x509svid_SVID *x509svid_newSVID(X509 **certs, EVP_PKEY *pkey, err_t *err)
             return svid;
         } else {
             // private key validation failed
-            *err = ERROR2;
+            *err = ERR_PRIVKEY_VALIDATION;
         }
     } else {
         // certificate validation failed
-        *err = ERROR1;
+        *err = ERR_CERTIFICATE_VALIDATION;
     }
 
     return NULL;
@@ -136,7 +136,7 @@ spiffeid_ID x509svid_validateCertificates(X509 **certs, err_t *err)
         }
     } else {
         // empty or null array
-        *err = ERROR1;
+        *err = ERR_NULL;
     }
     return (spiffeid_ID){ { NULL }, NULL };
 }
@@ -152,13 +152,13 @@ spiffeid_ID x509svid_validateLeafCertificate(X509 *cert, err_t *err)
                 return id;
         } else {
             // leaf is CA
-            *err = ERROR2;
+            *err = ERR_LEAF_CA;
         }
 
         spiffeid_ID_Free(&id);
     } else {
         // cannot get leaf certificate spiffe ID
-        *err = ERROR1;
+        *err = ERR_CANNOT_CERTIFICATE;
     }
 
     return (spiffeid_ID){ { NULL }, NULL };
@@ -170,7 +170,7 @@ void x509svid_validateSigningCertificates(X509 **certs, err_t *err)
     for(size_t i = 0, size = arrlenu(certs); i < size; ++i) {
         if(!X509_check_ca(certs[i])) {
             // certificate is not CA
-            *err = ERROR1;
+            *err = ERR_NOT_CA;
             return;
         }
 
@@ -178,7 +178,7 @@ void x509svid_validateSigningCertificates(X509 **certs, err_t *err)
 
         if(!(usage & KU_DIGITAL_SIGNATURE)) {
             // digital signature flag not set
-            *err = ERROR2;
+            *err = ERR_SIGNATURE_FLAG;
             return;
         }
     }
@@ -191,13 +191,13 @@ void x509svid_validateKeyUsage(X509 *cert, err_t *err)
 
     if(!(usage & KU_DIGITAL_SIGNATURE)) {
         // digital signature flag not set
-        *err = ERROR1;
+        *err = ERR_SIGNATURE_FLAG;
     } else if(usage & KU_KEY_CERT_SIGN) {
         // key cert sign is set
-        *err = ERROR2;
+        *err = ERR_CERT_SIGN;
     } else if(usage & KU_CRL_SIGN) {
         // key crl sign is set
-        *err = ERROR3;
+        *err = ERR_CRL_SIGN;
     }
 }
 
@@ -221,16 +221,16 @@ EVP_PKEY *x509svid_validatePrivateKey(EVP_PKEY *priv_key, X509 *cert,
                 return priv_key;
             }
             // leaf certificate and private key do not match
-            *err = ERROR3;
+            *err = ERR_UNMATCH;
             return NULL;
         }
         // either non supported private key or diverging types
-        *err = ERROR2;
+        *err = ERR_DIVERGING_TYPE;
         return NULL;
     }
 
     // null private key
-    *err = ERROR1;
+    *err = ERR_NULL;
     return NULL;
 }
 
@@ -328,11 +328,11 @@ bool x509svid_keyMatches(EVP_PKEY *priv_key, EVP_PKEY *pub_key, err_t *err)
         }
 
         // type not supported
-        *err = ERROR2;
+        *err = ERR_UNSUPPORTED_TYPE;
     }
 
     // diverging types
-    *err = ERROR1;
+    *err = ERR_DIVERGING_TYPE;
     return false;
 }
 
@@ -378,16 +378,16 @@ spiffeid_ID x509svid_IDFromCert(X509 *cert, err_t *err)
             arrfree(uri_name);
         } else if(san_name_num == 0) {
             // certificate contains no URI SAN
-            *err = ERROR1;
+            *err = ERR_NO_URI;
         } else {
             // certificate contains more than one URI SAN
-            *err = ERROR2;
+            *err = ERR_MORE_THAN_ONE_URI;
         }
 
         sk_GENERAL_NAME_pop_free(san_names, GENERAL_NAME_free);
     } else {
         // null certificate
-        *err = ERROR3;
+        *err = ERR_NULL;
     }
 
     return id;

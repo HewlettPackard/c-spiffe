@@ -73,18 +73,18 @@ static jwtsvid_JWT *token_to_jwt(char *token, err_t *err)
                 }
                 // error parsing
                 jwtsvid_JWT_Free(jwt);
-                *err = ERROR3;
+                *err = ERR_PARSING;
                 return NULL;
             }
             arrfree(header_new);
             free(header_str);
         }
         // header or payload are empty
-        *err = ERROR2;
+        *err = ERR_EMPTY_DATA;
         return NULL;
     }
     // token is null
-    *err = ERROR1;
+    *err = ERR_NULL_TOKEN;
     return NULL;
 }
 
@@ -153,7 +153,7 @@ static err_t validate_jwt(jwtsvid_JWT *jwt, EVP_PKEY *pkey)
                 if(init != 1) {
                     EVP_MD_CTX_free(ctx);
                     // could not initialize ctx with public key
-                    return ERROR4;
+                    return ERR_INITIALIZING;
                 }
 
                 string_t md = string_new(jwt->header_str);
@@ -172,7 +172,7 @@ static err_t validate_jwt(jwtsvid_JWT *jwt, EVP_PKEY *pkey)
                     arrfree(md);
                     free(buffer);
                     // could not initialize ctx with message digest
-                    return ERROR4;
+                    return ERR_INITIALIZING;
                 }
 
                 const int key_type = EVP_PKEY_base_id(pkey);
@@ -204,16 +204,16 @@ static err_t validate_jwt(jwtsvid_JWT *jwt, EVP_PKEY *pkey)
                 if(ret == 1)
                     return NO_ERROR;
                 // the signature does not match the MD
-                return ERROR5;
+                return ERR_UNMATCH;
             }
             // invalid algorithm
-            return ERROR3;
+            return ERR_INVALID_ALGORITHM;
         }
         // could not get algorithm field
-        return ERROR2;
+        return ERR_INVALID_DATA;
     }
     // jwt is NULL
-    return ERROR1;
+    return ERR_NULL_JWT;
 }
 
 static void jwtsvid_Claims_Free(jwtsvid_Claims *claims)
@@ -284,7 +284,7 @@ static map_string_claim *parseAndValidate(jwtsvid_JWT *jwt,
                                                               err);
             if(*err) {
                 // could not find bundle for given trust domain
-                *err = ERROR3;
+                *err = ERR_NOT_FOUND;
                 return NULL;
             }
 
@@ -301,23 +301,23 @@ static map_string_claim *parseAndValidate(jwtsvid_JWT *jwt,
                         return claims;
                     }
                     // error converting payload to a map
-                    *err = ERROR6;
+                    *err = ERR_PARSING;
                     return NULL;
                 }
                 // not validated
-                *err = ERROR5;
+                *err = ERR_INVALID_DATA;
                 return NULL;
             }
             // authority not found
-            *err = ERROR4;
+            *err = ERR_NOAUTHORITY;
             return NULL;
         }
         // key id is empty or type is incorrect
-        *err = ERROR2;
+        *err = ERR_EMPTY_DATA;
         return NULL;
     }
     // jwt is NULL
-    *err = ERROR1;
+    *err = ERR_NULL_JWT;
     return NULL;
 }
 
@@ -332,11 +332,11 @@ static map_string_claim *parseInsecure(jwtsvid_JWT *jwt,
             return claims;
         }
         // payload is not a json object
-        *err = ERROR2;
+        *err = ERR_PAYLOAD;
         return NULL;
     }
     // jwt is NULL
-    *err = ERROR1;
+    *err = ERR_NULL_JWT;
     return NULL;
 }
 
@@ -426,27 +426,27 @@ static err_t validate_claims(jwtsvid_Claims *claims, string_arr_t audience)
         for(size_t i = 0, size = arrlenu(audience); i < size; ++i) {
             if(!strarr_contains(claims->audience, audience[i])) {
                 // invalid audience
-                return ERROR2;
+                return ERR_INVALID_DATA;
             }
         }
 
         if(claims->expiry > 0 && claims->expiry < now - DEFAULT_LEEWAY) {
             // expired
-            return ERROR3;
+            return ERR_EXPIRED;
         } else if(claims->not_before > 0
                   && claims->not_before > now + DEFAULT_LEEWAY) {
             // not valid yet
-            return ERROR4;
+            return ERR_INVALID_DATA;
         } else if(claims->issued_at > 0
                   && claims->issued_at > now + DEFAULT_LEEWAY) {
             // issued in the future
-            return ERROR5;
+            return ERR_DEFAULT;
         }
 
         return NO_ERROR;
     }
     // claims is NULL
-    return ERROR1;
+    return ERR_NULL_CLAIMS;
 }
 
 static err_t jwtsvid_validateTokenAlgorithm(jwtsvid_JWT *jwt)
@@ -471,13 +471,13 @@ static err_t jwtsvid_validateTokenAlgorithm(jwtsvid_JWT *jwt)
                 }
             }
             // algorithm not supported
-            return ERROR3;
+            return ERR_INVALID_ALGORITHM;
         }
         // header is not a json object
-        return ERROR2;
+        return ERR_INVALID_DATA;
     }
     // jwt object is NULL
-    return ERROR1;
+    return ERR_NULL_JWT;
 }
 
 jwtsvid_SVID *jwtsvid_ParseAndValidate(char *token, jwtbundle_Source *bundles,
@@ -509,7 +509,7 @@ jwtsvid_SVID *jwtsvid_parse(char *token, string_arr_t audience,
 
                 if(empty_str(claims->subject) || claims->expiry <= 0) {
                     // either subject or expiry are missing
-                    *err = ERROR3;
+                    *err = ERR_INVALID_DATA;
                     goto ret;
                 }
 
@@ -517,7 +517,7 @@ jwtsvid_SVID *jwtsvid_parse(char *token, string_arr_t audience,
 
                 if(err2) {
                     // subject claim is not a valid spiffe id
-                    *err = ERROR4;
+                    *err = ERR_INVALID_CLAIM;
                     goto ret;
                 }
 
@@ -529,14 +529,14 @@ jwtsvid_SVID *jwtsvid_parse(char *token, string_arr_t audience,
                                            arg, &err2);
                 if(err2) {
                     // could not validate jwt object
-                    *err = ERROR5;
+                    *err = ERR_INVALID_JWT;
                     goto ret;
                 }
 
                 err2 = validate_claims(claims, audience);
                 if(err2) {
                     // claims not valid
-                    *err = ERROR6;
+                    *err = ERR_INVALID_CLAIM;
                     goto ret;
                 }
 
@@ -557,11 +557,11 @@ jwtsvid_SVID *jwtsvid_parse(char *token, string_arr_t audience,
             }
         }
         // unable to parse token
-        *err = ERROR2;
+        *err = ERR_PARSING;
         goto ret;
     }
     // token is NULL
-    *err = ERROR1;
+    *err = ERR_NULL_TOKEN;
 ret:
     jwtsvid_JWT_Free(jwt);
     jwtsvid_Claims_Free(claims);

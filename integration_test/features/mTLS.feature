@@ -58,8 +58,8 @@ Feature: Mutual TLS
 
     @Sprint15 @WlB @entry-removed
     Scenario Outline: MT_003 - Check that it is not possible to establish mtls connection if one of the WLs does not have SVID
-        Given The second agent is turned on inside "workload" container
-        And   The "WlB" entry is removed from "spire-server"
+        Given The "WlB" entry is removed from "spire-server"
+        And   The second agent is turned on inside "workload" container
         When  I fetch external "X509" "SVID"
         Then  I check that the "SVID" is not returned
         When  I fetch "X509" "SVID"

@@ -85,7 +85,7 @@ static UriUriA URL_parse(const char *str, err_t *err)
     if(uriParseSingleUriA(&uri, str, &err_pos) == URI_SUCCESS) {
         *err = NO_ERROR;
     } else {
-        *err = ERROR1;
+        *err = ERR_PARSING;
     }
 
     return uri;
@@ -150,29 +150,29 @@ spiffeid_ID spiffeid_FromURI(const UriUriA *uri, err_t *err)
                                                 uri->portText.afterLast);
 
     if(!uri) {
-        *err = ERROR1;
+        *err = ERR_EMPTY_DATA;
     } else if(empty_str(host)) // empty trust domain
     {
-        *err = ERROR1;
+        *err = ERR_EMPTY_DATA;
     } else if(empty_str(scheme)) // empty scheme
     {
-        *err = ERROR1;
+        *err = ERR_INVALID_DATA;
     } else if(strcmp(scheme, "spiffe")) // invalid scheme
     {
-        *err = ERROR1;
+        *err = ERR_INVALID_DATA;
     } else if(!empty_str(user)) // user info
     {
-        *err = ERROR1;
+        *err = ERR_INVALID_DATA;
     } else if(!empty_str(port)) // port info
     {
-        *err = ERROR1;
+        *err = ERR_INVALID_DATA;
     } else if(!empty_str(fragment)) // fragment info
     {
-        *err = ERROR1;
+        *err = ERR_NULL_ID;
         // return null_id;
     } else if(!empty_str(raw_query)) // query info
     {
-        *err = ERROR1;
+        *err = ERR_NULL_ID;
         // return null_id;
     }
 

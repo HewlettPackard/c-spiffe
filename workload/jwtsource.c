@@ -44,7 +44,7 @@ workloadapi_NewJWTSource(workloadapi_JWTSourceConfig *config, err_t *err)
 err_t workloadapi_JWTSource_Start(workloadapi_JWTSource *source)
 {
     if(!source) {
-        return ERROR1;
+        return ERR_NULL;
     }
     mtx_lock(&(source->closed_mutex));
     source->closed = false;
@@ -82,8 +82,8 @@ jwtbundle_Bundle *workloadapi_JWTSource_GetJWTBundleForTrustDomain(
     if(!(*err)) {
         jwtbundle_Bundle *bundle = jwtbundle_Set_GetJWTBundleForTrustDomain(
             source->bundles, td, err);
-        if(*err == ERROR1) {
-            *err = ERROR2;
+        if(*err == ERR_TRUSTDOMAIN_NOTAVAILABLE) {
+            *err = ERR_INVALID_TRUSTDOMAIN;
         }
         return bundle;
     }
@@ -110,7 +110,7 @@ err_t workloadapi_JWTSource_checkClosed(workloadapi_JWTSource *source)
     mtx_lock(&(source->closed_mutex));
     if(source->closed) {
         // source is closed
-        err = ERROR1;
+        err = ERR_CLOSED;
     }
     mtx_unlock(&(source->closed_mutex));
     return err;

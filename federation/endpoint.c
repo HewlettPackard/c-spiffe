@@ -11,7 +11,7 @@ static UriUriA URL_parse(const char *str, err_t *err)
     if(uriParseSingleUriA(&uri, str, &err_pos) == URI_SUCCESS) {
         *err = NO_ERROR;
     } else {
-        *err = ERROR1;
+        *err = ERR_PARSING;
     }
 
     return uri;
@@ -62,18 +62,18 @@ err_t spiffebundle_Endpoint_ConfigHTTPSWEB(spiffebundle_Endpoint *endpoint,
 {
     err_t err = NO_ERROR;
     if(!endpoint) {
-        return ERROR1; // NULL endpoint pointer
+        return ERR_NULL; // NULL endpoint pointer
     }
     if(!url) {
-        return ERROR2; // empty/NULL url string
+        return ERR_EMPTY_DATA; // empty/NULL url string
     }
     UriUriA temp_uri = URL_parse(url, &err);
     if(err) {
         uriFreeUriMembersA(&temp_uri);
-        return ERROR2; // invalid url string
+        return ERR_PARSING; // invalid url string
     }
     if(!trust_domain.name) {
-        return ERROR3; // empty/NULL trust domain name
+        return ERR_INVALID_TRUSTDOMAIN; // empty/NULL trust domain name
     }
     mtx_lock(&endpoint->mutex);
     endpoint->url = URI_to_string(&temp_uri);
@@ -82,7 +82,7 @@ err_t spiffebundle_Endpoint_ConfigHTTPSWEB(spiffebundle_Endpoint *endpoint,
     if(err) {
 
         mtx_unlock(&endpoint->mutex);
-        return ERROR3;
+        return ERR_INVALID_TRUSTDOMAIN;
     }
     endpoint->profile = HTTPS_WEB;
     endpoint->owns_bundle = false;
@@ -97,33 +97,33 @@ err_t spiffebundle_Endpoint_ConfigHTTPSSPIFFE(
 {
     err_t err = NO_ERROR;
     if(!endpoint) {
-        return ERROR1; // NULL endpoint pointer
+        return ERR_NULL; // NULL endpoint pointer
     }
     if(!url) {
-        return ERROR2; // empty/NULL url string
+        return ERR_EMPTY_DATA; // empty/NULL url string
     }
     if(!source) {
-        return ERROR6; // no source of initial bundle provided
+        return ERR_INVALID_DATA; // no source of initial bundle provided
     }
     if(!trust_domain.name) {
-        return ERROR3; // empty/NULL trust domain name
+        return ERR_INVALID_TRUSTDOMAIN; // empty/NULL trust domain name
     }
     UriUriA temp_uri = URL_parse(url, &err);
     if(err) {
         uriFreeUriMembersA(&temp_uri);
-        return ERROR2; // invalid url string
+        return ERR_INVALID_DATA; // invalid url string
     }
 
     mtx_lock(&endpoint->mutex);
     endpoint->td = spiffeid_TrustDomainFromString(trust_domain.name, &err);
     if(err) {
         mtx_unlock(&endpoint->mutex);
-        return ERROR3;
+        return ERR_INVALID_TRUSTDOMAIN;
     }
     endpoint->id = spiffeid_FromString(spiffe_id, &err);
     if(err) {
         mtx_unlock(&endpoint->mutex);
-        return ERROR5; // couldn't parse spiffeID
+        return ERR_PARSING; // couldn't parse spiffeID
     }
     endpoint->url = URI_to_string(&temp_uri);
     uriFreeUriMembersA(&temp_uri);
@@ -139,16 +139,16 @@ spiffebundle_Bundle *spiffebundle_Endpoint_GetBundleForTrustDomain(
     err_t *err)
 {
     if(!endpoint) {
-        *err = ERROR1;
+        *err = ERR_NULL;
         return NULL;
     }
     if(!trust_domain.name) {
-        *err = ERROR2;
+        *err = ERR_TRUSTDOMAIN_NOTAVAILABLE;
         return NULL;
     }
     mtx_lock(&endpoint->mutex);
     if(!endpoint->source) {
-        *err = ERROR3;
+        *err = ERR_NULL;
         mtx_unlock(&endpoint->mutex);
         return NULL;
     }
@@ -214,10 +214,10 @@ static CURLcode sslctx_function(CURL *curl, void *sslctx, void *parm)
 err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
 {
     if(!endpoint) {
-        return ERROR1;
+        return ERR_NULL;
     }
     if(!endpoint->td.name) {
-        return ERROR2;
+        return ERR_INVALID_DATA;
     }
     // if handle exists, reuse.
     mtx_lock(&endpoint->mutex);
@@ -225,7 +225,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
         = endpoint->curl_handle ? endpoint->curl_handle : curl_easy_init();
     if(!curl) {
         mtx_unlock(&endpoint->mutex);
-        return ERROR3;
+        return ERR_NULL;
     }
     endpoint->curl_handle = curl;
     mtx_unlock(&endpoint->mutex);
@@ -253,7 +253,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
                     = spiffebundle_Parse(endpoint->td, response, &err);
                 if(err) {
                     mtx_unlock(&endpoint->mutex);
-                    return ERROR5;
+                    return ERR_UNKNOWN_TYPE;
                 }
                 endpoint->source = spiffebundle_SourceFromBundle(bundle);
                 endpoint->owns_bundle = true;
@@ -261,11 +261,11 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
 
                 util_string_t_Free(response);
             } else {
-                return ERROR4;
+                return ERR_UNKNOWN_TYPE;
             }
         } else {
             printf("ERROR CODE: %d\n", res);
-            return ERROR6;
+            return ERR_GET;
         }
         break;
     }
@@ -292,7 +292,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
                 spiffebundle_Bundle *bundle
                     = spiffebundle_Parse(endpoint->td, response, &err);
                 if(err) {
-                    return ERROR5;
+                    return ERR_UNKNOWN_TYPE;
                 }
                 mtx_lock(&endpoint->mutex);
                 endpoint->source = spiffebundle_SourceFromBundle(bundle);
@@ -300,11 +300,11 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
                 mtx_unlock(&endpoint->mutex);
                 util_string_t_Free(response);
             } else {
-                return ERROR4;
+                return ERR_UNKNOWN_TYPE;
             }
         } else {
             printf("ERROR CODE: %d\n", res);
-            return ERROR6;
+            return ERR_GET;
         }
         BIO_free(cert_bio);
         break;
@@ -312,7 +312,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
 
     case NONE:
     default:
-        return ERROR6; // NOT_IMPLEMENTED
+        return ERR_DEFAULT; // NOT_IMPLEMENTED
         break;
     }
     return NO_ERROR;
@@ -321,7 +321,7 @@ err_t spiffebundle_Endpoint_Fetch(spiffebundle_Endpoint *endpoint)
 err_t spiffebundle_Endpoint_Cancel(spiffebundle_Endpoint *endpoint)
 {
     if(!endpoint) {
-        return ERROR1;
+        return ERR_NULL;
     }
     mtx_lock(&(endpoint->mutex));
     if(!endpoint->curl_handle) {

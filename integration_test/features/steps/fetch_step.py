@@ -10,7 +10,7 @@ parse_optional.pattern = r'\s?\w*\s?'
 register_type(optional=parse_optional)
 
 
-@when('I fetch{external:optional}"{profile}" "{document}"')
+@step('I fetch{external:optional}"{profile}" "{document}"')
 def step_impl(context, external, profile, document):
     host, host_number = "", ""
     if external == "external":
@@ -29,9 +29,9 @@ def step_impl(context, external, profile, document):
 @then('I check that the "{document}" is returned correctly')
 def step_impl(context, document):
     document = document.lower()
-    assert_that(context.result.find("error"), is_(-1), "There was an error")
+    assert_that(context.result.count("error"), is_(0), "There was an error:\n%s" % context.result)
+    assert_that(context.result.count("Address: "), is_not(0), "There is no Address")
     start_index = context.result.find("Address: ")
-    assert_that(start_index, is_not(-1), "There is no Address")
     result = context.result[start_index:].splitlines()
     document_content = result[0].split(" ")[-1]
     exec("context.%s = document_content" % document)
@@ -48,9 +48,9 @@ def step_impl(context, document):
 
 @then('I check that the "{document}" is not returned')
 def step_impl(context, document):
+    assert_that(context.result.count("fetch error!"), is_not(0), "There was no error:\n%s" % context.result)
+    assert_that(context.result.count("Address: "), is_not(0), "There is no Address")
     start_index = context.result.find("fetch error!")
-    assert_that(start_index, is_not(-1), "There was no error")
-    assert_that(context.result.find("Address: "), is_not(-1), "There is no Address")
     result = context.result[start_index:].splitlines()
     document_content = result[1].split(" ")[-1]
     if document.lower() == "svid":
@@ -60,13 +60,12 @@ def step_impl(context, document):
     assert_that(document_content, is_("(nil)"))
 
 
-@when('The agent is turned off')
+@step('The agent is turned off')
 def step_impl(context):
-    os.system("pkill spire-agent")
-    time.sleep(5)
+    os.system("pkill -9 spire-agent")
 
 
-@when('The agent is turned on')
+@step('The agent is turned on')
 def step_impl(context):
     os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-generate-token.sh")
     time.sleep(2)

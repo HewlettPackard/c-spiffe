@@ -51,7 +51,7 @@ jwtbundle_Bundle *jwtbundle_Load(const spiffeid_TrustDomain td,
         bundleptr = jwtbundle_Parse(td, buffer, err);
         arrfree(buffer);
     } else
-        *err = ERROR1;
+        *err = ERR_OPENING;
 
     return bundleptr;
 }
@@ -115,7 +115,7 @@ err_t jwtbundle_Bundle_AddJWTAuthority(jwtbundle_Bundle *b, const char *keyID,
                                        EVP_PKEY *pkey)
 {
     // empty string error
-    err_t err = ERROR1;
+    err_t err = ERR_EMPTY_DATA;
 
     if(!empty_str(keyID)) {
         mtx_lock(&(b->mtx));
@@ -190,7 +190,7 @@ jwtbundle_Bundle *jwtbundle_Bundle_GetJWTBundleForTrustDomain(
     mtx_lock(&(b->mtx));
     jwtbundle_Bundle *bundle = NULL;
     // different trust domains error
-    *err = ERROR1;
+    *err = ERR_INVALID_TRUSTDOMAIN;
     // if the TDs are equal
     if(!strcmp(b->td.name, td.name)) {
         bundle = b;
@@ -217,7 +217,7 @@ void jwtbundle_Bundle_Free(jwtbundle_Bundle *b)
 err_t jwtbundle_Bundle_print_BIO(jwtbundle_Bundle *b, int offset, BIO *out)
 {
     if(offset < 0) {
-        return ERROR3;
+        return ERR_BAD_REQUEST;
     } else if(b && out) {
         mtx_lock(&b->mtx); // lock the mutex so we guarantee no one changes
                            // things before we print.
@@ -244,9 +244,9 @@ err_t jwtbundle_Bundle_print_BIO(jwtbundle_Bundle *b, int offset, BIO *out)
         mtx_unlock(&b->mtx); // unlock bundle mutex.
         return NO_ERROR;
     } else if(!b) {
-        return ERROR1;
+        return ERR_NULL_DATA;
     } else {
-        return ERROR2;
+        return ERR_NULL_BUNDLE;
     }
 }
 
@@ -254,7 +254,7 @@ err_t jwtbundle_Bundle_print_fd(jwtbundle_Bundle *b, int offset, FILE *fd)
 {
     BIO *out = BIO_new_fp(fd, BIO_NOCLOSE);
     if(!out) {
-        return ERROR4;
+        return ERR_NEW_FP;
     }
     err_t error = jwtbundle_Bundle_print_BIO(b, offset, out);
     BIO_free(out);

@@ -9,8 +9,8 @@ int workloadapi_JWTWatcher_JWTbackgroundFunc(void *_watcher)
     err_t error = NO_ERROR;
     do {
         error = workloadapi_Client_WatchJWTBundles(watcher->client, watcher);
-    } while(error != ERROR3 && error != ERROR1); // error1 == client closed,
-                                                 // error3 == INVALID_ARGUMENT
+    } while(error != ERR_INVALID_DATA && error != ERR_CLOSED); // ERR_CLOSED == client closed,
+                                                 // ERR_INVALID_DATA == INVALID_ARGUMENT
     return (int) error;
 }
 
@@ -60,17 +60,17 @@ workloadapi_newJWTWatcher(workloadapi_JWTWatcherConfig config,
 
     int thread_error = mtx_init(&(newW->close_mutex), mtx_plain);
     if(thread_error != thrd_success) {
-        *error = ERROR2;
+        *error = ERR_NULL;
         return NULL;
     }
     thread_error = mtx_init(&(newW->update_mutex), mtx_plain);
     if(thread_error != thrd_success) {
-        *error = ERROR2;
+        *error = ERR_NULL;
         return NULL;
     }
     thread_error = cnd_init(&(newW->update_cond));
     if(thread_error != thrd_success) {
-        *error = ERROR2;
+        *error = ERR_NULL;
         return NULL;
     }
 
@@ -82,7 +82,7 @@ err_t workloadapi_JWTWatcher_Start(workloadapi_JWTWatcher *watcher)
 {
     err_t error = NO_ERROR;
     if(!watcher) {
-        return ERROR1; /// NULL WATCHER;
+        return ERR_NULL; /// NULL WATCHER;
     }
 
     error = workloadapi_Client_Connect(watcher->client);
@@ -97,7 +97,7 @@ err_t workloadapi_JWTWatcher_Start(workloadapi_JWTWatcher *watcher)
 
     if(thread_error != thrd_success) {
         watcher->thread_error = thread_error;
-        return ERROR2; // THREAD ERROR, see watcher->threadERROR for error
+        return ERR_THREAD; // THREAD ERROR, see watcher->threadERROR for error
     }
 
     mtx_lock(&(watcher->close_mutex));
@@ -107,7 +107,7 @@ err_t workloadapi_JWTWatcher_Start(workloadapi_JWTWatcher *watcher)
     error = workloadapi_JWTWatcher_WaitUntilUpdated(watcher);
     if(error != NO_ERROR) {
         watcher->update_error = error;
-        return ERROR3;
+        return ERR_WAITING;
     }
 
     return error;
@@ -135,7 +135,7 @@ err_t workloadapi_JWTWatcher_Close(workloadapi_JWTWatcher *watcher)
     if(thread_error == thrd_success) {
         return (err_t) join_return;
     }
-    return ERROR2;
+    return ERR_CLOSING;
 }
 
 // Free's JWTWatcher (MUST ALREADY BE CLOSED)
@@ -187,7 +187,7 @@ err_t workloadapi_JWTWatcher_TimedWaitUntilUpdated(
                                          &(watcher->update_mutex), timer);
             if(thread_error == thrd_timedout) {
                 mtx_unlock(&(watcher->update_mutex));
-                return ERROR1; // timed out
+                return ERR_TIMEOUT; // timed out
             }
         } else {
             thread_error
@@ -195,7 +195,7 @@ err_t workloadapi_JWTWatcher_TimedWaitUntilUpdated(
         }
         mtx_unlock(&watcher->update_mutex);
         if(thread_error != thrd_success) {
-            return ERROR2;
+            return ERR_WAITING;
         } else {
             return NO_ERROR;
         }
