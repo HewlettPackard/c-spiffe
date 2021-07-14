@@ -10,7 +10,7 @@ int workloadapi_JWTWatcher_JWTbackgroundFunc(void *_watcher)
     do {
         error = workloadapi_Client_WatchJWTBundles(watcher->client, watcher);
     } while(error != ERR_INVALID_DATA && error != ERR_CLOSED
-            && watcher->update_error);
+            && watcher->update_error == NO_ERROR);
 
     return (int) error;
 }
