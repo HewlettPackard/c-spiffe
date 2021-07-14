@@ -11,8 +11,9 @@ int workloadapi_Watcher_X509backgroundFunc(void *_watcher)
     err_t error = NO_ERROR;
     do {
         error = workloadapi_Client_WatchX509Context(watcher->client, watcher);
-    } while(error != ERR_INVALID_DATA && error != ERR_NULL); // error1 == client closed,
-                                                 // error3 == INVALID_ARGUMENT
+    } while(error != ERR_INVALID_DATA && error != ERR_NULL
+            && watcher->update_error == NO_ERROR);
+
     return (int) error;
 }
 
@@ -108,8 +109,9 @@ err_t workloadapi_Watcher_Start(workloadapi_Watcher *watcher)
     /// wait for update and check for errors.
     error = workloadapi_Watcher_WaitUntilUpdated(watcher);
     if(error != NO_ERROR) {
-        // TODO: add error handling and destroy thread. error is already set
+        mtx_lock(&(watcher->update_mutex));
         watcher->update_error = error;
+        mtx_unlock(&(watcher->update_mutex));
         return ERR_WAITING;
     }
 
@@ -124,14 +126,14 @@ err_t workloadapi_Watcher_Close(workloadapi_Watcher *watcher)
     err_t error = NO_ERROR;
     if(watcher->owns_client) {
 
-        error = workloadapi_Client_Close(watcher->client);    
+        error = workloadapi_Client_Close(watcher->client);
         if(error != NO_ERROR) {
 
             watcher->close_error = error;
             mtx_unlock(&(watcher->close_mutex));
             return error;
         }
-    }    
+    }
     mtx_unlock(&(watcher->close_mutex));
     int join_return;
     int thread_error = thrd_join(watcher->watcher_thread, &join_return);
