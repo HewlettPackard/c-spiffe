@@ -5,6 +5,7 @@
 #include "c-spiffe/spiffetls/spiffetls.h"
 #include "c-spiffe/utils/picohttpparser.h"
 #include "c-spiffe/utils/util.h"
+#include "c-spiffe/utils/error.h"
 #include "openssl/ssl.h"
 #include <check.h>
 #include <errno.h>
@@ -170,7 +171,7 @@ START_TEST(test_spiffebundle_EndpointServer_EndpointFunctions)
         = spiffebundle_EndpointServer_AddHttpsSpiffeEndpoint(
             server, "example.org", source, &error);
     ck_assert_ptr_eq(e_info2, NULL);
-    ck_assert_int_eq(error, ERROR4);
+    ck_assert_int_eq(error, ERR_EXISTS);
 
     e_info2 = spiffebundle_EndpointServer_AddHttpsSpiffeEndpoint(
         server, "example2.org", source, &error);
@@ -326,9 +327,7 @@ START_TEST(test_spiffebundle_EndpointServer_ServeFunctions)
     error = spiffebundle_EndpointServer_ServeEndpoint(server, "example.org",
                                                       445);
     ck_assert_int_eq(error, NO_ERROR);
-    // struct timespec sleep_time = { .tv_sec = 1, .tv_nsec = 0 };
-    // printf("sleeeep\n");
-    // nanosleep(&sleep_time, NULL);
+
     ck_assert_ptr_ne(e_info1->threads[0].value, NULL);
     ck_assert(e_info1->threads[0].value->active);
     ck_assert_ptr_eq(e_info1->threads[0].value->endpoint_info, e_info1);
@@ -342,44 +341,25 @@ START_TEST(test_spiffebundle_EndpointServer_ServeFunctions)
                                                            "example.org", 445);
     ck_assert_int_eq(error, NO_ERROR);
 
-    // sleep_time.tv_sec = 1;
-    // sleep_time.tv_nsec = 0;
-    // printf("sleeeep\n");
-    // nanosleep(&sleep_time, NULL);
-    // error = spiffebundle_EndpointServer_ServeEndpoint(server, "example.org",
-    //                                                   445);
-    // ck_assert_int_eq(error, NO_ERROR);
-    // sleep_time.tv_sec = 1;
-    // sleep_time.tv_nsec = 0;
-    // printf("sleeeep\n");
-    // nanosleep(&sleep_time, NULL);
-    // ck_assert_ptr_ne(e_info1->threads[0].value, NULL);
-    // ck_assert(e_info1->threads[0].value->active);
-    // ck_assert_ptr_eq(e_info1->threads[0].value->endpoint_info, e_info1);
-    // ck_assert_int_eq(e_info1->threads[0].value->port, 445);
+   
+    error = spiffebundle_EndpointServer_ServeEndpoint(server, "example.org",
+                                                      445);
+    ck_assert_int_eq(error, NO_ERROR);
+    ck_assert_ptr_ne(e_info1->threads[0].value, NULL);
+    ck_assert(e_info1->threads[0].value->active);
+    ck_assert_ptr_eq(e_info1->threads[0].value->endpoint_info, e_info1);
+    ck_assert_int_eq(e_info1->threads[0].value->port, 445);
 
-    // error = spiffebundle_EndpointServer_StopEndpoint(server, "example.org");
-    // ck_assert_int_eq(error, NO_ERROR);
-    // error = spiffebundle_EndpointServer_ServeEndpoint(server, "example.org",
-    //                                                   445);
-    // ck_assert_int_eq(error, NO_ERROR);
+    error = spiffebundle_EndpointServer_StopEndpoint(server, "example.org");
+    ck_assert_int_eq(error, NO_ERROR);
+    error = spiffebundle_EndpointServer_ServeEndpoint(server, "example.org",
+                                                      445);
+    ck_assert_int_eq(error, NO_ERROR);
 
-    // error = spiffebundle_EndpointServer_Stop(server);
-    // ck_assert_int_eq(error, NO_ERROR);
+    error = spiffebundle_EndpointServer_Stop(server);
+    ck_assert_int_eq(error, NO_ERROR);
 }
 END_TEST
-
-// // Serve bundles using the set up protocol. Spawns a thread.
-// err_t spiffebundle_EndpointServer_ServeEndpoint(
-//     spiffebundle_EndpointServer *server, const char *base_url, uint port);
-
-// // Stop serving from indicated thread.
-// err_t spiffebundle_EndpointServer_StopEndpoint(
-//     spiffebundle_EndpointServer *server, const char *base_url);
-
-// // Stops serving from all threads.
-// err_t spiffebundle_EndpointServer_StopAll(spiffebundle_EndpointServer
-// *server);
 
 Suite *endpoint_server_suite(void)
 {
@@ -391,8 +371,6 @@ Suite *endpoint_server_suite(void)
     tcase_add_test(tc_core,
                    test_spiffebundle_EndpointServer_EndpointFunctions);
     tcase_add_test(tc_core, test_spiffebundle_EndpointServer_ServeFunctions);
-    // tcase_add_test(tc_core, test_federation_Endpoint_fetch_WEB);
-    // tcase_add_test(tc_core, test_federation_Endpoint_fetch_SPIFFE);
 
     // tcase_set_timeout(tc_core,20);
     suite_add_tcase(s, tc_core);

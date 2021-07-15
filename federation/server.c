@@ -1,5 +1,6 @@
 #include "c-spiffe/federation/server.h"
 #include "c-spiffe/spiffetls/spiffetls.h"
+#include "c-spiffe/utils/error.h"
 #include "c-spiffe/utils/picohttpparser.h"
 #include <errno.h>
 #include <stdio.h>
@@ -17,7 +18,7 @@ spiffebundle_EndpointInfo *spiffebundle_EndpointInfo_New()
 err_t spiffebundle_EndpointInfo_Free(spiffebundle_EndpointInfo *e_info)
 {
     if(!e_info) {
-        return ERROR1;
+        return ERR_NULL;
     }
     mtx_destroy(&e_info->mutex);
     free(e_info);
@@ -42,7 +43,7 @@ spiffebundle_EndpointServer *spiffebundle_EndpointServer_New()
 err_t spiffebundle_EndpointServer_Free(spiffebundle_EndpointServer *server)
 {
     if(!server) {
-        return ERROR1;
+        return ERR_NULL;
     }
 
     mtx_lock(&server->mutex);
@@ -63,16 +64,16 @@ err_t spiffebundle_EndpointServer_RegisterBundle(
     spiffebundle_Source *bundle_source, spiffeid_TrustDomain td)
 {
     if(!server) {
-        return ERROR1;
+        return ERR_NULL;
     }
     if(!path) {
-        return ERROR2;
+        return ERR_BAD_ARGUMENT;
     }
     if(!bundle_source) {
-        return ERROR3;
+        return ERR_NULL_DATA;
     }
     if(!td.name) {
-        return ERROR4;
+        return ERR_INVALID_TRUSTDOMAIN;
     }
 
     mtx_lock(&server->mutex);
@@ -90,16 +91,16 @@ err_t spiffebundle_EndpointServer_UpdateBundle(
     spiffebundle_Source *new_source, spiffeid_TrustDomain td)
 {
     if(!server) {
-        return ERROR1;
+        return ERR_NULL;
     }
     if(!path) {
-        return ERROR2;
+        return ERR_BAD_ARGUMENT;
     }
     if(!new_source) {
-        return ERROR3;
+        return ERR_NULL_DATA;
     }
     if(!td.name) {
-        return ERROR4;
+        return ERR_INVALID_TRUSTDOMAIN;
     }
 
     mtx_lock(&server->mutex);
@@ -107,7 +108,7 @@ err_t spiffebundle_EndpointServer_UpdateBundle(
         int idx = shgeti(server->bundle_sources, path);
         if(idx < 0) { // not found
             mtx_unlock(&server->mutex);
-            return ERROR5;
+            return ERR_NOT_FOUND;
         }
         server->bundle_sources[idx].value = new_source;
         if(server->bundle_tds[idx].value) {
@@ -124,10 +125,10 @@ err_t spiffebundle_EndpointServer_RemoveBundle(
     spiffebundle_EndpointServer *server, const char *path)
 {
     if(!server) {
-        return ERROR1;
+        return ERR_NULL;
     }
     if(!path) {
-        return ERROR2;
+        return ERR_BAD_ARGUMENT;
     }
 
     mtx_lock(&server->mutex);
@@ -135,7 +136,7 @@ err_t spiffebundle_EndpointServer_RemoveBundle(
         int idx = shgeti(server->bundle_sources, path);
         if(idx < 0) { // not found
             mtx_unlock(&server->mutex);
-            return ERROR3;
+            return ERR_NOT_FOUND;
         }
 
         // free string from td strings map
@@ -157,21 +158,21 @@ spiffebundle_EndpointInfo *spiffebundle_EndpointServer_AddHttpsWebEndpoint(
     EVP_PKEY *priv_key, err_t *error)
 {
     if(!server) {
-        *error = ERROR1;
+        *error = ERR_NULL;
         return NULL;
     }
     if(!base_url) {
-        *error = ERROR2;
+        *error = ERR_BAD_ARGUMENT;
         return NULL;
     }
     if(!certs || !(certs[0])) {
-        *error = ERROR3;
+        *error = ERR_CERTIFICATE_VALIDATION;
         return NULL;
     }
     /// TODO: validate non-svid
     priv_key = x509svid_validatePrivateKey(priv_key, certs[0], error);
     if(!priv_key) {
-        *error = ERROR4;
+        *error = ERR_PRIVKEY_VALIDATION;
         return NULL;
     }
 
@@ -180,7 +181,7 @@ spiffebundle_EndpointInfo *spiffebundle_EndpointServer_AddHttpsWebEndpoint(
     if(idx >= 0) {
         EVP_PKEY_free(priv_key);
         mtx_unlock(&server->mutex);
-        *error = ERROR5;
+        *error = ERR_EXISTS;
         return NULL;
     }
 
@@ -213,26 +214,26 @@ err_t spiffebundle_EndpointServer_SetHttpsWebEndpointAuth(
     EVP_PKEY *priv_key)
 {
     if(!server) {
-        return ERROR1;
+        return ERR_NULL;
     }
     if(!base_url) {
-        return ERROR2;
+        return ERR_BAD_ARGUMENT;
     }
     if(!certs || !(certs[0])) {
-        return ERROR3;
+        return ERR_CERTIFICATE_VALIDATION;
     }
     err_t error = NO_ERROR;
     /// TODO: validate non-svid
     priv_key = x509svid_validatePrivateKey(priv_key, certs[0], &error);
     if(!priv_key) {
-        return ERROR4;
+        return ERR_PRIVKEY_VALIDATION;
     }
     mtx_lock(&server->mutex);
     int idx = shgeti(server->endpoints, base_url);
     if(idx < 0) {
         EVP_PKEY_free(priv_key);
         mtx_unlock(&server->mutex);
-        return ERROR5;
+        return ERR_EXISTS;
     }
     spiffebundle_EndpointInfo *e_info = server->endpoints[idx].value;
     mtx_lock(&e_info->mutex);
@@ -261,22 +262,22 @@ spiffebundle_EndpointInfo *spiffebundle_EndpointServer_AddHttpsSpiffeEndpoint(
     x509svid_Source *svid_source, err_t *error)
 {
     if(!server) {
-        *error = ERROR1;
+        *error = ERR_NULL;
         return NULL;
     }
     if(!base_url) {
-        *error = ERROR2;
+        *error = ERR_BAD_ARGUMENT;
         return NULL;
     }
     if(!svid_source) {
-        *error = ERROR3;
+        *error = ERR_NULL_SVID;
         return NULL;
     }
     mtx_lock(&server->mutex);
     int idx = shgeti(server->endpoints, base_url);
     if(idx >= 0) {
         mtx_unlock(&server->mutex);
-        *error = ERROR4;
+        *error = ERR_EXISTS;
         return NULL;
     }
     spiffebundle_EndpointInfo *e_info = spiffebundle_EndpointInfo_New();
@@ -296,19 +297,19 @@ err_t spiffebundle_EndpointServer_SetHttpsSpiffeEndpointSource(
 {
     err_t error = NO_ERROR;
     if(!server) {
-        return ERROR1;
+        return ERR_NULL;
     }
     if(!base_url) {
-        return ERROR2;
+        return ERR_BAD_ARGUMENT;
     }
     if(!svid_source) {
-        return ERROR3;
+        return ERR_NULL_SVID;
     }
     mtx_lock(&server->mutex);
     int idx = shgeti(server->endpoints, base_url);
     if(idx < 0) {
         mtx_unlock(&server->mutex);
-        return ERROR4;
+        return ERR_NOT_FOUND;
     }
     spiffebundle_EndpointInfo *e_info = server->endpoints[idx].value;
     mtx_lock(&e_info->mutex);
@@ -323,18 +324,18 @@ spiffebundle_EndpointInfo *spiffebundle_EndpointServer_GetEndpointInfo(
     spiffebundle_EndpointServer *server, const char *base_url, err_t *error)
 {
     if(!server) {
-        *error = ERROR1;
+        *error = ERR_NULL;
         return NULL;
     }
     if(!base_url) {
-        *error = ERROR2;
+        *error = ERR_BAD_ARGUMENT;
         return NULL;
     }
     mtx_lock(&server->mutex);
     int idx = shgeti(server->endpoints, base_url);
     if(idx < 0) {
         mtx_unlock(&server->mutex);
-        *error = ERROR3;
+        *error = ERR_NOT_FOUND;
         return NULL;
     }
     *error = NO_ERROR;
@@ -349,16 +350,16 @@ err_t spiffebundle_EndpointServer_RemoveEndpoint(
 {
     err_t error = NO_ERROR;
     if(!server) {
-        return ERROR1;
+        return ERR_NULL;
     }
     if(!base_url) {
-        return ERROR2;
+        return ERR_BAD_ARGUMENT;
     }
     mtx_lock(&server->mutex);
     int idx = shgeti(server->endpoints, base_url);
     if(idx < 0) {
         mtx_unlock(&server->mutex);
-        return ERROR3;
+        return ERR_NOT_FOUND;
     }
     spiffebundle_EndpointInfo *ret = server->endpoints[idx].value;
     spiffetls_ListenMode_Free(ret->listen_mode);
@@ -372,42 +373,6 @@ err_t spiffebundle_EndpointServer_RemoveEndpoint(
 char *HTTP_OK = "HTTP/1.1 200 OK\r\n";
 char *HTTP_NOTFOUND = "HTTP/1.1 404 Not Found\r\n";
 char *HTTP_METHODNOTALLOWED = "HTTP/1.1 405 Method Not Allowed\r\n";
-
-static int createSocket(in_port_t port)
-{
-    struct sockaddr_in address = { .sin_family = AF_INET,
-                                   .sin_addr.s_addr = htonl(INADDR_ANY),
-                                   .sin_port = htons(port) };
-
-    const int sockfd = socket(/*IPv4*/ AF_INET, /*TCP*/ SOCK_STREAM, /*IP*/ 0);
-    if(sockfd < 0) {
-        // could not create socket
-        return -1;
-    }
-
-    const int opt = 1;
-    if(setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt,
-                  sizeof opt)
-       < 0) {
-        // could not set socket option
-        return -1;
-    }
-
-    const int bind_ret
-        = bind(sockfd, (const struct sockaddr *) &address, sizeof address);
-    if(bind_ret < 0) {
-        // could not bind socket
-        return -1;
-    }
-
-    const int listen_ret = listen(sockfd, /*backlog*/ 5);
-    if(listen_ret < 0) {
-        // could not listen from socket
-        return -1;
-    }
-
-    return sockfd;
-}
 
 int serve_function(void *arg)
 {
@@ -429,7 +394,7 @@ int serve_function(void *arg)
             if(err == NO_ERROR) { /// POLL received signal
                 continue;
             }
-            printf("spiffetls_PollWithMode() failed(%d)\n", err);
+            /// LOG: printf("spiffetls_PollWithMode() failed(%d)\n", err);
         }
 
         // handle client
@@ -446,7 +411,7 @@ int serve_function(void *arg)
                   && errno == EINTR)
                 ;
             if(rret <= 0)
-                return ERROR4;
+                err = ERR_READING;
             prevbuflen = buflen;
             buflen += rret;
             // parse
@@ -454,15 +419,28 @@ int serve_function(void *arg)
             pret = phr_parse_request(buf, buflen, &method, &method_len, &path,
                                      &path_len, &minor_version, headers,
                                      &num_headers, prevbuflen);
-            if(pret > 0)
+            if(pret > 0) {
                 break; // success
-            else if(pret == -1)
-                return ERROR5;
-            if(buflen == sizeof(buf))
-                return ERROR6;
+            } else if(pret == -1) {
+                err = ERR_PARSING;
+                break;
+            }
+            if(buflen == sizeof(buf)) {
+                err = ERR_TOO_LONG;
+                break;
+            }
             // get rest of request
         }
-
+        if(err == ERR_PARSING) {
+            /// LOG: HTTP parse error
+            break;
+        } else if(err == ERR_READING) {
+            /// LOG: Error reading from socket
+            break;
+        } else if(err == ERR_TOO_LONG) {
+            /// LOG: Request too long, buffer overflow prevented
+            break;
+        }
         /// LOG: log request @ which level?
         printf("Server received:\n%s\n", buf);
 
@@ -526,20 +504,20 @@ err_t spiffebundle_EndpointServer_ServeEndpoint(
     spiffebundle_EndpointServer *server, const char *base_url, uint port)
 {
     if(!server) {
-        return ERROR1;
+        return ERR_NULL;
     }
     if(!base_url) {
-        return ERROR2;
+        return ERR_BAD_ARGUMENT;
     }
     if(port == 0 || port >= 1 << 16) { // invalid port number
-        return ERROR3;
+        return ERR_BAD_PORT;
     }
     mtx_lock(&server->mutex);
     {
         int idx = shgeti(server->endpoints, base_url);
         if(idx < 0) { // endpoint not found
             mtx_unlock(&server->mutex);
-            return ERROR4;
+            return ERR_NOT_FOUND;
         }
         spiffebundle_EndpointInfo *e_info = server->endpoints[idx].value;
 
@@ -573,20 +551,20 @@ err_t spiffebundle_EndpointServer_StopEndpointThread(
     spiffebundle_EndpointServer *server, const char *base_url, uint port)
 {
     if(!server) {
-        return ERROR1;
+        return ERR_NULL;
     }
     if(!base_url) {
-        return ERROR2;
+        return ERR_BAD_ARGUMENT;
     }
     if(port == 0 || port >= 1 << 16) { // invalid port number
-        return ERROR3;
+        return ERR_BAD_PORT;
     }
 
     mtx_lock(&server->mutex);
     int idx = shgeti(server->endpoints, base_url);
     if(idx < 0) {
         mtx_unlock(&server->mutex);
-        return ERROR2;
+        return ERR_NOT_FOUND;
     }
     spiffebundle_EndpointInfo *e_info = server->endpoints[idx].value;
     mtx_unlock(&server->mutex);
@@ -595,14 +573,14 @@ err_t spiffebundle_EndpointServer_StopEndpointThread(
     if(l < 0) {
         mtx_unlock(&e_info->mutex);
         mtx_unlock(&server->mutex);
-        return ERROR4;
+        return ERR_EXISTS;
     }
     spiffebundle_EndpointThread *e_thread = e_info->threads[l].value;
     e_thread->active = false;
     int res = write(e_thread->control_socks[0], "END\r\n", 6);
+    ///LOG: result
 
-    // log res
-    // remove thread from
+    // remove thread from map
     hmdel(e_info->threads, port);
     thrd_t thread = e_thread->thread;
     int fds[2] = { e_thread->control_socks[0], e_thread->control_socks[1] };
@@ -612,7 +590,7 @@ err_t spiffebundle_EndpointServer_StopEndpointThread(
 
     // waits for thread to stop;
     thrd_join(thread, NULL);
-    // close(sock);
+    // close control sockets
     close(fds[0]);
     close(fds[1]);
     return NO_ERROR;
@@ -624,10 +602,10 @@ err_t spiffebundle_EndpointServer_StopEndpoint(
     spiffebundle_EndpointServer *server, const char *base_url)
 {
     if(!server) {
-        return ERROR1;
+        return ERR_NULL;
     }
     if(!base_url) {
-        return ERROR2;
+        return ERR_BAD_ARGUMENT;
     }
     spiffebundle_EndpointThread **threads_to_join = NULL;
     mtx_lock(&server->mutex);
@@ -635,7 +613,7 @@ err_t spiffebundle_EndpointServer_StopEndpoint(
         int idx = shgeti(server->endpoints, base_url);
         if(idx < 0) {
             mtx_unlock(&server->mutex);
-            return ERROR2;
+            return ERR_NOT_FOUND;
         }
         spiffebundle_EndpointInfo *e_info = server->endpoints[idx].value;
         mtx_lock(&e_info->mutex);
@@ -669,7 +647,7 @@ err_t spiffebundle_EndpointServer_StopEndpoint(
 err_t spiffebundle_EndpointServer_Stop(spiffebundle_EndpointServer *server)
 {
     if(!server) {
-        return ERROR1;
+        return ERR_NULL;
     }
     spiffebundle_EndpointThread **threads_to_join = NULL;
     mtx_lock(&server->mutex);

@@ -154,7 +154,7 @@ SSL *spiffetls_PollWithMode(in_port_t port, spiffetls_ListenMode *mode,
         if(!source) {
             source = workloadapi_NewX509Source(NULL, err);
             if(*err) {
-                *err = ERROR1;
+                *err = ERR_CREATE;
                 goto error;
             }
         }
@@ -166,7 +166,7 @@ SSL *spiffetls_PollWithMode(in_port_t port, spiffetls_ListenMode *mode,
     SSL_CTX *tls_config
         = config->base_TLS_conf ? config->base_TLS_conf : createTLSContext();
     if(!tls_config) {
-        *err = ERROR2;
+        *err = ERR_CREATE;
         goto error;
     }
 
@@ -181,7 +181,7 @@ SSL *spiffetls_PollWithMode(in_port_t port, spiffetls_ListenMode *mode,
     case MTLS_WEBSERVER_MODE:
     default:
         // unknown mode
-        *err = ERROR3;
+        *err = ERR_UNKNOWN_MODE;
         goto error;
     }
 
@@ -189,7 +189,7 @@ SSL *spiffetls_PollWithMode(in_port_t port, spiffetls_ListenMode *mode,
         = config->listener_fd > 0 ? config->listener_fd : createSocket(port);
     if(sockfd < 0) {
         // could not create socket with given address and port
-        *err = ERROR4;
+        *err = ERR_CREATE;
         goto error;
     }
 
@@ -224,20 +224,20 @@ SSL *spiffetls_PollWithMode(in_port_t port, spiffetls_ListenMode *mode,
     if(clientfd < 0) {
         // could not accept client
         close(sockfd);
-        *err = ERROR5;
+        *err = ERR_NOT_ACCEPTED;
         goto error;
     }
     *sock = sockfd;
 
     SSL *conn = SSL_new(tls_config);
     if(!conn) {
-        *err = ERROR6;
+        *err = ERR_CONNECT;
         goto error;
     } else if(SSL_set_fd(conn, clientfd) != 1) {
-        *err = ERROR6;
+        *err = ERR_CONNECT;
         goto error;
     } else if(SSL_set_num_tickets(conn, 0) != 1) {
-        *err = ERROR6;
+        *err = ERR_CONNECT;
         goto error;
     }
 
@@ -248,7 +248,7 @@ SSL *spiffetls_PollWithMode(in_port_t port, spiffetls_ListenMode *mode,
         SSL_free(conn);
         close(clientfd);
         close(sockfd);
-        *err = ERROR6;
+        *err = ERR_CONNECT;
         goto error;
     }
     // successful handshake
