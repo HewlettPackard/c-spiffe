@@ -90,7 +90,7 @@ jobs:
       #   shell: bash
       #   run: cd build && make gcov && make lcov && lcov --list Coverage/lcov.info > coverage
         
-      - name: Set Integration Test Default TAG
+      - name: Define Integration Test TAG
         uses: haya14busa/action-cond@v1
         id: integrationTestsTag
         with:
