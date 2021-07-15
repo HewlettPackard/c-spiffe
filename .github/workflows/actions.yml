@@ -91,10 +91,9 @@ jobs:
       #   run: cd build && make gcov && make lcov && lcov --list Coverage/lcov.info > coverage
         
       - name: Integration Test
-        env:
-          TAG: latest
+        run:  echo "TAG=latest" >> $GITHUB_ENV
         if:  ${{ env.IS_MASTER == 'false' }}
-        TAG: ${{ env.BRANCH  }}
+          run:  echo "TAG=${{ env.BRANCH  }}" >> $GITHUB_ENV TAG
         shell: bash
         run: cd infra && make integration-tests TAG=${{ env.TAG  }}
 
