@@ -6,7 +6,7 @@ build-tests-workload:
 	docker-compose exec workload ./build-tests-workload.sh
 
 run:
-	docker-compose up -d
+	TAG=$(TAG) docker-compose up -d
 
 run-server:
 	docker-compose exec spire-server spire-server run

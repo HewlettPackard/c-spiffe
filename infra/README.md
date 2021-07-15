@@ -1,10 +1,6 @@
 # Infra
 
-This folder contains an orchestration for some integration test scenarios. It is composed by a server container, a test workload, and some tests scripts.
-
-### Run the Docker containers
-
-
+This folder contains an orchestration for the integration test scenarios. It is composed by spire-server containers, workload containers, a tests container and some tests scripts.
 
 ##### Prerequisites
 
@@ -12,15 +8,14 @@ This folder contains an orchestration for some integration test scenarios. It is
 - [Docker](https://docs.docker.com/install/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
-##### 1. Clone this c-spiffe
+##### Clone this c-spiffe
 
 ```
 $ git clone https://github.com/HewlettPackard/c-spiffe.git
 $ cd c-spiffe
 ```
 
-##### 2. Build and run the docker containers
-
+##### Build docker images locally (optional)
 ```
 $ cd infra/
 $ make build
@@ -28,20 +23,28 @@ $ make build
 Successfully built
 ```
 
-Run the containers:
+### Setup for some basic manual tests
+
+##### 1. Run the docker containers
+
+On a console run:
 
 ```
-$ make run
+$ cd infra/
+$ make run TAG=latest
 
-docker-compose up -d
-Creating network "infra_default" with the default driver
-Creating infra_spire-server_1 ... done
-Creating infra_workload_1     ... done
-Creating infra_tests_1        ... done
+TAG=latest docker-compose up -d
+Building with native build. Learn about native build in Compose here: https://docs.docker.com/go/compose-native-build/
+Creating infra_spire-server_1  ... done
+Creating infra_spire-server2_1 ... done
+Creating infra_workload2_1     ... done
+Creating infra_workload_1      ... done
+Creating infra_tests_1         ... done
 
 ```
+The tag might be replaced for another one available in [dockerhub](https://hub.docker.com/r/cspiffe/tests/tags?page=1&ordering=last_updated) or locally.
 
-##### 3. Run the SPIRE Server 
+##### 2. Run the SPIRE Server 
 
 On a console run:
 
@@ -61,23 +64,31 @@ INFO[0000] Plugin loaded                   built-in_plugin=true plugin_name=join
 INFO[0000] Plugins started
 ```
 
-##### 4. Create the workloads entries
+##### 3. Create the workloads entries
 
 On a console run:
 
 ```
 $ make create-entries
 
-+ spire-server entry create -parentID spiffe://example.org/host -spiffeID spiffe://example.org/tests -selector unix:uid:1002 -ttl 3600
-Entry ID         : df1cffc6-bd56-449e-b107-581c1d186e32
++ spire-server entry create -parentID spiffe://example.org/myagent -spiffeID spiffe://example.org/myworkload -selector unix:user:root
+Entry ID         : ad80a864-935c-40e6-b218-6a2b5b4d6034
+SPIFFE ID        : spiffe://example.org/myworkload
+Parent ID        : spiffe://example.org/myagent
+Revision         : 0
+TTL              : default
+Selector         : unix:user:root
+
++ spire-server entry create -parentID spiffe://example.org/host -spiffeID spiffe://example.org/tests -selector unix:uid:1002
+Entry ID         : d83795b7-d51d-4297-924a-d5174591ba92
 SPIFFE ID        : spiffe://example.org/tests
 Parent ID        : spiffe://example.org/host
 Revision         : 0
-TTL              : 3600
+TTL              : default
 Selector         : unix:uid:1002
 
 + spire-server entry create -parentID spiffe://example.org/host -spiffeID spiffe://example.org/tests -selector unix:user:root
-Entry ID         : 80eb326c-052d-46b1-a733-fffb811fe86d
+Entry ID         : 77b50a95-e374-4a50-8fd5-690d3f023a1d
 SPIFFE ID        : spiffe://example.org/tests
 Parent ID        : spiffe://example.org/host
 Revision         : 0
@@ -86,9 +97,7 @@ Selector         : unix:user:root
 
 ```
 
-##### 5. Generate Tokens 
-
-###### 5.1 Generate Agent Token for tests and Run the Agent
+##### 4. Generate Tokens 
 
 On the console run:
 ```
@@ -110,19 +119,65 @@ INFO[0000] Plugin loaded                  built-in_plugin=true plugin_name=unix 
 INFO[0000] Bundle is not found            subsystem_name=attestor
 DEBU[0000] No pre-existing agent SVID found. Will perform node attestation  path=data/agent/agent_svid.der subsystem_name=attestor
 ```
+
+##### 5. Go into the tests container and execute some desired test
+
 ##### 6. Clean the environment 
 
-Stop the docker containers:
+On a console run:
 
 ```
 $ make clean
 
 docker-compose down
-Stopping infra_tests_1        ... done
-Stopping infra_workload_1     ... done
-Stopping infra_spire-server_1 ... done
-Removing infra_tests_1        ... done
-Removing infra_workload_1     ... done
-Removing infra_spire-server_1 ... done
+WARNING: The TAG variable is not set. Defaulting to a blank string.
+Stopping infra_tests_1         ... done
+Stopping infra_workload_1      ... done
+Stopping infra_workload2_1     ... done
+Stopping infra_spire-server_1  ... done
+Stopping infra_spire-server2_1 ... done
+Removing infra_tests_1         ... done
+Removing infra_workload_1      ... done
+Removing infra_workload2_1     ... done
+Removing infra_spire-server_1  ... done
+Removing infra_spire-server2_1 ... done
 Removing network infra_default
+```
+
+### Execute all automated integration tests 
+
+Replace the `<image_tag>` in the Makefile for an existing one available in [dockerhub](https://hub.docker.com/r/cspiffe/tests/tags?page=1&ordering=last_updated) or locally.
+On a console run:
+
+```
+$ make integration-tests
+
+TAG=<image_tag> docker-compose up -d
+    Building with native build. Learn about native build in Compose here: https://docs.docker.com/go/compose-native-build/
+    Creating network "infra_default" with the default driver
+    Creating infra_spire-server2_1 ... done
+    Creating infra_spire-server_1  ... done
+    Creating infra_workload_1      ... done
+    Creating infra_workload2_1     ... done
+    Creating infra_tests_1         ... done
+
+    ....
+
+    6 features passed, 0 failed, 0 skipped
+    40 scenarios passed, 0 failed, 0 skipped
+    466 steps passed, 0 failed, 0 skipped, 0 undefined
+    Took 15m11.601s
+    docker-compose down
+    WARNING: The TAG variable is not set. Defaulting to a blank string.
+    Stopping infra_tests_1         ... done
+    Stopping infra_workload2_1     ... done
+    Stopping infra_workload_1      ... done
+    Stopping infra_spire-server_1  ... done
+    Stopping infra_spire-server2_1 ... done
+    Removing infra_tests_1         ... done
+    Removing infra_workload2_1     ... done
+    Removing infra_workload_1      ... done
+    Removing infra_spire-server_1  ... done
+    Removing infra_spire-server2_1 ... done
+    Removing network infra_default
 ```
