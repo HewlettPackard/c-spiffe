@@ -1,4 +1,5 @@
 #include "c-spiffe/federation/server.h"
+#include "c-spiffe/logger/logger.h"
 #include "c-spiffe/spiffetls/spiffetls.h"
 #include "c-spiffe/utils/error.h"
 #include "c-spiffe/utils/picohttpparser.h"
@@ -17,7 +18,9 @@ spiffebundle_EndpointInfo *spiffebundle_EndpointInfo_New()
 
 err_t spiffebundle_EndpointInfo_Free(spiffebundle_EndpointInfo *e_info)
 {
+    // logger_FmtPush(LOGGER_DEBUG, "spiffebundle_EndpointInfo_Free %p", e_info);
     if(!e_info) {
+        // logger_Push(LOGGER_WARNING, "Error Freeing Endpoint (null)");
         return ERR_NULL;
     }
     mtx_destroy(&e_info->mutex);
@@ -27,6 +30,7 @@ err_t spiffebundle_EndpointInfo_Free(spiffebundle_EndpointInfo *e_info)
 
 spiffebundle_EndpointServer *spiffebundle_EndpointServer_New()
 {
+    // logger_FmtPush(LOGGER_DEBUG, "spiffebundle_EndpointServer_New %p");
     spiffebundle_EndpointServer *new_server = calloc(1, sizeof(*new_server));
 
     mtx_init(&new_server->mutex, mtx_plain);
@@ -42,13 +46,18 @@ spiffebundle_EndpointServer *spiffebundle_EndpointServer_New()
 
 err_t spiffebundle_EndpointServer_Free(spiffebundle_EndpointServer *server)
 {
+    // logger_FmtPush(LOGGER_WARNING,
+                //    "spiffebundle_EndpointServer_Free server=%p", server);
     if(!server) {
+        // logger_Push(LOGGER_ERROR, "Error Freeing Server (null)");
         return ERR_NULL;
     }
 
     mtx_lock(&server->mutex);
     {
         shfree(server->bundle_sources);
+        // logger_FmtPush(LOGGER_DEBUG,
+                    //    "spiffebundle_EndpointServer_Free server=%p", server);
         shfree(server->endpoints);
         shfree(server->bundle_tds);
     }
@@ -56,6 +65,8 @@ err_t spiffebundle_EndpointServer_Free(spiffebundle_EndpointServer *server)
 
     mtx_destroy(&server->mutex);
     free(server);
+    // logger_FmtPush(LOGGER_DEBUG, "spiffebundle_EndpointServer_Free server=%p",
+                //    server);
     return NO_ERROR;
 }
 
@@ -63,16 +74,35 @@ err_t spiffebundle_EndpointServer_RegisterBundle(
     spiffebundle_EndpointServer *server, const char *path,
     spiffebundle_Source *bundle_source, spiffeid_TrustDomain td)
 {
+    // logger_FmtPush(LOGGER_DEBUG,
+                //    "spiffebundle_EndpointServer_RegisterBundle server=%p "
+                //    "path=%p bundle_source=%p td.name=%p",
+                //    server, path, bundle_source, td.name);
     if(!server) {
+        // logger_FmtPush(LOGGER_ERROR,
+                    //    "ERR_NULL (%d) Registering Endpoint, server == (null)",
+                    //    ERR_NULL);
         return ERR_NULL;
     }
     if(!path) {
+        // logger_FmtPush(
+            // LOGGER_ERROR,
+            // "ERR_BAD_ARGUMENT (%d) Registering Endpoint, path == (null)",
+            // ERR_BAD_ARGUMENT);
         return ERR_BAD_ARGUMENT;
     }
     if(!bundle_source) {
+        // logger_FmtPush(
+            // LOGGER_ERROR,
+            // "ERR_NULL_DATA (%d) Registering Endpoint, bundle_source == (null)",
+            // ERR_NULL_DATA);
         return ERR_NULL_DATA;
     }
     if(!td.name) {
+        // logger_FmtPush(LOGGER_ERROR,
+                    //    "ERR_INVALID_TRUSTDOMAIN (%d) Registering Endpoint, "
+                    //    "td.name == (null)",
+                    //    ERR_INVALID_TRUSTDOMAIN);
         return ERR_INVALID_TRUSTDOMAIN;
     }
 
@@ -80,6 +110,11 @@ err_t spiffebundle_EndpointServer_RegisterBundle(
     {
         shput(server->bundle_sources, path, bundle_source);
         shput(server->bundle_tds, path, string_new(td.name));
+        // logger_FmtPush(
+            // LOGGER_DEBUG,
+            // "SUCCESS spiffebundle_EndpointServer_RegisterBundle server=%p "
+            // "path=%p bundle_source=%p td.name=%p",
+            // server, path, bundle_source, td.name);
     }
     mtx_unlock(&server->mutex);
 
@@ -370,6 +405,52 @@ err_t spiffebundle_EndpointServer_RemoveEndpoint(
     return NO_ERROR;
 }
 
+// read and parse HTTPS request
+size_t read_HTTPS(SSL *conn, const char *buf, size_t buf_size,
+                  const char **method, size_t *method_len, const char **path,
+                  size_t *path_len, int *minor_version,
+                  struct phr_header *headers, size_t *num_headers,
+                  size_t *prevbuflen, err_t *err)
+{
+    int pret;
+    size_t buflen = *prevbuflen;
+    ssize_t rret;
+    size_t _num_headers = *num_headers;
+    while(true) {
+        // read request
+        while((rret = SSL_read(conn, buf + buflen, buf_size - buflen)) == -1
+              && errno == EINTR)
+            ;
+        if(rret <= 0) {
+            /// LOG: Error reading from socket
+            *err = ERR_READING;
+            break;
+        }
+        *prevbuflen = buflen;
+        buflen += rret;
+        _num_headers = *num_headers;
+        // parse
+        pret = phr_parse_request(buf, buflen, &method, &method_len, &path,
+                                 &path_len, &minor_version, headers,
+                                 &_num_headers, prevbuflen);
+        if(pret > 0) {
+            *err = NO_ERROR;
+            break;
+        } else if(pret == -1) {
+            /// LOG: HTTP parse error
+            *err = ERR_PARSING;
+            break;
+        } else if(buflen == buf_size) {
+            /// LOG: Request too long, buffer overflow prevented
+            *err = ERR_TOO_LONG;
+            break;
+        }
+        // get rest of request
+    }
+    *num_headers = _num_headers;
+    return buflen;
+}
+
 char *HTTP_OK = "HTTP/1.1 200 OK\r\n";
 char *HTTP_NOTFOUND = "HTTP/1.1 404 Not Found\r\n";
 char *HTTP_METHODNOTALLOWED = "HTTP/1.1 405 Method Not Allowed\r\n";
@@ -379,7 +460,6 @@ int serve_function(void *arg)
     spiffebundle_EndpointThread *e_thread = arg;
     spiffebundle_EndpointInfo *e_info = e_thread->endpoint_info;
     spiffebundle_EndpointServer *server = e_info->server;
-    bool started = false;
     while(e_thread->active) {
         err_t err = NO_ERROR;
         write(e_thread->control_socks[1], "OK!\r\n", 6);
@@ -578,7 +658,7 @@ err_t spiffebundle_EndpointServer_StopEndpointThread(
     spiffebundle_EndpointThread *e_thread = e_info->threads[l].value;
     e_thread->active = false;
     int res = write(e_thread->control_socks[0], "END\r\n", 6);
-    ///LOG: result
+    /// LOG: result
 
     // remove thread from map
     hmdel(e_info->threads, port);
