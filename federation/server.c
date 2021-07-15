@@ -18,7 +18,8 @@ spiffebundle_EndpointInfo *spiffebundle_EndpointInfo_New()
 
 err_t spiffebundle_EndpointInfo_Free(spiffebundle_EndpointInfo *e_info)
 {
-    // logger_FmtPush(LOGGER_DEBUG, "spiffebundle_EndpointInfo_Free %p", e_info);
+    // logger_FmtPush(LOGGER_DEBUG, "spiffebundle_EndpointInfo_Free %p",
+    // e_info);
     if(!e_info) {
         // logger_Push(LOGGER_WARNING, "Error Freeing Endpoint (null)");
         return ERR_NULL;
@@ -47,7 +48,7 @@ spiffebundle_EndpointServer *spiffebundle_EndpointServer_New()
 err_t spiffebundle_EndpointServer_Free(spiffebundle_EndpointServer *server)
 {
     // logger_FmtPush(LOGGER_WARNING,
-                //    "spiffebundle_EndpointServer_Free server=%p", server);
+    //    "spiffebundle_EndpointServer_Free server=%p", server);
     if(!server) {
         // logger_Push(LOGGER_ERROR, "Error Freeing Server (null)");
         return ERR_NULL;
@@ -57,7 +58,7 @@ err_t spiffebundle_EndpointServer_Free(spiffebundle_EndpointServer *server)
     {
         shfree(server->bundle_sources);
         // logger_FmtPush(LOGGER_DEBUG,
-                    //    "spiffebundle_EndpointServer_Free server=%p", server);
+        //    "spiffebundle_EndpointServer_Free server=%p", server);
         shfree(server->endpoints);
         shfree(server->bundle_tds);
     }
@@ -65,8 +66,9 @@ err_t spiffebundle_EndpointServer_Free(spiffebundle_EndpointServer *server)
 
     mtx_destroy(&server->mutex);
     free(server);
-    // logger_FmtPush(LOGGER_DEBUG, "spiffebundle_EndpointServer_Free server=%p",
-                //    server);
+    // logger_FmtPush(LOGGER_DEBUG, "spiffebundle_EndpointServer_Free
+    // server=%p",
+    //    server);
     return NO_ERROR;
 }
 
@@ -75,34 +77,34 @@ err_t spiffebundle_EndpointServer_RegisterBundle(
     spiffebundle_Source *bundle_source, spiffeid_TrustDomain td)
 {
     // logger_FmtPush(LOGGER_DEBUG,
-                //    "spiffebundle_EndpointServer_RegisterBundle server=%p "
-                //    "path=%p bundle_source=%p td.name=%p",
-                //    server, path, bundle_source, td.name);
+    //    "spiffebundle_EndpointServer_RegisterBundle server=%p "
+    //    "path=%p bundle_source=%p td.name=%p",
+    //    server, path, bundle_source, td.name);
     if(!server) {
         // logger_FmtPush(LOGGER_ERROR,
-                    //    "ERR_NULL (%d) Registering Endpoint, server == (null)",
-                    //    ERR_NULL);
+        //    "ERR_NULL (%d) Registering Endpoint, server == (null)",
+        //    ERR_NULL);
         return ERR_NULL;
     }
     if(!path) {
         // logger_FmtPush(
-            // LOGGER_ERROR,
-            // "ERR_BAD_ARGUMENT (%d) Registering Endpoint, path == (null)",
-            // ERR_BAD_ARGUMENT);
+        // LOGGER_ERROR,
+        // "ERR_BAD_ARGUMENT (%d) Registering Endpoint, path == (null)",
+        // ERR_BAD_ARGUMENT);
         return ERR_BAD_ARGUMENT;
     }
     if(!bundle_source) {
         // logger_FmtPush(
-            // LOGGER_ERROR,
-            // "ERR_NULL_DATA (%d) Registering Endpoint, bundle_source == (null)",
-            // ERR_NULL_DATA);
+        // LOGGER_ERROR,
+        // "ERR_NULL_DATA (%d) Registering Endpoint, bundle_source == (null)",
+        // ERR_NULL_DATA);
         return ERR_NULL_DATA;
     }
     if(!td.name) {
         // logger_FmtPush(LOGGER_ERROR,
-                    //    "ERR_INVALID_TRUSTDOMAIN (%d) Registering Endpoint, "
-                    //    "td.name == (null)",
-                    //    ERR_INVALID_TRUSTDOMAIN);
+        //    "ERR_INVALID_TRUSTDOMAIN (%d) Registering Endpoint, "
+        //    "td.name == (null)",
+        //    ERR_INVALID_TRUSTDOMAIN);
         return ERR_INVALID_TRUSTDOMAIN;
     }
 
@@ -111,10 +113,10 @@ err_t spiffebundle_EndpointServer_RegisterBundle(
         shput(server->bundle_sources, path, bundle_source);
         shput(server->bundle_tds, path, string_new(td.name));
         // logger_FmtPush(
-            // LOGGER_DEBUG,
-            // "SUCCESS spiffebundle_EndpointServer_RegisterBundle server=%p "
-            // "path=%p bundle_source=%p td.name=%p",
-            // server, path, bundle_source, td.name);
+        // LOGGER_DEBUG,
+        // "SUCCESS spiffebundle_EndpointServer_RegisterBundle server=%p "
+        // "path=%p bundle_source=%p td.name=%p",
+        // server, path, bundle_source, td.name);
     }
     mtx_unlock(&server->mutex);
 
@@ -430,9 +432,9 @@ size_t read_HTTPS(SSL *conn, const char *buf, size_t buf_size,
         buflen += rret;
         _num_headers = *num_headers;
         // parse
-        pret = phr_parse_request(buf, buflen, &method, &method_len, &path,
-                                 &path_len, &minor_version, headers,
-                                 &_num_headers, prevbuflen);
+        pret = phr_parse_request(buf, buflen, method, method_len, path,
+                                 path_len, minor_version, headers,
+                                 &_num_headers, *prevbuflen);
         if(pret > 0) {
             *err = NO_ERROR;
             break;
@@ -471,58 +473,34 @@ int serve_function(void *arg)
             &err);
 
         if(conn == NULL) {
-            if(err == NO_ERROR) { /// POLL received signal
-                continue;
-            }
             /// LOG: printf("spiffetls_PollWithMode() failed(%d)\n", err);
+            continue;
         }
 
-        // handle client
+        // parse http
         char buf[4096], *method, *path;
-        int pret, minor_version;
+        int minor_version;
         struct phr_header headers[100];
-        size_t buflen = 0, prevbuflen = 0, method_len, path_len, num_headers;
+        size_t buflen = 0, prevbuflen = 0, method_len = 0, path_len = 0,
+               num_headers = sizeof(headers) / sizeof(headers[0]);
         ssize_t rret;
 
-        while(true) {
-            // read request
-            while((rret = SSL_read(conn, buf + buflen, sizeof(buf) - buflen))
-                      == -1
-                  && errno == EINTR)
-                ;
-            if(rret <= 0)
-                err = ERR_READING;
-            prevbuflen = buflen;
-            buflen += rret;
-            // parse
-            num_headers = sizeof(headers) / sizeof(headers[0]);
-            pret = phr_parse_request(buf, buflen, &method, &method_len, &path,
-                                     &path_len, &minor_version, headers,
-                                     &num_headers, prevbuflen);
-            if(pret > 0) {
-                break; // success
-            } else if(pret == -1) {
-                err = ERR_PARSING;
-                break;
-            }
-            if(buflen == sizeof(buf)) {
-                err = ERR_TOO_LONG;
-                break;
-            }
-            // get rest of request
-        }
+        buflen = read_HTTPS(conn, buf, sizeof(buf), &method, &method_len,
+                            &path, &path_len, &minor_version, headers,
+                            &num_headers, &prevbuflen, &err);
+
         if(err == ERR_PARSING) {
             /// LOG: HTTP parse error
-            break;
+            continue;
         } else if(err == ERR_READING) {
             /// LOG: Error reading from socket
-            break;
+            continue;
         } else if(err == ERR_TOO_LONG) {
             /// LOG: Request too long, buffer overflow prevented
-            break;
+            continue;
         }
         /// LOG: log request @ which level?
-        printf("Server received:\n%s\n", buf);
+        // printf("Server received:\n%s\n", buf);
 
         method[method_len] = '\0';
         path[path_len] = '\0';

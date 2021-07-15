@@ -247,7 +247,6 @@ SSL *spiffetls_PollWithMode(in_port_t port, spiffetls_ListenMode *mode,
         SSL_shutdown(conn);
         SSL_free(conn);
         close(clientfd);
-        close(sockfd);
         *err = ERR_CONNECT;
         goto error;
     }
