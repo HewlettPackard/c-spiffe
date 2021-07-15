@@ -93,7 +93,7 @@ jobs:
       - name: Integration Test
         run:  echo "TAG=latest" >> $GITHUB_ENV
         if:  ${{ env.IS_MASTER == 'false' }}
-          run:  echo "TAG=${{ env.BRANCH  }}" >> $GITHUB_ENV TAG
+          run:  echo "TAG=${{ env.BRANCH  }}" >> $GITHUB_ENV
         shell: bash
         run: cd infra && make integration-tests TAG=${{ env.TAG  }}
 
