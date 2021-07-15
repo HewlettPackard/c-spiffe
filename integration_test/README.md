@@ -11,9 +11,9 @@ This folder contains all automated integration tests scripts. They were all impl
 
 Inside `c-spiffe/infra` run:
 ```
-$ make integration-tests
+$ make integration-tests TAG=latest
 
-    TAG=<image_tag> docker-compose up -d
+    TAG=latest docker-compose up -d
     Building with native build. Learn about native build in Compose here: https://docs.docker.com/go/compose-native-build/
     Creating network "infra_default" with the default driver
     Creating infra_spire-server2_1 ... done
@@ -42,6 +42,7 @@ $ make integration-tests
     Removing infra_spire-server2_1 ... done
     Removing network infra_default
 ```
+The tag might be replaced for another one available in [dockerhub](https://hub.docker.com/r/cspiffe/tests/tags?page=1&ordering=last_updated) or locally.
 
 ### Details inside `$ make integration-tests`
 
@@ -51,7 +52,7 @@ This command encapsulates some steps:
         - `cspiffe/spire-server:latest`
         - `cspiffe/workload:tag`*
         - `cspiffe/tests:tag`*
-        \* the `tag` is replaced as set in the Makefile (`c-spiffe/infra/Makefile`)
+        \* In these cases, the `tag` is replaced as the `TAG` argument passed when executing the command
 2. Configure and enable ssh service for all containers (access granted for `infra_tests` to access the other containers)
 3. Build binary files examples (the interface to use c-spiffe lib) inside `infra_workload` and `infra_workload2` containers
 4. Inside `infra_tests` container, run `run-behave-tests.sh` script, which encapsulates the following:
