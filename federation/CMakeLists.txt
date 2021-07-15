@@ -19,6 +19,7 @@ target_link_libraries(${TARGET_NAME}
     curl
     spiffeid
     bundle
+    logger
     internal
     spiffetls
     cjose
