@@ -34,7 +34,7 @@
 #include <x86intrin.h>
 #endif
 #endif
-#include "picohttpparser.h"
+#include "c-spiffe/utils/picohttpparser.h"
 
 #if __GNUC__ >= 3
 #define likely(x) __builtin_expect(!!(x), 1)

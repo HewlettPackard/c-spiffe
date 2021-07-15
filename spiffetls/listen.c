@@ -2,6 +2,7 @@
 #include "c-spiffe/spiffetls/mode.h"
 #include "c-spiffe/spiffetls/option.h"
 #include "c-spiffe/spiffetls/tlsconfig/config.h"
+#include <sys/poll.h>
 #include <sys/socket.h>
 #include <unistd.h>
 
@@ -135,6 +136,119 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
         close(clientfd);
         close(sockfd);
         *err = ERR_CONNECT;
+        goto error;
+    }
+    // successful handshake
+    return conn;
+
+error:
+    return NULL;
+}
+
+SSL *spiffetls_PollWithMode(in_port_t port, spiffetls_ListenMode *mode,
+                            spiffetls_listenConfig *config, int *sock,
+                            int control_sock, int timeout, err_t *err)
+{
+    if(!mode->unneeded_source) {
+        workloadapi_X509Source *source = mode->source;
+        if(!source) {
+            source = workloadapi_NewX509Source(NULL, err);
+            if(*err) {
+                *err = ERROR1;
+                goto error;
+            }
+        }
+        mode->source = source;
+        mode->bundle = x509bundle_SourceFromSource(source);
+        mode->svid = x509svid_SourceFromSource(source);
+    }
+
+    SSL_CTX *tls_config
+        = config->base_TLS_conf ? config->base_TLS_conf : createTLSContext();
+    if(!tls_config) {
+        *err = ERROR2;
+        goto error;
+    }
+
+    switch(mode->mode) {
+    case TLS_SERVER_MODE:
+        tlsconfig_HookTLSServerConfig(tls_config, mode->svid, NULL);
+        break;
+    case MTLS_SERVER_MODE:
+        tlsconfig_HookMTLSServerConfig(tls_config, mode->svid, mode->bundle,
+                                       mode->authorizer, NULL);
+        break;
+    case MTLS_WEBSERVER_MODE:
+    default:
+        // unknown mode
+        *err = ERROR3;
+        goto error;
+    }
+
+    const int sockfd
+        = config->listener_fd > 0 ? config->listener_fd : createSocket(port);
+    if(sockfd < 0) {
+        // could not create socket with given address and port
+        *err = ERROR4;
+        goto error;
+    }
+
+    struct sockaddr_in addr_tmp;
+    socklen_t len;
+
+    int nfds = 2;
+    struct pollfd pfds[2];
+
+    pfds[0].fd = control_sock;
+    pfds[0].events = POLLIN;
+    pfds[0].revents = 0;
+
+    pfds[1].fd = sockfd;
+    pfds[1].events = POLLIN;
+    pfds[1].revents = 0;
+
+    while(!poll(pfds, nfds, timeout))
+        ; // on 0, timeout has exceeded
+    char buff[20];
+    if(pfds[0].revents & POLLIN) { // received close signal
+
+        int r_res = read(control_sock, buff, 6);
+        close(sockfd);
+        *err = NO_ERROR;
+        goto error;
+    } else if(!(pfds[1].revents & POLLIN)) {
+        /// error? //shouldn't happen
+    }
+
+    const int clientfd = accept(sockfd, (struct sockaddr *) &addr_tmp, &len);
+    if(clientfd < 0) {
+        // could not accept client
+        close(sockfd);
+        *err = ERROR5;
+        goto error;
+    }
+    *sock = sockfd;
+
+    SSL *conn = SSL_new(tls_config);
+    if(!conn) {
+        *err = ERROR6;
+        goto error;
+    } else if(SSL_set_fd(conn, clientfd) != 1) {
+        *err = ERROR6;
+        goto error;
+    } else if(SSL_set_num_tickets(conn, 0) != 1) {
+        *err = ERROR6;
+        goto error;
+    }
+
+    SSL_set_accept_state(conn);
+    if(SSL_accept(conn) != 1) {
+        // could not build a SSL session
+        SSL_shutdown(conn);
+        SSL_free(conn);
+        close(clientfd);
+        close(sockfd);
+        *err = ERROR6;
         goto error;
     }
     // successful handshake
