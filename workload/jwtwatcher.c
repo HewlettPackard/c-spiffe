@@ -9,8 +9,9 @@ int workloadapi_JWTWatcher_JWTbackgroundFunc(void *_watcher)
     err_t error = NO_ERROR;
     do {
         error = workloadapi_Client_WatchJWTBundles(watcher->client, watcher);
-    } while(error != ERR_INVALID_DATA && error != ERR_CLOSED); // ERR_CLOSED == client closed,
-                                                 // ERR_INVALID_DATA == INVALID_ARGUMENT
+    } while(error != ERR_INVALID_DATA && error != ERR_CLOSED
+            && watcher->update_error == NO_ERROR);
+
     return (int) error;
 }
 
@@ -106,7 +107,9 @@ err_t workloadapi_JWTWatcher_Start(workloadapi_JWTWatcher *watcher)
 
     error = workloadapi_JWTWatcher_WaitUntilUpdated(watcher);
     if(error != NO_ERROR) {
+        mtx_lock(&(watcher->update_mutex));
         watcher->update_error = error;
+        mtx_lock(&(watcher->update_mutex));
         return ERR_WAITING;
     }
 
