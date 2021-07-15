@@ -91,6 +91,7 @@ jobs:
       #   run: cd build && make gcov && make lcov && lcov --list Coverage/lcov.info > coverage
         
       - name: Set Integration Test Default TAG
+        uses: haya14busa/action-cond@v1
         id: integrationTestsTag
         with:
           cond: ${{ env.IS_MASTER }}
