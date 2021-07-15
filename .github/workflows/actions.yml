@@ -91,16 +91,15 @@ jobs:
       #   run: cd build && make gcov && make lcov && lcov --list Coverage/lcov.info > coverage
         
       - name: Set Integration Test Default TAG
-        if:  ${{ env.IS_MASTER == 'true' }}
-        run:  echo "TAG=latest" >> $GITHUB_ENV
-
-      - name: Set Integration Test TAG
-        if:  ${{ env.IS_MASTER == 'false' }}
-        run:  echo "TAG=${{ env.BRANCH  }}" >> $GITHUB_ENV
+        id: integrationTestsTag
+        with:
+          cond: ${{ env.IS_MASTER }}
+          if_true: 'latest'
+          if_false: '${{ env.BRANCH  }}'
 
       - name: Integration Test
         shell: bash
-        run: cd infra && make integration-tests TAG=${{ env.TAG  }}
+        run: cd infra && make integration-tests TAG=${{ steps.integrationTestsTag.outputs.value }}
 
       # - name: Upload coverage to Codecov
       #   uses: codecov/codecov-action@v1
