@@ -25,6 +25,8 @@ typedef struct spiffebundle_EndpointThread {
     spiffebundle_EndpointInfo *endpoint_info;
     thrd_t thread;
     uint port;
+    int control_socks[2];
+    spiffetls_listenConfig config;
     bool active;
 } spiffebundle_EndpointThread;
 

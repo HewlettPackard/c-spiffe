@@ -1,4 +1,6 @@
 #include "c-spiffe/federation/server.h"
+#include "c-spiffe/internal/pemutil.h"
+#include "openssl/x509.h"
 
 int main(void)
 {
@@ -37,11 +39,11 @@ int main(void)
         exit(error);
     }
     fprintf(stderr, "certs: %p\n", certs);
-    BIO* stderr_bio = BIO_new_fp(stdout,BIO_NOCLOSE);
-    
+    BIO *stderr_bio = BIO_new_fp(stdout, BIO_NOCLOSE);
+
     for(size_t i = 1, size = arrlenu(certs); i < size; ++i) {
-       fprintf(stderr, "cert %lu: %p\n",i+1,certs[i]);
-       X509_print(stderr_bio,certs[i]);
+        fprintf(stderr, "cert %lu: %p\n", i + 1, certs[i]);
+        X509_print(stderr_bio, certs[i]);
     }
     FILE *key_file = fopen(key_filename, "r");
     EVP_PKEY *priv_key
@@ -51,10 +53,12 @@ int main(void)
                 error);
         exit(error);
     }
-    x509svid_SVID* svid = x509svid_newSVID(certs,priv_key,&error);
-    x509svid_Source* source = x509svid_SourceFromSVID(svid);
-    spiffebundle_EndpointServer_AddHttpsSpiffeEndpoint(server, domain_name,source, &error);
-    // spiffebundle_EndpointServer_AddHttpsWebEndpoint(server, domain_name, certs,
+    x509svid_SVID *svid = x509svid_newSVID(certs, priv_key, &error);
+    x509svid_Source *source = x509svid_SourceFromSVID(svid);
+    spiffebundle_EndpointServer_AddHttpsSpiffeEndpoint(server, domain_name,
+                                                       source, &error);
+    // spiffebundle_EndpointServer_AddHttpsWebEndpoint(server, domain_name,
+    // certs,
     //                                                 priv_key, &error);
     if(error) {
         fprintf(stderr, "error(%d): Couldn't add endpoint!!!!!", error);
