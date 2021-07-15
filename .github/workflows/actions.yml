@@ -94,8 +94,7 @@ jobs:
         env:
           TAG: latest
         if:  ${{ env.IS_MASTER == 'false' }}
-        env: 
-          TAG: ${{ env.BRANCH  }}
+        TAG: ${{ env.BRANCH  }}
         shell: bash
         run: cd infra && make integration-tests TAG=${{ env.TAG  }}
 
