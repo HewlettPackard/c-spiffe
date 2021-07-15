@@ -146,38 +146,38 @@ Removing network infra_default
 
 ### Execute all automated integration tests 
 
-Replace the `<image_tag>` in the Makefile for an existing one available in [dockerhub](https://hub.docker.com/r/cspiffe/tests/tags?page=1&ordering=last_updated) or locally.
 On a console run:
 
 ```
-$ make integration-tests
+$ make integration-tests TAG=latest
 
-TAG=<image_tag> docker-compose up -d
-    Building with native build. Learn about native build in Compose here: https://docs.docker.com/go/compose-native-build/
-    Creating network "infra_default" with the default driver
-    Creating infra_spire-server2_1 ... done
-    Creating infra_spire-server_1  ... done
-    Creating infra_workload_1      ... done
-    Creating infra_workload2_1     ... done
-    Creating infra_tests_1         ... done
+TAG=latest docker-compose up -d
+Building with native build. Learn about native build in Compose here: https://docs.docker.com/go/compose-native-build/
+Creating network "infra_default" with the default driver
+Creating infra_spire-server2_1 ... done
+Creating infra_spire-server_1  ... done
+Creating infra_workload_1      ... done
+Creating infra_workload2_1     ... done
+Creating infra_tests_1         ... done
 
-    ....
+...
 
-    6 features passed, 0 failed, 0 skipped
-    40 scenarios passed, 0 failed, 0 skipped
-    466 steps passed, 0 failed, 0 skipped, 0 undefined
-    Took 15m11.601s
-    docker-compose down
-    WARNING: The TAG variable is not set. Defaulting to a blank string.
-    Stopping infra_tests_1         ... done
-    Stopping infra_workload2_1     ... done
-    Stopping infra_workload_1      ... done
-    Stopping infra_spire-server_1  ... done
-    Stopping infra_spire-server2_1 ... done
-    Removing infra_tests_1         ... done
-    Removing infra_workload2_1     ... done
-    Removing infra_workload_1      ... done
-    Removing infra_spire-server_1  ... done
-    Removing infra_spire-server2_1 ... done
-    Removing network infra_default
+6 features passed, 0 failed, 0 skipped
+40 scenarios passed, 0 failed, 0 skipped
+466 steps passed, 0 failed, 0 skipped, 0 undefined
+Took 15m11.601s
+docker-compose down
+WARNING: The TAG variable is not set. Defaulting to a blank string.
+Stopping infra_tests_1         ... done
+Stopping infra_workload2_1     ... done
+Stopping infra_workload_1      ... done
+Stopping infra_spire-server_1  ... done
+Stopping infra_spire-server2_1 ... done
+Removing infra_tests_1         ... done
+Removing infra_workload2_1     ... done
+Removing infra_workload_1      ... done
+Removing infra_spire-server_1  ... done
+Removing infra_spire-server2_1 ... done
+Removing network infra_default
 ```
+The tag might be replaced for another one available in [dockerhub](https://hub.docker.com/r/cspiffe/tests/tags?page=1&ordering=last_updated) or locally.
