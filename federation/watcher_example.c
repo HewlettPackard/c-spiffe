@@ -52,25 +52,19 @@ int main(void)
     err_t err;
 
     // endpoint info
-    const char url[] = "https://example.org/";
+    const char url[] = "https://example.org:443/";
     spiffeid_TrustDomain td = { "example.org" };
-
+    spiffebundle_Bundle *initial_bundle = spiffebundle_Load(td,"./resources/example.org.bundle.jwks",&err);
+    if(err != NO_ERROR){
+        printf("ERROR %d loading bundle\n",err);
+    }
+    spiffebundle_Source *source = spiffebundle_SourceFromBundle(initial_bundle);
     // set up an endpoint
     printf("Adding Endpoint\n");
-    err = spiffebundle_Watcher_AddHttpsWebEndpoint(watcher, url, td);
-    watcher->endpoints[0].value->endpoint->curl_handle = curl_easy_init();
-    // set certs for localhost
-    curl_easy_setopt(watcher->endpoints[0].value->endpoint->curl_handle,
-                     CURLOPT_CAINFO, "./resources/example.org.crt");
-    curl_easy_setopt(watcher->endpoints[0].value->endpoint->curl_handle,
-                     CURLOPT_SSL_VERIFYHOST, 0);
-    curl_easy_setopt(watcher->endpoints[0].value->endpoint->curl_handle,
-                     CURLOPT_SSL_VERIFYPEER, 0);
-
+    err = spiffebundle_Watcher_AddHttpsSpiffeEndpoint(watcher, url, td,"spiffe://example.org/workload",source);
+    
     // add any more endpoints you want
     // err = spiffebundle_Watcher_AddHttpsWebEndpoint(watcher, url2, td2);
-    // ...
-    // you can also add https_spiffe Endpoints:
     // err = spiffebundle_Watcher_AddHttpsSpiffeEndpoint(watcher, url3, td3,
     // id, source);
     if(err != NO_ERROR) {
