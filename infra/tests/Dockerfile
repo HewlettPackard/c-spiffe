@@ -1,4 +1,4 @@
-ARG TAG=test-202-Implement-test-case-FXB_01
+ARG TAG=latest
 FROM cspiffe/workload:${TAG}
 
 RUN apt-get update \
