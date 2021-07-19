@@ -6,6 +6,8 @@ C extension for Spiffe platform.
 
 [![codecov](https://codecov.io/gh/HewlettPackard/c-spiffe/branch/master/graph/badge.svg)](https://codecov.io/gh/HewlettPackard/c-spiffe)
 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/HewlettPackard/c-spiffe)
+
 ## Introduction
 
 [SPIFFE](https://spiffe.io/) stands for Security Identity Framework for Everyone and is a set for securely identifying system in dynamic and heterogeneous environment. Please refer to [SPIFFE Documentation](https://spiffe.io/docs/latest/spiffe-about/overview/) for more information.  
