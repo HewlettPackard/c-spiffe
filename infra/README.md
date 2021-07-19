@@ -16,9 +16,42 @@ $ cd c-spiffe
 ```
 
 ##### Build docker images locally (optional)
+1. Build Spire-server image
+
 ```
-$ cd infra/
-$ make build
+$ cd infra/spire-server
+$ docker build . -t cspiffe/spire-server
+
+Successfully built
+```
+
+2. Build Spire-agent image
+
+```
+$ cd infra/spire-agent
+$ docker build . -t cspiffe/spire-agent
+
+Successfully built
+```
+
+3. Build Workload image
+
+Check desired repository url and branch to be pulled inside the image in the Dockerfile. Then run on a console:
+
+```
+$ cd infra/workload
+$ docker build . -t cspiffe/workload
+
+Successfully built
+```
+
+4. Build Tests image
+
+Check desired image tag to be inherited from workload image in the Dockerfile. Then run on a console:
+
+```
+$ cd infra/tests
+$ docker build . -t cspiffe/tests
 
 Successfully built
 ```

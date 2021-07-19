@@ -1,10 +1,3 @@
-build:
-	docker build spire-agent -t spire-agent
-	docker-compose build
-
-build-tests-workload:
-	docker-compose exec workload ./build-tests-workload.sh
-
 run:
 	TAG=$(TAG) docker-compose up -d
 
