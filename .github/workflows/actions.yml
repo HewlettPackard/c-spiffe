@@ -38,93 +38,93 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      # - name: Login to DockerHub
-      #   uses: docker/login-action@v1
-      #   if: ${{ env.HAS_TOKEN == 'true' }}
-      #   with:
-      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
-      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      # - name: Build & push workload Docker image
-      #   uses: docker/build-push-action@v1
-      #   with:
-      #     dockerfile: infra/workload/Dockerfile
-      #     repository:  ${{ env.REPO_NAME  }}/workload
-      #     push: ${{ env.HAS_TOKEN }}
-      #     tag_with_ref: true
-      
-      # - name: Build & push tests Docker image
-      #   uses: docker/build-push-action@v1
-      #   with:
-      #     dockerfile: infra/tests/Dockerfile
-      #     repository:  ${{ env.REPO_NAME  }}/tests
-      #     push: ${{ env.HAS_TOKEN }}
-      #     tag_with_ref: true    
-           
-      # - name: Install dependencies
-      #   run: |
-      #     go version
-      #     go get -u github.com/spiffe/go-spiffe/v2/bundle/spiffebundle
-      #     go get -u github.com/spiffe/go-spiffe/v2/federation
-      #     go get -u github.com/spiffe/go-spiffe/v2/logger
-      #     go get -u github.com/spiffe/go-spiffe/v2/spiffeid
-      #     go get -u github.com/spiffe/go-spiffe/v2/svid/x509svid
-        
-      # - name: Create Build Environment
-      #   shell: bash
-      #   run: mkdir build
-
-      # - name: Configure CMake
-      #   shell: bash
-      #   run: cd build && cmake -DENABLE_TESTS=ON ..
-
-      # - name: Build
-      #   shell: bash
-      #   run:  cd build && make
-
-      # - name: Unit Testing
-      #   shell: bash
-      #   run: cd build && make test ARGS="--output-on-failure"
-
-      # - name: Coverage Test
-      #   shell: bash
-      #   run: cd build && make gcov && make lcov && lcov --list Coverage/lcov.info > coverage
-        
-      - name: Define Integration Test TAG
-        uses: haya14busa/action-cond@v1
-        id: integrationTestsTag
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        if: ${{ env.HAS_TOKEN == 'true' }}
         with:
-          cond: ${{ env.IS_MASTER }}
-          if_true: 'latest'
-          if_false: '${{ env.BRANCH  }}'
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Integration Test
+      - name: Build & push workload Docker image
+        uses: docker/build-push-action@v1
+        with:
+          dockerfile: infra/workload/Dockerfile
+          repository:  ${{ env.REPO_NAME  }}/workload
+          push: ${{ env.HAS_TOKEN }}
+          tag_with_ref: true
+      
+      - name: Build & push tests Docker image
+        uses: docker/build-push-action@v1
+        with:
+          dockerfile: infra/tests/Dockerfile
+          repository:  ${{ env.REPO_NAME  }}/tests
+          push: ${{ env.HAS_TOKEN }}
+          tag_with_ref: true    
+           
+      - name: Install dependencies
+        run: |
+          go version
+          go get -u github.com/spiffe/go-spiffe/v2/bundle/spiffebundle
+          go get -u github.com/spiffe/go-spiffe/v2/federation
+          go get -u github.com/spiffe/go-spiffe/v2/logger
+          go get -u github.com/spiffe/go-spiffe/v2/spiffeid
+          go get -u github.com/spiffe/go-spiffe/v2/svid/x509svid
+        
+      - name: Create Build Environment
         shell: bash
-        run: cd infra && make integration-tests TAG=${{ steps.integrationTestsTag.outputs.value }}
+        run: mkdir build
 
-      # - name: Upload coverage to Codecov
-      #   uses: codecov/codecov-action@v1
-      #   with:
-      #     fail_ci_if_error: true
-      #     verbose: true
-      #     file: build/Coverage/lcov.info
+      - name: Configure CMake
+        shell: bash
+        run: cd build && cmake -DENABLE_TESTS=ON ..
 
-      # - name: Lines Coverage Verify
-      #   shell: bash
-      #   run: cd build && target=60.9;lines=`awk '{print substr($1, 8, 4)}' coverage | tail -1`;if { echo $lines; echo $target ; } | sort -hu -c 2>/dev/null; then echo "This coverage is less than threshold"; exit 1; fi
+      - name: Build
+        shell: bash
+        run:  cd build && make
 
-      # - name: Functions Coverage Verify
-      #   shell: bash
-      #   run: cd build && target=60.9;functions=`awk '{print substr($2, 6, 4)}' coverage | tail -1`;if { echo $functions; echo $target ; } | sort -hu -c 2>/dev/null; then echo "This coverage is less than threshold"; exit 1; fi
+      - name: Unit Testing
+        shell: bash
+        run: cd build && make test ARGS="--output-on-failure"
 
-      # - name: Generate documentation
-      #   uses: mattnotmitt/doxygen-action@v1
-      #   with:
-      #       working-directory: '.'
-      #       doxyfile-path: 'docs/Doxyfile'
+      - name: Coverage Test
+        shell: bash
+        run: cd build && make gcov && make lcov && lcov --list Coverage/lcov.info > coverage
+        
+      - name: Set Integration Tests Default TAG
+        if:  ${{ env.IS_MASTER == 'true' }}
+        run:  echo "TAG=latest" >> $GITHUB_ENV
 
-      # - name: Deploy
-      #   uses: peaceiris/actions-gh-pages@v3
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     publish_dir: docs/html
+      - name: Set Integration Tests TAG
+        if:  ${{ env.IS_MASTER == 'false' }}
+        run:  echo "TAG=${{ env.BRANCH  }}" >> $GITHUB_ENV
+
+      - name: Integration Tests
+        shell: bash
+        run: cd infra && make integration-tests TAG=${{ env.TAG  }}
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+          verbose: true
+          file: build/Coverage/lcov.info
+
+      - name: Lines Coverage Verify
+        shell: bash
+        run: cd build && target=60.9;lines=`awk '{print substr($1, 8, 4)}' coverage | tail -1`;if { echo $lines; echo $target ; } | sort -hu -c 2>/dev/null; then echo "This coverage is less than threshold"; exit 1; fi
+
+      - name: Functions Coverage Verify
+        shell: bash
+        run: cd build && target=60.9;functions=`awk '{print substr($2, 6, 4)}' coverage | tail -1`;if { echo $functions; echo $target ; } | sort -hu -c 2>/dev/null; then echo "This coverage is less than threshold"; exit 1; fi
+
+      - name: Generate documentation
+        uses: mattnotmitt/doxygen-action@v1
+        with:
+            working-directory: '.'
+            doxyfile-path: 'docs/Doxyfile'
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/html
