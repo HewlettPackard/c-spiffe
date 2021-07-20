@@ -67,9 +67,10 @@ Refer to [Examples](workload/EXAMPLE.md) for more information.
 
 ## Initial Contributors
 
-* Ariana Guimarães
+* Ariana Lima
 * Débora Silva
 * Glaucimar Aguiar
+* Marcus Silva
 * Otávio Silva
 * Rodrigo Carvalho
 * Thiago Jamir
