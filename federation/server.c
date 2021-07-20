@@ -472,17 +472,12 @@ err_t write_HTTPS(SSL *conn, const char *response, const char **headers,
 
     /// LOG: server response, code, time
     SSL_write(conn, response, strlen(response));
-    printf("%s\n", response);
-    SSL_write(conn, "\r\n", strlen("\r\n"));
-    for(size_t i = 0; i < num_headers; ++i) {
+    for(int i = 0; i < num_headers; ++i) {
         SSL_write(conn, headers[i], strlen(headers[i]));
-        printf("%s\n", headers[i]);
         SSL_write(conn, "\r\n", strlen("\r\n"));
     }
     SSL_write(conn, "\r\n", strlen("\r\n"));
     SSL_write(conn, content, strlen(content));
-    printf("%s\n", content);
-    SSL_write(conn, "\r\n", strlen("\r\n"));
 
     return NO_ERROR;
 }
@@ -523,7 +518,7 @@ int serve_function(void *arg)
                             &path, &path_len, &minor_version, headers,
                             &num_headers, &prevbuflen, &err);
 
-        if(err != NO_ERROR) {
+        if(err != NO_ERROR) {   
             /// LOG: ERROR
             continue;
         }
@@ -545,20 +540,19 @@ int serve_function(void *arg)
             spiffebundle_Bundle *ret_bundle
                 = spiffebundle_Source_GetSpiffeBundleForTrustDomain(source, td,
                                                                     &err);
-            string_t bundle_string
-                = spiffebundle_Bundle_Marshal(ret_bundle, &err);
+            string_t bundle_string = spiffebundle_Bundle_Marshal(ret_bundle, &err);
 
-            if(bundle_string) { // bundle found
+            if(bundle_string) {//bundle found
                 // log info?
                 err = write_HTTPS(conn, HTTP_OK, out_headers, 1,
                                   bundle_string);
                 arrfree(bundle_string);
-            } else { // bundle not found
+            } else { //bundle not found
                 // log warn?
                 err = write_HTTPS(conn, HTTP_NOTFOUND, out_headers, 1, "{}");
             }
             util_string_t_Free(bundle_string);
-        } else { // refuse non-GET
+        } else { //refuse non-GET
             err = write_HTTPS(conn, HTTP_METHODNOTALLOWED, out_headers, 1,
                               "{}");
         }
