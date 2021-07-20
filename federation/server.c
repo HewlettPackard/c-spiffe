@@ -457,23 +457,57 @@ char *HTTP_OK = "HTTP/1.1 200 OK\r\n";
 char *HTTP_NOTFOUND = "HTTP/1.1 404 Not Found\r\n";
 char *HTTP_METHODNOTALLOWED = "HTTP/1.1 405 Method Not Allowed\r\n";
 
+err_t write_HTTPS(SSL *conn, const char *response, const char **headers,
+                  size_t num_headers, const char *content)
+{
+    if(conn == NULL) {
+        return ERR_NULL;
+    } else if(response == NULL) {
+        return ERR_NULL_DATA;
+    } else if(headers == NULL && num_headers > 0) {
+        return ERR_BAD_ARGUMENT;
+    } else if(content == NULL) {
+        return ERR_EMPTY_DATA;
+    }
+
+    /// LOG: server response, code, time
+    SSL_write(conn, response, strlen(response));
+    printf("%s\n", response);
+    SSL_write(conn, "\r\n", strlen("\r\n"));
+    for(size_t i = 0; i < num_headers; ++i) {
+        SSL_write(conn, headers[i], strlen(headers[i]));
+        printf("%s\n", headers[i]);
+        SSL_write(conn, "\r\n", strlen("\r\n"));
+    }
+    SSL_write(conn, "\r\n", strlen("\r\n"));
+    SSL_write(conn, content, strlen(content));
+    printf("%s\n", content);
+    SSL_write(conn, "\r\n", strlen("\r\n"));
+
+    return NO_ERROR;
+}
+
 int serve_function(void *arg)
 {
     spiffebundle_EndpointThread *e_thread = arg;
     spiffebundle_EndpointInfo *e_info = e_thread->endpoint_info;
     spiffebundle_EndpointServer *server = e_info->server;
+    bool once = true;
     while(e_thread->active) {
         err_t err = NO_ERROR;
-        write(e_thread->control_socks[1], "OK!\r\n", 6);
-        spiffetls_ListenMode *mode = e_info->listen_mode;
-        int timeout = 5000; // msec
+        if(once) { // notify main thread
+            write(e_thread->control_socks[1], "OK!\r\n", 6);
+            once = false;
+        }
+
         SSL *conn = spiffetls_PollWithMode(
-            e_thread->port, mode, &e_thread->config,
-            &e_thread->config.listener_fd, e_thread->control_socks[1], timeout,
+            e_thread->port, e_info->listen_mode, &e_thread->config,
+            &e_thread->config.listener_fd, e_thread->control_socks[1], 5000,
             &err);
 
         if(conn == NULL) {
-            /// LOG: printf("spiffetls_PollWithMode() failed(%d)\n", err);
+            /// LOG:
+            printf("spiffetls_PollWithMode() failed(%d)\n", err);
             continue;
         }
 
@@ -489,65 +523,48 @@ int serve_function(void *arg)
                             &path, &path_len, &minor_version, headers,
                             &num_headers, &prevbuflen, &err);
 
-        if(err == ERR_PARSING) {
-            /// LOG: HTTP parse error
-            continue;
-        } else if(err == ERR_READING) {
-            /// LOG: Error reading from socket
-            continue;
-        } else if(err == ERR_TOO_LONG) {
-            /// LOG: Request too long, buffer overflow prevented
+        if(err != NO_ERROR) {
+            /// LOG: ERROR
             continue;
         }
         /// LOG: log request @ which level?
-        // printf("Server received:\n%s\n", buf);
+        printf("Server received:\n%s\n", buf);
 
         method[method_len] = '\0';
         path[path_len] = '\0';
-        char *http_res = NULL;
-        string_t http_header = NULL;
-        string_t bundle_string = NULL;
-        char end_of_response[] = "\r\n\r\n";
-
+        // send response
         // LOG: log path
-
-        if(strcmp(method, "GET") != 0) {
-            http_res = HTTP_METHODNOTALLOWED;
-            http_header = string_new("Content-Type: application/json\r\n\r\n");
-            bundle_string = string_new("{}");
-        } else {
+        char *out_headers[] = { "Content-Type: application/json" };
+        if(strcmp(method, "GET") == 0) {
             mtx_lock(&server->mutex);
             spiffebundle_Source *source = shget(server->bundle_sources, path);
             string_t td_name = shget(server->bundle_tds, path);
             mtx_unlock(&server->mutex);
-            spiffeid_TrustDomain td = { .name = td_name };
 
-            if(source) {
+            spiffeid_TrustDomain td = { .name = td_name };
+            spiffebundle_Bundle *ret_bundle
+                = spiffebundle_Source_GetSpiffeBundleForTrustDomain(source, td,
+                                                                    &err);
+            string_t bundle_string
+                = spiffebundle_Bundle_Marshal(ret_bundle, &err);
+
+            if(bundle_string) { // bundle found
                 // log info?
-                http_res = HTTP_OK;
-                http_header
-                    = string_new("Content-Type: application/json\r\n\r\n");
-                spiffebundle_Bundle *ret_bundle
-                    = spiffebundle_Source_GetSpiffeBundleForTrustDomain(
-                        source, td, &err);
-                bundle_string = spiffebundle_Bundle_Marshal(ret_bundle, &err);
-            } else {
+                err = write_HTTPS(conn, HTTP_OK, out_headers, 1,
+                                  bundle_string);
+                arrfree(bundle_string);
+            } else { // bundle not found
                 // log warn?
-                http_res = HTTP_NOTFOUND;
-                http_header
-                    = string_new("Content-Type: application/json\r\n\r\n");
-                bundle_string = string_new("{}");
+                err = write_HTTPS(conn, HTTP_NOTFOUND, out_headers, 1, "{}");
             }
+            util_string_t_Free(bundle_string);
+        } else { // refuse non-GET
+            err = write_HTTPS(conn, HTTP_METHODNOTALLOWED, out_headers, 1,
+                              "{}");
         }
 
         /// LOG: server response, code, time
-        SSL_write(conn, http_res, strlen(http_res));
-        SSL_write(conn, http_header, strlen(http_header));
-        SSL_write(conn, bundle_string, strlen(bundle_string));
-        SSL_write(conn, end_of_response, strlen(end_of_response));
 
-        arrfree(http_header);
-        arrfree(bundle_string);
         const int fd = SSL_get_fd(conn);
         SSL_shutdown(conn);
         SSL_free(conn);
