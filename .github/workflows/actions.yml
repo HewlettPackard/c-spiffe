@@ -9,6 +9,7 @@ jobs:
     env: 
       HAS_TOKEN: ${{ secrets.DOCKERHUB_USERNAME != '' &&  secrets.DOCKERHUB_TOKEN != ''}}
       IS_MASTER: ${{ github.ref == 'refs/heads/master'}}
+      TAG: latest
 
     container:
       image: cspiffe/grpc-build:1.34.0
@@ -89,12 +90,8 @@ jobs:
       - name: Coverage Test
         shell: bash
         run: cd build && make gcov && make lcov && lcov --list Coverage/lcov.info > coverage
-        
-      - name: Set Integration Tests Default TAG
-        if:  ${{ env.IS_MASTER == 'true' }}
-        run:  echo "TAG=latest" >> $GITHUB_ENV
 
-      - name: Set Integration Tests TAG
+      - name: Check Integration Tests TAG
         if:  ${{ env.IS_MASTER == 'false' }}
         run:  echo "TAG=${{ env.BRANCH  }}" >> $GITHUB_ENV
 
