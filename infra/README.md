@@ -7,6 +7,7 @@ This folder contains an orchestration for the integration test scenarios. It is 
 - Linux or macOS
 - [Docker](https://docs.docker.com/install/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
+- [Make (4.2.1-1.2)](https://www.gnu.org/software/make/)
 
 ##### Clone this c-spiffe
 
