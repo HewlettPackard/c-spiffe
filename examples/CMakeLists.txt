@@ -25,3 +25,16 @@ set(SERVER_JWT
 )
 add_executable(spiffe_jwt_server "${SERVER_JWT}")
 target_link_libraries(spiffe_jwt_server spiffetls)
+
+# spiffe-http
+set(CLIENT_HTTP
+    spiffe-http/client/main.c
+)
+add_executable(spiffe_http_client "${CLIENT_HTTP}")
+target_link_libraries(spiffe_http_client spiffetls curl)
+
+set(SERVER_HTTP
+    spiffe-http/server/main.c
+)
+add_executable(spiffe_http_server "${SERVER_HTTP}")
+target_link_libraries(spiffe_http_server spiffetls)
