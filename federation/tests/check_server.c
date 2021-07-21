@@ -360,7 +360,6 @@ START_TEST(test_spiffebundle_EndpointServer_ServeFunctions)
 }
 END_TEST
 
-
 err_t write_HTTPS(SSL *conn, const char *response, const char **headers,
                   size_t num_headers, const char *content);
 
@@ -369,7 +368,7 @@ size_t read_HTTPS(SSL *conn, const char *buf, size_t buf_size,
                   size_t *path_len, int *minor_version,
                   struct phr_header *headers, size_t *num_headers,
                   size_t *prevbuflen, err_t *err);
-
+err_t serve_HTTPS(SSL *conn, spiffebundle_EndpointServer *server);
 
 char *http_test_response = "GET / HTTP/1.1";
 char *http_test_headers[] = { "Host: example.org", "User-Agent: Mozilla/5.0",
@@ -403,77 +402,6 @@ int mockHTTPS(void *arg)
 
     ck_assert_int_eq(ret, NO_ERROR);
 }
-
-int write_thread(void *arg)
-{
-    spiffebundle_EndpointThread *e_thread
-        = (spiffebundle_EndpointThread *) arg;
-
-    // spiffebundle_EndpointInfo* info = e_thread->e_info;
-    int socks[2];
-    // int res = socketpair(AF_UNIX, SOCK_STREAM, 0, con_socks);
-    
-
-
-    e_thread->config.listener_fd = socks[0]; /// TODO: "unconnect"
-    char buff[20];
-    int res = read(e_thread->control_socks[0], buff, 6);
-    //RACE
-    struct sockaddr_in server_address;
-    int connect_result;
-
-    server_address.sin_family = AF_LOCAL;
-
-    connect(socks[1], (const struct sockaddr *) &server_address,
-                       sizeof(server_address.sin_family));
-
-    res = mockHTTPS(socks[1]);
-    ck_assert_int_eq(res,NO_ERROR);
-}
-
-START_TEST(test_spiffebundle_EndpointServer_ServeThreadFunction)
-{
-    spiffebundle_EndpointServer *server = spiffebundle_EndpointServer_New();
-    err_t error = NO_ERROR;
-    spiffeid_TrustDomain td = { .name = "example.org" };
-
-    FILE *certs_file = fopen("./resources/example.org.crt", "r");
-    ck_assert_ptr_ne(certs_file, NULL);
-    FILE *key_file = fopen("./resources/example.org.key", "r");
-    ck_assert_ptr_ne(key_file, NULL);
-    X509 **certs
-        = pemutil_ParseCertificates(FILE_to_bytes(certs_file), &error);
-    ck_assert_ptr_ne(certs, NULL);
-    ck_assert_int_eq(error, NO_ERROR);
-    EVP_PKEY *priv_key
-        = pemutil_ParsePrivateKey(FILE_to_bytes(key_file), &error);
-    ck_assert_ptr_ne(priv_key, NULL);
-    ck_assert_int_eq(error, NO_ERROR);
-
-    fclose(certs_file);
-    fclose(key_file);
-
-    spiffebundle_EndpointInfo *e_info
-        = spiffebundle_EndpointServer_AddHttpsWebEndpoint(
-            server, "example.org", certs, priv_key, &error);
-    ck_assert_ptr_ne(e_info, NULL);
-    ck_assert_int_eq(error, NO_ERROR);
-
-    // code from Serve_Endpoint
-    spiffebundle_EndpointThread *e_thread = calloc(1, sizeof(*e_thread));
-    
-    e_thread->port = 4444;
-    e_thread->endpoint_info = e_info;
-    e_thread->active = true;
-    int res = socketpair(AF_UNIX, SOCK_STREAM, 0, e_thread->control_socks);
-    hmput(e_info->threads, 4444, e_thread);
-    thrd_create(&e_thread->thread, write_thread, e_thread);
-    
-
-    res = serve_function(e_thread);
-    ck_assert_int_eq(res,NO_ERROR);
-}
-END_TEST
 
 START_TEST(test_spiffebundle_EndpointServer_HTTPSFunctions)
 {
@@ -545,6 +473,44 @@ START_TEST(test_spiffebundle_EndpointServer_HTTPSFunctions)
 }
 END_TEST
 
+START_TEST(test_spiffebundle_EndpointServer_Serve_HTTPSFunctions)
+{
+
+    spiffebundle_EndpointServer *server = spiffebundle_EndpointServer_New();
+    err_t error = NO_ERROR;
+    spiffeid_TrustDomain td = { .name = "example.org" };
+
+    spiffebundle_Bundle *bundle
+        = spiffebundle_Load(td, "./resources/example.org.bundle.jwks", &error);
+    spiffebundle_Source *source = spiffebundle_SourceFromBundle(bundle);
+    spiffebundle_EndpointServer_RegisterBundle(server, "/", source, td);
+
+    int sockets[2];
+    int res = socketpair(AF_UNIX, SOCK_STREAM, 0, sockets);
+    ck_assert_int_eq(res, 0);
+
+    SSL_CTX *sslctx = SSL_CTX_new(TLS_server_method());
+    SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
+    int use_cert = SSL_CTX_use_certificate_file(
+        sslctx, "./resources/example.org.crt", SSL_FILETYPE_PEM);
+    ck_assert_int_ne(use_cert, NULL);
+    int use_prv = SSL_CTX_use_PrivateKey_file(
+        sslctx, "./resources/example.org.key", SSL_FILETYPE_PEM);
+    ck_assert_int_ne(use_prv, NULL);
+
+    SSL *cSSL = SSL_new(sslctx);
+    SSL_set_fd(cSSL, sockets[0]);
+
+    thrd_t thread;
+    thrd_create(&thread, mockHTTPS, sockets[1]);
+    int ssl_err = SSL_accept(cSSL);
+    ck_assert_int_eq(ssl_err, 1);
+
+    error = serve_HTTPS(cSSL, server);
+    ck_assert_int_eq(error, NO_ERROR);
+}
+END_TEST
+
 Suite *endpoint_server_suite(void)
 {
     Suite *s = suite_create("spiffebundle_server");
@@ -555,9 +521,9 @@ Suite *endpoint_server_suite(void)
     tcase_add_test(tc_core,
                    test_spiffebundle_EndpointServer_EndpointFunctions);
     tcase_add_test(tc_core, test_spiffebundle_EndpointServer_ServeFunctions);
-    // tcase_add_test(tc_core,
-    // test_spiffebundle_EndpointServer_ServeThreadFunction);
     tcase_add_test(tc_core, test_spiffebundle_EndpointServer_HTTPSFunctions);
+    tcase_add_test(tc_core,
+                   test_spiffebundle_EndpointServer_Serve_HTTPSFunctions);
 
     // tcase_set_timeout(tc_core,20);
     suite_add_tcase(s, tc_core);
@@ -570,7 +536,6 @@ void init_openssl()
     SSL_load_error_strings();
     OpenSSL_add_ssl_algorithms();
 }
-
 
 int main(int argc, char **argv)
 {
