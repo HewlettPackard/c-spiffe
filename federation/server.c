@@ -453,9 +453,9 @@ size_t read_HTTPS(SSL *conn, const char *buf, size_t buf_size,
     return buflen;
 }
 
-char *HTTP_OK = "HTTP/1.1 200 OK\r\n";
-char *HTTP_NOTFOUND = "HTTP/1.1 404 Not Found\r\n";
-char *HTTP_METHODNOTALLOWED = "HTTP/1.1 405 Method Not Allowed\r\n";
+char *HTTP_OK = "HTTP/1.1 200 OK";
+char *HTTP_NOTFOUND = "HTTP/1.1 404 Not Found";
+char *HTTP_METHODNOTALLOWED = "HTTP/1.1 405 Method Not Allowed";
 
 err_t write_HTTPS(SSL *conn, const char *response, const char **headers,
                   size_t num_headers, const char *content)
@@ -471,14 +471,20 @@ err_t write_HTTPS(SSL *conn, const char *response, const char **headers,
     }
 
     /// LOG: server response, code, time
-    SSL_write(conn, response, strlen(response));
-    for(int i = 0; i < num_headers; ++i) {
-        SSL_write(conn, headers[i], strlen(headers[i]));
-        SSL_write(conn, "\r\n", strlen("\r\n"));
-    }
-    SSL_write(conn, "\r\n", strlen("\r\n"));
-    SSL_write(conn, content, strlen(content));
+    string_t message = string_new(response);
+    message = string_push(message, "\r\n");
 
+    for(int i = 0; i < num_headers; ++i) {
+        message = string_push(message, headers[i]);
+        message = string_push(message, "\r\n");
+    }
+    message = string_push(message, "\r\n");
+    message = string_push(message, content);
+    message = string_push(message, "\r\n\r\n");
+    SSL_write(conn, message, strlen(message));
+
+    BIO_flush(SSL_get_wbio(conn));
+    util_string_t_Free(message);
     return NO_ERROR;
 }
 
@@ -494,7 +500,7 @@ int serve_function(void *arg)
             write(e_thread->control_socks[1], "OK!\r\n", 6);
             once = false;
         }
-
+        // RACE
         SSL *conn = spiffetls_PollWithMode(
             e_thread->port, e_info->listen_mode, &e_thread->config,
             &e_thread->config.listener_fd, e_thread->control_socks[1], 5000,
@@ -518,7 +524,7 @@ int serve_function(void *arg)
                             &path, &path_len, &minor_version, headers,
                             &num_headers, &prevbuflen, &err);
 
-        if(err != NO_ERROR) {   
+        if(err != NO_ERROR) {
             /// LOG: ERROR
             continue;
         }
@@ -540,19 +546,20 @@ int serve_function(void *arg)
             spiffebundle_Bundle *ret_bundle
                 = spiffebundle_Source_GetSpiffeBundleForTrustDomain(source, td,
                                                                     &err);
-            string_t bundle_string = spiffebundle_Bundle_Marshal(ret_bundle, &err);
+            string_t bundle_string
+                = spiffebundle_Bundle_Marshal(ret_bundle, &err);
 
-            if(bundle_string) {//bundle found
+            if(bundle_string) { // bundle found
                 // log info?
                 err = write_HTTPS(conn, HTTP_OK, out_headers, 1,
                                   bundle_string);
                 arrfree(bundle_string);
-            } else { //bundle not found
+            } else { // bundle not found
                 // log warn?
                 err = write_HTTPS(conn, HTTP_NOTFOUND, out_headers, 1, "{}");
             }
             util_string_t_Free(bundle_string);
-        } else { //refuse non-GET
+        } else { // refuse non-GET
             err = write_HTTPS(conn, HTTP_METHODNOTALLOWED, out_headers, 1,
                               "{}");
         }

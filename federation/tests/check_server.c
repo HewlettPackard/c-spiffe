@@ -360,6 +360,77 @@ START_TEST(test_spiffebundle_EndpointServer_ServeFunctions)
 }
 END_TEST
 
+
+err_t write_HTTPS(SSL *conn, const char *response, const char **headers,
+                  size_t num_headers, const char *content);
+
+size_t read_HTTPS(SSL *conn, const char *buf, size_t buf_size,
+                  const char **method, size_t *method_len, const char **path,
+                  size_t *path_len, int *minor_version,
+                  struct phr_header *headers, size_t *num_headers,
+                  size_t *prevbuflen, err_t *err);
+
+
+char *http_test_response = "GET / HTTP/1.1";
+char *http_test_headers[] = { "Host: example.org", "User-Agent: Mozilla/5.0",
+                              "Accept-Encoding: gzip, deflate, br" };
+int http_test_num_headers = 3;
+char *http_test_content = "{}";
+
+int serve_function(void *arg);
+
+int mockHTTPS(void *arg)
+{
+    int socket = (int) arg;
+
+    SSL_CTX *ctx = SSL_CTX_new(TLS_client_method());
+    SSL_CTX_set_options(ctx, SSL_OP_SINGLE_DH_USE);
+    int use_cert = SSL_CTX_use_certificate_file(
+        ctx, "./resources/example.org.crt", SSL_FILETYPE_PEM);
+    ck_assert_int_eq(use_cert, 1);
+    SSL *cSSL = SSL_new(ctx);
+    ck_assert_ptr_ne(cSSL, NULL);
+    SSL_set_fd(cSSL, socket);
+    int ssl_error = SSL_connect(cSSL);
+
+    ck_assert_int_eq(ssl_error, 1);
+    int error = SSL_get_error(cSSL, ssl_error);
+
+    ck_assert_int_eq(error, NO_ERROR);
+
+    int ret = write_HTTPS(cSSL, http_test_response, http_test_headers,
+                          http_test_num_headers, http_test_content);
+
+    ck_assert_int_eq(ret, NO_ERROR);
+}
+
+int write_thread(void *arg)
+{
+    spiffebundle_EndpointThread *e_thread
+        = (spiffebundle_EndpointThread *) arg;
+
+    // spiffebundle_EndpointInfo* info = e_thread->e_info;
+    int socks[2];
+    // int res = socketpair(AF_UNIX, SOCK_STREAM, 0, con_socks);
+    
+
+
+    e_thread->config.listener_fd = socks[0]; /// TODO: "unconnect"
+    char buff[20];
+    int res = read(e_thread->control_socks[0], buff, 6);
+    //RACE
+    struct sockaddr_in server_address;
+    int connect_result;
+
+    server_address.sin_family = AF_LOCAL;
+
+    connect(socks[1], (const struct sockaddr *) &server_address,
+                       sizeof(server_address.sin_family));
+
+    res = mockHTTPS(socks[1]);
+    ck_assert_int_eq(res,NO_ERROR);
+}
+
 START_TEST(test_spiffebundle_EndpointServer_ServeThreadFunction)
 {
     spiffebundle_EndpointServer *server = spiffebundle_EndpointServer_New();
@@ -382,76 +453,27 @@ START_TEST(test_spiffebundle_EndpointServer_ServeThreadFunction)
     fclose(certs_file);
     fclose(key_file);
 
-    spiffebundle_EndpointInfo *e_info1
+    spiffebundle_EndpointInfo *e_info
         = spiffebundle_EndpointServer_AddHttpsWebEndpoint(
             server, "example.org", certs, priv_key, &error);
-    ck_assert_ptr_ne(e_info1, NULL);
+    ck_assert_ptr_ne(e_info, NULL);
     ck_assert_int_eq(error, NO_ERROR);
 
-    // error = spiffebundle_EndpointServer_ServeEndpoint(server, "example.org",
-    //                                                   445);
+    // code from Serve_Endpoint
+    spiffebundle_EndpointThread *e_thread = calloc(1, sizeof(*e_thread));
+    
+    e_thread->port = 4444;
+    e_thread->endpoint_info = e_info;
+    e_thread->active = true;
+    int res = socketpair(AF_UNIX, SOCK_STREAM, 0, e_thread->control_socks);
+    hmput(e_info->threads, 4444, e_thread);
+    thrd_create(&e_thread->thread, write_thread, e_thread);
+    
 
-    ck_assert_int_eq(error, NO_ERROR);
-
-    ck_assert_ptr_ne(e_info1->threads[0].value, NULL);
-    ck_assert(e_info1->threads[0].value->active);
-    ck_assert_ptr_eq(e_info1->threads[0].value->endpoint_info, e_info1);
-    ck_assert_int_eq(e_info1->threads[0].value->port, 445);
-
-    error = spiffebundle_EndpointServer_StopEndpointThread(server,
-                                                           "example.org", 446);
-    ck_assert_int_ne(error, NO_ERROR);
-
-    error = spiffebundle_EndpointServer_StopEndpointThread(server,
-                                                           "example.org", 445);
-    ck_assert_int_eq(error, NO_ERROR);
-
-    error = spiffebundle_EndpointServer_Stop(server);
-    ck_assert_int_eq(error, NO_ERROR);
+    res = serve_function(e_thread);
+    ck_assert_int_eq(res,NO_ERROR);
 }
 END_TEST
-
-char *http_test_message = "GET / HTTP/1.1\r\n"
-                          "Host: example.org\r\n"
-                          "User-Agent: Mozilla/5.0\r\n"
-                          "Accept-Encoding: gzip, deflate, br\r\n\r\n"
-                          "{}";
-
-void init_openssl()
-{
-    SSL_load_error_strings();
-    OpenSSL_add_ssl_algorithms();
-}
-
-int mockHTTPS(void *arg)
-{
-    int socket = (int) arg;
-
-    SSL_CTX *ctx = SSL_CTX_new(TLS_client_method());
-    SSL_CTX_set_options(ctx, SSL_OP_SINGLE_DH_USE);
-    int use_cert = SSL_CTX_use_certificate_file(
-        ctx, "./resources/example.org.crt", SSL_FILETYPE_PEM);
-    ck_assert_int_eq(use_cert, 1);
-    SSL *cSSL = SSL_new(ctx);
-    ck_assert_ptr_ne(cSSL, NULL);
-    SSL_set_fd(cSSL, socket);
-    int ssl_error = SSL_connect(cSSL);
-
-    ck_assert_int_eq(ssl_error, 1);
-    int error = SSL_get_error(cSSL, ssl_error);
-
-    ck_assert_int_eq(error, NO_ERROR);
-
-    int ret = SSL_write(cSSL, http_test_message, strlen(http_test_message));
-
-    ck_assert_int_eq(ret, strlen(http_test_message));
-}
-
-size_t read_HTTPS(SSL *conn, const char *buf, size_t buf_size,
-                  const char **method, size_t *method_len, const char **path,
-                  size_t *path_len, int *minor_version,
-                  struct phr_header *headers, size_t *num_headers,
-                  size_t *prevbuflen, err_t *err);
 
 START_TEST(test_spiffebundle_EndpointServer_HTTPSFunctions)
 {
@@ -471,11 +493,11 @@ START_TEST(test_spiffebundle_EndpointServer_HTTPSFunctions)
     ck_assert_int_ne(use_prv, NULL);
     SSL *cSSL = SSL_new(sslctx);
     SSL_set_fd(cSSL, sockets[0]);
-    // Here is the SSL Accept portion.  Now all reads and writes must use SSL
 
     thrd_t thread;
     thrd_create(&thread, mockHTTPS, sockets[1]);
 
+    // Here is the SSL Accept portion.  Now all reads and writes must use SSL
     int ssl_err = SSL_accept(cSSL);
     ck_assert_int_eq(ssl_err, 1);
 
@@ -489,10 +511,14 @@ START_TEST(test_spiffebundle_EndpointServer_HTTPSFunctions)
     buflen = read_HTTPS(cSSL, buf, sizeof(buf), &method, &method_len, &path,
                         &path_len, &minor_version, headers, &num_headers,
                         &prevbuflen, &err);
-
+    buf[buflen] = '\0';
     ck_assert_int_eq(err, NO_ERROR);
-    ck_assert_int_eq(strlen(buf), strlen(http_test_message));
-
+    printf("buf:%s\n", buf);
+    ck_assert_int_eq(strlen(buf), strlen(http_test_response) + 2
+                                      + strlen(http_test_headers[0]) + 2
+                                      + strlen(http_test_headers[1]) + 2
+                                      + strlen(http_test_headers[2]) + 2
+                                      + strlen(http_test_content) + 6);
     /// buf will be modified after this
     method[method_len] = '\0';
     path[path_len] = '\0';
@@ -538,6 +564,13 @@ Suite *endpoint_server_suite(void)
 
     return s;
 }
+
+void init_openssl()
+{
+    SSL_load_error_strings();
+    OpenSSL_add_ssl_algorithms();
+}
+
 
 int main(int argc, char **argv)
 {
