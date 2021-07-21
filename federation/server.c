@@ -489,25 +489,26 @@ err_t write_HTTPS(SSL *conn, const char *response, const char **headers,
 }
 
 // Serve a HTTPS request
-err_t serve_HTTPS(SSL* conn, spiffebundle_EndpointServer *server){
+err_t serve_HTTPS(SSL *conn, spiffebundle_EndpointServer *server)
+{
     err_t err = NO_ERROR;
 
     char buf[4096], *method, *path;
     int minor_version;
     struct phr_header headers[100];
     size_t buflen = 0, prevbuflen = 0, method_len = 0, path_len = 0,
-            num_headers = sizeof(headers) / sizeof(headers[0]);
+           num_headers = sizeof(headers) / sizeof(headers[0]);
     ssize_t rret;
 
-    buflen = read_HTTPS(conn, buf, sizeof(buf), &method, &method_len,
-                        &path, &path_len, &minor_version, headers,
-                        &num_headers, &prevbuflen, &err);
+    buflen = read_HTTPS(conn, buf, sizeof(buf), &method, &method_len, &path,
+                        &path_len, &minor_version, headers, &num_headers,
+                        &prevbuflen, &err);
 
     if(err != NO_ERROR) {
         /// LOG: ERROR
         return err;
     }
-    buf[buflen]='\0';
+    buf[buflen] = '\0';
 
     /// LOG: log request @ which level?
     printf("Server received:\n%s\n", buf);
@@ -527,13 +528,11 @@ err_t serve_HTTPS(SSL* conn, spiffebundle_EndpointServer *server){
         spiffebundle_Bundle *ret_bundle
             = spiffebundle_Source_GetSpiffeBundleForTrustDomain(source, td,
                                                                 &err);
-        string_t bundle_string
-            = spiffebundle_Bundle_Marshal(ret_bundle, &err);
+        string_t bundle_string = spiffebundle_Bundle_Marshal(ret_bundle, &err);
 
         if(bundle_string) { // bundle found
             // log info?
-            err = write_HTTPS(conn, HTTP_OK, out_headers, 1,
-                                bundle_string);
+            err = write_HTTPS(conn, HTTP_OK, out_headers, 1, bundle_string);
             arrfree(bundle_string);
         } else { // bundle not found
             // log warn?
@@ -541,8 +540,7 @@ err_t serve_HTTPS(SSL* conn, spiffebundle_EndpointServer *server){
         }
         util_string_t_Free(bundle_string);
     } else { // refuse non-GET
-        err = write_HTTPS(conn, HTTP_METHODNOTALLOWED, out_headers, 1,
-                            "{}");
+        err = write_HTTPS(conn, HTTP_METHODNOTALLOWED, out_headers, 1, "{}");
     }
 
     /// LOG: server response, code, time
@@ -577,7 +575,7 @@ int serve_function(void *arg)
             printf("spiffetls_PollWithMode() failed(%d)\n", err);
             continue;
         }
-        serve_HTTPS(conn,server);
+        serve_HTTPS(conn, server);
     }
     close(e_thread->config.listener_fd);
     return NO_ERROR;
@@ -605,6 +603,11 @@ err_t spiffebundle_EndpointServer_ServeEndpoint(
         }
         spiffebundle_EndpointInfo *e_info = server->endpoints[idx].value;
 
+        int l = hmgeti(e_info->threads, port);
+        if(l >= 0) {
+            mtx_unlock(&server->mutex);
+            return ERR_BAD_PORT;
+        }
         spiffebundle_EndpointThread *e_thread = calloc(1, sizeof(*e_thread));
 
         e_thread->port = port;
@@ -657,7 +660,7 @@ err_t spiffebundle_EndpointServer_StopEndpointThread(
     if(l < 0) {
         mtx_unlock(&e_info->mutex);
         mtx_unlock(&server->mutex);
-        return ERR_EXISTS;
+        return ERR_BAD_PORT;
     }
     spiffebundle_EndpointThread *e_thread = e_info->threads[l].value;
     e_thread->active = false;

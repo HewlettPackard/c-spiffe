@@ -336,6 +336,9 @@ START_TEST(test_spiffebundle_EndpointServer_ServeFunctions)
     error = spiffebundle_EndpointServer_StopEndpointThread(server,
                                                            "example.org", 446);
     ck_assert_int_ne(error, NO_ERROR);
+    error = spiffebundle_EndpointServer_StopEndpointThread(server,
+                                                           "example.com", 446);
+    ck_assert_int_eq(error, ERR_NOT_FOUND);
 
     error = spiffebundle_EndpointServer_StopEndpointThread(server,
                                                            "example.org", 445);
@@ -354,6 +357,51 @@ START_TEST(test_spiffebundle_EndpointServer_ServeFunctions)
     error = spiffebundle_EndpointServer_ServeEndpoint(server, "example.org",
                                                       445);
     ck_assert_int_eq(error, NO_ERROR);
+    error = spiffebundle_EndpointServer_ServeEndpoint(server, "example.org",
+                                                      445);
+    ck_assert_int_eq(error, ERR_BAD_PORT);
+
+    error = spiffebundle_EndpointServer_Stop(NULL);
+    ck_assert_int_eq(error, ERR_NULL);
+
+    error = spiffebundle_EndpointServer_Stop(server);
+    ck_assert_int_eq(error, NO_ERROR);
+
+    error = spiffebundle_EndpointServer_ServeEndpoint(server, "example.com",
+                                                      445);
+    ck_assert_int_eq(error, ERR_NOT_FOUND);
+
+    error = spiffebundle_EndpointServer_ServeEndpoint(NULL, NULL, 0);
+    ck_assert_int_eq(error, ERR_NULL);
+    error = spiffebundle_EndpointServer_ServeEndpoint(server, NULL, 0);
+    ck_assert_int_eq(error, ERR_BAD_ARGUMENT);
+    error = spiffebundle_EndpointServer_ServeEndpoint(server, "", 0);
+    ck_assert_int_eq(error, ERR_BAD_PORT);
+    error = spiffebundle_EndpointServer_ServeEndpoint(server, "", 1 << 16);
+    ck_assert_int_eq(error, ERR_BAD_PORT);
+
+    error = spiffebundle_EndpointServer_StopEndpointThread(NULL, NULL, 0);
+    ck_assert_int_eq(error, ERR_NULL);
+    error = spiffebundle_EndpointServer_StopEndpointThread(server, NULL, 0);
+    ck_assert_int_eq(error, ERR_BAD_ARGUMENT);
+    error = spiffebundle_EndpointServer_StopEndpointThread(server, "", 0);
+    ck_assert_int_eq(error, ERR_BAD_PORT);
+    error
+        = spiffebundle_EndpointServer_StopEndpointThread(server, "", 1 << 16);
+    ck_assert_int_eq(error, ERR_BAD_PORT);
+
+    error = spiffebundle_EndpointServer_StopEndpointThread(server,
+                                                           "example.com", 446);
+    ck_assert_int_eq(error, ERR_NOT_FOUND);
+
+    error = spiffebundle_EndpointServer_StopEndpoint(NULL, NULL);
+    ck_assert_int_eq(error, ERR_NULL);
+
+    error = spiffebundle_EndpointServer_StopEndpoint(server, NULL);
+    ck_assert_int_eq(error, ERR_BAD_ARGUMENT);
+
+    error = spiffebundle_EndpointServer_StopEndpoint(server, "example.com");
+    ck_assert_int_eq(error, ERR_NOT_FOUND);
 
     error = spiffebundle_EndpointServer_Stop(server);
     ck_assert_int_eq(error, NO_ERROR);
@@ -465,11 +513,22 @@ START_TEST(test_spiffebundle_EndpointServer_HTTPSFunctions)
     ck_assert_int_eq(minor_version, 1);
     ck_assert_str_eq(headers[0].value, "example.org");
     ck_assert_str_eq(headers[0].name, "Host");
-    ck_assert_str_eq(headers[0].value, "example.org");
     ck_assert_str_eq(headers[1].name, "User-Agent");
     ck_assert_str_eq(headers[1].value, "Mozilla/5.0");
     ck_assert_str_eq(headers[2].name, "Accept-Encoding");
     ck_assert_str_eq(headers[2].value, "gzip, deflate, br");
+
+    err = write_HTTPS(NULL, NULL, NULL, 0, NULL);
+    ck_assert_int_eq(err, ERR_NULL);
+
+    err = write_HTTPS((void *) 0x1, NULL, NULL, 0, NULL);
+    ck_assert_int_eq(err, ERR_NULL_DATA);
+
+    err = write_HTTPS((void *) 0x1, (void *) 0x1, NULL, 0, NULL);
+    ck_assert_int_eq(err, ERR_EMPTY_DATA);
+
+    err = write_HTTPS((void *) 0x1, (void *) 0x1, NULL, 1, NULL);
+    ck_assert_int_eq(err, ERR_BAD_ARGUMENT);
 }
 END_TEST
 
