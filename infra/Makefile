@@ -1,12 +1,5 @@
-build:
-	docker build spire-agent -t spire-agent
-	docker-compose build
-
-build-tests-workload:
-	docker-compose exec workload ./build-tests-workload.sh
-
 run:
-	docker-compose up -d
+	TAG=$(TAG) docker-compose up -d
 
 run-server:
 	docker-compose exec spire-server spire-server run
@@ -24,7 +17,7 @@ clean:
 	docker-compose down
 
 integration-tests:
-	TAG=test-202-Implement-test-case-FXB_01 docker-compose up -d
+	TAG=$(TAG) docker-compose up -d
 
 	docker exec infra_workload_1 service ssh restart
 	docker exec infra_workload2_1 service ssh restart
