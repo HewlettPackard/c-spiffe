@@ -322,6 +322,10 @@ void spiffebundle_Bundle_ClearRefreshHint(spiffebundle_Bundle *b)
 
 string_t spiffebundle_Bundle_Marshal(spiffebundle_Bundle *b, err_t *err)
 {
+    if(!b){
+        *err = ERR_NULL_BUNDLE;
+        return NULL;
+    }
     mtx_lock(&(b->mtx));
     jwtutil_JWKS jwks
         = { .root = NULL,
