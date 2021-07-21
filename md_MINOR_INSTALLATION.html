@@ -67,7 +67,7 @@ $(function() {
 <div class="title">Minimal Installation </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h3><a class="anchor" id="autotoc_md68"></a>
+<div class="textblock"><h3><a class="anchor" id="autotoc_md70"></a>
 Build Dependencies</h3>
 <ul>
 <li>gcc (9.3.0-17ubuntu1~20.04)</li>
@@ -86,10 +86,10 @@ Build Dependencies</h3>
 <li>libcurl4-openssl-dev (7.68.0-1ubuntu2.5)</li>
 <li>check (0.10.0-3build2)</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md69"></a>
+<h3><a class="anchor" id="autotoc_md71"></a>
 Command-Line</h3>
 <p>Open a terminal and execute </p><div class="fragment"><div class="line">apt-get update &amp;&amp; apt-get install -y build-essential automake libtool curl cmake libssl-dev liburiparser1 liburiparser-dev protobuf-compiler libprotobuf-dev libjansson-dev libcjose-dev libcurl4-openssl-dev check</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md70"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md72"></a>
 Compile gRPC</h2>
 <p>In order to create a pure C lib, supporting gRPC, which is a C++ lib, it is necessarty to compile gRPC code together with c-spiffe code. The following steps can be used for compiling gRPC:</p>
 <ul>
@@ -104,7 +104,7 @@ Compile gRPC</h2>
 <div class="fragment"><div class="line">cd grpc/cmake/build</div>
 <div class="line">cmake -DgRPC_INSTALL=ON -DgRPC_SSL_PROVIDER=package ../.</div>
 <div class="line">make -j${NUM_JOBS} &amp;&amp; make install</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md71"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md73"></a>
 Compile C-Spiffe library</h2>
 <ul>
 <li>Clone C-Spiffe source <div class="fragment"><div class="line">git clone https://github.com/HewlettPackard/c-spiffe.git</div>
@@ -115,7 +115,7 @@ Compile C-Spiffe library</h2>
 <div class="line">mkdir build &amp;&amp; cd build</div>
 <div class="line">cmake ..</div>
 <div class="line">make -j${NUM_JOBS}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md72"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md74"></a>
 Installing</h2>
 <div class="fragment"><div class="line">make install</div>
 <div class="line">ldconfig</div>

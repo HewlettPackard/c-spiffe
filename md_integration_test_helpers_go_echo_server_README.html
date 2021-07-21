@@ -68,19 +68,20 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>A mTLS echo server/client in Go.</p>
-<h4><a class="anchor" id="autotoc_md54"></a>
+<h4><a class="anchor" id="autotoc_md57"></a>
 Prerequisites</h4>
 <ul>
 <li>Linux or macOS</li>
 <li><a href="https://docs.docker.com/install/">Docker</a></li>
 <li><a href="https://docs.docker.com/compose/install/">Docker Compose</a></li>
 <li><a href="https://www.openssl.org/docs/">OpenSSL</a> (Only if new certificates are needed)</li>
+<li><a href="https://www.gnu.org/software/make/">Make (4.2.1-1.2)</a></li>
 </ul>
-<h4><a class="anchor" id="autotoc_md55"></a>
+<h4><a class="anchor" id="autotoc_md58"></a>
 1. Clone this c-spiffe</h4>
 <div class="fragment"><div class="line">$ git clone https://github.com/HewlettPackard/c-spiffe.git</div>
 <div class="line">$ cd c-spiffe</div>
-</div><!-- fragment --> <h4><a class="anchor" id="autotoc_md56"></a>
+</div><!-- fragment --> <h4><a class="anchor" id="autotoc_md59"></a>
 2. Generate the certs</h4>
 <p>This step just needs to be done once. (Certificates already exist in the repo, so this step can be skipped.)</p>
 <div class="fragment"><div class="line">$ cd integration_test/helpers/go-echo-server/certs</div>
@@ -100,7 +101,7 @@ Prerequisites</h4>
 <div class="line">    writing new private key to &#39;client.key&#39;</div>
 <div class="line">    -----</div>
 <div class="line">    req: No value provided for Subject Attribute emailAddress, skipped</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md57"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md60"></a>
 3. Build and run the docker containers</h4>
 <div class="fragment"><div class="line">$ cd c-spiffe/infra/</div>
 <div class="line">$ make build</div>
@@ -114,7 +115,7 @@ Prerequisites</h4>
 <div class="line">    Creating infra_spire-server_1 ... done</div>
 <div class="line">    Creating infra_workload_1     ... done</div>
 <div class="line">    Creating infra_tests_1        ... done</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md58"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md61"></a>
 4. Run the Echo Server</h4>
 <div class="fragment"><div class="line">$ docker exec -it infra_workload_1 bash</div>
 </div><!-- fragment --><p> Inside workload container, run:</p>
@@ -122,7 +123,7 @@ Prerequisites</h4>
 <div class="line">$ root@workload: go run server.go</div>
 <div class="line"> </div>
 <div class="line">    2021/04/07 12:14:41 server: listening on port 8000</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md59"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md62"></a>
 5. Run the Client</h4>
 <p>On a new console, run:</p>
 <div class="fragment"><div class="line">$ docker exec -it infra_tests_1 bash</div>
@@ -136,7 +137,7 @@ Prerequisites</h4>
 <div class="line">    2021/04/07 12:23:01 client: sent     &quot;any message (max 100 bytes)&quot; (27 bytes)</div>
 <div class="line">    2021/04/07 12:23:01 client: received &quot;any message (max 100 bytes)&quot; (27 bytes)</div>
 <div class="line">    2021/04/07 12:23:01 client: exiting</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md60"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md63"></a>
 6. Stop the containers</h4>
 <p>On a new console, run:</p>
 <div class="fragment"><div class="line">$ cd /mnt/c-spiffe/infra</div>

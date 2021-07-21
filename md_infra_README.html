@@ -67,36 +67,69 @@ $(function() {
 <div class="title">Infra </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>This folder contains an orchestration for some integration test scenarios. It is composed by a server container, a test workload, and some tests scripts.</p>
-<h2><a class="anchor" id="autotoc_md45"></a>
-Run the Docker containers</h2>
-<h4><a class="anchor" id="autotoc_md46"></a>
+<div class="textblock"><p>This folder contains an orchestration for the integration test scenarios. It is composed by spire-server containers, workload containers, a tests container and some tests scripts.</p>
+<h4><a class="anchor" id="autotoc_md45"></a>
 Prerequisites</h4>
 <ul>
 <li>Linux or macOS</li>
 <li><a href="https://docs.docker.com/install/">Docker</a></li>
 <li><a href="https://docs.docker.com/compose/install/">Docker Compose</a></li>
+<li><a href="https://www.gnu.org/software/make/">Make (4.2.1-1.2)</a></li>
 </ul>
-<h4><a class="anchor" id="autotoc_md47"></a>
-1. Clone this c-spiffe</h4>
+<h4><a class="anchor" id="autotoc_md46"></a>
+Clone this c-spiffe</h4>
 <div class="fragment"><div class="line">$ git clone https://github.com/HewlettPackard/c-spiffe.git</div>
 <div class="line">$ cd c-spiffe</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md48"></a>
-2. Build and run the docker containers</h4>
-<div class="fragment"><div class="line">$ cd infra/</div>
-<div class="line">$ make build</div>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md47"></a>
+Build docker images locally (optional)</h4>
+<ol type="1">
+<li>Build Spire-server image</li>
+</ol>
+<div class="fragment"><div class="line">$ cd infra/spire-server</div>
+<div class="line">$ docker build . -t cspiffe/spire-server</div>
 <div class="line"> </div>
 <div class="line">Successfully built</div>
-</div><!-- fragment --><p>Run the containers:</p>
-<div class="fragment"><div class="line">$ make run</div>
+</div><!-- fragment --><ol type="1">
+<li>Build Spire-agent image</li>
+</ol>
+<div class="fragment"><div class="line">$ cd infra/spire-agent</div>
+<div class="line">$ docker build . -t cspiffe/spire-agent</div>
 <div class="line"> </div>
-<div class="line">docker-compose up -d</div>
-<div class="line">Creating network &quot;infra_default&quot; with the default driver</div>
-<div class="line">Creating infra_spire-server_1 ... done</div>
-<div class="line">Creating infra_workload_1     ... done</div>
-<div class="line">Creating infra_tests_1        ... done</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md49"></a>
-3. Run the SPIRE Server</h4>
+<div class="line">Successfully built</div>
+</div><!-- fragment --><ol type="1">
+<li>Build Workload image</li>
+</ol>
+<p>Check desired repository url and branch to be pulled inside the image in the Dockerfile. Then run on a console:</p>
+<div class="fragment"><div class="line">$ cd infra/workload</div>
+<div class="line">$ docker build . -t cspiffe/workload</div>
+<div class="line"> </div>
+<div class="line">Successfully built</div>
+</div><!-- fragment --><ol type="1">
+<li>Build Tests image</li>
+</ol>
+<p>Check desired image tag to be inherited from workload image in the Dockerfile. Then run on a console:</p>
+<div class="fragment"><div class="line">$ cd infra/tests</div>
+<div class="line">$ docker build . -t cspiffe/tests</div>
+<div class="line"> </div>
+<div class="line">Successfully built</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md48"></a>
+Setup for some basic manual tests</h2>
+<h4><a class="anchor" id="autotoc_md49"></a>
+1. Run the docker containers</h4>
+<p>On a console run:</p>
+<div class="fragment"><div class="line">$ cd infra/</div>
+<div class="line">$ make run TAG=latest</div>
+<div class="line"> </div>
+<div class="line">TAG=latest docker-compose up -d</div>
+<div class="line">Building with native build. Learn about native build in Compose here: https://docs.docker.com/go/compose-native-build/</div>
+<div class="line">Creating infra_spire-server_1  ... done</div>
+<div class="line">Creating infra_spire-server2_1 ... done</div>
+<div class="line">Creating infra_workload2_1     ... done</div>
+<div class="line">Creating infra_workload_1      ... done</div>
+<div class="line">Creating infra_tests_1         ... done</div>
+</div><!-- fragment --><p> The tag might be replaced for another one available in <a href="https://hub.docker.com/r/cspiffe/tests/tags?page=1&amp;ordering=last_updated">dockerhub</a> or locally.</p>
+<h4><a class="anchor" id="autotoc_md50"></a>
+2. Run the SPIRE Server</h4>
 <p>On a console run:</p>
 <div class="fragment"><div class="line">$ make run-server </div>
 <div class="line"> </div>
@@ -111,29 +144,36 @@ Prerequisites</h4>
 <div class="line">INFO[0000] Plugin loaded                   built-in_plugin=true plugin_name=disk plugin_services=&quot;[]&quot; plugin_type=KeyManager subsystem_name=catalog</div>
 <div class="line">INFO[0000] Plugin loaded                   built-in_plugin=true plugin_name=join_token plugin_services=&quot;[]&quot; plugin_type=NodeAttestor subsystem_name=catalog</div>
 <div class="line">INFO[0000] Plugins started</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md50"></a>
-4. Create the workloads entries</h4>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md51"></a>
+3. Create the workloads entries</h4>
 <p>On a console run:</p>
 <div class="fragment"><div class="line">$ make create-entries</div>
 <div class="line"> </div>
-<div class="line">+ spire-server entry create -parentID spiffe://example.org/host -spiffeID spiffe://example.org/tests -selector unix:uid:1002 -ttl 3600</div>
-<div class="line">Entry ID         : df1cffc6-bd56-449e-b107-581c1d186e32</div>
+<div class="line">+ spire-server entry create -parentID spiffe://example.org/myagent -spiffeID spiffe://example.org/myworkload -selector unix:user:root</div>
+<div class="line">Entry ID         : ad80a864-935c-40e6-b218-6a2b5b4d6034</div>
+<div class="line">SPIFFE ID        : spiffe://example.org/myworkload</div>
+<div class="line">Parent ID        : spiffe://example.org/myagent</div>
+<div class="line">Revision         : 0</div>
+<div class="line">TTL              : default</div>
+<div class="line">Selector         : unix:user:root</div>
+<div class="line"> </div>
+<div class="line">+ spire-server entry create -parentID spiffe://example.org/host -spiffeID spiffe://example.org/tests -selector unix:uid:1002</div>
+<div class="line">Entry ID         : d83795b7-d51d-4297-924a-d5174591ba92</div>
 <div class="line">SPIFFE ID        : spiffe://example.org/tests</div>
 <div class="line">Parent ID        : spiffe://example.org/host</div>
 <div class="line">Revision         : 0</div>
-<div class="line">TTL              : 3600</div>
+<div class="line">TTL              : default</div>
 <div class="line">Selector         : unix:uid:1002</div>
 <div class="line"> </div>
 <div class="line">+ spire-server entry create -parentID spiffe://example.org/host -spiffeID spiffe://example.org/tests -selector unix:user:root</div>
-<div class="line">Entry ID         : 80eb326c-052d-46b1-a733-fffb811fe86d</div>
+<div class="line">Entry ID         : 77b50a95-e374-4a50-8fd5-690d3f023a1d</div>
 <div class="line">SPIFFE ID        : spiffe://example.org/tests</div>
 <div class="line">Parent ID        : spiffe://example.org/host</div>
 <div class="line">Revision         : 0</div>
 <div class="line">TTL              : default</div>
 <div class="line">Selector         : unix:user:root</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md51"></a>
-5. Generate Tokens</h4>
-<h5>5.1 Generate Agent Token for tests and Run the Agent</h5>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md52"></a>
+4. Generate Tokens</h4>
 <p>On the console run: </p><div class="fragment"><div class="line">$ make generate-token</div>
 <div class="line"> </div>
 <div class="line">Token: 7a7389ac-c841-4c8f-b08b-3cd96b6d9d28</div>
@@ -147,20 +187,61 @@ Prerequisites</h4>
 <div class="line">INFO[0000] Plugin loaded                  built-in_plugin=true plugin_name=unix plugin_services=&quot;[]&quot; plugin_type=WorkloadAttestor subsystem_name=catalog</div>
 <div class="line">INFO[0000] Bundle is not found            subsystem_name=attestor</div>
 <div class="line">DEBU[0000] No pre-existing agent SVID found. Will perform node attestation  path=data/agent/agent_svid.der subsystem_name=attestor</div>
-</div><!-- fragment --> <h4><a class="anchor" id="autotoc_md52"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md53"></a>
+5. Go into the tests container and execute some desired test</h4>
+<h4><a class="anchor" id="autotoc_md54"></a>
 6. Clean the environment</h4>
-<p>Stop the docker containers:</p>
+<p>On a console run:</p>
 <div class="fragment"><div class="line">$ make clean</div>
 <div class="line"> </div>
 <div class="line">docker-compose down</div>
-<div class="line">Stopping infra_tests_1        ... done</div>
-<div class="line">Stopping infra_workload_1     ... done</div>
-<div class="line">Stopping infra_spire-server_1 ... done</div>
-<div class="line">Removing infra_tests_1        ... done</div>
-<div class="line">Removing infra_workload_1     ... done</div>
-<div class="line">Removing infra_spire-server_1 ... done</div>
+<div class="line">WARNING: The TAG variable is not set. Defaulting to a blank string.</div>
+<div class="line">Stopping infra_tests_1         ... done</div>
+<div class="line">Stopping infra_workload_1      ... done</div>
+<div class="line">Stopping infra_workload2_1     ... done</div>
+<div class="line">Stopping infra_spire-server_1  ... done</div>
+<div class="line">Stopping infra_spire-server2_1 ... done</div>
+<div class="line">Removing infra_tests_1         ... done</div>
+<div class="line">Removing infra_workload_1      ... done</div>
+<div class="line">Removing infra_workload2_1     ... done</div>
+<div class="line">Removing infra_spire-server_1  ... done</div>
+<div class="line">Removing infra_spire-server2_1 ... done</div>
 <div class="line">Removing network infra_default</div>
-</div><!-- fragment --> </div></div><!-- contents -->
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md55"></a>
+Execute all automated integration tests</h2>
+<p>On a console run:</p>
+<div class="fragment"><div class="line">$ make integration-tests TAG=latest</div>
+<div class="line"> </div>
+<div class="line">TAG=latest docker-compose up -d</div>
+<div class="line">Building with native build. Learn about native build in Compose here: https://docs.docker.com/go/compose-native-build/</div>
+<div class="line">Creating network &quot;infra_default&quot; with the default driver</div>
+<div class="line">Creating infra_spire-server2_1 ... done</div>
+<div class="line">Creating infra_spire-server_1  ... done</div>
+<div class="line">Creating infra_workload_1      ... done</div>
+<div class="line">Creating infra_workload2_1     ... done</div>
+<div class="line">Creating infra_tests_1         ... done</div>
+<div class="line"> </div>
+<div class="line">...</div>
+<div class="line"> </div>
+<div class="line">6 features passed, 0 failed, 0 skipped</div>
+<div class="line">40 scenarios passed, 0 failed, 0 skipped</div>
+<div class="line">466 steps passed, 0 failed, 0 skipped, 0 undefined</div>
+<div class="line">Took 15m11.601s</div>
+<div class="line">docker-compose down</div>
+<div class="line">WARNING: The TAG variable is not set. Defaulting to a blank string.</div>
+<div class="line">Stopping infra_tests_1         ... done</div>
+<div class="line">Stopping infra_workload2_1     ... done</div>
+<div class="line">Stopping infra_workload_1      ... done</div>
+<div class="line">Stopping infra_spire-server_1  ... done</div>
+<div class="line">Stopping infra_spire-server2_1 ... done</div>
+<div class="line">Removing infra_tests_1         ... done</div>
+<div class="line">Removing infra_workload2_1     ... done</div>
+<div class="line">Removing infra_workload_1      ... done</div>
+<div class="line">Removing infra_spire-server_1  ... done</div>
+<div class="line">Removing infra_spire-server2_1 ... done</div>
+<div class="line">Removing network infra_default</div>
+</div><!-- fragment --><p> The tag might be replaced for another one available in <a href="https://hub.docker.com/r/cspiffe/tests/tags?page=1&amp;ordering=last_updated">dockerhub</a> or locally. </p>
+</div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

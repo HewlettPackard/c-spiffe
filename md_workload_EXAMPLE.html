@@ -68,7 +68,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>Fetch SVID and Bundles for C and C++ example. </p>
-<h2><a class="anchor" id="autotoc_md102"></a>
+<h2><a class="anchor" id="autotoc_md104"></a>
 Client object</h2>
 <div class="fragment"><div class="line">err_t error;</div>
 <div class="line">workloadapi_Client *Client = workloadapi_NewClient(&amp;error);</div>
@@ -76,29 +76,29 @@ Client object</h2>
 <div class="line">workloadapi_Client_SetHeader(client, &quot;workload.spiffe.io&quot;,&quot;true&quot;);</div>
 <div class="line">error = workloadapi_Client_Connect(client);</div>
 </div><!-- fragment --><p> Initialize client with address.</p>
-<h2><a class="anchor" id="autotoc_md103"></a>
+<h2><a class="anchor" id="autotoc_md105"></a>
 SVID X.509</h2>
 <div class="fragment"><div class="line">x509svid_SVID *svid = workloadapi_FetchX509SVID(Client);</div>
 </div><!-- fragment --><p> Fetch SVID with Client object. </p><div class="fragment"><div class="line">svid-&gt;id;            // spiffe ID</div>
 <div class="line">svid-&gt;id.td;         // trust domain object</div>
 <div class="line">svid-&gt;certs;         // stb array of X509* certificate objects</div>
 <div class="line">svid-&gt;private_key;   // private key EVP_PKEY object</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md104"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md106"></a>
 SVID JWT</h2>
 <div class="fragment"><div class="line">jwtsvid_SVID *svid = workloadapi_FetchJWTSVID(Client);</div>
 </div><!-- fragment --><p> Fetch SVID with Client object. </p><div class="fragment"><div class="line">svid-&gt;id;            // spiffe ID</div>
 <div class="line">svid-&gt;id.td;         // trust domain object</div>
 <div class="line">svid-&gt;token;         // raw jwt token</div>
 <div class="line">svid-&gt;claims;        // map for key to json object of claims</div>
-</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md105"></a>
+</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md107"></a>
 Bundles X.509</h2>
 <div class="fragment"><div class="line">x509bundle_Set *set</div>
 <div class="line">    = workloadapi_Client_FetchX509Bundles(client, &amp;error);</div>
-</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md106"></a>
+</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md108"></a>
 Bundles JWT</h2>
 <div class="fragment"><div class="line">jwtbundle_Set *set</div>
 <div class="line">    = workloadapi_Client_FetchJWTBundles(client, &amp;error);</div>
-</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md107"></a>
+</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md109"></a>
 Free</h2>
 <p>Don't forget to free allocated objects. </p><div class="fragment"><div class="line">error = workloadapi_Client_Close(client);</div>
 <div class="line">error = workloadapi_Client_Free(client);</div>
@@ -106,7 +106,7 @@ Free</h2>
 </div><!-- fragment --> <div class="fragment"><div class="line">jwtsvid_SVID_Free(svid);</div>
 </div><!-- fragment --><p> For bundles: </p><div class="fragment"><div class="line">x509bundle_Set_Free(set);</div>
 </div><!-- fragment --> <div class="fragment"><div class="line">jwtbundle_Set_Free(set);</div>
-</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md108"></a>
+</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md110"></a>
 Compiling</h2>
 <p>Always compile with make.</p>
 <p>Run examples: </p><div class="fragment"><div class="line">./c_client svid_type=x509</div>
@@ -115,10 +115,10 @@ Compiling</h2>
 <div class="line">./cpp_client svid_type=jwt</div>
 <div class="line">./c_client_bundle bundle_type=x509</div>
 <div class="line">./c_client_bundle bundle_type=jwt</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md109"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md111"></a>
 Validate JWT SVID</h1>
 <p>Validate a given jwt for C example.</p>
-<h2><a class="anchor" id="autotoc_md110"></a>
+<h2><a class="anchor" id="autotoc_md112"></a>
 Client object</h2>
 <div class="fragment"><div class="line">err_t error;</div>
 <div class="line">workloadapi_Client *Client = workloadapi_NewClient(&amp;error);</div>
@@ -126,7 +126,7 @@ Client object</h2>
 <div class="line">workloadapi_Client_SetHeader(client, &quot;workload.spiffe.io&quot;,&quot;true&quot;);</div>
 <div class="line">error = workloadapi_Client_Connect(client);</div>
 </div><!-- fragment --><p> Initialize client with address.</p>
-<h1><a class="anchor" id="autotoc_md111"></a>
+<h1><a class="anchor" id="autotoc_md113"></a>
 Token and audience</h1>
 <div class="fragment"><div class="line">FILE *f = fopen(argv[1], &quot;r&quot;);</div>
 <div class="line">if(f) {</div>
@@ -135,7 +135,7 @@ Token and audience</h1>
 <div class="line">    // ...</div>
 <div class="line">}</div>
 </div><!-- fragment --><p> Object file f must contain a valid jwt and argv[2] a valid audience string.</p>
-<h2><a class="anchor" id="autotoc_md112"></a>
+<h2><a class="anchor" id="autotoc_md114"></a>
 SVID JWT</h2>
 <div class="fragment"><div class="line">jwtsvid_SVID *svid = workloadapi_FetchJWTSVID(Client);</div>
 </div><!-- fragment --><p> Validate token and get SVID with Client object. </p><div class="fragment"><div class="line">svid-&gt;id;            // spiffe ID</div>
@@ -147,7 +147,7 @@ SVID JWT</h2>
 <div class="line">error = workloadapi_Client_Close(client);</div>
 <div class="line">error = workloadapi_Client_Free(client);</div>
 </div><!-- fragment --><p>= </p>
-<h2><a class="anchor" id="autotoc_md113"></a>
+<h2><a class="anchor" id="autotoc_md115"></a>
 Compiling</h2>
 <p>Always compile with make.</p>
 <p>Run examples: </p><div class="fragment"><div class="line">./c_client_validate token1.txt spiffe://example.org/audience1</div>

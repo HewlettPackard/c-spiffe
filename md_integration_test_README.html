@@ -67,60 +67,71 @@ $(function() {
 <div class="title">Integration tests </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>This folder contains all automated integration tests scripts. They were all implemented using Python, with <a href="https://behave.readthedocs.io/">Behave</a> framework.</p>
-<h1><a class="anchor" id="autotoc_md62"></a>
+<div class="textblock"><p>This folder contains all automated integration tests scripts. They were all implemented using Python, with <a href="https://behave.readthedocs.io/">Behave</a> framework and Shell scripts. All scenarios are written in Gherkin and can be found at <code>/c-spiffe/integration_test/features</code>.</p>
+<h1><a class="anchor" id="autotoc_md65"></a>
 Installing dependencies</h1>
 <ul>
 <li><a href="https://docs.docker.com/install/">Docker</a></li>
 <li><a href="https://docs.docker.com/compose/install/">Docker Compose</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md63"></a>
-Building</h1>
-<div class="fragment"><div class="line">$ cd infra/</div>
-<div class="line">$ make build</div>
-<div class="line"> </div>
-<div class="line">    Successfully built</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md64"></a>
+<h1><a class="anchor" id="autotoc_md66"></a>
 Running the tests</h1>
-<div class="fragment"><div class="line">$ make integration-tests</div>
+<p>Inside <code>c-spiffe/infra</code> run: </p><div class="fragment"><div class="line">$ make integration-tests TAG=latest</div>
 <div class="line"> </div>
-<div class="line">    docker-compose up -d</div>
+<div class="line">    TAG=latest docker-compose up -d</div>
 <div class="line">    Building with native build. Learn about native build in Compose here: https://docs.docker.com/go/compose-native-build/</div>
 <div class="line">    Creating network &quot;infra_default&quot; with the default driver</div>
-<div class="line">    Creating infra_spire-server_1 ... done</div>
-<div class="line">    Creating infra_workload_1     ... done</div>
-<div class="line">    Creating infra_tests_1        ... done</div>
+<div class="line">    Creating infra_spire-server2_1 ... done</div>
+<div class="line">    Creating infra_spire-server_1  ... done</div>
+<div class="line">    Creating infra_workload_1      ... done</div>
+<div class="line">    Creating infra_workload2_1     ... done</div>
+<div class="line">    Creating infra_tests_1         ... done</div>
 <div class="line"> </div>
 <div class="line">    ....</div>
 <div class="line"> </div>
-<div class="line">    4 features passed, 0 failed, 0 skipped</div>
-<div class="line">    14 scenarios passed, 0 failed, 6 skipped</div>
-<div class="line">    72 steps passed, 0 failed, 32 skipped, 0 undefined</div>
-<div class="line">    Took 1m20.920s</div>
+<div class="line">    6 features passed, 0 failed, 0 skipped</div>
+<div class="line">    40 scenarios passed, 0 failed, 0 skipped</div>
+<div class="line">    466 steps passed, 0 failed, 0 skipped, 0 undefined</div>
+<div class="line">    Took 15m11.601s</div>
 <div class="line">    docker-compose down</div>
-<div class="line">    Stopping infra_tests_1        ... done</div>
-<div class="line">    Stopping infra_workload_1     ... done</div>
-<div class="line">    Stopping infra_spire-server_1 ... done</div>
-<div class="line">    Removing infra_tests_1        ... done</div>
-<div class="line">    Removing infra_workload_1     ... done</div>
-<div class="line">    Removing infra_spire-server_1 ... done</div>
+<div class="line">    WARNING: The TAG variable is not set. Defaulting to a blank string.</div>
+<div class="line">    Stopping infra_tests_1         ... done</div>
+<div class="line">    Stopping infra_workload2_1     ... done</div>
+<div class="line">    Stopping infra_workload_1      ... done</div>
+<div class="line">    Stopping infra_spire-server_1  ... done</div>
+<div class="line">    Stopping infra_spire-server2_1 ... done</div>
+<div class="line">    Removing infra_tests_1         ... done</div>
+<div class="line">    Removing infra_workload2_1     ... done</div>
+<div class="line">    Removing infra_workload_1      ... done</div>
+<div class="line">    Removing infra_spire-server_1  ... done</div>
+<div class="line">    Removing infra_spire-server2_1 ... done</div>
 <div class="line">    Removing network infra_default</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md65"></a>
+</div><!-- fragment --><p> The tag might be replaced for another one available in <a href="https://hub.docker.com/r/cspiffe/tests/tags?page=1&amp;ordering=last_updated">dockerhub</a> or locally.</p>
+<h2><a class="anchor" id="autotoc_md67"></a>
 Details inside &lt;tt&gt;$ make integration-tests&lt;/tt&gt;</h2>
 <p>This command encapsulates some steps:</p><ol type="1">
-<li>Start <code>infra_tests</code>, <code>inrfa_spire-server</code> and <code>infra_workload</code> containers</li>
-<li>Start <code>spire-server</code> process inside <code>infra_spire-server</code> container</li>
-<li>Create <code>spire-server</code> entry</li>
-<li>Generate <code>spire-server</code> token which is copied into <code>infra_tests</code> container</li>
+<li>Start <code>infra_tests</code>, <code>infra_spire-server</code>, <code>infra_workload</code>, <code>infra_spire-server2</code> and <code>infra_workload2</code> containers<ul>
+<li>If the images don't exist in the machine, they are automatically pulled:<ul>
+<li><code>cspiffe/spire-server:latest</code></li>
+<li><code>cspiffe/workload:tag</code>*</li>
+<li><code>cspiffe/tests:tag</code>*</li>
+<li>In these cases, the <code>tag</code> is replaced as the <code>TAG</code> argument passed when executing the command</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Configure and enable ssh service for all containers (access granted for <code>infra_tests</code> to access the other containers)</li>
+<li>Build binary files examples (the interface to use c-spiffe lib) inside <code>infra_workload</code> and <code>infra_workload2</code> containers</li>
 <li>Inside <code>infra_tests</code> container, run <code>run-behave-tests.sh</code> script, which encapsulates the following:<ul>
 <li>Build binary files examples (the interface to use c-spiffe lib)</li>
 <li>Run behave tests<ul>
 <li>Before all the tests are run, this stage is also responsible for starting <code>spire-agent</code> process inside <code>infra_tests</code> container and connect it to the <code>spire-server</code> running inside the <code>infra_spire-server</code> container</li>
+<li>For some particular scenarios, another setup might be executed like starting more <code>spire-agent</code> process inside <code>infra_workload</code> and <code>infra_workload2</code> or a second <code>spire-server</code> inside <code>infra_spire-server2</code></li>
 </ul>
 </li>
 </ul>
 </li>
-<li>Stop <code>infra_tests</code>, <code>infra_spire-server</code> and <code>infra_workload</code> containers </li>
+<li>Stop <code>infra_tests</code>, <code>infra_spire-server</code>, <code>infra_workload</code>, <code>infra_spire-server2</code> and <code>infra_workload2</code> containers </li>
 </ol>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
