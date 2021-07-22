@@ -1,4 +1,4 @@
-ARG TAG=Test_412_find_how_to_unfederate_a_spire_server
+ARG TAG=latest
 FROM cspiffe/workload:${TAG}
 
 RUN apt-get update \
