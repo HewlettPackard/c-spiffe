@@ -21,6 +21,12 @@ def step_impl(context, container_name):
     remove_entry(container_name, context.workload_c)
 
 
+@step('I remove "{trust_domain}" federation association from "{host_name}"')
+def step_impl(context, host_name, trust_domain):
+    os.system("ssh root@%s \"spire-server bundle delete -id spiffe://%s -mode dissociate\"" % (host_name, trust_domain))
+    time.sleep(7)
+
+
 @step('Federation is activated between "{hostname1}" and "{hostname2}"')
 def step_impl(context, hostname1, hostname2):
     bundle1_path, bundle2_path = "/opt/spire/server1.bundle", "/opt/spire/server2.bundle"
