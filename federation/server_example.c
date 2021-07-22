@@ -5,7 +5,6 @@
 int main(void)
 {
     err_t error = NO_ERROR;
-    /// TODO: get names as argument
     char domain_name[] = "example.org";
     char cert_filename[] = "./tests/resources/example.org.crt";
     char key_filename[] = "./tests/resources/example.org.key";
