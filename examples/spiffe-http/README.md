@@ -85,7 +85,7 @@ spire-server entry create -spiffeID spiffe://example.org/server \
 
 Client: 
 ```bash
-./spire-server entry create -spiffeID spiffe://example.org/client \
+spire-server entry create -spiffeID spiffe://example.org/client \
                             -parentID spiffe://example.org/host \
                             -selector unix:user:client-workload
 ```
