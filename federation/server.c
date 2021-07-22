@@ -206,7 +206,6 @@ spiffebundle_EndpointInfo *spiffebundle_EndpointServer_AddHttpsWebEndpoint(
         *error = ERR_CERTIFICATE_VALIDATION;
         return NULL;
     }
-    /// TODO: validate non-svid
     priv_key = x509svid_validatePrivateKey(priv_key, certs[0], error);
     if(!priv_key) {
         *error = ERR_PRIVKEY_VALIDATION;
@@ -260,7 +259,6 @@ err_t spiffebundle_EndpointServer_SetHttpsWebEndpointAuth(
         return ERR_CERTIFICATE_VALIDATION;
     }
     err_t error = NO_ERROR;
-    /// TODO: validate non-svid
     priv_key = x509svid_validatePrivateKey(priv_key, certs[0], &error);
     if(!priv_key) {
         return ERR_PRIVKEY_VALIDATION;
