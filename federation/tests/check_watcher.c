@@ -192,10 +192,10 @@ START_TEST(test_spiffebundle_Watcher_Start)
 
     err = spiffebundle_Watcher_Start(watcher);
     ck_assert_uint_eq(err, NO_ERROR);
-    
+
     struct timespec sleep_time = { 0, 200000000 };
     nanosleep(&sleep_time, NULL);
-    
+
     err = spiffebundle_Watcher_Stop(NULL);
     ck_assert_uint_eq(err, ERR_STOPPING);
 
@@ -223,18 +223,19 @@ START_TEST(test_spiffebundle_Watcher_GetBundleForTrustDomain)
     spiffebundle_Watcher *watcher = spiffebundle_Watcher_New();
     spiffeid_TrustDomain td = { "example.org" };
     err_t err;
-    //not found
+    // not found
     spiffebundle_Bundle *bundle
         = spiffebundle_Watcher_GetBundleForTrustDomain(watcher, td, &err);
     ck_assert_ptr_eq(bundle, NULL);
     ck_assert_uint_ne(err, NO_ERROR);
-    
-    //null tests
+
+    // null tests
     spiffeid_TrustDomain null_td = { NULL };
     bundle = spiffebundle_Watcher_GetBundleForTrustDomain(NULL, td, &err);
     ck_assert_uint_ne(err, NO_ERROR);
     ck_assert_ptr_eq(bundle, NULL);
-    bundle = spiffebundle_Watcher_GetBundleForTrustDomain(watcher, null_td, &err);
+    bundle
+        = spiffebundle_Watcher_GetBundleForTrustDomain(watcher, null_td, &err);
     ck_assert_uint_ne(err, NO_ERROR);
     ck_assert_ptr_eq(bundle, NULL);
 
