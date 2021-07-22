@@ -26,7 +26,7 @@ def before_all(context):
 
 
 def after_all(context):
-    # os.system("pkill -9 spire-agent")
+    os.system("pkill -9 spire-agent")
     os.system(PARENT_PATH + "bash-general-scripts/clean.sh")
 
 
@@ -43,12 +43,12 @@ def before_feature(context, feature):
         os.system(PARENT_PATH + "bash-general-scripts/clean.sh server")
 
 
-# def after_feature(context, feature):
-#     if "federation" in feature.tags:
-#         context.execute_steps('''
-#             Then The server is turned on
-#             And  The agent is turned on
-#         ''') 
+def after_feature(context, feature):
+    if "federation" in feature.tags:
+        context.execute_steps('''
+            Then The server is turned on
+            And  The agent is turned on
+        ''') 
 
 
 def before_scenario(context, scenario):
@@ -60,23 +60,23 @@ def before_scenario(context, scenario):
         context.current_workload = context.workload_c
 
 
-# def after_scenario(context, scenario):
-#     if any(tag in scenario.tags for tag in (context.workload_b, context.workload_c)):
-#         host_number = ""
-#         if context.current_workload == context.workload_c:
-#             host_number = "2"
-#             os.system(PARENT_PATH + "bash-general-scripts/clean.sh server")
-#         os.system("ssh root@workload%s \"rm -rf %s/agent/%s\"" % (host_number, context.spire_conf, context.current_workload))
-#         context.current_workload = ""
-#     if "updated-conf" in scenario.tags:
-#         context.execute_steps('''
-#             Given I set the "server" "port" to "8081" inside "spire-server2" container
-#             And   I set the "server" "trust domain" to "example.org" inside "spire-server2" container
-#             And   I set the "agent" "port" to "8081" inside "workload2" container
-#             And   I set the "agent" "trust domain" to "example.org" inside "workload2" container
-#             And   I set the "agent" "server address" to "spire-server" inside "workload2" container
-#         ''')
-#         os.system(PARENT_PATH + "bash-general-scripts/clean.sh")
-#     if "entry-removed" in scenario.tags:
-#         if context.workload_b in scenario.tags:
-#             os.system("ssh root@spire-server spire-server entry create -parentID spiffe://example.org/myagent -spiffeID spiffe://example.org/myworkloadB -selector unix:user:server-workload")
+def after_scenario(context, scenario):
+    if any(tag in scenario.tags for tag in (context.workload_b, context.workload_c)):
+        host_number = ""
+        if context.current_workload == context.workload_c:
+            host_number = "2"
+            os.system(PARENT_PATH + "bash-general-scripts/clean.sh server")
+        os.system("ssh root@workload%s \"rm -rf %s/agent/%s\"" % (host_number, context.spire_conf, context.current_workload))
+        context.current_workload = ""
+    if "updated-conf" in scenario.tags:
+        context.execute_steps('''
+            Given I set the "server" "port" to "8081" inside "spire-server2" container
+            And   I set the "server" "trust domain" to "example.org" inside "spire-server2" container
+            And   I set the "agent" "port" to "8081" inside "workload2" container
+            And   I set the "agent" "trust domain" to "example.org" inside "workload2" container
+            And   I set the "agent" "server address" to "spire-server" inside "workload2" container
+        ''')
+        os.system(PARENT_PATH + "bash-general-scripts/clean.sh")
+    if "entry-removed" in scenario.tags:
+        if context.workload_b in scenario.tags:
+            os.system("ssh root@spire-server spire-server entry create -parentID spiffe://example.org/myagent -spiffeID spiffe://example.org/myworkloadB -selector unix:user:server-workload")

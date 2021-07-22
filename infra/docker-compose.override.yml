@@ -9,11 +9,5 @@ services:
   spire-server:
   spire-server2:
   workload:
-    volumes: 
-      - ..:/mnt/c-spiffe
   workload2:
-    volumes: 
-    - ..:/mnt/c-spiffe
   tests:
-    volumes: 
-    - ..:/mnt/c-spiffe

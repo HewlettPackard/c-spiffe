@@ -38,4 +38,4 @@ integration-tests:
 	docker exec -w /mnt/c-spiffe/infra/tests infra_workload2_1 ./build-examples.sh
 
 	docker exec -w /mnt/c-spiffe/integration_test/helpers/bash-general-scripts infra_tests_1 ./run-behave-tests.sh
-	# docker-compose down
+	docker-compose down
