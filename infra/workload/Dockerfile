@@ -24,8 +24,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libcurl4-openssl-dev;\
 apt-get clean
 
-ARG BRANCH=master
-RUN cd /mnt && git clone -b ${BRANCH} https://github.com/arianalima/c-spiffe.git
+ARG BRANCH=Test_412_find_how_to_unfederate_a_spire_server
+RUN cd /mnt && git clone -b ${BRANCH} https://github.com/marcusvtms/c-spiffe.git
 RUN cd ${C_SPIFFE_DIR} && git pull
 
 RUN mkdir -p ${C_SPIFFE_DIR}/build/
