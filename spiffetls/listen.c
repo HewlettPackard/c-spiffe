@@ -193,9 +193,6 @@ SSL *spiffetls_PollWithMode(in_port_t port, spiffetls_ListenMode *mode,
         goto error;
     }
 
-    struct sockaddr_in addr_tmp;
-    socklen_t len;
-
     int nfds = 2;
     struct pollfd pfds[2];
 
@@ -220,6 +217,8 @@ SSL *spiffetls_PollWithMode(in_port_t port, spiffetls_ListenMode *mode,
         /// error? //shouldn't happen
     }
 
+    struct sockaddr_in addr_tmp;
+    socklen_t len;
     const int clientfd = accept(sockfd, (struct sockaddr *) &addr_tmp, &len);
     if(clientfd < 0) {
         // could not accept client
