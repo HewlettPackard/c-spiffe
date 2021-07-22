@@ -78,7 +78,7 @@ Create the registration entries for the client and server workloads:
 
 Server:
 ```bash
-./spire-server entry create -spiffeID spiffe://example.org/server \
+spire-server entry create -spiffeID spiffe://example.org/server \
                             -parentID spiffe://example.org/host \
                             -selector unix:user:server-workload
 ```
