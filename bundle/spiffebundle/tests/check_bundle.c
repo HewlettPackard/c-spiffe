@@ -658,6 +658,10 @@ START_TEST(test_spiffebundle_Bundle_Marshal)
 
     spiffebundle_Bundle_Free(bundle);
     arrfree(str);
+    str = spiffebundle_Bundle_Marshal(NULL, &err);
+
+    ck_assert_uint_eq(err, ERR_NULL_BUNDLE);
+    ck_assert_ptr_eq(str, NULL);
 }
 END_TEST
 
