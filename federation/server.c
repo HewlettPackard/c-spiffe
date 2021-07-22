@@ -451,9 +451,9 @@ size_t read_HTTPS(SSL *conn, const char *buf, size_t buf_size,
     return buflen;
 }
 
-char *HTTP_OK = "HTTP/1.1 200 OK";
-char *HTTP_NOTFOUND = "HTTP/1.1 404 Not Found";
-char *HTTP_METHODNOTALLOWED = "HTTP/1.1 405 Method Not Allowed";
+const char *HTTP_OK = "HTTP/1.1 200 OK";
+const char *HTTP_NOTFOUND = "HTTP/1.1 404 Not Found";
+const char *HTTP_METHODNOTALLOWED = "HTTP/1.1 405 Method Not Allowed";
 
 err_t write_HTTPS(SSL *conn, const char *response, const char **headers,
                   size_t num_headers, const char *content)
