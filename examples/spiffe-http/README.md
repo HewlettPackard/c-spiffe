@@ -107,5 +107,5 @@ If the server workload encounters a peer with a different SPIFFE ID, it will abo
 The server log shows
 
 ```
-spiffetls_ListenWithMode() failed: error 6
+spiffetls_ListenWithMode() failed: error 25
 ```
