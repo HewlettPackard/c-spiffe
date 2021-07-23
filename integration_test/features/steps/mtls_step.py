@@ -5,12 +5,13 @@ import socket
 
 from hamcrest import assert_that, is_, is_not
 from behave.matchers import register_type
-from utils import parse_nullable_string, is_entry_created, remove_entry
+from utils import parse_nullable_string, is_entry_created, remove_entry, parse_optional
 
 
 parse_nullable_string.pattern = r'.*'
 register_type(NullableString=parse_nullable_string)
-
+parse_optional.pattern = r'\s?\w*\s?'
+register_type(optional=parse_optional)
 
 @step('The second "{process}" is turned off inside "{container_name}" container')
 def step_impl(context, process, container_name):
@@ -124,10 +125,13 @@ def step_impl(context, container_name):
         os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-create-entries.sh 2")
 
 
-@then('I check that mTLS connection did not succeed')
-def step_impl(context):
+@then('I check that mTLS connection did not succeed{witho:optional}"{error_info:NullableString}"')
+def step_impl(context,witho, error_info):
     assert_that(context.result.find("Server replied:"), is_(-1), "Unexpected response from server: %s" % context.result)
-    assert_that(context.result.find("could not create TLS connection"), is_not(-1), "Unexpected error from server: %s" % context.result)
+    if error_info:
+        assert_that(context.result.find("Unable to read server response: remote error: tls: bad certificate"), is_not(-1), "Unexpected error from server: %s" % context.result)
+    else:
+        assert_that(context.result.find("could not create TLS connection"), is_not(-1), "Unexpected error from server: %s" % context.result)
 
 
 @step('The "{workload_id}" entry is removed from "{container_name}"')
