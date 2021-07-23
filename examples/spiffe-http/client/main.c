@@ -16,7 +16,7 @@ static size_t write_function(void *ptr, size_t size, size_t nmemb,
     return len;
 }
 
-int main(int argc, char **argv)
+int main(void)
 {
     err_t err;
     workloadapi_X509Source *x509source = workloadapi_NewX509Source(NULL, &err);
@@ -89,6 +89,7 @@ int main(int argc, char **argv)
     if(res != CURLE_OK) {
         printf("res: %d\n", res);
         printf("curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+        exit(-1);
     }
 
     printf("%s\n", response);
