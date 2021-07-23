@@ -41,6 +41,31 @@ Feature: Federation X509 Bundle
             |     c     |      c      |
 
 
+    @Sprint18 @updated-conf @WlC
+    Scenario Outline: FXB_002 - Check that mtls connection between two WLs is lost if the servers are removed of the Federation
+        Given I set federation config to "example.org" inside "spire-server2"
+        And   I set federation config to "example2.org" inside "spire-server"
+        And   The server is turned on
+        And   The second server is turned on inside "spire-server2" container
+        And   Federation is activated between "spire-server" and "spire-server2"
+        And   The agent is turned on
+        And   The second agent is turned on inside "workload2" container with the second trust domain        
+        When  I fetch external "X509" "SVID"
+        Then  I check that the "SVID" is returned correctly
+        When  I fetch "X509" "SVID"
+        Then  I check that the "SVID" is returned correctly
+        When  The "<listen_type>"-tls-listen is activated inside "workload2" container
+        And   I send "Hello World!" to "workload2" container through "<dial_type>"-tls-dial
+        Then  I check that "Hello World!" was the answer from tls-listen
+        Given I remove "example2.org" federation association from "spire-server"
+        When I send "Hello World!" to "workload2" container through "<dial_type>"-tls-dial
+        When I send "Hello World!" to "workload2" container through "<dial_type>"-tls-dial
+        Then  I check that mTLS connection did not succeed
+        Examples:
+            | dial_type | listen_type |
+            | go        | go          |
+
+
     @Sprint12 @updated-conf @WlC
     Scenario Outline: FXB_003 - Check that it is not possible to establish mtls connection between two WLs connected to different servers that are not in a Federation
         Given The server is turned on
