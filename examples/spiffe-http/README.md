@@ -97,7 +97,7 @@ su - server-workload -c "./spiffe_http_server"
 
 ### 3. Run the client
 ```bash
-./spiffe_http_client
+su - client-workload -c "./spiffe_http_client"
 ```
 
 The server should display a log `Request received` and client `Success!`
