@@ -92,7 +92,7 @@ spire-server entry create -spiffeID spiffe://example.org/client \
 
 ### 2. Start the server
 ```bash
-./spiffe_http_server
+su - server-workload -c "./spiffe_http_server"
 ```
 
 ### 3. Run the client
