@@ -36,7 +36,7 @@ SSL *spiffetls_ListenWithMode(in_port_t port, spiffetls_ListenMode *mode,
  * \param config [in] Connection configuration.
  * \param sock [out] Server socket fd.
  * \param control_sock [in] socket fd for signaling exit.
- * \param timeout [in] timeout used internally with poll().
+ * \param timeout [in] timeout (in milliseconds) used internally with poll().
  * \param err [out] Variable to get information in the event of error.
  * \returns Connected server TLS object pointer if successful, NULL otherwise.
  */                  

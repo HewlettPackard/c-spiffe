@@ -19,7 +19,7 @@ extern "C" {
 typedef struct spiffebundle_EndpointServer spiffebundle_EndpointServer;
 typedef struct spiffebundle_EndpointInfo spiffebundle_EndpointInfo;
 
-uint SPIFFE_DEFAULT_HTTPS_PORT = 443;
+const uint SPIFFE_DEFAULT_HTTPS_PORT = 443;
 
 typedef struct spiffebundle_EndpointThread {
     spiffebundle_EndpointInfo *endpoint_info;
