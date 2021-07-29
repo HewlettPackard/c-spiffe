@@ -26,6 +26,19 @@ set(SERVER_JWT
 add_executable(spiffe_jwt_server "${SERVER_JWT}")
 target_link_libraries(spiffe_jwt_server spiffetls)
 
+# spiffe-jwt-using-proxy
+set(CLIENT_JWT_PROXY
+    spiffe-jwt-using-proxy/client/main.c
+)
+add_executable(spiffe_jwt_proxy_client "${CLIENT_JWT_PROXY}")
+target_link_libraries(spiffe_jwt_proxy_client spiffetls curl)
+
+set(SERVER_JWT_PROXY
+    spiffe-jwt-using-proxy/server/main.c
+)
+add_executable(spiffe_jwt_proxy_server "${SERVER_JWT_PROXY}")
+target_link_libraries(spiffe_jwt_proxy_server spiffetls)
+
 # spiffe-http
 set(CLIENT_HTTP
     spiffe-http/client/main.c
