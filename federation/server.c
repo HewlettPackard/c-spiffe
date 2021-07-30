@@ -653,7 +653,7 @@ err_t spiffebundle_EndpointServer_StopEndpointThread(
     spiffebundle_EndpointInfo *e_info = server->endpoints[idx].value;
     mtx_unlock(&server->mutex);
     mtx_lock(&e_info->mutex);
-    int idx = hmgeti(e_info->threads, port);
+    idx = hmgeti(e_info->threads, port);
     if(idx < 0) {
         mtx_unlock(&e_info->mutex);
         mtx_unlock(&server->mutex);
