@@ -20,7 +20,7 @@ install(
 
 # Install higher level header:
 set(HEADERS_MOD_LOGGER
-${PROJECT_SOURCE_DIR}/logger.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/logger/logger.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/*.h
 install(
