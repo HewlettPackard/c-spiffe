@@ -35,13 +35,11 @@ spiffebundle_EndpointServer *spiffebundle_EndpointServer_New()
     spiffebundle_EndpointServer *new_server = calloc(1, sizeof(*new_server));
 
     mtx_init(&new_server->mutex, mtx_plain);
-    mtx_lock(&new_server->mutex);
-    {
-        sh_new_strdup(new_server->endpoints);
-        sh_new_strdup(new_server->bundle_sources);
-        sh_new_strdup(new_server->bundle_tds);
-    }
-    mtx_unlock(&new_server->mutex);
+    
+    sh_new_strdup(new_server->endpoints);
+    sh_new_strdup(new_server->bundle_sources);
+    sh_new_strdup(new_server->bundle_tds);
+
     return new_server;
 }
 
@@ -142,7 +140,7 @@ err_t spiffebundle_EndpointServer_UpdateBundle(
 
     mtx_lock(&server->mutex);
     {
-        int idx = shgeti(server->bundle_sources, path);
+        const int idx = shgeti(server->bundle_sources, path);
         if(idx < 0) { // not found
             mtx_unlock(&server->mutex);
             return ERR_NOT_FOUND;
@@ -170,7 +168,7 @@ err_t spiffebundle_EndpointServer_RemoveBundle(
 
     mtx_lock(&server->mutex);
     {
-        int idx = shgeti(server->bundle_sources, path);
+        const int idx = shgeti(server->bundle_sources, path);
         if(idx < 0) { // not found
             mtx_unlock(&server->mutex);
             return ERR_NOT_FOUND;
@@ -213,7 +211,7 @@ spiffebundle_EndpointInfo *spiffebundle_EndpointServer_AddHttpsWebEndpoint(
     }
 
     mtx_lock(&server->mutex);
-    int idx = shgeti(server->endpoints, base_url);
+    const int idx = shgeti(server->endpoints, base_url);
     if(idx >= 0) {
         EVP_PKEY_free(priv_key);
         mtx_unlock(&server->mutex);
@@ -264,7 +262,7 @@ err_t spiffebundle_EndpointServer_SetHttpsWebEndpointAuth(
         return ERR_PRIVKEY_VALIDATION;
     }
     mtx_lock(&server->mutex);
-    int idx = shgeti(server->endpoints, base_url);
+    const int idx = shgeti(server->endpoints, base_url);
     if(idx < 0) {
         EVP_PKEY_free(priv_key);
         mtx_unlock(&server->mutex);
@@ -309,7 +307,7 @@ spiffebundle_EndpointInfo *spiffebundle_EndpointServer_AddHttpsSpiffeEndpoint(
         return NULL;
     }
     mtx_lock(&server->mutex);
-    int idx = shgeti(server->endpoints, base_url);
+    const int idx = shgeti(server->endpoints, base_url);
     if(idx >= 0) {
         mtx_unlock(&server->mutex);
         *error = ERR_EXISTS;
@@ -341,7 +339,7 @@ err_t spiffebundle_EndpointServer_SetHttpsSpiffeEndpointSource(
         return ERR_NULL_SVID;
     }
     mtx_lock(&server->mutex);
-    int idx = shgeti(server->endpoints, base_url);
+    const int idx = shgeti(server->endpoints, base_url);
     if(idx < 0) {
         mtx_unlock(&server->mutex);
         return ERR_NOT_FOUND;
@@ -367,7 +365,7 @@ spiffebundle_EndpointInfo *spiffebundle_EndpointServer_GetEndpointInfo(
         return NULL;
     }
     mtx_lock(&server->mutex);
-    int idx = shgeti(server->endpoints, base_url);
+    const int idx = shgeti(server->endpoints, base_url);
     if(idx < 0) {
         mtx_unlock(&server->mutex);
         *error = ERR_NOT_FOUND;
@@ -391,7 +389,7 @@ err_t spiffebundle_EndpointServer_RemoveEndpoint(
         return ERR_BAD_ARGUMENT;
     }
     mtx_lock(&server->mutex);
-    int idx = shgeti(server->endpoints, base_url);
+    const int idx = shgeti(server->endpoints, base_url);
     if(idx < 0) {
         mtx_unlock(&server->mutex);
         return ERR_NOT_FOUND;
@@ -412,7 +410,6 @@ size_t read_HTTPS(SSL *conn, const char *buf, size_t buf_size,
                   struct phr_header *headers, size_t *num_headers,
                   size_t *prevbuflen, err_t *err)
 {
-    int pret;
     size_t buflen = *prevbuflen;
     ssize_t rret;
     size_t _num_headers = *num_headers;
@@ -430,7 +427,7 @@ size_t read_HTTPS(SSL *conn, const char *buf, size_t buf_size,
         buflen += rret;
         _num_headers = *num_headers;
         // parse
-        pret = phr_parse_request(buf, buflen, method, method_len, path,
+        int pret = phr_parse_request(buf, buflen, method, method_len, path,
                                  path_len, minor_version, headers,
                                  &_num_headers, *prevbuflen);
         if(pret > 0) {
@@ -472,7 +469,7 @@ err_t write_HTTPS(SSL *conn, const char *response, const char **headers,
     string_t message = string_new(response);
     message = string_push(message, "\r\n");
 
-    for(int i = 0; i < num_headers; ++i) {
+    for(size_t i = 0; i < num_headers; ++i) {
         message = string_push(message, headers[i]);
         message = string_push(message, "\r\n");
     }
@@ -559,7 +556,8 @@ int serve_function(void *arg)
     while(e_thread->active) {
         err_t err = NO_ERROR;
         if(once) { // notify main thread
-            write(e_thread->control_socks[1], "OK!\r\n", 6);
+            const char OK_str[] = "OK!\r\n";
+            write(e_thread->control_socks[1], OK_str, sizeof(OK_str) +1);
             once = false;
         }
         // RACE
@@ -579,6 +577,7 @@ int serve_function(void *arg)
     return NO_ERROR;
 }
 
+const int MAX_PORT = (1 << 16) -1;
 // Serve bundles using the set up protocol. Spawns a thread.
 err_t spiffebundle_EndpointServer_ServeEndpoint(
     spiffebundle_EndpointServer *server, const char *base_url, uint port)
@@ -589,12 +588,12 @@ err_t spiffebundle_EndpointServer_ServeEndpoint(
     if(!base_url) {
         return ERR_BAD_ARGUMENT;
     }
-    if(port == 0 || port >= 1 << 16) { // invalid port number
+    if(port == 0 || port > MAX_PORT) { // invalid port number
         return ERR_BAD_PORT;
     }
     mtx_lock(&server->mutex);
     {
-        int idx = shgeti(server->endpoints, base_url);
+        const int idx = shgeti(server->endpoints, base_url);
         if(idx < 0) { // endpoint not found
             mtx_unlock(&server->mutex);
             return ERR_NOT_FOUND;
@@ -612,7 +611,7 @@ err_t spiffebundle_EndpointServer_ServeEndpoint(
         e_thread->endpoint_info = e_info;
         e_thread->active = true;
 
-        int res = socketpair(AF_UNIX, SOCK_STREAM, 0, e_thread->control_socks);
+        socketpair(AF_UNIX, SOCK_STREAM, 0, e_thread->control_socks);
 
         e_thread->config.base_TLS_conf = NULL; // noop
         e_thread->config.listener_fd = 0;      // noop
@@ -624,7 +623,7 @@ err_t spiffebundle_EndpointServer_ServeEndpoint(
 
         mtx_unlock(&e_info->mutex);
         char buff[20];
-        res = read(e_thread->control_socks[0], buff, 6);
+        read(e_thread->control_socks[0], buff, 6);
     }
     mtx_unlock(&server->mutex);
 
@@ -654,15 +653,15 @@ err_t spiffebundle_EndpointServer_StopEndpointThread(
     spiffebundle_EndpointInfo *e_info = server->endpoints[idx].value;
     mtx_unlock(&server->mutex);
     mtx_lock(&e_info->mutex);
-    int l = hmgeti(e_info->threads, port);
-    if(l < 0) {
+    int idx = hmgeti(e_info->threads, port);
+    if(idx < 0) {
         mtx_unlock(&e_info->mutex);
         mtx_unlock(&server->mutex);
         return ERR_BAD_PORT;
     }
-    spiffebundle_EndpointThread *e_thread = e_info->threads[l].value;
+    spiffebundle_EndpointThread *e_thread = e_info->threads[idx].value;
     e_thread->active = false;
-    int res = write(e_thread->control_socks[0], "END\r\n", 6);
+    write(e_thread->control_socks[0], "END\r\n", 6);
     /// LOG: result
 
     // remove thread from map
@@ -695,7 +694,7 @@ err_t spiffebundle_EndpointServer_StopEndpoint(
     spiffebundle_EndpointThread **threads_to_join = NULL;
     mtx_lock(&server->mutex);
     {
-        int idx = shgeti(server->endpoints, base_url);
+        const int idx = shgeti(server->endpoints, base_url);
         if(idx < 0) {
             mtx_unlock(&server->mutex);
             return ERR_NOT_FOUND;
@@ -707,7 +706,7 @@ err_t spiffebundle_EndpointServer_StopEndpoint(
             spiffebundle_EndpointThread *e_thread = e_info->threads[j].value;
             if(e_thread->active) {
                 e_thread->active = false;
-                int res = write(e_thread->control_socks[0], "END\r\n", 6);
+                write(e_thread->control_socks[0], "END\r\n", 6);
                 arrput(threads_to_join, e_thread);
             }
         }
@@ -743,7 +742,7 @@ err_t spiffebundle_EndpointServer_Stop(spiffebundle_EndpointServer *server)
             spiffebundle_EndpointThread *e_thread = e_info->threads[j].value;
             if(e_thread->active) {
                 e_thread->active = false;
-                int res = write(e_thread->control_socks[0], "END\r\n", 6);
+                write(e_thread->control_socks[0], "END\r\n", 6);
                 arrput(threads_to_join, e_thread);
             }
         }
