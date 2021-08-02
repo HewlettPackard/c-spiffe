@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['handleconnection_278',['handleConnection',['../spiffe-jwt_2server_2main_8c.html#acfffb16f66925e9f8ba72c3295a71bc3',1,'handleConnection(SSL *conn, jwtbundle_Source *source, string_arr_t audience):&#160;main.c'],['../spiffe-tls_2server_2main_8c.html#a26f0e8980c724d7a1f706e92877ba897',1,'handleConnection(SSL *conn):&#160;main.c']]],
+  ['handleconnection_278',['handleConnection',['../spiffe-http_2server_2main_8c.html#a26f0e8980c724d7a1f706e92877ba897',1,'handleConnection(SSL *conn):&#160;main.c'],['../spiffe-jwt_2server_2main_8c.html#acfffb16f66925e9f8ba72c3295a71bc3',1,'handleConnection(SSL *conn, jwtbundle_Source *source, string_arr_t audience):&#160;main.c'],['../spiffe-tls_2server_2main_8c.html#a26f0e8980c724d7a1f706e92877ba897',1,'handleConnection(SSL *conn):&#160;main.c']]],
   ['hash_5ftable_279',['hash_table',['../structstbds__array__header.html#a760159660cc88953c75743d4d806b8c2',1,'stbds_array_header']]],
   ['header_280',['header',['../structjwtsvid__JWT.html#a8682a8a73f5554dd3bd26c28f953cb87',1,'jwtsvid_JWT']]],
   ['header_5fstr_281',['header_str',['../structjwtsvid__JWT.html#af5137185f48441e409f8cef841eb70b0',1,'jwtsvid_JWT']]],
@@ -23,7 +23,8 @@ var searchData=
   ['hmputs_298',['hmputs',['../stb__ds_8h.html#ad687321043a6b1c83bdee35ea64c39b5',1,'stb_ds.h']]],
   ['hookmtlsclientconfig_5fst_299',['hookMTLSClientConfig_st',['../structhookMTLSClientConfig__st.html',1,'']]],
   ['hooktlsclientconfig_5fst_300',['hookTLSClientConfig_st',['../structhookTLSClientConfig__st.html',1,'']]],
-  ['http_20over_20tls_20with_20jwt_301',['HTTP over TLS with JWT',['../md_examples_spiffe_jwt_README.html',1,'']]],
-  ['https_5fspiffe_302',['HTTPS_SPIFFE',['../endpoint_8h.html#aa940ea32ff440076df24fd16b6998c18a6064e2f5e96f3ef9085fc96a7eab1dec',1,'endpoint.h']]],
-  ['https_5fweb_303',['HTTPS_WEB',['../endpoint_8h.html#aa940ea32ff440076df24fd16b6998c18aff5eb9f9a5bd447603bd44da98660647',1,'endpoint.h']]]
+  ['http_20over_20mtls_301',['HTTP over mTLS',['../md_examples_spiffe_http_README.html',1,'']]],
+  ['http_20over_20tls_20with_20jwt_302',['HTTP over TLS with JWT',['../md_examples_spiffe_jwt_README.html',1,'']]],
+  ['https_5fspiffe_303',['HTTPS_SPIFFE',['../endpoint_8h.html#aa940ea32ff440076df24fd16b6998c18a6064e2f5e96f3ef9085fc96a7eab1dec',1,'endpoint.h']]],
+  ['https_5fweb_304',['HTTPS_WEB',['../endpoint_8h.html#aa940ea32ff440076df24fd16b6998c18aff5eb9f9a5bd447603bd44da98660647',1,'endpoint.h']]]
 ];

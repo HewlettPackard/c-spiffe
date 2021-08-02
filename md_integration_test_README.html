@@ -68,13 +68,13 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>This folder contains all automated integration tests scripts. They were all implemented using Python, with <a href="https://behave.readthedocs.io/">Behave</a> framework and Shell scripts. All scenarios are written in Gherkin and can be found at <code>/c-spiffe/integration_test/features</code>.</p>
-<h1><a class="anchor" id="autotoc_md65"></a>
+<h1><a class="anchor" id="autotoc_md71"></a>
 Installing dependencies</h1>
 <ul>
 <li><a href="https://docs.docker.com/install/">Docker</a></li>
 <li><a href="https://docs.docker.com/compose/install/">Docker Compose</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md66"></a>
+<h1><a class="anchor" id="autotoc_md72"></a>
 Running the tests</h1>
 <p>Inside <code>c-spiffe/infra</code> run: </p><div class="fragment"><div class="line">$ make integration-tests TAG=latest</div>
 <div class="line"> </div>
@@ -107,7 +107,7 @@ Running the tests</h1>
 <div class="line">    Removing infra_spire-server2_1 ... done</div>
 <div class="line">    Removing network infra_default</div>
 </div><!-- fragment --><p> The tag might be replaced for another one available in <a href="https://hub.docker.com/r/cspiffe/tests/tags?page=1&amp;ordering=last_updated">dockerhub</a> or locally.</p>
-<h2><a class="anchor" id="autotoc_md67"></a>
+<h2><a class="anchor" id="autotoc_md73"></a>
 Details inside &lt;tt&gt;$ make integration-tests&lt;/tt&gt;</h2>
 <p>This command encapsulates some steps:</p><ol type="1">
 <li>Start <code>infra_tests</code>, <code>infra_spire-server</code>, <code>infra_workload</code>, <code>infra_spire-server2</code> and <code>infra_workload2</code> containers<ul>

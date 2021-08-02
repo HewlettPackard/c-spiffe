@@ -80,6 +80,10 @@ Functions</h2></td></tr>
 <tr class="separator:a617650fdc83ea2680cdad435c5c3d1a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b6c6b8272358f0b02ed83b209da51ed"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="examples_2CMakeLists_8txt.html#a9b6c6b8272358f0b02ed83b209da51ed">target_link_libraries</a> (spiffe_jwt_client spiffetls curl) <a class="el" href="workload_2CMakeLists_8txt.html#a9127ed30da9515f15ca6b2b79de373fc">set</a>(SERVER_JWT spiffe-jwt/server/main.c) <a class="el" href="workload_2tests_2CMakeLists_8txt.html#ade62988fdb0fd968186f3cf1a775f657">add_executable</a>(spiffe_jwt_server &quot;$</td></tr>
 <tr class="separator:a9b6c6b8272358f0b02ed83b209da51ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a571a0655ff25d4a99eb20867a9da574e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="examples_2CMakeLists_8txt.html#a571a0655ff25d4a99eb20867a9da574e">target_link_libraries</a> (spiffe_jwt_server spiffetls) <a class="el" href="workload_2CMakeLists_8txt.html#a9127ed30da9515f15ca6b2b79de373fc">set</a>(CLIENT_HTTP spiffe-http/<a class="el" href="check__x509source_8c.html#af56cbdfe4da14e1a0981cc41af4c4e9a">client</a>/main.c) <a class="el" href="workload_2tests_2CMakeLists_8txt.html#ade62988fdb0fd968186f3cf1a775f657">add_executable</a>(spiffe_http_client &quot;$</td></tr>
+<tr class="separator:a571a0655ff25d4a99eb20867a9da574e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ab3703e6bc20c7a76fab0e1eb97bdea"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="examples_2CMakeLists_8txt.html#a2ab3703e6bc20c7a76fab0e1eb97bdea">target_link_libraries</a> (spiffe_http_client spiffetls curl) <a class="el" href="workload_2CMakeLists_8txt.html#a9127ed30da9515f15ca6b2b79de373fc">set</a>(SERVER_HTTP spiffe-http/server/main.c) <a class="el" href="workload_2tests_2CMakeLists_8txt.html#ade62988fdb0fd968186f3cf1a775f657">add_executable</a>(spiffe_http_server &quot;$</td></tr>
+<tr class="separator:a2ab3703e6bc20c7a76fab0e1eb97bdea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="af8949e3e9bc6d34bb6f4610999ea8073"></a>
@@ -100,8 +104,26 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a2ab3703e6bc20c7a76fab0e1eb97bdea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ab3703e6bc20c7a76fab0e1eb97bdea">&#9670;&nbsp;</a></span>target_link_libraries() <span class="overload">[1/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">target_link_libraries </td>
+          <td>(</td>
+          <td class="paramtype">spiffe_http_client spiffetls&#160;</td>
+          <td class="paramname"><em>curl</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a9b6c6b8272358f0b02ed83b209da51ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b6c6b8272358f0b02ed83b209da51ed">&#9670;&nbsp;</a></span>target_link_libraries() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b6c6b8272358f0b02ed83b209da51ed">&#9670;&nbsp;</a></span>target_link_libraries() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -118,8 +140,26 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a571a0655ff25d4a99eb20867a9da574e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a571a0655ff25d4a99eb20867a9da574e">&#9670;&nbsp;</a></span>target_link_libraries() <span class="overload">[3/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">target_link_libraries </td>
+          <td>(</td>
+          <td class="paramtype">spiffe_jwt_server spiffetls&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a3fb159bc42e72e08ebe81bce4088d244"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3fb159bc42e72e08ebe81bce4088d244">&#9670;&nbsp;</a></span>target_link_libraries() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fb159bc42e72e08ebe81bce4088d244">&#9670;&nbsp;</a></span>target_link_libraries() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -137,7 +177,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="a617650fdc83ea2680cdad435c5c3d1a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a617650fdc83ea2680cdad435c5c3d1a3">&#9670;&nbsp;</a></span>target_link_libraries() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a617650fdc83ea2680cdad435c5c3d1a3">&#9670;&nbsp;</a></span>target_link_libraries() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
