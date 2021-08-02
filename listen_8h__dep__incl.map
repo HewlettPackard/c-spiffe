@@ -4,7 +4,12 @@
 <area shape="rect" id="node3" href="$spiffe-jwt_2server_2main_8c.html" title=" " alt="" coords="168,95,301,136"/>
 <area shape="rect" id="node4" href="$spiffe-tls_2server_2main_8c.html" title=" " alt="" coords="325,95,456,136"/>
 <area shape="rect" id="node5" href="$spiffetls_8h.html" title=" " alt="" coords="481,95,639,136"/>
-<area shape="rect" id="node6" href="$c__listen__example_8c.html" title=" " alt="" coords="663,95,779,136"/>
-<area shape="rect" id="node7" href="$listen_8c.html" title=" " alt="" coords="804,102,916,129"/>
-<area shape="rect" id="node8" href="$check__listen_8c.html" title=" " alt="" coords="940,95,1079,136"/>
+<area shape="rect" id="node11" href="$c__listen__example_8c.html" title=" " alt="" coords="663,95,779,136"/>
+<area shape="rect" id="node12" href="$listen_8c.html" title=" " alt="" coords="804,102,916,129"/>
+<area shape="rect" id="node13" href="$check__listen_8c.html" title=" " alt="" coords="940,95,1079,136"/>
+<area shape="rect" id="node6" href="$server_8c.html" title=" " alt="" coords="495,281,625,307"/>
+<area shape="rect" id="node7" href="$check__server_8c.html" title=" " alt="" coords="625,363,775,404"/>
+<area shape="rect" id="node8" href="$server_8h.html" title=" " alt="" coords="627,184,797,225"/>
+<area shape="rect" id="node9" href="$server__example_8c.html" title=" " alt="" coords="649,281,833,307"/>
+<area shape="rect" id="node10" href="$federation_8h.html" title=" " alt="" coords="857,273,1028,315"/>
 </map>

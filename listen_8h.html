@@ -136,6 +136,11 @@ This graph shows which files directly or indirectly include this file:</div>
 <area shape="rect" href="c__listen__example_8c.html" title=" " alt="" coords="663,95,779,136"/>
 <area shape="rect" href="listen_8c.html" title=" " alt="" coords="804,102,916,129"/>
 <area shape="rect" href="check__listen_8c.html" title=" " alt="" coords="940,95,1079,136"/>
+<area shape="rect" href="server_8c.html" title=" " alt="" coords="495,281,625,307"/>
+<area shape="rect" href="check__server_8c.html" title=" " alt="" coords="625,363,775,404"/>
+<area shape="rect" href="server_8h.html" title=" " alt="" coords="627,184,797,225"/>
+<area shape="rect" href="server__example_8c.html" title=" " alt="" coords="649,281,833,307"/>
+<area shape="rect" href="federation_8h.html" title=" " alt="" coords="857,273,1028,315"/>
 </map>
 </div>
 </div>
@@ -145,6 +150,8 @@ This graph shows which files directly or indirectly include this file:</div>
 Functions</h2></td></tr>
 <tr class="memitem:aa62c0f452b3ae79c70bdce7e25359fae"><td class="memItemLeft" align="right" valign="top">SSL *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="listen_8h.html#aa62c0f452b3ae79c70bdce7e25359fae">spiffetls_ListenWithMode</a> (in_port_t port, <a class="el" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a> *mode, <a class="el" href="structspiffetls__listenConfig.html">spiffetls_listenConfig</a> *<a class="el" href="check__x509source_8c.html#ac4bce25b2f2c75b798ee2fe84c200d90">config</a>, int *sock, <a class="el" href="error_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="el" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>)</td></tr>
 <tr class="separator:aa62c0f452b3ae79c70bdce7e25359fae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc85800b879f2717060e5566fd1ff767"><td class="memItemLeft" align="right" valign="top">SSL *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="listen_8h.html#afc85800b879f2717060e5566fd1ff767">spiffetls_PollWithMode</a> (in_port_t port, <a class="el" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a> *mode, <a class="el" href="structspiffetls__listenConfig.html">spiffetls_listenConfig</a> *<a class="el" href="check__x509source_8c.html#ac4bce25b2f2c75b798ee2fe84c200d90">config</a>, int *sock, int control_sock, int <a class="el" href="workload_2tests_2check__watcher_8c.html#a9ffd070ac94a658cb25206a05a2bd071">timeout</a>, <a class="el" href="error_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *<a class="el" href="check__endpoint_8c.html#aac2cb6376062ef4d6f16d129f52ea9e4">err</a>)</td></tr>
+<tr class="separator:afc85800b879f2717060e5566fd1ff767"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="aa62c0f452b3ae79c70bdce7e25359fae"></a>
@@ -203,6 +210,79 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Connected server TLS object pointer if successful, NULL otherwise. </dd></dl>
 <p>err = workloadapi_X509Source_Start(source); if(*err) { could not start source err = ERROR1; goto error; }</p>
+
+</div>
+</div>
+<a id="afc85800b879f2717060e5566fd1ff767"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc85800b879f2717060e5566fd1ff767">&#9670;&nbsp;</a></span>spiffetls_PollWithMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SSL* spiffetls_PollWithMode </td>
+          <td>(</td>
+          <td class="paramtype">in_port_t&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structspiffetls__ListenMode.html">spiffetls_ListenMode</a> *&#160;</td>
+          <td class="paramname"><em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structspiffetls__listenConfig.html">spiffetls_listenConfig</a> *&#160;</td>
+          <td class="paramname"><em>config</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>sock</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>control_sock</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>timeout</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="error_8h.html#a5362d878a3b55147d5cfd29820512556">err_t</a> *&#160;</td>
+          <td class="paramname"><em>err</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Establishes a TLS server with given port, address, mode and configuration. If successful, returns a pointer to a established TLS server object.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">port</td><td>[in] Port number. </td></tr>
+    <tr><td class="paramname">mode</td><td>[in] Connection mode. </td></tr>
+    <tr><td class="paramname">config</td><td>[in] Connection configuration. </td></tr>
+    <tr><td class="paramname">sock</td><td>[out] Server socket fd. </td></tr>
+    <tr><td class="paramname">control_sock</td><td>[in] socket fd for signaling exit. </td></tr>
+    <tr><td class="paramname">timeout</td><td>[in] timeout (in milliseconds) used internally with poll(). </td></tr>
+    <tr><td class="paramname">err</td><td>[out] Variable to get information in the event of error. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Connected server TLS object pointer if successful, NULL otherwise. </dd></dl>
+<p>error? //shouldn't happen</p>
 
 </div>
 </div>
