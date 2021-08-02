@@ -8,7 +8,9 @@ project(${TARGET_NAME} VERSION 0.0.1 LANGUAGES C)
 set(LIB_FEDERATION 
 ${PROJECT_SOURCE_DIR}/endpoint.c
 ${PROJECT_SOURCE_DIR}/watcher.c
+${PROJECT_SOURCE_DIR}/server.c
 ${PROJECT_SOURCE_DIR}/../utils/util.c
+${PROJECT_SOURCE_DIR}/../utils/picohttpparser.c
 ${PROJECT_SOURCE_DIR}/../bundle/spiffebundle/source.c
 )
 
@@ -17,7 +19,9 @@ target_link_libraries(${TARGET_NAME}
     curl
     spiffeid
     bundle
+    logger
     internal
+    spiffetls
     cjose
     uriparser
 )
@@ -31,6 +35,7 @@ install(
 set(HEADERS_FEDERATION
 ${PROJECT_SOURCE_DIR}/../include/c-spiffe/federation/endpoint.h
 ${PROJECT_SOURCE_DIR}/../include/c-spiffe/federation/watcher.h
+${PROJECT_SOURCE_DIR}/../include/c-spiffe/federation/server.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(
@@ -44,6 +49,18 @@ set(ENDPOINT_EXAMPLE
 add_executable(endpoint_example "${ENDPOINT_EXAMPLE}")
 target_link_libraries(endpoint_example federation)
 
+set(WATCHER_EXAMPLE
+${PROJECT_SOURCE_DIR}/watcher_example.c
+)
+add_executable(watcher_example "${WATCHER_EXAMPLE}")
+target_link_libraries(watcher_example federation pthread)
+
+set(SERVER_EXAMPLE
+${PROJECT_SOURCE_DIR}/server_example.c
+)
+add_executable(server_example "${SERVER_EXAMPLE}")
+target_link_libraries(server_example federation pthread)
+
 # Install higher level header:
 set(HEADERS_MOD_FEDERATION
 ${PROJECT_SOURCE_DIR}/../include/c-spiffe/federation/federation.h
@@ -54,8 +71,3 @@ install(
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${C_SPIFFE_NAME}"
 )
 
-set(WATCHER_EXAMPLE
-${PROJECT_SOURCE_DIR}/watcher_example.c
-)
-add_executable(watcher_example "${WATCHER_EXAMPLE}")
-target_link_libraries(watcher_example federation pthread)
