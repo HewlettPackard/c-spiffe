@@ -9,3 +9,5 @@ This section contains a set of standalone examples that demonstrate different us
 - [HTTP over TLS with JWT and X.509 SVIDs](spiffe-jwt/README.md): _Send HTTP requests between workloads over a TLS + JWT authentication using automatically rotated X.509 SVIDs and JWT SVIDs from the SPIFFE Workload API._
 
 - [HTTP over mTLS](spiffe-http/README.md): _Send HTTP requests between workloads over mTLS using automatically rotated X.509 SVIDs obtained from the SPIFFE Workload API._ 
+
+- [SVIDs stream](spiffe-watcher/README.md): _Get automatically rotated X.509 SVIDs and JWT Bundles for your workload._
