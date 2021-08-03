@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # (C) Copyright 2020-2021 Hewlett Packard Enterprise Development LP
 #
 # 
@@ -18,7 +19,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-#!/usr/bin/env python
 
 import ctypes
 
