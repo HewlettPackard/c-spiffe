@@ -61,7 +61,6 @@ install(
 set(HEADERS_TLSCONFIG
 ${PROJECT_SOURCE_DIR}/../include/c-spiffe/spiffetls/tlsconfig/authorizer.h
 ${PROJECT_SOURCE_DIR}/../include/c-spiffe/spiffetls/tlsconfig/config.h
-${PROJECT_SOURCE_DIR}/../include/c-spiffe/spiffetls/tlsconfig/trace.h
 )
 #   - *.h -> <prefix>/include/c-spiffe/${TARGET_NAME}/*.h
 install(

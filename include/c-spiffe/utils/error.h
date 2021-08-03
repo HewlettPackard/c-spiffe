@@ -72,7 +72,10 @@ enum enum_err_t {
     ERR_READING,
     ERR_LEAF_CA,
     ERR_THREAD,
-    ERR_WAITING
+    ERR_WAITING,
+    ERR_EXISTS,
+    ERR_TOO_LONG,
+    ERR_BAD_PORT
 };
 
 typedef enum enum_err_t err_t;

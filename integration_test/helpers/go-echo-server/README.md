@@ -8,6 +8,7 @@ A mTLS echo server/client in Go.
 - [Docker](https://docs.docker.com/install/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - [OpenSSL](https://www.openssl.org/docs/) (Only if new certificates are needed)
+- [Make (4.2.1-1.2)](https://www.gnu.org/software/make/)
 
 ##### 1. Clone this c-spiffe
 

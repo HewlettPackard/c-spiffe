@@ -124,7 +124,7 @@ if (ENABLE_TESTS)
       COMMAND find .. -type f -name *pb.cc.gcno -exec rm -r {} "\;"
 
       COMMAND ${LCOV} --directory .. --capture -o lcov.info
-      COMMAND ${LCOV} --remove lcov.info -o lcov.info '/usr/*' '*/build/workload/*' '*/include/*' '*stb_ds*' '*/resources/*'
+      COMMAND ${LCOV} --remove lcov.info -o lcov.info '/usr/*' '*/build/workload/*' '*/include/*' '*stb_ds*' '*/resources/*' '*picohttpparser*'
       COMMAND echo "lcov.info generated."
       COMMAND ${GENHTML} lcov.info --output-directory ${CMAKE_BINARY_DIR}/Coverage/Reports 
       COMMAND echo "Command lcov - Coverage reports generated."
