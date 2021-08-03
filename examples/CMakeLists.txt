@@ -20,6 +20,7 @@
 
 # Minimum CMake required
 cmake_minimum_required(VERSION 3.13)
+
 # spiffe-tls
 set(CLIENT_TLS
     spiffe-tls/client/main.c
@@ -71,3 +72,28 @@ set(SERVER_HTTP
 )
 add_executable(spiffe_http_server "${SERVER_HTTP}")
 target_link_libraries(spiffe_http_server spiffetls)
+
+set (proto_name helloworld)
+
+# Get proto files
+get_filename_component(proto "spiffe-grpc/${proto_name}.proto" ABSOLUTE)
+get_filename_component(proto_dir "${proto}" DIRECTORY)
+
+# Generate source files
+set(proto_srcs "${CMAKE_CURRENT_BINARY_DIR}/${proto_name}.pb.cc")
+set(proto_hdrs "${CMAKE_CURRENT_BINARY_DIR}/${proto_name}.pb.h")
+set(grpc_srcs "${CMAKE_CURRENT_BINARY_DIR}/${proto_name}.grpc.pb.cc")
+set(grpc_hdrs "${CMAKE_CURRENT_BINARY_DIR}/${proto_name}.grpc.pb.h")
+add_custom_command(
+    OUTPUT "${proto_srcs}" "${proto_hdrs}" "${grpc_srcs}" "${grpc_hdrs}"
+    COMMAND ${_PROTOBUF_PROTOC}
+    ARGS --grpc_out "${CMAKE_CURRENT_BINARY_DIR}"
+    --cpp_out "${CMAKE_CURRENT_BINARY_DIR}"
+    -I "${proto_dir}"
+    --plugin=protoc-gen-grpc="${_GRPC_CPP_PLUGIN_EXECUTABLE}"
+    "${proto}"
+    DEPENDS "${proto}"
+)
+
+# Include generated *.pb.h files
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
