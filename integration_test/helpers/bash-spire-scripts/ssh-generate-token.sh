@@ -1,3 +1,4 @@
+#!/bin/bash
 # (C) Copyright 2020-2021 Hewlett Packard Enterprise Development LP
 #
 # 
@@ -18,7 +19,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-#!/bin/bash
 #arguments: $1 = hostname numeration (optional)
 if [ $1 ];
 then

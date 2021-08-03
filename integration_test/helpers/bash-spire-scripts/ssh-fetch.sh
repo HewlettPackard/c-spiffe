@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # (C) Copyright 2020-2021 Hewlett Packard Enterprise Development LP
 #
 # 
@@ -18,7 +19,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-#!/usr/bin/env bash
 #arguments: $1 = 'c_client' or 'c_client_bundle'; $2 = 'svid' or 'bundle'; $3 = 'x509' or 'jwt'; $4 = hostname (optional)
 if [ $4 ];
 then 

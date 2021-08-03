@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # (C) Copyright 2020-2021 Hewlett Packard Enterprise Development LP
 #
 # 
@@ -18,6 +19,5 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-#!/usr/bin/env bash
 #arguments: $1 = hostname; $2 = port
 ssh root@$1 "cd /mnt/c-spiffe/integration_test/helpers/go-echo-server/server; su - server-workload -c \"./go-server ${2}\" > /dev/null 2>&1 &"

@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # (C) Copyright 2020-2021 Hewlett Packard Enterprise Development LP
 #
 # 
@@ -18,7 +19,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-#!/usr/bin/env bash
 #arguments: $1 = workload_id; $2 = hostname (optional)
 TOKEN=$(awk '{ print $2 }' /mnt/c-spiffe/integration_test/myagent$1.token)
 if [ $2 ];

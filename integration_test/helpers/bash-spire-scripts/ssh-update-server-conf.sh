@@ -1,3 +1,4 @@
+#!/bin/bash
 # (C) Copyright 2020-2021 Hewlett Packard Enterprise Development LP
 #
 # 
@@ -18,7 +19,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-#!/bin/bash
 #arguments: $1 = field to be updated; $2 = new value for the field; $3 = 'server' or 'agent'; $4 = hostname (optional); $5 = workload_id (optional)
 if [ $4 ];
 then
