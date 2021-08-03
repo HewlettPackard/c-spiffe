@@ -95,7 +95,7 @@ int main(void)
     jwtbundle_Source *source = jwtbundle_SourceFromSource(jwtsource);
 
     // default port
-    const in_port_t port = 8080U;
+    const in_port_t port = 8443U;
     spiffeid_ID id = spiffeid_FromString("spiffe://example.org/client", &err);
     spiffetls_ListenMode *mode = spiffetls_MTLSServerWithSource(
         tlsconfig_AuthorizeID(id), x509source);
