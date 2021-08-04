@@ -41,8 +41,8 @@ Feature: Federation X509 Bundle
             |     c     |      c      |
 
 
-    @Sprint18 @updated-conf @WlC @wip
-    Scenario Outline: FXB_002 - Check that mtls connection between two WLs is lost if the servers are removed of the Federation
+    @Sprint18 @updated-conf @WlC 
+    Scenario Outline: FXB_002A - Check that mtls connection between two WLs is lost if one server has its Federation removed (dial side)
         Given I set federation config to "example.org" inside "spire-server2"
         And   I set federation config to "example2.org" inside "spire-server"
         And   The server is turned on
@@ -57,9 +57,9 @@ Feature: Federation X509 Bundle
         When  The "<listen_type>"-tls-listen is activated inside "workload2" container
         And   I send "Hello World!" to "workload2" container through "<dial_type>"-tls-dial
         Then  I check that "Hello World!" was the answer from tls-listen
-        Given I remove "<trust_domain>" federation association from "<server_name>"
+        Given I remove "example2.org" federation association from "spire-server"
         When I send "Hello World!" to "workload2" container through "<dial_type>"-tls-dial
-        Then  I check that mTLS connection did not succeed witho "<error_info>"
+        Then  I check that mTLS connection did not succeed
         And   The "<listen_type>"-tls-listen is disabled inside "workload2" container
         And   The second "agent" is turned off inside "workload2" container
         And   The agent is turned off
@@ -68,15 +68,45 @@ Feature: Federation X509 Bundle
         And   The second "server" is turned off inside "spire-server2" container
         And   The server is turned off
         Examples:
-            | dial_type | listen_type | trust_domain | server_name   |   error_info       |
-            # |     go    |      go     | example.org  | spire-server2 |   bad certificate  |
-            # |     c     |      go     | example.org  | spire-server2 |   bad certificate  |
-            # |     go    |      c      | example.org  | spire-server2 |   bad certificate  |
-            #|     c     |      c      | example.org  | spire-server2 |   bad certificate  |
-            |     go    |      go     | example2.org  | spire-server |                    |
-            |     c     |      go     | example2.org  | spire-server |                    |
-            |     go    |      c      | example2.org  | spire-server |                    |
-            |     c     |      c      | example2.org  | spire-server |                    |
+            | dial_type | listen_type |
+            # |     go    |      go     |
+            |     c     |      go     |
+            # |     go    |      c      |
+            |     c     |      c      |
+
+
+    @Sprint18 @updated-conf @WlC 
+    Scenario Outline: FXB_002B - Check that mtls connection between two WLs is lost if the servers are removed of the Federation (listener side)
+        Given I set federation config to "example.org" inside "spire-server2"
+        And   I set federation config to "example2.org" inside "spire-server"
+        And   The server is turned on
+        And   The second server is turned on inside "spire-server2" container
+        And   Federation is activated between "spire-server" and "spire-server2"
+        And   The agent is turned on
+        And   The second agent is turned on inside "workload2" container with the second trust domain        
+        When  I fetch external "X509" "SVID"
+        Then  I check that the "SVID" is returned correctly
+        When  I fetch "X509" "SVID"
+        Then  I check that the "SVID" is returned correctly
+        When  The "<listen_type>"-tls-listen is activated inside "workload2" container
+        And   I send "Hello World!" to "workload2" container through "<dial_type>"-tls-dial
+        Then  I check that "Hello World!" was the answer from tls-listen
+        Given I remove "example.org" federation association from "spire-server2"
+        When I send "Hello World!" to "workload2" container through "<dial_type>"-tls-dial
+        Then  I check that "" was the answer from tls-listen
+        And   The "<listen_type>"-tls-listen is disabled inside "workload2" container
+        And   The second "agent" is turned off inside "workload2" container
+        And   The agent is turned off
+        And   I remove federation configuration from "spire-server"
+        And   I remove federation configuration from "spire-server2"
+        And   The second "server" is turned off inside "spire-server2" container
+        And   The server is turned off
+        Examples:
+            | dial_type | listen_type |
+            # |     go    |      go     |
+            |     c     |      go     |
+            # |     go    |      c      |
+            |     c     |      c      |
 
 
     @Sprint12 @updated-conf @WlC
