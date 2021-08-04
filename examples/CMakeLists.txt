@@ -99,3 +99,29 @@ add_custom_command(
 
 # Include generated *.pb.h files
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/resources)
+
+set(SERVER_GRPC
+    spiffe-grpc/server/main.cc
+    ${proto_srcs}
+    ${grpc_srcs}
+)
+add_executable(spiffe_grpc_server "${SERVER_GRPC}")
+target_link_libraries(spiffe_grpc_server
+${_REFLECTION}
+${_GRPC_GRPCPP}
+${_GRPC_GRPC}
+${_PROTOBUF_LIBPROTOBUF}
+)
+
+set(CLIENT_GRPC
+    spiffe-grpc/client/main.cc
+    ${proto_srcs}
+    ${grpc_srcs}
+)
+add_executable(spiffe_grpc_client "${CLIENT_GRPC}")
+target_link_libraries(spiffe_grpc_client
+${_REFLECTION}
+${_GRPC_GRPCPP}
+${_GRPC_GRPC}
+${_PROTOBUF_LIBPROTOBUF}
+)
