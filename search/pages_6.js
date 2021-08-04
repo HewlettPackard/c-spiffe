@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['minimal_20installation_2416',['Minimal Installation',['../md_MINOR_INSTALLATION.html',1,'']]],
-  ['mutually_20authenticated_20tls_20_28mtls_29_2417',['Mutually Authenticated TLS (mTLS)',['../md_examples_spiffe_tls_README.html',1,'']]]
+  ['infra_2415',['Infra',['../md_infra_README.html',1,'']]],
+  ['integration_20tests_2416',['Integration tests',['../md_integration_test_README.html',1,'']]],
+  ['internal_2417',['Internal',['../md_internal_README.html',1,'']]]
 ];

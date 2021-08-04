@@ -129,20 +129,20 @@ Running</h1>
 <p>Create the registration entries for the client and server workloads:</p>
 <p>Server: </p><div class="fragment"><div class="line">spire-server entry create -spiffeID spiffe://example.org/server \</div>
 <div class="line">                            -parentID spiffe://example.org/host \</div>
-<div class="line">                            -selector unix:user:server-workload</div>
+<div class="line">                            -selector unix:user:root</div>
 </div><!-- fragment --><p>Client: </p><div class="fragment"><div class="line">spire-server entry create -spiffeID spiffe://example.org/client \</div>
 <div class="line">                            -parentID spiffe://example.org/host \</div>
-<div class="line">                            -selector unix:user:client-workload</div>
+<div class="line">                            -selector unix:user:root</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md32"></a>
 2. Start the server</h2>
-<div class="fragment"><div class="line">su - server-workload -c &quot;./spiffe_http_server&quot;</div>
+<div class="fragment"><div class="line">./spiffe_http_server</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md33"></a>
 3. Run the client</h2>
-<div class="fragment"><div class="line">su - client-workload -c &quot;./spiffe_http_client&quot;</div>
+<div class="fragment"><div class="line">./spiffe_http_client</div>
 </div><!-- fragment --><p>The server should display a log <code>Request received</code> and client <code>Success!</code></p>
 <p>If the server workload encounters a peer with a different SPIFFE ID, it will abort the TLS handshake and the connection will fail.</p>
 <p>The server log shows</p>
-<div class="fragment"><div class="line">spiffetls_ListenWithMode() failed: error 6</div>
+<div class="fragment"><div class="line">spiffetls_ListenWithMode() failed: error 25</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
