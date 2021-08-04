@@ -82,7 +82,7 @@ def step_impl(context, message, container_name, language):
 def step_impl(context, message):
     tls_answer = context.result.replace("\"","").split("Server replied:")
     actual_message = tls_answer[-1].strip().replace("\\n","")
-    assert_that(actual_message, is_(message), "Unexpected response from server: %s" % message)
+    assert_that(actual_message, is_(message), "Unexpected response from server: %s" % actual_message)
 
 
 @step('The second agent is turned on inside "{container_name}" container with the second trust domain')
@@ -125,13 +125,10 @@ def step_impl(context, container_name):
         os.system("/mnt/c-spiffe/integration_test/helpers/bash-spire-scripts/ssh-create-entries.sh 2")
 
 
-@then('I check that mTLS connection did not succeed{witho:optional}"{error_info:NullableString}"')
-def step_impl(context,witho, error_info):
+@then('I check that mTLS connection did not succeed')
+def step_impl(context):
     assert_that(context.result.find("Server replied:"), is_(-1), "Unexpected response from server: %s" % context.result)
-    if error_info:
-        assert_that(context.result.find("Unable to read server response: remote error: tls: bad certificate"), is_not(-1), "Unexpected error from server: %s" % context.result)
-    else:
-        assert_that(context.result.find("could not create TLS connection"), is_not(-1), "Unexpected error from server: %s" % context.result)
+    assert_that(context.result.find("could not create TLS connection"), is_not(-1), "Unexpected error from server: %s" % context.result)
 
 
 @step('The "{workload_id}" entry is removed from "{container_name}"')
