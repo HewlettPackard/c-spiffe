@@ -1,4 +1,5 @@
 #include "c-spiffe/spiffetls/tlsconfig/config.h"
+#include "c-spiffe/workload/jwtsource.h"
 #include "c-spiffe/workload/x509source.h"
 
 #include <curl/curl.h>
@@ -16,7 +17,7 @@ static size_t write_function(void *ptr, size_t size, size_t nmemb,
     return len;
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
     err_t err;
     workloadapi_X509Source *x509source = workloadapi_NewX509Source(NULL, &err);
@@ -30,7 +31,33 @@ int main(void)
         exit(-1);
     }
 
-    struct curl_slist *list = curl_slist_append(NULL, "Hello, server.");
+    workloadapi_JWTSource *jwtsource = workloadapi_NewJWTSource(NULL, &err);
+    if(err != NO_ERROR) {
+        printf("workloadapi_NewJWTSource() failed: error %u\n", err);
+        exit(-1);
+    }
+    err = workloadapi_JWTSource_Start(jwtsource);
+    if(err != NO_ERROR) {
+        printf("workloadapi_JWTSource_Start() failed: error %u\n", err);
+        exit(-1);
+    }
+
+    jwtsvid_Params params
+        = { .audience = string_new("spiffe://example.com/server"),
+            .extra_audiences = NULL,
+            .subject = NULL };
+    jwtsvid_SVID *jwtsvid
+        = workloadapi_JWTSource_GetJWTSVID(jwtsource, &params, &err);
+    arrfree(params.audience);
+    if(!jwtsvid || err != NO_ERROR) {
+        printf("workloadapi_JWTSource_GetJWTSVID() failed: error %u\n", err);
+        exit(-1);
+    }
+
+    string_t header_arg = string_new("Authorization: Bearer ");
+    header_arg = string_push(header_arg, jwtsvid_SVID_Marshal(jwtsvid));
+    struct curl_slist *list = curl_slist_append(NULL, header_arg);
+    arrfree(header_arg);
     string_t response = NULL;
 
     x509svid_SVID *x509svid
@@ -89,7 +116,6 @@ int main(void)
     if(res != CURLE_OK) {
         printf("res: %d\n", res);
         printf("curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
-        exit(-1);
     }
 
     printf("%s\n", response);
@@ -105,6 +131,7 @@ int main(void)
     arrfree(key_filename);
     arrfree(ca_filename);
     workloadapi_X509Source_Free(x509source);
+    workloadapi_JWTSource_Free(jwtsource);
 
     return 0;
 }

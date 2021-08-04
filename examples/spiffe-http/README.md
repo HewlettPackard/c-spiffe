@@ -80,24 +80,24 @@ Server:
 ```bash
 spire-server entry create -spiffeID spiffe://example.org/server \
                             -parentID spiffe://example.org/host \
-                            -selector unix:user:server-workload
+                            -selector unix:user:root
 ```
 
 Client: 
 ```bash
 spire-server entry create -spiffeID spiffe://example.org/client \
                             -parentID spiffe://example.org/host \
-                            -selector unix:user:client-workload
+                            -selector unix:user:root
 ```
 
 ### 2. Start the server
 ```bash
-su - server-workload -c "./spiffe_http_server"
+./spiffe_http_server
 ```
 
 ### 3. Run the client
 ```bash
-su - client-workload -c "./spiffe_http_client"
+./spiffe_http_client
 ```
 
 The server should display a log `Request received` and client `Success!`
@@ -107,5 +107,5 @@ If the server workload encounters a peer with a different SPIFFE ID, it will abo
 The server log shows
 
 ```
-spiffetls_ListenWithMode() failed: error 6
+spiffetls_ListenWithMode() failed: error 25
 ```
