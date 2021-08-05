@@ -42,7 +42,7 @@ Feature: Federation X509 Bundle
 
 
     @Sprint18 @updated-conf @WlC 
-    Scenario Outline: FXB_002A - Check that mtls connection between two WLs is lost if one server has its Federation removed (dial side)
+    Scenario Outline: FXB_002 - Check that mtls connection between two WLs is lost if one server has its Federation removed (dial side)
         Given I set federation config to "example.org" inside "spire-server2"
         And   I set federation config to "example2.org" inside "spire-server"
         And   The server is turned on
@@ -69,14 +69,12 @@ Feature: Federation X509 Bundle
         And   The server is turned off
         Examples:
             | dial_type | listen_type |
-            # |     go    |      go     |
             |     c     |      go     |
-            # |     go    |      c      |
             |     c     |      c      |
 
 
     @Sprint18 @updated-conf @WlC 
-    Scenario Outline: FXB_002B - Check that mtls connection between two WLs is lost if the servers are removed of the Federation (listener side)
+    Scenario Outline: FXB_003 - Check that mtls connection between two WLs is lost if one server has its Federation removed (listener side)
         Given I set federation config to "example.org" inside "spire-server2"
         And   I set federation config to "example2.org" inside "spire-server"
         And   The server is turned on
@@ -103,14 +101,12 @@ Feature: Federation X509 Bundle
         And   The server is turned off
         Examples:
             | dial_type | listen_type |
-            # |     go    |      go     |
             |     c     |      go     |
-            # |     go    |      c      |
             |     c     |      c      |
 
 
     @Sprint12 @updated-conf @WlC
-    Scenario Outline: FXB_003 - Check that it is not possible to establish mtls connection between two WLs connected to different servers that are not in a Federation
+    Scenario Outline: FXB_004 - Check that it is not possible to establish mtls connection between two WLs connected to different servers that are not in a Federation
         Given The server is turned on
         And   The agent is turned on
         And   The second server is turned on inside "spire-server2" container
