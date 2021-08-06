@@ -29,7 +29,7 @@ class GreeterServiceImpl final : public Greeter::Service
     }
 };
 
-void read(const std::string &filename, std::string &data)
+/* void read(const std::string &filename, std::string &data)
 {
     std::ifstream file(filename.c_str(), std::ios::in);
 
@@ -43,7 +43,7 @@ void read(const std::string &filename, std::string &data)
     }
 
     return;
-}
+} */
 
 void runServer()
 {
@@ -52,22 +52,37 @@ void runServer()
      **/
     std::string server_address("localhost:50051");
 
+    err_t error = NO_ERROR;
+    workloadapi_Client *client = workloadapi_NewClient(&error);
+    if(error != NO_ERROR) {
+        printf("client error! %d\n", (int) error);
+    }
+    workloadapi_Client_defaultOptions(client, NULL);
+    error = workloadapi_Client_Connect(client);
+    if(error != NO_ERROR) {
+        printf("conn error! %d\n", (int) error);
+    }
 
-    std::string key;
+    x509svid_SVID *svid = workloadapi_Client_FetchX509SVID(client, &error);
+    if(error != NO_ERROR) {
+        printf("fetch error! %d\n", (int) error);
+    }
+
+    /* std::string key;
     std::string cert;
-    std::string root;
+    std::string root; */
 
-    read("./resources/server.crt", cert);
-    read("./resources/server.key", key);
-    read("./resources/ca.crt", root);
+    // read("./resources/server.crt", cert);
+    // read("./resources/server.key", key);
+    // read("./resources/ca.crt", root);
 
     ServerBuilder builder;
 
-    grpc::SslServerCredentialsOptions::PemKeyCertPair keycert = { key, cert };
+    //grpc::SslServerCredentialsOptions::PemKeyCertPair keycert = { key, cert };
 
     grpc::SslServerCredentialsOptions sslOps;
-    sslOps.pem_root_certs = root;
-    sslOps.pem_key_cert_pairs.push_back(keycert);
+    //sslOps.pem_root_certs = root;
+    //sslOps.pem_key_cert_pairs.push_back(keycert);
 
     builder.AddListeningPort(server_address,
                              grpc::SslServerCredentials(sslOps));
