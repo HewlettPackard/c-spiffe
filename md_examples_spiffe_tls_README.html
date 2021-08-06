@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE Library: Mutually Authenticated TLS (mTLS)</title>
+<title>C-SPIFFE Library: README</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,10 +64,12 @@ $(function() {
 </div><!-- top -->
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Mutually Authenticated TLS (mTLS) </div>  </div>
+<div class="title">README </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>This example shows how to use the C-spiffe library to establish a mTLS connection between two workloads using X.509 SVIDs obtained from the SPIFFE Workload API.</p>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md47"></a>
+Mutually Authenticated TLS (mTLS)</h1>
+<p>This example shows how to use the C-spiffe library to establish a mTLS connection between two workloads using X.509 SVIDs obtained from the SPIFFE Workload API.</p>
 <p>One workload acts as a client and the other as the server.</p>
 <p>The scenario goes like this:</p><ol type="1">
 <li>The server starts listening for incoming SPIFFE-compliant mTLS connections.</li>
@@ -77,8 +79,8 @@ $(function() {
 <li>The server reads the client's message, logs it to stdout, and sends a "Hello client" message as the response.</li>
 <li>The client reads the server's response and then closes the connection.</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md48"></a>
-Listening</h1>
+<h2><a class="anchor" id="autotoc_md48"></a>
+Listening</h2>
 <p>To start listening for incoming connections the <b>server workload</b> uses the [spiffetls_ListenWithMode] function as follows: </p><div class="fragment"><div class="line">{C++}</div>
 <div class="line">   SSL *conn</div>
 <div class="line">       = spiffetls_ListenWithMode(port, mode, &amp;config, &amp;sock_fd, &amp;err);</div>
@@ -88,8 +90,8 @@ Listening</h1>
 <li>config is a preset variable if the user wishes to use a pre-configured <code>SSL_CTX</code> and/or an already created, binded and listening socket. <code>NULL</code> and a nonpositive integer are the default values, respectively. In this case, the function will configure a <code>SSL_CTX</code> variable and create a socket internally.</li>
 <li>sock_fd is the variable where the server socket will be returned. It must be closed when no longer needed.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md49"></a>
-Dialing</h1>
+<h2><a class="anchor" id="autotoc_md49"></a>
+Dialing</h2>
 <p>To establish a connection, the <b>client workload</b> uses the [spiffetls_DialWithMode] function as follows: </p><div class="fragment"><div class="line">{C++}</div>
 <div class="line">   SSL *conn = spiffetls_DialWithMode(port, addr, mode, &amp;config, &amp;err);</div>
 </div><!-- fragment --><p> Where:</p><ul>
@@ -98,23 +100,23 @@ Dialing</h1>
 <li>[spiffetls_MTLSClientWithSource] is used to configure the [<a class="el" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a>] used by the internal Workload API client.</li>
 <li>config is a preset variable if the user wishes to use a pre-configured <code>SSL_CTX</code> and/or an already created and connected socket. <code>NULL</code> and a nonpositive integer are the default values, respectively. In this case, the function will configure a <code>SSL_CTX</code> variable and create a socket internally.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md50"></a>
-That is it!</h1>
+<h2><a class="anchor" id="autotoc_md50"></a>
+That is it!</h2>
 <p>As we can see the C-spiffe library allows your application to use the Workload API transparently for both ends of the connection. The C-spiffe library takes care of fetching and automatically renewing the X.509 SVIDs needed to maintain a secure communication.</p>
-<h1><a class="anchor" id="autotoc_md51"></a>
-Building</h1>
+<h2><a class="anchor" id="autotoc_md51"></a>
+Building</h2>
 <p>To build the client and server workloads: </p><div class="fragment"><div class="line">cd build/examples/</div>
 <div class="line">make</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md52"></a>
-Running</h1>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md52"></a>
+Running</h2>
 <p>This example assumes the following preconditions:</p><ul>
 <li>There is a SPIRE server and a SPIRE agent up and running.</li>
 <li>There is a Unix workload attestor configured.</li>
 <li>The trust domain is <code>example.org</code>.</li>
 <li>The agent's SPIFFE ID is <code>spiffe://example.org/host</code>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md53"></a>
-1. Create the registration entries</h2>
+<h3><a class="anchor" id="autotoc_md53"></a>
+1. Create the registration entries</h3>
 <p>Create the registration entries for the workloads:</p>
 <p>Server: </p><div class="fragment"><div class="line">spire-server entry create -spiffeID spiffe://example.org/server \</div>
 <div class="line">                          -parentID spiffe://example.org/host \</div>
@@ -122,11 +124,11 @@ Running</h1>
 </div><!-- fragment --><p>Client: </p><div class="fragment"><div class="line">spire-server entry create -spiffeID spiffe://example.org/client \</div>
 <div class="line">                          -parentID spiffe://example.org/host \</div>
 <div class="line">                          -selector unix:user:root</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md54"></a>
-2. Start the server</h2>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md54"></a>
+2. Start the server</h3>
 <div class="fragment"><div class="line">./spiffe_tls_server</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md55"></a>
-3. Run the client</h2>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md55"></a>
+3. Run the client</h3>
 <div class="fragment"><div class="line">./spiffe_tls_client</div>
 </div><!-- fragment --><p>The server should have received a _"Hello server"_ message and responded with a _"Hello client"_ message. </p>
 </div></div><!-- contents -->

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE Library: HTTP over mTLS</title>
+<title>C-SPIFFE Library: README</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,10 +64,12 @@ $(function() {
 </div><!-- top -->
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">HTTP over mTLS </div>  </div>
+<div class="title">README </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>This example shows how two services using HTTP can communicate using mTLS with X509 SVIDs obtained from SPIFFE workload API.</p>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md28"></a>
+HTTP over mTLS</h1>
+<p>This example shows how two services using HTTP can communicate using mTLS with X509 SVIDs obtained from SPIFFE workload API.</p>
 <p>Each service is connecting to the Workload API to fetch its identities. Since this example assumes the SPIRE implementation, it uses the SPIRE default socket path: <code>/tmp/agent.sock</code>.</p>
 <div class="fragment"><div class="line">{C++}</div>
 <div class="line">   workloadapi_X509Source *x509source = workloadapi_NewX509Source(NULL, &amp;err);</div>
@@ -111,12 +113,12 @@ $(function() {
 </div><!-- fragment --><p>The [<a class="el" href="structtlsconfig__Authorizer.html">tlsconfig_Authorizer</a>] is used to authorize the mTLS peer. In this example, only server uses it to authorize the specific SPIFFE ID of the other side of the connection.</p>
 <p>That is it! The C-spiffe library fetches and automatically renews the X.509 SVIDs of both workloads from the Workload API provider (i.e. SPIRE).</p>
 <p>As soon as the mTLS connection is established, the client sends an HTTP request to the server and gets a response.</p>
-<h1><a class="anchor" id="autotoc_md29"></a>
-Building</h1>
+<h2><a class="anchor" id="autotoc_md29"></a>
+Building</h2>
 <p>To build the client and server workloads: </p><div class="fragment"><div class="line">cd build/examples/</div>
 <div class="line">make</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md30"></a>
-Running</h1>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md30"></a>
+Running</h2>
 <p>This example assumes the following preconditions:</p><ul>
 <li>There is a SPIRE server and agent up and running.</li>
 <li>There is a Unix workload attestor configured.</li>
@@ -124,8 +126,8 @@ Running</h1>
 <li>The agent SPIFFE ID is <code>spiffe://example.org/host</code>.</li>
 <li>There is a <code>server-workload</code> and <code>client-workload</code> user in the system.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md31"></a>
-1. Create the registration entries</h2>
+<h3><a class="anchor" id="autotoc_md31"></a>
+1. Create the registration entries</h3>
 <p>Create the registration entries for the client and server workloads:</p>
 <p>Server: </p><div class="fragment"><div class="line">spire-server entry create -spiffeID spiffe://example.org/server \</div>
 <div class="line">                            -parentID spiffe://example.org/host \</div>
@@ -133,11 +135,11 @@ Running</h1>
 </div><!-- fragment --><p>Client: </p><div class="fragment"><div class="line">spire-server entry create -spiffeID spiffe://example.org/client \</div>
 <div class="line">                            -parentID spiffe://example.org/host \</div>
 <div class="line">                            -selector unix:user:root</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md32"></a>
-2. Start the server</h2>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md32"></a>
+2. Start the server</h3>
 <div class="fragment"><div class="line">./spiffe_http_server</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md33"></a>
-3. Run the client</h2>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md33"></a>
+3. Run the client</h3>
 <div class="fragment"><div class="line">./spiffe_http_client</div>
 </div><!-- fragment --><p>The server should display a log <code>Request received</code> and client <code>Success!</code></p>
 <p>If the server workload encounters a peer with a different SPIFFE ID, it will abort the TLS handshake and the connection will fail.</p>

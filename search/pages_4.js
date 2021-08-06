@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['federation_2411',['Federation',['../md_federation_README.html',1,'']]],
-  ['fetch_20svid_2412',['Fetch SVID',['../md_workload_EXAMPLE.html',1,'']]]
+  ['minor_2dinstallation_2392',['MINOR-INSTALLATION',['../md_MINOR_INSTALLATION.html',1,'']]]
 ];

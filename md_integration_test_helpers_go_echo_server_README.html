@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE Library: Run go-echo-server</title>
+<title>C-SPIFFE Library: README</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,12 +64,13 @@ $(function() {
 </div><!-- top -->
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Run go-echo-server </div>  </div>
+<div class="title">README </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>A mTLS echo server/client in Go.</p>
-<h4><a class="anchor" id="autotoc_md70"></a>
-Prerequisites</h4>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md69"></a>
+Run go-echo-server</h1>
+<p>A mTLS echo server/client in Go.</p>
+<p><a class="anchor" id="autotoc_md70"></a> </p><h5>Prerequisites</h5>
 <ul>
 <li>Linux or macOS</li>
 <li><a href="https://docs.docker.com/install/">Docker</a></li>
@@ -77,12 +78,10 @@ Prerequisites</h4>
 <li><a href="https://www.openssl.org/docs/">OpenSSL</a> (Only if new certificates are needed)</li>
 <li><a href="https://www.gnu.org/software/make/">Make (4.2.1-1.2)</a></li>
 </ul>
-<h4><a class="anchor" id="autotoc_md71"></a>
-1. Clone this c-spiffe</h4>
+<p><a class="anchor" id="autotoc_md71"></a> </p><h5>1. Clone this c-spiffe</h5>
 <div class="fragment"><div class="line">$ git clone https://github.com/HewlettPackard/c-spiffe.git</div>
 <div class="line">$ cd c-spiffe</div>
-</div><!-- fragment --> <h4><a class="anchor" id="autotoc_md72"></a>
-2. Generate the certs</h4>
+</div><!-- fragment --><p> <a class="anchor" id="autotoc_md72"></a> </p><h5>2. Generate the certs</h5>
 <p>This step just needs to be done once. (Certificates already exist in the repo, so this step can be skipped.)</p>
 <div class="fragment"><div class="line">$ cd integration_test/helpers/go-echo-server/certs</div>
 <div class="line">$ ./cert-generator.sh</div>
@@ -101,8 +100,7 @@ Prerequisites</h4>
 <div class="line">    writing new private key to &#39;client.key&#39;</div>
 <div class="line">    -----</div>
 <div class="line">    req: No value provided for Subject Attribute emailAddress, skipped</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md73"></a>
-3. Build and run the docker containers</h4>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md73"></a> </p><h5>3. Build and run the docker containers</h5>
 <div class="fragment"><div class="line">$ cd c-spiffe/infra/</div>
 <div class="line">$ make build</div>
 <div class="line"> </div>
@@ -115,16 +113,14 @@ Prerequisites</h4>
 <div class="line">    Creating infra_spire-server_1 ... done</div>
 <div class="line">    Creating infra_workload_1     ... done</div>
 <div class="line">    Creating infra_tests_1        ... done</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md74"></a>
-4. Run the Echo Server</h4>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md74"></a> </p><h5>4. Run the Echo Server</h5>
 <div class="fragment"><div class="line">$ docker exec -it infra_workload_1 bash</div>
 </div><!-- fragment --><p> Inside workload container, run:</p>
 <div class="fragment"><div class="line">$ root@workload: cd /mnt/c-spiffe/integration_test/helpers/go-echo-server/server</div>
 <div class="line">$ root@workload: go run server.go</div>
 <div class="line"> </div>
 <div class="line">    2021/04/07 12:14:41 server: listening on port 8000</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md75"></a>
-5. Run the Client</h4>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md75"></a> </p><h5>5. Run the Client</h5>
 <p>On a new console, run:</p>
 <div class="fragment"><div class="line">$ docker exec -it infra_tests_1 bash</div>
 </div><!-- fragment --><p> Inside tests container, run:</p>
@@ -137,8 +133,7 @@ Prerequisites</h4>
 <div class="line">    2021/04/07 12:23:01 client: sent     &quot;any message (max 100 bytes)&quot; (27 bytes)</div>
 <div class="line">    2021/04/07 12:23:01 client: received &quot;any message (max 100 bytes)&quot; (27 bytes)</div>
 <div class="line">    2021/04/07 12:23:01 client: exiting</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md76"></a>
-6. Stop the containers</h4>
+</div><!-- fragment --><p><a class="anchor" id="autotoc_md76"></a> </p><h5>6. Stop the containers</h5>
 <p>On a new console, run:</p>
 <div class="fragment"><div class="line">$ cd /mnt/c-spiffe/infra</div>
 <div class="line">$ make clean</div>

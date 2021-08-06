@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE Library: Docker</title>
+<title>C-SPIFFE Library: README</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,12 +64,14 @@ $(function() {
 </div><!-- top -->
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Docker </div>  </div>
+<div class="title">README </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>This folder contains the Dockerfile for the GRPC build environment.</p>
-<h1><a class="anchor" id="autotoc_md25"></a>
-Building image</h1>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md24"></a>
+Docker</h1>
+<p>This folder contains the Dockerfile for the GRPC build environment.</p>
+<h2><a class="anchor" id="autotoc_md25"></a>
+Building image</h2>
 <p>You can build the docker image from source with the above command line:</p>
 <div class="fragment"><div class="line">docker build -f docker/grpc.Dockerfile --build-arg GPRC_VERSION=1.34.0 --build-arg NUM_JOBS=8 --tag grpc-build:1.34.0 .</div>
 </div><!-- fragment --><p>This image is also available on Dockerhub as <code>cspiffe/grpc-build:1.34.0</code> </p>

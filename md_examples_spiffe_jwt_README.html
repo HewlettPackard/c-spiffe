@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE Library: HTTP over TLS with JWT</title>
+<title>C-SPIFFE Library: README</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,10 +64,12 @@ $(function() {
 </div><!-- top -->
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">HTTP over TLS with JWT </div>  </div>
+<div class="title">README </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>This example shows how two services using HTTP can communicate using TLS with the server presenting an X509 SVID and expecting a client to authenticate with a JWT-SVID. The SVIDs are retrieved, and authentication is accomplished, via the SPIFFE Workload API.</p>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md34"></a>
+HTTP over TLS with JWT</h1>
+<p>This example shows how two services using HTTP can communicate using TLS with the server presenting an X509 SVID and expecting a client to authenticate with a JWT-SVID. The SVIDs are retrieved, and authentication is accomplished, via the SPIFFE Workload API.</p>
 <p>The <b>HTTP server</b> creates a [<a class="el" href="structworkloadapi__X509Source.html">workloadapi_X509Source</a>].</p>
 <div class="fragment"><div class="line">{C++}</div>
 <div class="line">   err_t err;</div>
@@ -106,20 +108,20 @@ $(function() {
 <div class="line">   /* ... */</div>
 </div><!-- fragment --><p>That is it! The C-spiffe library fetches and automatically renews the X.509 SVID for the server and validates the client JWT SVIDs using the Workload API.</p>
 <p>As soon as the TLS connection is established, the client sends an HTTP request to the server and gets a response.</p>
-<h1><a class="anchor" id="autotoc_md35"></a>
-Building</h1>
+<h2><a class="anchor" id="autotoc_md35"></a>
+Building</h2>
 <p>To build the client and server workloads: </p><div class="fragment"><div class="line">cd build/examples/</div>
 <div class="line">make</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md36"></a>
-Running</h1>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md36"></a>
+Running</h2>
 <p>This example assumes the following preconditions:</p><ul>
 <li>There is a SPIRE Server and Agent up and running.</li>
 <li>There is a Unix workload attestor configured.</li>
 <li>The trust domain is <code>example.org</code></li>
 <li>The agent SPIFFE ID is <code>spiffe://example.org/host</code>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md37"></a>
-1. Create the registration entries</h2>
+<h3><a class="anchor" id="autotoc_md37"></a>
+1. Create the registration entries</h3>
 <p>Create the registration entries for the client and server workloads:</p>
 <p>Server: </p><div class="fragment"><div class="line">spire-server entry create -spiffeID spiffe://example.org/server \</div>
 <div class="line">                          -parentID spiffe://example.org/host \</div>
@@ -127,11 +129,11 @@ Running</h1>
 </div><!-- fragment --><p>Client: </p><div class="fragment"><div class="line">spire-server entry create -spiffeID spiffe://example.org/client \</div>
 <div class="line">                          -parentID spiffe://example.org/host \</div>
 <div class="line">                          -selector unix:user:root</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md38"></a>
-2. Start the server</h2>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md38"></a>
+2. Start the server</h3>
 <div class="fragment"><div class="line">./spiffe_jwt_server</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md39"></a>
-3. Run the client</h2>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md39"></a>
+3. Run the client</h3>
 <div class="fragment"><div class="line">./spiffe_jwt_client</div>
 </div><!-- fragment --><p>The server should display a log <code>Request received</code> and client <code>Success!</code></p>
 <p>To demonstrate a failure, an alternate audience value can be used. The server is expecting its own SPIFFE ID as the audience value and will reject the token if it doesn't match.</p>
