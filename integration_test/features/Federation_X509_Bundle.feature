@@ -42,7 +42,7 @@ Feature: Federation X509 Bundle
 
 
     @Sprint18 @updated-conf @WlC 
-    Scenario Outline: FXB_002 - Check that mtls connection between two WLs is lost if one server has its Federation removed (dial side)
+    Scenario Outline: FXB_002 - Check that mtls connection between two WLs is not established if one server has its Federation removed (dial side)
         Given I set federation config to "example.org" inside "spire-server2"
         And   I set federation config to "example2.org" inside "spire-server"
         And   The server is turned on
@@ -74,7 +74,7 @@ Feature: Federation X509 Bundle
 
 
     @Sprint18 @updated-conf @WlC 
-    Scenario Outline: FXB_003 - Check that mtls connection between two WLs is lost if one server has its Federation removed (listener side)
+    Scenario Outline: FXB_003 - Check that mtls connection between two WLs is not established if one server has its Federation removed (listener side)
         Given I set federation config to "example.org" inside "spire-server2"
         And   I set federation config to "example2.org" inside "spire-server"
         And   The server is turned on
