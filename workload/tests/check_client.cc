@@ -22,15 +22,6 @@
  *
  */
 
-/*
- * Filename: c-spiffe/requestor/requestor.cpp
- * Path: c-spiffe/requestor
- * Created Date: Monday, December 21nd 2020, 10:32:38 am
- * Author: Rodrigo Lopes (rlc2@cesar.org.br)
- *
- * Copyright (c) 2020 CESAR
- */
-
 #include "c-spiffe/svid/x509svid/svid.h"
 #include "workload.grpc.pb.h"
 #include "workload.pb.h"
