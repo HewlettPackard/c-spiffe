@@ -1,7 +1,10 @@
+#include "c-spiffe/workload/client.h"
 #include <fstream>
 #include <grpcpp/grpcpp.h>
 #include <iostream>
 #include <memory>
+#include <openssl/pem.h>
+#include <openssl/ssl.h>
 #include <sstream>
 #include <string>
 
@@ -12,9 +15,6 @@ using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
 
-/* using HelloRequest;
-using HelloReply;
-using Greeter; */
 
 class GreeterServiceImpl final : public Greeter::Service
 {
@@ -29,27 +29,34 @@ class GreeterServiceImpl final : public Greeter::Service
     }
 };
 
-/* void read(const std::string &filename, std::string &data)
+std::string x509ToString(X509 *cert)
 {
-    std::ifstream file(filename.c_str(), std::ios::in);
+    BIO *bio = BIO_new(BIO_s_mem());
+    PEM_write_bio_X509(bio, cert);
 
-    if(file.is_open()) {
-        std::stringstream ss;
-        ss << file.rdbuf();
+    long num_bytes = BIO_get_mem_data(bio, NULL);
+    char str[num_bytes];
 
-        file.close();
+    BIO_read(bio, str, num_bytes);
 
-        data = ss.str();
-    }
+    return str;
+}
 
-    return;
-} */
+std::string privateKeyToString(EVP_PKEY *pkey)
+{
+    BIO *bio = BIO_new(BIO_s_mem());
+    PEM_write_bio_PrivateKey(bio, pkey, NULL, NULL, 0, NULL, NULL);
+
+    long num_bytes = BIO_get_mem_data(bio, NULL);
+    char str[num_bytes];
+
+    BIO_read(bio, str, num_bytes);
+
+    return str;
+}
 
 void runServer()
 {
-    /**
-     * [!] Be carefull here using one cert with the CN != localhost. [!]
-     **/
     std::string server_address("localhost:50051");
 
     err_t error = NO_ERROR;
@@ -67,34 +74,33 @@ void runServer()
     if(error != NO_ERROR) {
         printf("fetch error! %d\n", (int) error);
     }
+    printf("Address: %p\n", svid);
 
-    /* std::string key;
-    std::string cert;
-    std::string root; */
+    if(svid) {
 
-    // read("./resources/server.crt", cert);
-    // read("./resources/server.key", key);
-    // read("./resources/ca.crt", root);
+        ServerBuilder builder;
 
-    ServerBuilder builder;
+        grpc::SslServerCredentialsOptions::PemKeyCertPair keycert
+            = { privateKeyToString(svid->private_key),
+                x509ToString(svid->certs[0]) };
 
-    //grpc::SslServerCredentialsOptions::PemKeyCertPair keycert = { key, cert };
+        grpc::SslServerCredentialsOptions sslOps;
+        sslOps.pem_key_cert_pairs.push_back(keycert);
 
-    grpc::SslServerCredentialsOptions sslOps;
-    //sslOps.pem_root_certs = root;
-    //sslOps.pem_key_cert_pairs.push_back(keycert);
+        builder.AddListeningPort(server_address,
+                                 grpc::SslServerCredentials(sslOps));
 
-    builder.AddListeningPort(server_address,
-                             grpc::SslServerCredentials(sslOps));
+        GreeterServiceImpl service;
+        builder.RegisterService(&service);
 
-    GreeterServiceImpl service;
-    builder.RegisterService(&service);
+        std::unique_ptr<Server> server(builder.BuildAndStart());
 
-    std::unique_ptr<Server> server(builder.BuildAndStart());
+        std::cout << "Server listening on " << server_address << std::endl;
 
-    std::cout << "Server listening on " << server_address << std::endl;
+        server->Wait();
 
-    server->Wait();
+        x509svid_SVID_Free(svid);
+    }
 }
 
 int main(int argc, char **argv)

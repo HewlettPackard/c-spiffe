@@ -107,6 +107,7 @@ set(SERVER_GRPC
 )
 add_executable(spiffe_grpc_server "${SERVER_GRPC}")
 target_link_libraries(spiffe_grpc_server
+client
 ${_REFLECTION}
 ${_GRPC_GRPCPP}
 ${_GRPC_GRPC}
@@ -120,6 +121,7 @@ set(CLIENT_GRPC
 )
 add_executable(spiffe_grpc_client "${CLIENT_GRPC}")
 target_link_libraries(spiffe_grpc_client
+client
 ${_REFLECTION}
 ${_GRPC_GRPCPP}
 ${_GRPC_GRPC}
