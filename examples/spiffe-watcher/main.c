@@ -23,6 +23,7 @@
  */
 
 #include "c-spiffe/bundle/jwtbundle.h"
+#include "c-spiffe/internal/jwtutil.h"
 #include "c-spiffe/workload/workload.h"
 #include "threads.h"
 
@@ -55,12 +56,19 @@ void callback_JWTBundles(jwtbundle_Set *set, void *unused)
         for(size_t i = 0, size = arrlenu(bundles); i < size; ++i) {
             printf("jwt bundle updated %s:\n", bundles[i]->td.name);
 
-            map_string_EVP_PKEY *auths = bundles[i]->auths;
-            for(size_t j = 0, size2 = shlenu(auths); j < size2; ++j) {
-                PEM_write_PrivateKey(stdout, auths[j].value, NULL, NULL, 0,
-                                     NULL, NULL);
+            jwtutil_JWKS jwks
+                = { .root = NULL,
+                    .jwt_auths = jwtutil_CopyJWTAuthorities(bundles[i]->auths),
+                    .x509_auths = NULL };
+            err_t err;
+            string_t str = jwtutil_JWKS_Marshal(&jwks, &err);
+
+            if(str && err == NO_ERROR) {
+                printf("%s\n", str);
             }
-            putchar('\n');
+
+            arrfree(str);
+            jwtutil_JWKS_Free(&jwks);
         }
 
         for(size_t i = 0, size = arrlenu(bundles); i < size; ++i) {
