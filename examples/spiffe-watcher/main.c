@@ -1,15 +1,71 @@
+/**
+ *
+ * (C) Copyright 2020-2021 Hewlett Packard Enterprise Development LP
+ *
+ *
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License. You may obtain
+ * a copy of the License at
+ *
+ *
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
 #include "c-spiffe/bundle/jwtbundle.h"
 #include "c-spiffe/workload/workload.h"
 #include "threads.h"
 
+#include <openssl/pem.h>
+
 void callback_X509Context(workloadapi_X509Context *ctx, void *unused)
 {
-    // dummy
+    if(ctx) {
+        x509svid_SVID **svids = ctx->svids;
+
+        for(size_t i = 0, size = arrlenu(svids); i < size; ++i) {
+            string_t str_name = spiffeid_ID_String(svids[i]->id);
+            printf("SVID updated for %s:\n", str_name);
+            arrfree(str_name);
+
+            X509 **certs = svids[i]->certs;
+            for(size_t j = 0, size = arrlenu(certs); j < size; ++j) {
+                PEM_write_X509(stdout, certs[j]);
+            }
+            putchar('\n');
+        }
+    }
 }
 
 void callback_JWTBundles(jwtbundle_Set *set, void *unused)
 {
-    // dummy
+    if(set) {
+        jwtbundle_Bundle **bundles = jwtbundle_Set_Bundles(set);
+        for(size_t i = 0, size = arrlenu(bundles); i < size; ++i) {
+            printf("jwt bundle updated %s:\n", bundles[i]->td.name);
+
+            map_string_EVP_PKEY *auths = bundles[i]->auths;
+            for(size_t j = 0, size2 = shlenu(auths); j < size2; ++j) {
+                PEM_write_PrivateKey(stdout, auths[j].value, NULL, NULL, 0,
+                                     NULL, NULL);
+            }
+            putchar('\n');
+        }
+
+        for(size_t i = 0, size = arrlenu(bundles); i < size; ++i) {
+            jwtbundle_Bundle_Free(bundles[i]);
+        }
+    }
 }
 
 int watch_X509SVIDs(void *arg)
@@ -90,8 +146,8 @@ void startWatchers(void)
     thrd_create(&thrd_x509, watch_X509SVIDs, client);
     thrd_create(&thrd_jwt, watch_JWTBundles, client);
 
-    thrd_join(&thrd_x509, NULL);
-    thrd_join(&thrd_jwt, NULL);
+    thrd_join(thrd_x509, NULL);
+    thrd_join(thrd_jwt, NULL);
 
     err = workloadapi_Client_Close(client);
     if(err) {
