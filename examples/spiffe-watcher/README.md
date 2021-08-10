@@ -25,7 +25,7 @@ under the License.
 
 This example shows how a service can obtain automatically rotated X.509 SVIDs and JWT Bundles from the SPIFFE Workload API.
 
-The first step is to create a Workload API client. The code assumes it is talking to [SPIRE](https://github.com/spiffe/spire)E.
+The first step is to create a Workload API client. The code assumes it is talking to [SPIRE](https://github.com/spiffe/spire).
 
 ```C++
     err_t err;
