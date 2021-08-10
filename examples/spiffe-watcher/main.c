@@ -51,6 +51,7 @@ void callback_JWTBundles(jwtbundle_Set *set, void *unused)
 {
     if(set) {
         jwtbundle_Bundle **bundles = jwtbundle_Set_Bundles(set);
+
         for(size_t i = 0, size = arrlenu(bundles); i < size; ++i) {
             printf("jwt bundle updated %s:\n", bundles[i]->td.name);
 
@@ -71,7 +72,6 @@ void callback_JWTBundles(jwtbundle_Set *set, void *unused)
 int watch_X509SVIDs(void *arg)
 {
     workloadapi_Client *client = arg;
-    /// TODO: configure watcher
     workloadapi_WatcherConfig config
         = { .client = client, .client_options = NULL };
     workloadapi_X509Callback cb
@@ -100,7 +100,6 @@ int watch_X509SVIDs(void *arg)
 int watch_JWTBundles(void *arg)
 {
     workloadapi_Client *client = arg;
-    /// TODO: configure watcher
     workloadapi_JWTWatcherConfig config
         = { .client = client, .client_options = NULL };
     workloadapi_JWTCallback cb = { .args = NULL, .func = callback_JWTBundles };
