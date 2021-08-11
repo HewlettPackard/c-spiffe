@@ -136,7 +136,7 @@ int watch_JWTBundles(void *arg)
 void startWatchers(void)
 {
     thrd_t thrd_x509, thrd_jwt;
-    err_t err;
+    err_t err = NO_ERROR;
     workloadapi_Client *client = workloadapi_NewClient(&err);
     if(!client || err) {
         printf("Failed creating client: %u\n", err);
