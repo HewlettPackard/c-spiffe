@@ -71,9 +71,7 @@ void callback_JWTBundles(jwtbundle_Set *set, void *unused)
             jwtutil_JWKS_Free(&jwks);
         }
 
-        for(size_t i = 0, size = arrlenu(bundles); i < size; ++i) {
-            jwtbundle_Bundle_Free(bundles[i]);
-        }
+        arrfree(bundles);
     }
 }
 
