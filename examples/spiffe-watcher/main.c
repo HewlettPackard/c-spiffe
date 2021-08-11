@@ -84,7 +84,7 @@ int watch_X509SVIDs(void *arg)
         = { .client = client, .client_options = NULL };
     workloadapi_X509Callback cb
         = { .args = NULL, .func = callback_X509Context };
-    err_t err;
+    err_t err = NO_ERROR;
     workloadapi_Watcher *watcher = workloadapi_newWatcher(config, cb, &err);
     if(!watcher || err) {
         printf("Failed creating X.509 watcher: %u\n", err);
