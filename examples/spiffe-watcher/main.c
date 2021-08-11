@@ -60,7 +60,7 @@ void callback_JWTBundles(jwtbundle_Set *set, void *unused)
                 = { .root = NULL,
                     .jwt_auths = jwtutil_CopyJWTAuthorities(bundles[i]->auths),
                     .x509_auths = NULL };
-            err_t err;
+            err_t err = NO_ERROR;
             string_t str = jwtutil_JWKS_Marshal(&jwks, &err);
 
             if(str && err == NO_ERROR) {
