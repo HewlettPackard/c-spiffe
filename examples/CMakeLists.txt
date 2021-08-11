@@ -71,3 +71,10 @@ set(SERVER_HTTP
 )
 add_executable(spiffe_http_server "${SERVER_HTTP}")
 target_link_libraries(spiffe_http_server spiffetls)
+
+# spiffe-watcher
+set(SPIFFE_WATCHER
+    spiffe-watcher/main.c
+)
+add_executable(spiffe_watcher "${SPIFFE_WATCHER}")
+target_link_libraries(spiffe_watcher client)
