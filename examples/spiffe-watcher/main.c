@@ -111,7 +111,7 @@ int watch_JWTBundles(void *arg)
     workloadapi_JWTWatcherConfig config
         = { .client = client, .client_options = NULL };
     workloadapi_JWTCallback cb = { .args = NULL, .func = callback_JWTBundles };
-    err_t err;
+    err_t err = NO_ERROR;
     workloadapi_JWTWatcher *watcher
         = workloadapi_newJWTWatcher(config, cb, &err);
     if(!watcher || err) {
