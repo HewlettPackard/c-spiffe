@@ -67,9 +67,9 @@ $(function() {
 <div class="title">MINOR-INSTALLATION </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md82"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md87"></a>
 Minimal Installation</h1>
-<h4><a class="anchor" id="autotoc_md83"></a>
+<h4><a class="anchor" id="autotoc_md88"></a>
 Build Dependencies</h4>
 <ul>
 <li>gcc (9.3.0-17ubuntu1~20.04)</li>
@@ -88,10 +88,10 @@ Build Dependencies</h4>
 <li>libcurl4-openssl-dev (7.68.0-1ubuntu2.5)</li>
 <li>check (0.10.0-3build2)</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md84"></a>
+<h4><a class="anchor" id="autotoc_md89"></a>
 Command-Line</h4>
 <p>Open a terminal and execute </p><div class="fragment"><div class="line">apt-get update &amp;&amp; apt-get install -y build-essential automake libtool curl cmake libssl-dev liburiparser1 liburiparser-dev protobuf-compiler libprotobuf-dev libjansson-dev libcjose-dev libcurl4-openssl-dev check</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md85"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md90"></a>
 Compile gRPC</h3>
 <p>In order to create a pure C lib, supporting gRPC, which is a C++ lib, it is necessarty to compile gRPC code together with c-spiffe code. The following steps can be used for compiling gRPC:</p>
 <ul>
@@ -106,7 +106,7 @@ Compile gRPC</h3>
 <div class="fragment"><div class="line">cd grpc/cmake/build</div>
 <div class="line">cmake -DgRPC_INSTALL=ON -DgRPC_SSL_PROVIDER=package ../.</div>
 <div class="line">make -j${NUM_JOBS} &amp;&amp; make install</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md86"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md91"></a>
 Compile C-Spiffe library</h3>
 <ul>
 <li>Clone C-Spiffe source <div class="fragment"><div class="line">git clone https://github.com/HewlettPackard/c-spiffe.git</div>
@@ -117,7 +117,7 @@ Compile C-Spiffe library</h3>
 <div class="line">mkdir build &amp;&amp; cd build</div>
 <div class="line">cmake ..</div>
 <div class="line">make -j${NUM_JOBS}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md87"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md92"></a>
 Installing</h3>
 <div class="fragment"><div class="line">make install</div>
 <div class="line">ldconfig</div>
