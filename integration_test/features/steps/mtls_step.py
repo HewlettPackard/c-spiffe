@@ -32,7 +32,6 @@ from utils import parse_nullable_string, is_entry_created, remove_entry
 parse_nullable_string.pattern = r'.*'
 register_type(NullableString=parse_nullable_string)
 
-
 @step('The second "{process}" is turned off inside "{container_name}" container')
 def step_impl(context, process, container_name):
     if process != "agent" and process != "server":
@@ -102,7 +101,7 @@ def step_impl(context, message, container_name, language):
 def step_impl(context, message):
     tls_answer = context.result.replace("\"","").split("Server replied:")
     actual_message = tls_answer[-1].strip().replace("\\n","")
-    assert_that(actual_message, is_(message), "Unexpected response from server: %s" % message)
+    assert_that(actual_message, is_(message), "Unexpected response from server: %s" % actual_message)
 
 
 @step('The second agent is turned on inside "{container_name}" container with the second trust domain')
