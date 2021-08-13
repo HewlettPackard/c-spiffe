@@ -442,17 +442,18 @@ size_t read_HTTPS(SSL *conn, const char *buf, size_t buf_size,
                   size_t *prevbuflen, err_t *err);
 err_t serve_HTTPS(SSL *conn, spiffebundle_EndpointServer *server);
 
-char *http_test_response = "GET / HTTP/1.1";
-char *http_test_headers[] = { "Host: example.org", "User-Agent: Mozilla/5.0",
-                              "Accept-Encoding: gzip, deflate, br" };
+const char *http_test_response = "GET / HTTP/1.1";
+const char *http_test_headers[]
+    = { "Host: example.org", "User-Agent: Mozilla/5.0",
+        "Accept-Encoding: gzip, deflate, br" };
 int http_test_num_headers = 3;
-char *http_test_content = "{}";
+const char *http_test_content = "{}";
 
 int serve_function(void *arg);
 
 int mockHTTPS(void *arg)
 {
-    int socket = (int) arg;
+    int socket = (long int) arg;
 
     SSL_CTX *ctx = SSL_CTX_new(TLS_client_method());
     SSL_CTX_set_options(ctx, SSL_OP_SINGLE_DH_USE);
@@ -487,15 +488,15 @@ START_TEST(test_spiffebundle_EndpointServer_HTTPSFunctions)
     SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
     int use_cert = SSL_CTX_use_certificate_file(
         sslctx, "./resources/example.org.crt", SSL_FILETYPE_PEM);
-    ck_assert_int_ne(use_cert, NULL);
+    ck_assert_int_ne(use_cert, 0);
     int use_prv = SSL_CTX_use_PrivateKey_file(
         sslctx, "./resources/example.org.key", SSL_FILETYPE_PEM);
-    ck_assert_int_ne(use_prv, NULL);
+    ck_assert_int_ne(use_prv, 0);
     SSL *cSSL = SSL_new(sslctx);
     SSL_set_fd(cSSL, sockets[0]);
 
     thrd_t thread;
-    thrd_create(&thread, mockHTTPS, sockets[1]);
+    thrd_create(&thread, mockHTTPS, (void *) (long int) sockets[1]);
 
     // Here is the SSL Accept portion.  Now all reads and writes must use SSL
     int ssl_err = SSL_accept(cSSL);
@@ -508,9 +509,10 @@ START_TEST(test_spiffebundle_EndpointServer_HTTPSFunctions)
            num_headers = sizeof(headers) / sizeof(headers[0]);
     ssize_t rret;
 
-    buflen = read_HTTPS(cSSL, buf, sizeof(buf), &method, &method_len, &path,
-                        &path_len, &minor_version, headers, &num_headers,
-                        &prevbuflen, &err);
+    buflen
+        = read_HTTPS(cSSL, buf, sizeof(buf), (const char **) &method,
+                     &method_len, (const char **) &path, &path_len,
+                     &minor_version, headers, &num_headers, &prevbuflen, &err);
     buf[buflen] = '\0';
     ck_assert_int_eq(err, NO_ERROR);
     printf("buf:%s\n", buf);
@@ -524,8 +526,8 @@ START_TEST(test_spiffebundle_EndpointServer_HTTPSFunctions)
     path[path_len] = '\0';
 
     for(int i = 0; i < num_headers; i++) {
-        char *name = headers[i].name;
-        char *value = headers[i].value;
+        char *name = (char*) headers[i].name;
+        char *value = (char*) headers[i].value;
 
         name[headers[i].name_len] = '\0';
         value[headers[i].value_len] = '\0';
@@ -576,16 +578,16 @@ START_TEST(test_spiffebundle_EndpointServer_Serve_HTTPSFunctions)
     SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
     int use_cert = SSL_CTX_use_certificate_file(
         sslctx, "./resources/example.org.crt", SSL_FILETYPE_PEM);
-    ck_assert_int_ne(use_cert, NULL);
+    ck_assert_int_ne(use_cert, 0);
     int use_prv = SSL_CTX_use_PrivateKey_file(
         sslctx, "./resources/example.org.key", SSL_FILETYPE_PEM);
-    ck_assert_int_ne(use_prv, NULL);
+    ck_assert_int_ne(use_prv, 0);
 
     SSL *cSSL = SSL_new(sslctx);
     SSL_set_fd(cSSL, sockets[0]);
 
     thrd_t thread;
-    thrd_create(&thread, mockHTTPS, sockets[1]);
+    thrd_create(&thread, mockHTTPS, (void *) (long int) sockets[1]);
     int ssl_err = SSL_accept(cSSL);
     ck_assert_int_eq(ssl_err, 1);
 

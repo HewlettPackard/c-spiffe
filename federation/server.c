@@ -32,6 +32,7 @@
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#include <unistd.h>
 
 spiffebundle_EndpointInfo *spiffebundle_EndpointInfo_New()
 {
@@ -59,7 +60,7 @@ spiffebundle_EndpointServer *spiffebundle_EndpointServer_New()
     spiffebundle_EndpointServer *new_server = calloc(1, sizeof(*new_server));
 
     mtx_init(&new_server->mutex, mtx_plain);
-    
+
     sh_new_strdup(new_server->endpoints);
     sh_new_strdup(new_server->bundle_sources);
     sh_new_strdup(new_server->bundle_tds);
@@ -428,8 +429,8 @@ err_t spiffebundle_EndpointServer_RemoveEndpoint(
 }
 
 // read and parse HTTPS request
-size_t read_HTTPS(SSL *conn, const char *buf, size_t buf_size,
-                  const char **method, size_t *method_len, const char **path,
+size_t read_HTTPS(SSL *conn, char *const buf, size_t buf_size,
+                  char **const method, size_t *method_len, char **const path,
                   size_t *path_len, int *minor_version,
                   struct phr_header *headers, size_t *num_headers,
                   size_t *prevbuflen, err_t *err)
@@ -451,9 +452,10 @@ size_t read_HTTPS(SSL *conn, const char *buf, size_t buf_size,
         buflen += rret;
         _num_headers = *num_headers;
         // parse
-        int pret = phr_parse_request(buf, buflen, method, method_len, path,
-                                 path_len, minor_version, headers,
-                                 &_num_headers, *prevbuflen);
+        int pret = phr_parse_request(buf, buflen, (const char **) method,
+                                     method_len, (const char **) path,
+                                     path_len, minor_version, headers,
+                                     &_num_headers, *prevbuflen);
         if(pret > 0) {
             *err = NO_ERROR;
             break;
@@ -536,7 +538,7 @@ err_t serve_HTTPS(SSL *conn, spiffebundle_EndpointServer *server)
     path[path_len] = '\0';
     // send response
     // LOG: log path
-    char *out_headers[] = { "Content-Type: application/json" };
+    const char *out_headers[] = { "Content-Type: application/json" };
     if(strcmp(method, "GET") == 0) {
         mtx_lock(&server->mutex);
         spiffebundle_Source *source = shget(server->bundle_sources, path);
@@ -581,7 +583,7 @@ int serve_function(void *arg)
         err_t err = NO_ERROR;
         if(once) { // notify main thread
             const char OK_str[] = "OK!\r\n";
-            write(e_thread->control_socks[1], OK_str, sizeof(OK_str) +1);
+            write(e_thread->control_socks[1], OK_str, sizeof(OK_str) + 1);
             once = false;
         }
         // RACE
@@ -601,7 +603,7 @@ int serve_function(void *arg)
     return NO_ERROR;
 }
 
-const int MAX_PORT = (1 << 16) -1;
+const int MAX_PORT = (1 << 16) - 1;
 // Serve bundles using the set up protocol. Spawns a thread.
 err_t spiffebundle_EndpointServer_ServeEndpoint(
     spiffebundle_EndpointServer *server, const char *base_url, uint port)
