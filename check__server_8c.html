@@ -180,14 +180,14 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a79b264a3c220d1fdcdd2c817a05bd35e"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="check__server_8c.html#a79b264a3c220d1fdcdd2c817a05bd35e">http_test_response</a> = &quot;GET / HTTP/1.1&quot;</td></tr>
-<tr class="separator:a79b264a3c220d1fdcdd2c817a05bd35e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64350c83b0afd781a99d3a8e8ba92758"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="check__server_8c.html#a64350c83b0afd781a99d3a8e8ba92758">http_test_headers</a> []</td></tr>
-<tr class="separator:a64350c83b0afd781a99d3a8e8ba92758"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f505bf4a3202c134eacacb5a2f7905c"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="check__server_8c.html#a0f505bf4a3202c134eacacb5a2f7905c">http_test_response</a> = &quot;GET / HTTP/1.1&quot;</td></tr>
+<tr class="separator:a0f505bf4a3202c134eacacb5a2f7905c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84a76c0082b36a2993cac547370aeaaf"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="check__server_8c.html#a84a76c0082b36a2993cac547370aeaaf">http_test_headers</a> []</td></tr>
+<tr class="separator:a84a76c0082b36a2993cac547370aeaaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad24c2840094ab45b8a8d172f9b3c8455"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="check__server_8c.html#ad24c2840094ab45b8a8d172f9b3c8455">http_test_num_headers</a> = 3</td></tr>
 <tr class="separator:ad24c2840094ab45b8a8d172f9b3c8455"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af556a52a3c081d74a9e8df8eb9b5a8db"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="check__server_8c.html#af556a52a3c081d74a9e8df8eb9b5a8db">http_test_content</a> = &quot;{}&quot;</td></tr>
-<tr class="separator:af556a52a3c081d74a9e8df8eb9b5a8db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35c35ded78c94493625194471253a446"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="check__server_8c.html#a35c35ded78c94493625194471253a446">http_test_content</a> = &quot;{}&quot;</td></tr>
+<tr class="separator:a35c35ded78c94493625194471253a446"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="af02ead279088d60205a5cfaa8ef37f4f"></a>
@@ -356,9 +356,6 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>LOG: Error reading from socket</p>
-<p>LOG: HTTP parse error</p>
-<p>LOG: Request too long, buffer overflow prevented</p>
 
 </div>
 </div>
@@ -591,33 +588,33 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="af556a52a3c081d74a9e8df8eb9b5a8db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af556a52a3c081d74a9e8df8eb9b5a8db">&#9670;&nbsp;</a></span>http_test_content</h2>
+<a id="a35c35ded78c94493625194471253a446"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35c35ded78c94493625194471253a446">&#9670;&nbsp;</a></span>http_test_content</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char* http_test_content = &quot;{}&quot;</td>
+          <td class="memname">const char* http_test_content = &quot;{}&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a64350c83b0afd781a99d3a8e8ba92758"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64350c83b0afd781a99d3a8e8ba92758">&#9670;&nbsp;</a></span>http_test_headers</h2>
+<a id="a84a76c0082b36a2993cac547370aeaaf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84a76c0082b36a2993cac547370aeaaf">&#9670;&nbsp;</a></span>http_test_headers</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char* http_test_headers[]</td>
+          <td class="memname">const char* http_test_headers[]</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= { <span class="stringliteral">&quot;Host: example.org&quot;</span>, <span class="stringliteral">&quot;User-Agent: Mozilla/5.0&quot;</span>,</div>
-<div class="line">                              <span class="stringliteral">&quot;Accept-Encoding: gzip, deflate, br&quot;</span> }</div>
+<div class="line">        <span class="stringliteral">&quot;Accept-Encoding: gzip, deflate, br&quot;</span> }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -635,14 +632,14 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a79b264a3c220d1fdcdd2c817a05bd35e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a79b264a3c220d1fdcdd2c817a05bd35e">&#9670;&nbsp;</a></span>http_test_response</h2>
+<a id="a0f505bf4a3202c134eacacb5a2f7905c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f505bf4a3202c134eacacb5a2f7905c">&#9670;&nbsp;</a></span>http_test_response</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char* http_test_response = &quot;GET / HTTP/1.1&quot;</td>
+          <td class="memname">const char* http_test_response = &quot;GET / HTTP/1.1&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
