@@ -24,7 +24,7 @@ under the License.
 
 # Building
 
-## Docker Building (recommended)
+## Docker Building 
 
 ### Docker Build Dependencies
 
