@@ -116,12 +116,10 @@ err_t workloadapi_JWTWatcher_Start(workloadapi_JWTWatcher *watcher)
     }
     /// spin watcher thread out.
 
-    int thread_error
-        = thrd_create(&(watcher->watcher_thread),
+    watcher->thread_error = thrd_create(&(watcher->watcher_thread),
                       workloadapi_JWTWatcher_JWTbackgroundFunc, watcher);
 
-    if(thread_error != thrd_success) {
-        watcher->thread_error = thread_error;
+    if(watcher->thread_error != thrd_success) {
         return ERR_THREAD; // THREAD ERROR, see watcher->threadERROR for error
     }
 
@@ -245,8 +243,5 @@ err_t workloadapi_JWTWatcher_TriggerUpdated(workloadapi_JWTWatcher *watcher)
         // if unlock
         return error;
     }
-    if(!error) {
-        return (err_t) watcher->thread_error;
-    }
-    return error;
+    return (err_t) watcher->thread_error;
 }
