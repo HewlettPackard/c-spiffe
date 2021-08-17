@@ -107,7 +107,6 @@ workloadapi_X509Source_GetX509SVID(workloadapi_X509Source *source, err_t *err)
         }
         // missing SVID
         *err = ERR_NULL_SVID;
-        return NULL;
     }
 
     return NULL;

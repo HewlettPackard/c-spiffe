@@ -47,7 +47,7 @@ START_TEST(test_workloadapi_NewX509Source_creates_default_config);
     ck_assert_ptr_eq(tested->bundles, NULL);
 
     ck_assert_ptr_eq(tested->watcher->x509callback.args, tested);
-
+    arrpush(tested->svids,NULL);
     workloadapi_X509Source_Free(tested);
 }
 END_TEST
@@ -120,6 +120,15 @@ START_TEST(test_workloadapi_X509Source_GetX509SVID_default_picker);
     ck_assert_ptr_eq(svid3, svid1);
     arrpop(tested->svids);
     arrpop(tested->svids);
+
+    arrpush(tested->svids, NULL);
+    svid3 = workloadapi_X509Source_GetX509SVID(tested, &err);
+
+    ck_assert_ptr_eq(svid3, NULL);
+    ck_assert_int_eq(err, ERR_NULL_SVID);
+    
+    arrpop(tested->svids);
+
     workloadapi_X509Source_Free(tested);
 }
 END_TEST
@@ -164,16 +173,20 @@ START_TEST(test_workloadapi_X509Source_GetX509SVID_custom_picker);
 }
 END_TEST
 
+void workloadapi_x509Source_onX509ContextCallback(
+    workloadapi_X509Context *x509cntx, void *args);
+
 START_TEST(test_workloadapi_X509Source_applyX509Context);
 {
     err_t err;
     workloadapi_X509Source *tested = workloadapi_NewX509Source(NULL, &err);
-
+    
+    arrpush(tested->svids,NULL);
     workloadapi_X509Context ctx;
     ctx.bundles = (x509bundle_Set *) 1;
     ctx.svids = (x509svid_SVID **) 2;
 
-    workloadapi_X509Source_applyX509Context(tested, &ctx);
+    workloadapi_x509Source_onX509ContextCallback(&ctx, tested);
 
     ck_assert_ptr_eq(tested->bundles, (x509bundle_Set *) 1);
 
@@ -204,8 +217,11 @@ START_TEST(test_workloadapi_X509Source_Start_waits_and_sets_closed_false);
     thrd_t thread;
     thrd_create(&thread, waitAndUpdate, tested);
 
-    workloadapi_X509Source_Start(tested);
+    err = workloadapi_X509Source_Start(NULL);
+    ck_assert_int_eq(err, ERR_NULL);
 
+    workloadapi_X509Source_Start(tested);
+    
     struct timespec now;
     timespec_get(&now, TIME_UTC);
 
@@ -215,6 +231,29 @@ START_TEST(test_workloadapi_X509Source_Start_waits_and_sets_closed_false);
     ck_assert_int_eq(workloadapi_X509Source_checkClosed(tested), NO_ERROR);
 
     workloadapi_X509Source_Close(tested);
+
+    tested->bundles = NULL;
+    tested->svids = NULL;
+    workloadapi_X509Source_Free(tested);
+}
+END_TEST
+
+START_TEST(test_workloadapi_X509Source_Wait_Until_update);
+{
+    err_t err;
+    workloadapi_X509Source *tested = workloadapi_NewX509Source(NULL, &err);
+    struct timespec then;
+    timespec_get(&then, TIME_UTC);
+    thrd_t thread;
+    thrd_create(&thread, waitAndUpdate, tested);
+    tested->closed = false;
+    workloadapi_X509Source_WaitUntilUpdated(tested);
+
+    struct timespec now;
+    timespec_get(&now, TIME_UTC);
+
+    ck_assert_int_ge(now.tv_sec, then.tv_sec + 2);
+    ck_assert_int_lt(now.tv_sec, then.tv_sec + 5);
 
     tested->bundles = NULL;
     tested->svids = NULL;
@@ -297,6 +336,7 @@ Suite *watcher_suite(void)
     tcase_add_test(
         tc_core,
         test_workloadapi_X509Source_Start_waits_and_sets_closed_false);
+    tcase_add_test(tc_core, test_workloadapi_X509Source_Wait_Until_update);
     tcase_add_test(tc_core, test_workloadapi_X509Source_Closes_watcher);
     tcase_add_test(tc_core,
                    test_workloadapi_X509Source_GetX509BundleForTrustDomain);
