@@ -80,6 +80,9 @@ START_TEST(test_workloadapi_NewJWTSource_uses_config);
 }
 END_TEST
 
+void workloadapi_JWTSource_onJWTBundle_SetCallback(jwtbundle_Set *jwt_set,
+                                                   void *args);
+
 START_TEST(test_workloadapi_JWTSource_applyJWTBundle_Set);
 {
     err_t err;
@@ -90,7 +93,7 @@ START_TEST(test_workloadapi_JWTSource_applyJWTBundle_Set);
         = spiffeid_TrustDomainFromString("spiffe://example.com", &err);
     jwtbundle_Bundle *bundle = jwtbundle_New(td);
     jwtbundle_Set_Add(set, bundle);
-    workloadapi_JWTSource_applyJWTBundle_Set(tested, set);
+    workloadapi_JWTSource_onJWTBundle_SetCallback(set, tested);
 
     ck_assert_ptr_ne(tested->bundles, set);
     ck_assert_str_eq(tested->bundles->bundles[0].value->td.name,
@@ -120,7 +123,10 @@ START_TEST(test_workloadapi_JWTSource_Start_waits_and_sets_closed_false);
     timespec_get(&then, TIME_UTC);
     thrd_t thread;
     thrd_create(&thread, waitAndUpdate, tested);
-
+    
+    err = workloadapi_JWTSource_Start(NULL);
+    ck_assert_int_eq(err, ERR_NULL);
+    
     workloadapi_JWTSource_Start(tested);
 
     struct timespec now;
@@ -181,6 +187,28 @@ START_TEST(test_workloadapi_JWTSource_GetJWTSVID_fails_if_closed);
 }
 END_TEST
 
+START_TEST(test_workloadapi_JWTSource_Wait_Until_update);
+{
+    err_t err;
+    workloadapi_JWTSource *tested = workloadapi_NewJWTSource(NULL, &err);
+    struct timespec then;
+    timespec_get(&then, TIME_UTC);
+    thrd_t thread;
+    thrd_create(&thread, waitAndUpdate, tested);
+    tested->closed = false;
+    workloadapi_JWTSource_WaitUntilUpdated(tested);
+
+    struct timespec now;
+    timespec_get(&now, TIME_UTC);
+
+    ck_assert_int_ge(now.tv_sec, then.tv_sec + 2);
+    ck_assert_int_lt(now.tv_sec, then.tv_sec + 5);
+
+    tested->bundles = NULL;
+    workloadapi_JWTSource_Free(tested);
+}
+END_TEST
+
 START_TEST(test_workloadapi_JWTSource_GetJWTBundleForTrustDomain);
 {
     err_t err;
@@ -200,7 +228,8 @@ START_TEST(test_workloadapi_JWTSource_GetJWTBundleForTrustDomain);
         = workloadapi_JWTSource_GetJWTBundleForTrustDomain(tested, td, &err);
 
     ck_assert_ptr_eq(bundle, NULL);
-    ck_assert_int_eq(err, ERR_INVALID_TRUSTDOMAIN); // trust domain not available
+    ck_assert_int_eq(err,
+                     ERR_INVALID_TRUSTDOMAIN); // trust domain not available
 
     jwtbundle_Set_Free(tested->bundles);
     tested->bundles = NULL;
@@ -225,6 +254,7 @@ Suite *watcher_suite(void)
                    test_workloadapi_JWTSource_GetJWTSVID_fails_if_closed);
     tcase_add_test(tc_core,
                    test_workloadapi_JWTSource_GetJWTBundleForTrustDomain);
+    tcase_add_test(tc_core, test_workloadapi_JWTSource_Wait_Until_update);
 
     suite_add_tcase(s, tc_core);
 
