@@ -391,7 +391,7 @@ START_TEST(test_workloadapi_JWTWatcher_Close);
     timespec_get(&then, TIME_UTC);
     thrd_t thread;
     thrd_create(&thread, waitAndUpdate, watcher); // unblocks thread
-    
+
     error = workloadapi_JWTWatcher_Start(NULL);
     ck_assert_int_eq(error, ERR_NULL);
 

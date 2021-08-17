@@ -54,7 +54,8 @@ struct timespec workloadapi_Backoff_NextTime(workloadapi_Backoff *backoff)
     delta.tv_nsec = delta.tv_nsec % 10000000000;
 
     if(delta.tv_sec > backoff->max.tv_sec
-       || (delta.tv_sec == backoff->max.tv_sec && delta.tv_nsec > backoff->max.tv_nsec)) {
+       || (delta.tv_sec == backoff->max.tv_sec
+           && delta.tv_nsec > backoff->max.tv_nsec)) {
         delta = backoff->max;
     }
 

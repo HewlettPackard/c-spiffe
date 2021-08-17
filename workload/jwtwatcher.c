@@ -116,7 +116,8 @@ err_t workloadapi_JWTWatcher_Start(workloadapi_JWTWatcher *watcher)
     }
     /// spin watcher thread out.
 
-    watcher->thread_error = thrd_create(&(watcher->watcher_thread),
+    watcher->thread_error
+        = thrd_create(&(watcher->watcher_thread),
                       workloadapi_JWTWatcher_JWTbackgroundFunc, watcher);
 
     if(watcher->thread_error != thrd_success) {

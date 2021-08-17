@@ -114,7 +114,8 @@ err_t workloadapi_Watcher_Start(workloadapi_Watcher *watcher)
         return error;
     }
     /// spin watcher thread out.
-    watcher->thread_error = thrd_create(&(watcher->watcher_thread),
+    watcher->thread_error
+        = thrd_create(&(watcher->watcher_thread),
                       workloadapi_Watcher_X509backgroundFunc, watcher);
 
     if(watcher->thread_error != thrd_success) {

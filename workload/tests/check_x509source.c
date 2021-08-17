@@ -47,7 +47,7 @@ START_TEST(test_workloadapi_NewX509Source_creates_default_config);
     ck_assert_ptr_eq(tested->bundles, NULL);
 
     ck_assert_ptr_eq(tested->watcher->x509callback.args, tested);
-    arrpush(tested->svids,NULL);
+    arrpush(tested->svids, NULL);
     workloadapi_X509Source_Free(tested);
 }
 END_TEST
@@ -126,7 +126,7 @@ START_TEST(test_workloadapi_X509Source_GetX509SVID_default_picker);
 
     ck_assert_ptr_eq(svid3, NULL);
     ck_assert_int_eq(err, ERR_NULL_SVID);
-    
+
     arrpop(tested->svids);
 
     workloadapi_X509Source_Free(tested);
@@ -180,8 +180,8 @@ START_TEST(test_workloadapi_X509Source_applyX509Context);
 {
     err_t err;
     workloadapi_X509Source *tested = workloadapi_NewX509Source(NULL, &err);
-    
-    arrpush(tested->svids,NULL);
+
+    arrpush(tested->svids, NULL);
     workloadapi_X509Context ctx;
     ctx.bundles = (x509bundle_Set *) 1;
     ctx.svids = (x509svid_SVID **) 2;
@@ -221,7 +221,7 @@ START_TEST(test_workloadapi_X509Source_Start_waits_and_sets_closed_false);
     ck_assert_int_eq(err, ERR_NULL);
 
     workloadapi_X509Source_Start(tested);
-    
+
     struct timespec now;
     timespec_get(&now, TIME_UTC);
 

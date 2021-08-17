@@ -123,10 +123,10 @@ START_TEST(test_workloadapi_JWTSource_Start_waits_and_sets_closed_false);
     timespec_get(&then, TIME_UTC);
     thrd_t thread;
     thrd_create(&thread, waitAndUpdate, tested);
-    
+
     err = workloadapi_JWTSource_Start(NULL);
     ck_assert_int_eq(err, ERR_NULL);
-    
+
     workloadapi_JWTSource_Start(tested);
 
     struct timespec now;
