@@ -257,14 +257,22 @@ START_TEST(test_workloadapi_JWTWatcher_TimedWaitUntilUpdated_blocks);
     thrd_create(&thread, waitAndUpdate, watcher);
     struct timespec timeout = then;
     timeout.tv_sec += 5;
-    workloadapi_JWTWatcher_TimedWaitUntilUpdated(watcher, &timeout);
+    error = workloadapi_JWTWatcher_TimedWaitUntilUpdated(watcher, &timeout);
 
     struct timespec now;
     timespec_get(&now, TIME_UTC);
 
     ck_assert_int_ge(now.tv_sec, then.tv_sec + 2);
     ck_assert_int_lt(now.tv_sec, then.tv_sec + 5);
+    ck_assert(watcher->updated);
 
+    error = workloadapi_JWTWatcher_TimedWaitUntilUpdated(watcher, &timeout);
+    ck_assert_int_eq(error, NO_ERROR);
+    watcher->updated = false;
+    timeout.tv_nsec = then.tv_nsec;
+    timeout.tv_sec = then.tv_sec;
+    error = workloadapi_JWTWatcher_TimedWaitUntilUpdated(watcher, &timeout);
+    ck_assert_int_eq(error, ERR_TIMEOUT);
     // free allocated watcher.
     workloadapi_Client_Free(config.client);
     workloadapi_JWTWatcher_Free(watcher);
@@ -383,7 +391,16 @@ START_TEST(test_workloadapi_JWTWatcher_Close);
     timespec_get(&then, TIME_UTC);
     thrd_t thread;
     thrd_create(&thread, waitAndUpdate, watcher); // unblocks thread
+    
+    error = workloadapi_JWTWatcher_Start(NULL);
+    ck_assert_int_eq(error, ERR_NULL);
 
+    workloadapi_Client *aux_c = watcher->client;
+    watcher->client = NULL;
+    error = workloadapi_JWTWatcher_Start(watcher);
+    ck_assert_int_eq(error, ERR_NULL);
+
+    watcher->client = aux_c;
     error = workloadapi_JWTWatcher_Start(watcher);
     ck_assert(!watcher->closed);
 
@@ -398,6 +415,13 @@ START_TEST(test_workloadapi_JWTWatcher_Close);
     ck_assert(watcher->closed);
     ck_assert(watcher->close_error == NO_ERROR);
     ck_assert_ptr_ne(watcher->client, NULL);
+
+    watcher->client = NULL;
+    error = workloadapi_JWTWatcher_Close(watcher);
+
+    ck_assert_int_eq(error, ERR_NULL);
+    watcher->client = aux_c;
+
     // free allocated watcher.
     workloadapi_JWTWatcher_Free(watcher);
 }
