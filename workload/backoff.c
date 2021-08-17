@@ -42,13 +42,6 @@ workloadapi_Backoff workloadapi_NewBackoff(struct timespec initial,
     return ret;
 }
 
-workloadapi_Backoff workloadapi_NewDefaultBackoff()
-{
-    struct timespec initial = { 1, 0 };
-    struct timespec max = { 30, 0 }; // 30 seconds
-    return workloadapi_NewBackoff(initial, max);
-}
-
 struct timespec workloadapi_Backoff_NextTime(workloadapi_Backoff *backoff)
 {
 
@@ -60,8 +53,9 @@ struct timespec workloadapi_Backoff_NextTime(workloadapi_Backoff *backoff)
     delta.tv_sec += delta.tv_nsec / 10000000000;
     delta.tv_nsec = delta.tv_nsec % 10000000000;
 
-    if(delta.tv_sec >= backoff->max.tv_sec
-       && delta.tv_nsec > backoff->max.tv_nsec) {
+    if(delta.tv_sec > backoff->max.tv_sec
+       || (delta.tv_sec == backoff->max.tv_sec
+           && delta.tv_nsec > backoff->max.tv_nsec)) {
         delta = backoff->max;
     }
 

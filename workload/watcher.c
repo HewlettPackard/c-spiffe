@@ -86,18 +86,15 @@ workloadapi_newWatcher(workloadapi_WatcherConfig config,
 
     newW->x509callback = x509callback;
 
-    int thread_error = mtx_init(&(newW->close_mutex), mtx_plain);
-    if(thread_error != thrd_success) {
+    if(mtx_init(&(newW->close_mutex), mtx_plain) != thrd_success) {
         *error = ERR_NULL;
         return NULL;
     }
-    thread_error = mtx_init(&(newW->update_mutex), mtx_plain);
-    if(thread_error != thrd_success) {
+    if(mtx_init(&(newW->update_mutex), mtx_plain) != thrd_success) {
         *error = ERR_NULL;
         return NULL;
     }
-    thread_error = cnd_init(&(newW->update_cond));
-    if(thread_error != thrd_success) {
+    if(cnd_init(&(newW->update_cond)) != thrd_success) {
         *error = ERR_NULL;
         return NULL;
     }
@@ -117,12 +114,11 @@ err_t workloadapi_Watcher_Start(workloadapi_Watcher *watcher)
         return error;
     }
     /// spin watcher thread out.
-    int thread_error
+    watcher->thread_error
         = thrd_create(&(watcher->watcher_thread),
                       workloadapi_Watcher_X509backgroundFunc, watcher);
 
-    if(thread_error != thrd_success) {
-        watcher->thread_error = thread_error;
+    if(watcher->thread_error != thrd_success) {
         return ERR_THREAD; // THREAD ERROR, see watcher->threadERROR for error
     }
 
@@ -247,8 +243,5 @@ err_t workloadapi_Watcher_TriggerUpdated(workloadapi_Watcher *watcher)
         // if unlock
         return error;
     }
-    if(!error) {
-        return (err_t) watcher->thread_error;
-    }
-    return error;
+    return (err_t) watcher->thread_error;
 }
