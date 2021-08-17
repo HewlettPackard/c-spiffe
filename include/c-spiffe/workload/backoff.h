@@ -19,9 +19,6 @@ typedef struct {
     int times;
 } workloadapi_Backoff;
 
-/** constructor with default settings */
-workloadapi_Backoff workloadapi_NewDefaultBackoff();
-
 /** constructor */
 workloadapi_Backoff workloadapi_NewBackoff(struct timespec initial,
                                            struct timespec max);
