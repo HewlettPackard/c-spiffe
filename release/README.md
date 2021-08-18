@@ -65,3 +65,16 @@ Body: {
 }
 
 ```
+
+Verify a file
+```
+rekor-cli verify --artifact c-spiffe-1.0.0.tar.gz --pki-format=minisign --public-key minisign.pub 
+a detached signature must be provided
+```
+
+
+Issue opened
+
+Using rekor-cli verify given just the --artifact and --public-key #416
+https://github.com/sigstore/rekor/issues/416
+
