@@ -26,3 +26,4 @@ under the License.
 
 The SpiffeId module is composed by Spiffe Id utility function, like Spiffe ID creation, validation and deletion.
 
+![SpiffeID Module Dependencies](../img/diagrams/spiffeid.png)

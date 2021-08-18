@@ -22,6 +22,8 @@ under the License.
 -->
 
 
-# Util
+# Utils
 
 The Utils module is composed by general utility functions. Mostly used internally by the lib.
+
+![Utils Module Dependencies](../img/diagrams/utils.png)

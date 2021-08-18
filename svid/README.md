@@ -28,4 +28,5 @@ The svid module is composed by utility functions for SVID, such as creation, del
 
 * **jwtsvid** Contains utility functions for SVID using the JWT specification.
 * **x509bundle** Contains utility functions for SVID using the X.509 specification.
-*
+
+![SVID Module Dependencies](../img/diagrams/svid.png)

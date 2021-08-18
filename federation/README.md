@@ -26,3 +26,4 @@ under the License.
 
 The Federation module is composed by Federation utility function, like SPIFFE Bundle retrieval, updating, caching and serving.
 
+![Federation Module Dependencies](../img/diagrams/federation.png)
