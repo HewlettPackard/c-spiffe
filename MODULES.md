@@ -28,14 +28,13 @@ The project structure is organized into modules:
 - [**bundle**](bundle/README.md)  facilities for manipulating bundles.
 - [**federation**](federation/README.md)  facilities for retrieving and serving federated bundles.
 - [**internal**](internal/README.md)  general use utility functions.
-- **logger**  code for logging functions.
+- [**logger**](logger/README.md)  code for logging functions.
 - [**protos**](protos/README.md)  ProtoBuf definition for the SPIFFE Workload API. C++ GRPC code is generated from this.
 - [**spiffeid**](spiffeid/README.md)  facilities for manipulating spiffe IDs and Trust Domains.
-- **spiffetls**  Functions for using TLS with SPIFFE.
+- [**spiffetls**](spiffetls/README.md)  Functions for using TLS with SPIFFE.
 - [**svid**](svid/README.md)  utility functions for SVIDs.
 - [**utils**](utils/README.md)  general use utility functions.
-- [**workload**](workload/EXAMPLE.md)  Workload API functions.
-
+- [**workload**](workload/README.md) facilites for fetching SVIDs and Bundles from the Workload API.
 
 ## Dependency Diagram
 
