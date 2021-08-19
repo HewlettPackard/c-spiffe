@@ -22,6 +22,7 @@ under the License.
 -->
 
 
-# Protos
+# Logger
 
-This folder contains the Workload API Protobuf specification. For better compatibility, it was copied from [go-spiffe](https://github.com/spiffe/go-spiffe) repository. This is used to generate the C++ gRPC code for interacting with the Workload API.
+The Logger module is composed by logging functions. Isn't being used yet.
+![Logger Module Dependencies](../img/diagrams/logger.png)

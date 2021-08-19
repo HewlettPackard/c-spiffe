@@ -31,3 +31,4 @@ The Internal module is composed by general use utility functions and some crypto
 * **pemutil** Utility functions for managing PEM certificates.
 * **x509util** Utility functions for managing X509 certificates.
   
+![Internal Module Dependencies](../img/diagrams/internal.png)

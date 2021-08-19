@@ -22,6 +22,11 @@ under the License.
 -->
 
 
-# Protos
+# SPIFFE TLS
 
-This folder contains the Workload API Protobuf specification. For better compatibility, it was copied from [go-spiffe](https://github.com/spiffe/go-spiffe) repository. This is used to generate the C++ gRPC code for interacting with the Workload API.
+The SpiffeTLS module is composed by utility functions for using SVIDs and Bundles for TLS authentication. It contains one sub module:
+
+* **tlsconfig** Contains utility functions for configuring TLS connections.
+
+
+![SPIFFETLS Module Dependencies](../img/diagrams/spiffetls.png)
