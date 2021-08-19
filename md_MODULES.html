@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C-SPIFFE Library: README</title>
+<title>C-SPIFFE Library: MODULES</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,19 +64,27 @@ $(function() {
 </div><!-- top -->
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">README </div>  </div>
+<div class="title">MODULES </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md86"></a>
-Internal</h1>
-<p>The Internal module is composed by general use utility functions and some cryptographic functions. It is divided into the following modules:</p>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md94"></a>
+Modules</h1>
+<p>The project structure is organized into modules:</p>
 <ul>
-<li><b>cryptoutil</b> Utility functions for managing keys</li>
-<li><b>jwtutil</b> Utility functions for managing JWT tokens.</li>
-<li><b>pemutil</b> Utility functions for managing PEM certificates.</li>
-<li><b>x509util</b> Utility functions for managing X509 certificates.</li>
+<li><a class="el" href="md_bundle_README.html">**bundle**</a> facilities for manipulating bundles.</li>
+<li><a class="el" href="md_federation_README.html">**federation**</a> facilities for retrieving and serving federated bundles.</li>
+<li><a class="el" href="md_internal_README.html">**internal**</a> general use utility functions.</li>
+<li><a class="el" href="md_logger_README.html">**logger**</a> code for logging functions.</li>
+<li><a class="el" href="md_protos_README.html">**protos**</a> ProtoBuf definition for the SPIFFE Workload API. C++ GRPC code is generated from this.</li>
+<li><a class="el" href="md_spiffeid_README.html">**spiffeid**</a> facilities for manipulating spiffe IDs and Trust Domains.</li>
+<li><a class="el" href="md_spiffetls_README.html">**spiffetls**</a> Functions for using TLS with SPIFFE.</li>
+<li><a class="el" href="md_svid_README.html">**svid**</a> utility functions for SVIDs.</li>
+<li><a class="el" href="md_utils_README.html">**utils**</a> general use utility functions.</li>
+<li><a class="el" href="md_workload_README.html">**workload**</a> facilites for fetching SVIDs and Bundles from the Workload API.</li>
 </ul>
-<p><img src="../img/diagrams/internal.png" alt="Internal Module Dependencies" class="inline"/> </p>
+<h2><a class="anchor" id="autotoc_md95"></a>
+Dependency Diagram</h2>
+<p><img src="img/diagrams/modules.png" alt="System Diagram" class="inline"/> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
