@@ -67,14 +67,46 @@ Body: {
 ```
 
 Verify a file
-```
+```shell
 rekor-cli verify --artifact c-spiffe-1.0.0.tar.gz --pki-format=minisign --public-key minisign.pub 
 a detached signature must be provided
 ```
 
 
-Issue opened
+>### Issue opened
+>Using rekor-cli verify given just the --artifact and --public-key #416
+>https://github.com/sigstore/rekor/issues/416
 
-Using rekor-cli verify given just the --artifact and --public-key #416
-https://github.com/sigstore/rekor/issues/416
+
+## Generate a keypair
+
+```shell
+$ cosign generate-key-pair
+Enter password for private key:
+Enter again:
+Private key written to cosign.key
+Public key written to cosign.pub
+```
+
+## sign-blob and verify-blob
+
+```shell
+$ cosign sign-blob -key cosign.key c-spiffe-1.0.0.tar.gz > c-spiffe-1.0.0.tar.gz.sig
+Using payload from: c-spiffe-1.0.0.tar.gz
+Enter password for private key:
+```
+
+We can check the pass of the key
+```shell
+$ cosign verify-blob -key cosign.pub -signature MEYCIQDvdgjw9pIVCZgFIRFQCyOqhTBfbiBNbaE0+a7Mp8U1eAIhAP66aQ54PgzZ3xYvqlrwKMAk998OcnCXsNuDxc2Gjctb c-spiffe-1.0.0.tar.gz
+Verified OK
+```
+
+as well as the pass of the signuture file
+```shell
+$ cosign verify-blob -key cosign.pub -signature c-spiffe-1.0.0.tar.gz.sig c-spiffe-1.0.0.tar.gz
+Verified OK
+```
+
+
 
